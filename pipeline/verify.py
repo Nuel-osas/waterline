@@ -31,7 +31,10 @@ from .score_audit import score as score_audit
 
 PROSE = ("README.md", "THESIS.md", "PREREG.md", "PREREG-AUDIT.md")
 NUMBER = re.compile(r"[+-]?\$\d[\d,]*(?:\.\d+)?[MBK]?|[+-]?\d[\d,]*(?:\.\d+)?%|\b\d[\d,]*(?:\.\d+)?x\b|\b\d[\d,]*(?:\.\d+)?M NEAR\b|\b\d{1,3}(?:,\d{3})+ NEAR\b"
-                    r"|(?<![-\d,.])\b\d[\d,]* (?:checks|tokens|readings)\b|(?<![-\d,.:])\b\d+ hours(?: \d+ minutes)?\b")
+                    r"|(?<![-\d,.])\b\d[\d,]* (?:checks|tokens|readings|paths|transfers|accounts|days|blocks|steps)\b"
+                    r"|(?<![-\d,.:])\b\d+ hours(?: \d+ minutes)?\b|(?<![-\d,.:])\b\d+ minutes\b"
+                    r"|\b\d+(?:\.\d+)? basis points\b|\b\d+ of them short\b|\b\d+ of \d+ days\b"
+                    r"|\b\d{2}:\d{2}:\d{2}\b|(?<![\d.])\b\d{9}\b(?![\d.])")
 
 
 def read(path):
@@ -299,7 +302,17 @@ def allowed_numbers(claims):
             ok.setdefault(m, "claim " + c["id"])
     for entry in load(os.path.join(DATA, "constants.json"), {"constants": []})["constants"]:
         ok.setdefault(entry["value"], "declared constant")
+    if claims.get("pin_height") is not None:
+        ok.setdefault(str(claims["pin_height"]), "the pinned block")
     return ok
+
+
+def page_text(html):
+    """What a reader of the dashboard sees that was typed by hand: no scripts, styles or code blocks, and none of the
+    elements that are filled in from the claims (those are compared exactly elsewhere)."""
+    text = re.sub(r"<(script|style|pre)\b.*?</\1>", " ", html, flags=re.S)
+    text = re.sub(r'<(span|td|dd|p|b)(\b[^>]*\bdata-(?:claim|pin)="[^"]+"[^>]*)>[^<]*</\1>', " ", text)
+    return re.sub(r"<[^>]+>", " ", text)
 
 
 def check_prose(claims):
@@ -319,6 +332,14 @@ def check_prose(claims):
         else:
             found = sum(len(NUMBER.findall(l)) for l in prose_only(read(path)).split("\n"))
             print(f"ok   {name}: all {found} numbers in the prose are computed claims or declared constants")
+    page = os.path.join(ROOT, "site", "index.html")
+    if os.path.exists(page):
+        misses = [m for m in NUMBER.findall(page_text(read(page))) if m not in ok]
+        for m in misses[:12]:
+            print(f"FAIL site/index.html: the number {m}, typed by hand on the page, is neither a computed claim nor a declared constant")
+        bad += len(misses)
+        if not misses:
+            print(f"ok   site/index.html: all {len(NUMBER.findall(page_text(read(page))))} numbers typed by hand on the page are computed claims or declared constants")
     # every claim that must be quoted is quoted somewhere
     text = "".join(read(os.path.join(ROOT, n)) for n in PROSE if os.path.exists(os.path.join(ROOT, n)))
     for c in claims["claims"]:

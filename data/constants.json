@@ -84,6 +84,22 @@
   {
    "value": "3%",
    "why": "our position rule in THESIS.md section 5: the most we would hold if the private chain's totals were published. A judgment, not a result"
+  },
+  {
+   "value": "00:00:00",
+   "why": "the rule for a day's block from 2026-11-14: the first block stamped at or after this time, UTC (pipeline/pull.py)"
+  },
+  {
+   "value": "16:14:19",
+   "why": "CertiK's time for the first exploit transaction on 29 September 2026, quoted (docs/SOURCES.md)"
+  },
+  {
+   "value": "60 days",
+   "why": "GitHub's rule for pausing scheduled workflows in an inactive repository, quoted"
+  },
+  {
+   "value": "8 days",
+   "why": "how many days make verify re-reads by default (pipeline/verify.py)"
   }
  ]
 }
