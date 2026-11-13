@@ -77,6 +77,10 @@
       var r = svgNode.getBoundingClientRect();
       onMove(ev, (ev.clientX - r.left) * (svgNode.viewBox.baseVal.width / r.width));
     });
+    svgNode.addEventListener("pointerdown", function (ev) {
+      var r = svgNode.getBoundingClientRect();
+      onMove(ev, (ev.clientX - r.left) * (svgNode.viewBox.baseVal.width / r.width));
+    });
     svgNode.addEventListener("pointerleave", function () { hideTip(); onLeave(); });
   }
 
@@ -155,7 +159,7 @@
       text(s, ex + 14, zero - end.pub * k + 16, usd(end.pub), { fill: INK, "font-size": 17, "font-weight": 600, style: "font-family:var(--sans)" });
       text(s, ex + 14, zero + end.priv * k - 6, "Private", { fill: FOG3 });
       text(s, ex + 14, zero + end.priv * k + 14, usd(end.priv), { fill: FOG, "font-size": 17, "font-weight": 600, style: "font-family:var(--sans)" });
-      text(s, ex + 14, zero + end.priv * k + 32, end.share.toFixed(1) + "% of the total", { fill: FOG3 });
+      text(s, ex + 14, zero + end.priv * k + 32, end.share.toFixed(1) + "% of these 20", { fill: FOG3 });
     } else {
       text(s, w - m.r, zero - 10, "Public " + usd(end.pub), { fill: INK, "text-anchor": "end", "font-weight": 600 });
       text(s, w - m.r, zero + 20, "Private " + usd(end.priv) + "  " + end.share.toFixed(1) + "%", { fill: FOG, "text-anchor": "end", "font-weight": 600 });
@@ -256,13 +260,14 @@
     monthTicks(t0, t1).forEach(function (mt) { text(s, X(mt.t), h - 8, mt.label, { fill: FOG3, "text-anchor": "middle" }); });
     moves.forEach(function (mv) {
       var y = mv.v >= 0 ? zero - mv.v * k : zero, hh = Math.max(.6, Math.abs(mv.v) * k);
-      var hot = topSet[mv.i], bwid = hot ? Math.max(3, bw) : bw;
+      var hot = topSet[mv.i], bwid = bw;
       el("rect", { x: X(T(mv.day)) - (bwid - bw) / 2, y: y, width: bwid, height: hh, fill: hot ? ACCENT : FOG3, "fill-opacity": hot ? 1 : .5 }, s);
     });
     el("line", { x1: m.l, x2: w - m.r, y1: zero, y2: zero, stroke: FOG, "stroke-opacity": .35 }, s);
     var best = ranked[0], worst = ranked[ranked.length - 1];
     text(s, X(T(best.day)) - 8, zero - best.v * k + 4, "+" + usd(best.v).slice(0) + "  " + dayShort(best.day), { fill: FOG, "text-anchor": "end" });
-    text(s, X(T(worst.day)) + bw + 8, zero - worst.v * k, usd(worst.v) + "  " + dayShort(worst.day), { fill: FOG, "text-anchor": "start" });
+    var wx = X(T(worst.day)), right = wx > w * 0.6;
+    text(s, right ? wx - 8 : wx + bw + 8, zero - worst.v * k, usd(worst.v) + "  " + dayShort(worst.day), { fill: FOG, "text-anchor": right ? "end" : "start" });
     var cross = el("line", { y1: m.t, y2: h - m.b, stroke: FOG, "stroke-opacity": .5, visibility: "hidden" }, s);
     hover(s, function (ev, x) {
       var mv = moves[nearest(moves, x, function (q) { return X(T(q.day)) + bw / 2; })], px = X(T(mv.day)) + bw / 2;
@@ -292,7 +297,7 @@
     el("path", { d: line, fill: "none", stroke: ACCENT, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, s);
     var sx = X(T(W.events.all_private));
     el("line", { x1: sx, x2: sx, y1: m.t - 8, y2: h - m.b, stroke: FOG, "stroke-opacity": .45 }, s);
-    text(s, sx + 8, m.t - 12, "27 Oct  the switch", { fill: FOG3 });
+    text(s, sx + 8, m.t - 12, w > 420 ? "27 Oct  the switch" : "27 Oct", { fill: FOG3 });
     var last = days[days.length - 1];
     el("circle", { cx: X(t1), cy: Y(last.float_usd), r: 4.5, fill: ACCENT, stroke: DEEP, "stroke-width": 2 }, s);
     text(s, X(t1) + 12, Y(last.float_usd) + 5, usd(last.float_usd), { fill: FOG, "font-size": 15, "font-weight": 600, style: "font-family:var(--sans)" });
@@ -302,6 +307,87 @@
       var d = days[nearest(days, x, function (q) { return X(T(q.day)); })], px = X(T(d.day));
       cross.setAttribute("visibility", "visible"); cl.setAttribute("x1", px); cl.setAttribute("x2", px); cd.setAttribute("cx", px); cd.setAttribute("cy", Y(d.float_usd));
       showTip(ev, dayLong(d.day), [{ name: "Float", value: usd(d.float_usd), color: ACCENT }]);
+    }, function () { cross.setAttribute("visibility", "hidden"); });
+  }
+
+  // ---------- the float with and without NEAR's own token, around the reward programme ----------
+  function chartReward() {
+    var box = document.getElementById("chart-reward");
+    if (!box) return;
+    box.textContent = "";
+    var days = W.days, ni = W.groups.indexOf("NEAR"), w = box.clientWidth, wide = w > 700, h = Math.round(Math.max(280, Math.min(400, w * 0.34)));
+    var m = { l: 0, r: wide ? 96 : 0, t: 30, b: 28 }, t0 = T(days[0].day), t1 = T(days[days.length - 1].day);
+    var max = Math.max.apply(null, days.map(function (d) { return Math.max(d.ex_near_usd, d.groups[ni]); })), step = niceStep(max, 3), top = Math.ceil(max * 1.05 / step) * step;
+    function X(t) { return m.l + (t - t0) / (t1 - t0) * (w - m.l - m.r); }
+    function Y(v) { return m.t + (1 - v / top) * (h - m.t - m.b); }
+    var s = el("svg", { viewBox: "0 0 " + w + " " + h, width: w, height: h }, box);
+    for (var v = 0; v <= top; v += step) {
+      el("line", { x1: m.l, x2: w - m.r, y1: Y(v), y2: Y(v), stroke: FOG, "stroke-opacity": v ? .1 : .3 }, s);
+      if (v) text(s, m.l, Y(v) - 6, axisUsd(v), { fill: FOG3 });
+    }
+    monthTicks(t0, t1).forEach(function (mt) { text(s, X(mt.t), h - 8, mt.label, { fill: FOG3, "text-anchor": "middle" }); });
+    [{ day: W.events.reward_announced, label: "11 Jun  reward announced" }, { day: W.events.reward_trigger, label: "17 Sep  snapshot triggered" }].forEach(function (e, i) {
+      var x = X(T(e.day));
+      el("line", { x1: x, x2: x, y1: m.t - 10, y2: h - m.b, stroke: FOG, "stroke-opacity": .4 }, s);
+      text(s, i ? x - 8 : x + 8, m.t - 14, wide ? e.label : e.label.slice(0, 6), { fill: FOG3, "text-anchor": i ? "end" : "start" });
+    });
+    function line(get, color) {
+      var d = days.map(function (q, i) { return (i ? "L" : "M") + X(T(q.day)).toFixed(1) + "," + Y(get(q)).toFixed(1); }).join("");
+      el("path", { d: d, fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, s);
+    }
+    line(function (q) { return q.groups[ni]; }, ACCENT);
+    line(function (q) { return q.ex_near_usd; }, "#AAB4B9");
+    var last = days[days.length - 1];
+    if (wide) {
+      text(s, w - m.r + 12, Y(last.ex_near_usd) + 5, usd(last.ex_near_usd), { fill: FOG, "font-size": 15, "font-weight": 600, style: "font-family:var(--sans)" });
+      text(s, w - m.r + 12, Y(last.groups[ni]) + 5, usd(last.groups[ni]), { fill: FOG, "font-size": 15, "font-weight": 600, style: "font-family:var(--sans)" });
+    }
+    var cross = el("line", { y1: m.t, y2: h - m.b, stroke: FOG, "stroke-opacity": .5, visibility: "hidden" }, s);
+    hover(s, function (ev, x) {
+      var d = days[nearest(days, x, function (q) { return X(T(q.day)); })], px = X(T(d.day));
+      cross.setAttribute("x1", px); cross.setAttribute("x2", px); cross.setAttribute("visibility", "visible");
+      showTip(ev, dayLong(d.day), [{ name: "Without NEAR's token", value: usd(d.ex_near_usd), color: "#AAB4B9" }, { name: "NEAR's own token", value: usd(d.groups[ni]), color: ACCENT }],
+        { name: "Float", value: usd(d.float_usd) });
+    }, function () { cross.setAttribute("visibility", "hidden"); });
+  }
+
+  // ---------- one token around the October shortfall: held against credited ----------
+  function chartShort() {
+    var box = document.getElementById("chart-short"), C = W.shortfall_case;
+    if (!box || !C || C.days.length < 2) return;
+    box.textContent = "";
+    var days = C.days, w = box.clientWidth, h = Math.round(Math.max(240, Math.min(340, w * 0.3))), m = { l: 0, r: 0, t: 22, b: 26 };
+    var max = Math.max.apply(null, days.map(function (d) { return Math.max(d.held, d.credited); })), step = niceStep(max, 4), top = Math.ceil(max * 1.05 / step) * step;
+    var t0 = T(days[0].day), t1 = T(days[days.length - 1].day);
+    function X(t) { return m.l + 44 + (t - t0) / (t1 - t0) * (w - m.l - m.r - 88); }
+    function Y(v) { return m.t + (1 - v / top) * (h - m.t - m.b); }
+    function tok(v) { return v >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.round(v / 1e3) + "K"; }
+    var s = el("svg", { viewBox: "0 0 " + w + " " + h, width: w, height: h }, box);
+    for (var v = 0; v <= top; v += step) {
+      el("line", { x1: m.l, x2: w - m.r, y1: Y(v), y2: Y(v), stroke: FOG, "stroke-opacity": v ? .1 : .3 }, s);
+      if (v) text(s, m.l, Y(v) - 6, tok(v), { fill: FOG3 });
+    }
+    days.forEach(function (d, i) { if (i % 2 === 0) text(s, X(T(d.day)), h - 8, dayShort(d.day), { fill: FOG3, "text-anchor": "middle" }); });
+    // shade the gap wherever less was held than was credited
+    for (var i = 1; i < days.length; i++) {
+      var a = days[i - 1], b = days[i];
+      if (a.held < a.credited || b.held < b.credited) {
+        el("path", { d: "M" + X(T(a.day)) + "," + Y(a.credited) + "L" + X(T(b.day)) + "," + Y(b.credited) + "L" + X(T(b.day)) + "," + Y(Math.min(b.held, b.credited)) + "L" + X(T(a.day)) + "," + Y(Math.min(a.held, a.credited)) + "Z", fill: "#FFB23E", "fill-opacity": .22 }, s);
+      }
+    }
+    function line(key, color) {
+      el("path", { d: days.map(function (q, k) { return (k ? "L" : "M") + X(T(q.day)).toFixed(1) + "," + Y(q[key]).toFixed(1); }).join(""), fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, s);
+      days.forEach(function (q) { el("circle", { cx: X(T(q.day)), cy: Y(q[key]), r: 3.5, fill: color, stroke: DEEP, "stroke-width": 2 }, s); });
+    }
+    line("credited", ACCENT); line("held", "#AAB4B9");
+    var low = days.reduce(function (p, q) { return q.held < p.held ? q : p; });
+    text(s, X(T(low.day)) + 10, Y(low.held) - 10, tok(low.held) + " held on " + dayShort(low.day), { fill: FOG });
+    var cross = el("line", { y1: m.t, y2: h - m.b, stroke: FOG, "stroke-opacity": .5, visibility: "hidden" }, s);
+    hover(s, function (ev, x) {
+      var d = days[nearest(days, x, function (q) { return X(T(q.day)); })], px = X(T(d.day));
+      cross.setAttribute("x1", px); cross.setAttribute("x2", px); cross.setAttribute("visibility", "visible");
+      showTip(ev, dayLong(d.day) + ", 00:00 UTC", [{ name: "Held by NEAR Intents", value: d.held.toLocaleString("en-US"), color: "#AAB4B9" }, { name: "Credited to the private chain", value: d.credited.toLocaleString("en-US"), color: ACCENT }],
+        d.held < d.credited ? { name: "Missing", value: (d.credited - d.held).toLocaleString("en-US") } : null);
     }, function () { cross.setAttribute("visibility", "hidden"); });
   }
 
@@ -336,10 +422,11 @@
     var box = document.getElementById("meters");
     box.textContent = "";
     [
-      { id: "R1", name: "Private float", now: K.C1.shown, v: num("C1"), max: 250, from: 200, to: 250, tick: 200, tickLabel: "$200M", rule: ["Holds at ", "$200M or more", ". Breaks below today's level."] },
-      { id: "R2", name: "Ten best days as a share of the float", now: K.C17.shown, v: num("C17"), max: 100, from: 0, to: 45, tick: 45, tickLabel: "45%", rule: ["Holds ", "below 45%", ": new money arrives on many days. Breaks if it rises."] },
+      { id: "R1", name: "Private float", now: K.C1.shown, v: num("C1"), max: 250, from: 200, to: 250, tick: 200, tickLabel: "$200M", rule: ["Holds at ", "$200M or more", ". Breaks below the pinned day's level."] },
+      { id: "R2", name: "Ten best days as a share of the float", now: K.C17.shown, v: num("C17"), max: 100, from: 0, to: 45, tick: 45, tickLabel: "45%", rule: ["Holds ", "below 45%", ": new money arrives on many days. Breaks if it is still at the pinned day's level."] },
       { id: "R3", name: "Private share, the 20 tracked tokens", now: K.C23 ? K.C23.shown : "n/a", v: K.C23 ? num("C23") : 0, max: 100, from: 50, to: 100, tick: 50, tickLabel: "50%", rule: ["Holds at ", "50% or more", ". Breaks below 40%: money is moving back to the public side."] },
-      { id: "R4", name: "Revenue reaching NEAR's wallets, as a share of new supply", now: K.V4.shown, v: num("V4"), max: 60, from: 30, to: 60, tick: 30, tickLabel: "30%", rule: ["Holds at ", "30% or more", ". Breaks below 15%. Uses a quoted revenue figure, so it is scored by hand."] }
+      { id: "R5", name: "Float without NEAR's own token", now: K.P4.shown, v: num("P4"), max: 180, from: 130, to: 180, tick: 130, tickLabel: "$130M", rule: ["Holds at ", "$130M or more", ". Breaks below the pinned day's level: the rest was rented too."] },
+      { id: "R4", name: "Revenue reaching NEAR's wallets, as a share of new supply", now: K.V4.shown, v: num("V4"), max: 60, from: 25, to: 60, tick: 25, tickLabel: "25%", rule: ["Holds at ", "25% or more", ". Breaks below 10%. Counted NEAR against NEAR. Uses a quoted revenue figure, so it is scored by hand."] }
     ].forEach(function (r) {
       var mEl = html("div", "meter"), head = html("div", "head"), name = html("div", "name"), tag = html("small", null, r.id);
       name.appendChild(tag); name.appendChild(document.createTextNode(r.name));
@@ -361,12 +448,11 @@
     var F = window.WATERLINE_FORWARD, box = document.getElementById("forward");
     if (!F || !box) return;
     box.textContent = "";
-    var near = F.tests.filter(function (t) { return t.id.charAt(0) === "F"; });
-    document.querySelectorAll('[data-fwd="near"]').forEach(function (n) { n.textContent = near.length ? dayLong(near[0].due) : ""; });
+    var near = F.tests.filter(function (t) { return t.id.charAt(0) === "E" || t.id.charAt(0) === "F"; });
     near.forEach(function (t) {
       var item = html("div", "item");
       item.appendChild(html("span", "id", t.id));
-      item.appendChild(html("span", "txt", t.text + (t.value ? " Result: " + t.value + "." : "")));
+      item.appendChild(html("span", "txt", t.text + (t.value ? " Result: " + t.value + "." : " Scored on the " + dayLong(t.due) + " reading.")));
       item.appendChild(html("span", "st " + t.status, t.status === "PENDING" ? "Pending" : t.status === "PASS" ? "Passed" : "Failed"));
       box.appendChild(item);
     });
@@ -380,7 +466,7 @@
       .forEach(function (l) { var a = html("a", null, l[0]); a.href = l[1]; box.appendChild(a); });
   }
 
-  function charts() { chartWaterline(); chartStack(); chartLumps(); chartSwitch(); }
+  function charts() { chartWaterline(); chartStack(); chartReward(); chartLumps(); chartSwitch(); chartShort(); }
   fillClaims(); barsTokens(); meters(); forward(); links(); charts();
   var timer;
   addEventListener("resize", function () { clearTimeout(timer); timer = setTimeout(charts, 150); });
