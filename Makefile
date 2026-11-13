@@ -1,7 +1,7 @@
 # Everything runs on a stock Python 3.9+ with no packages to install and no keys.
 PY ?= python3
 
-.PHONY: verify check test build pull serve score model trace audit context all
+.PHONY: verify check test build pull serve score model trace audit tomorrow context all
 
 all: test check
 
@@ -40,6 +40,10 @@ serve:
 score:
 	$(PY) -m pipeline.score
 	$(PY) -m pipeline.score_audit
+
+## Add a made-up next day to a temporary copy and run the checks there: a new reading must not change any quoted number.
+tomorrow:
+	$(PY) -m pipeline.tomorrow
 
 ## Audit the 20 largest tokens at the latest final block: credited by intents.near against held, token by token.
 audit:
