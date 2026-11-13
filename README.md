@@ -1,7 +1,9 @@
 # Waterline
 
-**What NEAR Intents' private chain holds, read every day from public NEAR. An investment thesis for NEAR whose
-own measurements anyone can recompute, and which labels every number it only quotes.**
+**NEAR's swaps went private. The money behind them did not.** Waterline reads that money every day from public
+NEAR. It is an investment thesis for NEAR whose own measurements anyone can recompute, and which labels every
+number it only quotes. On 2 October the same reading showed one token almost wholly unbacked, before its author
+knew there had been a hack.
 
 Built at NEAR HACKATHON 2026. Track: Investment Thesis (`thesis`).
 
