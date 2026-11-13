@@ -154,7 +154,7 @@
    "how": "difference of the two days",
    "id": "C11",
    "shown": "$20.7M",
-   "what": "Added to the float between 2026-10-27 and 2026-11-13"
+   "what": "Added to the float between 2026-10-27 and 2026-11-13, 17 days"
   },
   {
    "how": "group totals at pinned prices",
@@ -546,7 +546,7 @@
    "how": "pipeline/trace.py: halve the day to the block where the balance moved, then read that block's receipts; data/context/trace.json",
    "id": "W1",
    "shown": "1.7M NEAR",
-   "what": "The largest single transfer of NEAR into the treasury in September, at 2026-09-24 08:52:40 UTC. The treasury had paid out the same amount, to the last unit, at 2026-09-23 23:35:58 UTC: 9 hours 16 minutes earlier, and 24 minutes before the 2026-09-24 reading"
+   "what": "The largest single transfer of NEAR into the treasury in September, at 2026-09-24 08:52:40 UTC. The treasury had paid out the same amount, to the last unit, at 2026-09-23 23:35:58 UTC: 9 hours 16 minutes earlier, and 24 minutes before the 2026-09-24 reading. It was back 31 blocks after it was withdrawn from the public ledger"
   },
   {
    "grade": "chain",
@@ -678,7 +678,7 @@
    "how": "as O3, with wrap",
    "id": "O13",
    "shown": "89%",
-   "what": "O3 when a run may wrap from the end of the window to its start. Without wrapping, the window's first and last days are drawn less often"
+   "what": "O3 when a run may wrap from the end of the window to its start. Without wrapping, a run of 7 days cannot start in the last 6 days of a window, so its first and last days are drawn less often"
   },
   {
    "grade": "model",

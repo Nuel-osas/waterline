@@ -275,7 +275,7 @@ another lump, and the tracked share stays at 60% or more. They are written, with
 base rates, in [`PREREG.md`](PREREG.md). A fail will be reported as a fail.
 
 **How likely are they? A base rate from the float's own history.** `make model` replays the float's past daily
-changes forward to 2027-03-31: 10,000 seeded paths, each built from runs of 7 consecutive past days drawn at
+changes forward to 2027-03-31: 10,000 paths from one seed, each built from runs of 7 consecutive past days drawn at
 random, each scored with the thresholds above. The readings were fixed and hashed before this model was
 written, so it did not shape them.
 

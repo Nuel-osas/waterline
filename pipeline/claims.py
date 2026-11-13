@@ -125,7 +125,7 @@ def write_claims(write=True):
         "float two days apart, pinned prices")
     switch = on_or_after(rows, ALL_PRIVATE)
     add("C11", money(last["float_usd"] - switch["float_usd"]),
-        f"Added to the float between {ALL_PRIVATE} and {pin}", "difference of the two days")
+        f"Added to the float between {ALL_PRIVATE} and {pin}, {len([r for r in rows if r['day'] > ALL_PRIVATE])} days", "difference of the two days")
 
     g = {name: last["groups"][name] for name in GROUPS}
     top = max(g, key=g.get)
@@ -406,7 +406,7 @@ def write_claims(write=True):
         add("W1", f"{amount / 10**24 / 1e6:.1f}M NEAR",
             f"The largest single transfer of NEAR into the treasury in September, at {back['time_utc']} UTC. The treasury had paid out "
             f"the same amount, to the last unit, at {left['time_utc']} UTC: {away // 3600} hours {away % 3600 // 60} minutes earlier, "
-            f"and {early // 60} minutes before the {cut['day']} reading",
+            f"and {early // 60} minutes before the {cut['day']} reading. It was back {back['height'] - case['hops'][1]['height']} blocks after it was withdrawn from the public ledger",
             "pipeline/trace.py: halve the day to the block where the balance moved, then read that block's receipts; data/context/trace.json",
             grade="chain")
         add("W2", money(value), "That transfer at the pinned price", "amount times the pinned price", grade="chain")
@@ -475,7 +475,8 @@ def write_claims(write=True):
             f"Median float on {m['target']} across the replayed paths, drawing {drawn[key].split(' (')[0]} "
             f"(one path in ten ends below {money(m['p10_usd'])}, one in ten above {money(m['p90_usd'])})", "as O1", grade="model")
     add("O13", share(simulate(rows, pin, cut["after"][1], cut["after"][2], wrap=True)["r1_holds"]),
-        "O3 when a run may wrap from the end of the window to its start. Without wrapping, the window's first and last days are drawn less often",
+        f"O3 when a run may wrap from the end of the window to its start. Without wrapping, a run of {BLOCK} days cannot start in the last "
+        f"{BLOCK - 1} days of a window, so its first and last days are drawn less often",
         "as O3, with wrap", grade="model")
     lengths = (1, 3, BLOCK, 14, 30)
     for cid, key in (("O11", "whole"), ("O12", "after")):

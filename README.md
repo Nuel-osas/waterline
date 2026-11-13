@@ -132,12 +132,13 @@ No key, no account, no package to install. Python 3.9 or newer.
 ## Findings
 
 As of NEAR mainnet block 224285109 (2026-11-13, 00:00 UTC). This table is written by `pipeline/claims.py` from
-the raw readings. `make check` rebuilds it in memory and fails if it differs. It also fails if a dollar amount, a percentage, a
-multiple, a NEAR amount, a count of tokens, checks or readings, or a span of hours in the prose of this file,
-`THESIS.md`, `PREREG.md` or `PREREG-AUDIT.md` is neither one of these rows nor a constant declared in
-`data/constants.json`. It does not check dates, clock times, block heights, numbers written as words or counts
-such as "205 token types", and it cannot tell that a valid number was put in the wrong sentence. A reviewer
-changed 27 numbers one at a time; 12 were caught and 15 were of these kinds.
+the raw readings. `make check` rebuilds it in memory and fails if it differs. It also fails if a number in the prose of this file,
+`THESIS.md`, `PREREG.md`, `PREREG-AUDIT.md` or typed by hand on the dashboard is neither one of these rows nor a
+constant declared in `data/constants.json`. The kinds it checks: dollar amounts, percentages, multiples, NEAR
+amounts, basis points, clock times, block heights, spans of hours, minutes or days, and counts of tokens,
+checks, readings, paths, transfers, accounts, blocks or steps. It does not check dates, numbers written as
+words, or counts with other nouns such as "205 token types", and it cannot tell that a valid number was put in
+the wrong sentence. A reviewer changed 27 numbers one at a time before this list was widened; 12 were caught.
 
 <!-- claims:start -->
 | # | Number | What it is |
@@ -167,7 +168,7 @@ changed 27 numbers one at a time; 12 were caught and 15 were of these kinds.
 | B3 | **79%** | Four-day windows since the B2B launch with no day above the tenth-largest rise (the base rate of test F2) |
 | C9 | **$14.6M** | Largest one-day fall in the float, between the readings of 2026-09-29 and 2026-09-30 |
 | C10 | **2.8%** | Change in the float across the day 1Click swaps began to settle on the private chain (2026-10-26 to 2026-10-28) |
-| C11 | **$20.7M** | Added to the float between 2026-10-27 and 2026-11-13 |
+| C11 | **$20.7M** | Added to the float between 2026-10-27 and 2026-11-13, 17 days |
 | C12 | **Stablecoins: $49.3M** | Largest asset group in the float on 2026-11-13 |
 | C13 | **NEAR: $43.5M** | NEAR's own token in the float on 2026-11-13 |
 | C22 | **68%** | Part of the float that is not NEAR's own token on 2026-11-13 |
@@ -226,7 +227,7 @@ changed 27 numbers one at a time; 12 were caught and 15 were of these kinds.
 | A12 | **28 hours** | Of those 31 hours 40 minutes, the time the hole stayed under $3,000 (28 hours 1 minute). How long before the first payout each size was first reached: $100 at 23 hours 43 minutes, $1,000 at 23 hours 21 minutes, $10,000 at 1 hour 9 minutes, $100,000 at 32 minutes, $1.0M at 13 minutes |
 | A13 | **13 minutes** | How long before the first payout the hole first passed $1.0M |
 | A14 | **60.9%** | What C4 would be with the 15 tokens that joined NEAR Intents' list later on the pinned day. They were read once, at the pinned block: $291,069 held, none short, $0 of it in the treasury. They are left out of every pinned figure |
-| W1 | **1.7M NEAR** | The largest single transfer of NEAR into the treasury in September, at 2026-09-24 08:52:40 UTC. The treasury had paid out the same amount, to the last unit, at 2026-09-23 23:35:58 UTC: 9 hours 16 minutes earlier, and 24 minutes before the 2026-09-24 reading |
+| W1 | **1.7M NEAR** | The largest single transfer of NEAR into the treasury in September, at 2026-09-24 08:52:40 UTC. The treasury had paid out the same amount, to the last unit, at 2026-09-23 23:35:58 UTC: 9 hours 16 minutes earlier, and 24 minutes before the 2026-09-24 reading. It was back 31 blocks after it was withdrawn from the public ledger |
 | W2 | **$6.1M** | That transfer at the pinned price |
 | W3 | **$12.0M** | The float's rise on the 2026-09-25 reading, which includes that transfer. It is the largest one-day rise in the series |
 | W4 | **51%** | Part of that day's rise that is money the treasury had paid out the evening before |
@@ -245,7 +246,7 @@ changed 27 numbers one at a time; 12 were caught and 15 were of these kinds.
 | O8 | **$202.6M** | Median float on 2027-03-31 across the replayed paths, drawing from every day since the first deposit (one path in ten ends below $164.8M, one in ten above $252.7M) |
 | O9 | **$170.0M** | Median float on 2027-03-31 across the replayed paths, drawing only from days before the reward programme was announced (one path in ten ends below $159.5M, one in ten above $181.5M) |
 | O10 | **$258.7M** | Median float on 2027-03-31 across the replayed paths, drawing only from days since the first reward's snapshot was triggered (one path in ten ends below $176.1M, one in ten above $353.0M) |
-| O13 | **89%** | O3 when a run may wrap from the end of the window to its start. Without wrapping, the window's first and last days are drawn less often |
+| O13 | **89%** | O3 when a run may wrap from the end of the window to its start. Without wrapping, a run of 7 days cannot start in the last 6 days of a window, so its first and last days are drawn less often |
 | O11 | **51% to 60%** | How far O1 moves when the runs are 1, 3, 7, 14 or 30 days long |
 | O12 | **38% to 96%** | How far O3 moves when the runs are 1, 3, 7, 14 or 30 days long |
 <!-- claims:end -->
