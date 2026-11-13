@@ -596,7 +596,8 @@
     if (!F || !box) return;
     box.textContent = "";
     var near = F.tests.filter(function (t) { return t.id.charAt(0) === "E" || t.id.charAt(0) === "F"; });
-    near.forEach(function (t) {
+    var G = window.WATERLINE_FORWARD_AUDIT;   // the audit's own tests come first: they test the claim the page leads with
+    (G ? G.tests : []).concat(near).forEach(function (t) {
       var item = html("div", "item");
       item.appendChild(html("span", "id", t.id));
       item.appendChild(html("span", "txt", t.text + (t.value ? " Result: " + t.value + "." : " Scored on the " + dayLong(t.due) + " reading.")));

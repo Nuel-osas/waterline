@@ -21,6 +21,7 @@ build:
 	$(PY) -m pipeline.build
 	$(PY) -m pipeline.claims
 	$(PY) -m pipeline.score
+	$(PY) -m pipeline.score_audit
 
 ## Refetch the token list, the quoted figures, the supply headers and the custody facts.
 context:
@@ -38,6 +39,7 @@ serve:
 ## Score the forward tests in PREREG.md against the readings taken since.
 score:
 	$(PY) -m pipeline.score
+	$(PY) -m pipeline.score_audit
 
 ## Audit the 20 largest tokens at the latest final block: credited by intents.near against held, token by token.
 audit:

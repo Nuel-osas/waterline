@@ -27,8 +27,9 @@ from .build import build, site_js, token_meta, usd
 from .claims import write_claims
 from .pull import DATA, FIRST_BLOCK_FROM, ROOT, header_at, load, read_float, read_held
 from .score import score
+from .score_audit import score as score_audit
 
-PROSE = ("README.md", "THESIS.md", "PREREG.md")
+PROSE = ("README.md", "THESIS.md", "PREREG.md", "PREREG-AUDIT.md")
 NUMBER = re.compile(r"[+-]?\$\d[\d,]*(?:\.\d+)?[MBK]?|[+-]?\d[\d,]*(?:\.\d+)?%|\b\d[\d,]*(?:\.\d+)?x\b|\b\d[\d,]*(?:\.\d+)?M NEAR\b|\b\d{1,3}(?:,\d{3})+ NEAR\b"
                     r"|(?<![-\d,.])\b\d[\d,]* (?:checks|tokens|readings)\b|(?<![-\d,.:])\b\d+ hours(?: \d+ minutes)?\b")
 
@@ -329,10 +330,12 @@ def check_prose(claims):
 
 def check_hashes():
     bad = 0
-    hash_file = os.path.join(DATA, "derived", "prereg.sha256")
-    if not os.path.exists(hash_file):
-        return 0
-    for line in read(hash_file).split("\n"):
+    lines = []
+    for name in ("prereg.sha256", "prereg_audit.sha256"):
+        hash_file = os.path.join(DATA, "derived", name)
+        if os.path.exists(hash_file):
+            lines += read(hash_file).split("\n")
+    for line in lines:
         if not line.strip():
             continue
         want, name = line.split(None, 1)
@@ -354,6 +357,9 @@ def check_derived():
     bad += same("anomalies", b["anomalies"], os.path.join(DATA, "derived", "anomalies.json"), as_json=True)
     bad += same("claims", c["claims"], os.path.join(DATA, "derived", "claims.json"), as_json=True)
     bad += same("forward tests", f["forward"], os.path.join(DATA, "derived", "forward.json"), as_json=True)
+    g = score_audit(write=False)
+    bad += same("audit forward tests", g, os.path.join(DATA, "derived", "forward_audit.json"), as_json=True)
+    bad += same("dashboard audit tests", score_audit.last["forward_audit_js"], os.path.join(ROOT, "site", "forward_audit.js"))
     bad += same("dashboard data", site_js("WATERLINE", b["series"]), os.path.join(ROOT, "site", "data.js"))
     bad += same("dashboard claims", c["claims_js"], os.path.join(ROOT, "site", "claims.js"))
     bad += same("dashboard forward tests", f["forward_js"], os.path.join(ROOT, "site", "forward.js"))
@@ -364,7 +370,7 @@ def check_derived():
     bad += check_trace_stored()
     bad += check_prose(c["claims"])
     bad += check_hashes()
-    for t in f["forward"]["tests"]:
+    for t in f["forward"]["tests"] + g["tests"]:
         print(f"     {t['status']:8} {t['id']} due {t['due']}" + (f": {t['value']}" if t["value"] else ""))
     return bad
 

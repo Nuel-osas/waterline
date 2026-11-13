@@ -72,6 +72,10 @@
   {
    "value": "2.5%",
    "why": "HSP-029: NEAR's current maximum issuance, as stated in the proposal (docs/SOURCES.md)"
+  },
+  {
+   "value": "3 readings",
+   "why": "threshold of test G3 (PREREG-AUDIT.md, pipeline/score_audit.py): the October hole was open on three daily readings"
   }
  ]
 }
