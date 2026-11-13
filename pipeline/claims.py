@@ -270,6 +270,19 @@ def write_claims(write=True):
         need_target = (Fraction(s1, 10**24) * target * Fraction(30, 365)) / rev_near
         add("H1", f"{float(need_target):.1f}x", "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes",
             "supply times 1.6%, over a year, against 30-day revenue in NEAR", grade="chain, via an indexer")
+        # scale: the money beyond the audit, and the one hole that was measured, against the revenue that funds the buyback
+        month = rev  # 30 days of revenue reaching NEAR's wallets, in dollars at each day's price
+        add("Q1", f"{float(last['float_usd'] / month / 12):.1f} years",
+            f"The float on {pin} as years of the revenue that reaches NEAR's wallets, at the rate of the {span}",
+            "C1 over (X3 times 12)", grade="chain, via an indexer")
+        add("Q2", pct(month * 12 / last["float_usd"], 0),
+            "Part of the float whose loss would equal a full year of that revenue", "X3 times 12, over C1", grade="chain, via an indexer")
+        ex0 = (build.last.get("audit") or {}).get("exploit")
+        if ex0:
+            m0 = meta[ex0["token"]]
+            peak_usd = max(Fraction(int(st["credited"]) - int(st["held"]), 10 ** m0["decimals"]) for st in ex0["steps"]) * m0["price"]
+            add("Q3", f"{float(peak_usd / month):.1f} months",
+                "The October hole at its largest as months of that revenue", "A10 over X3", grade="chain, via an indexer")
         add("M3", f"${float(vol * Fraction(365, 30) * need) / 1e9:.0f}B a year", "Reported volume that would take at today's rate of revenue per dollar of volume",
             "annualised X1 times M2", grade="reported")
 

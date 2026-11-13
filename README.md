@@ -21,8 +21,9 @@ Live dashboard, with a button that runs the audit on the latest block in your br
 2. The one time they were not, it showed. The October hole was in the public books 31 hours 40 minutes before
    the first payout: under $3,000 for the first 28 hours, $1.3M by the last change before the payout, $3.8M at
    its peak. This is a replay run in November, not live detection, and the start time is also CertiK's.
-3. The same proof does not reach the private chain, where 61.0% of the money now is. Since 27 October swaps
-   settle there. 87% of the credit in the token that broke in October belonged to that side.
+3. The same proof does not reach the private chain, where 61.0% of the money now is and where swaps have
+   settled since 27 October. That balance is 6.3 years of the revenue that funds NEAR's buyback; October's hole
+   at its largest was 2.1 months of it, and 87% of the credit in the token that broke belonged to that side.
 4. What sits behind the private chain is partly paid for and partly recycled. NEAR pays a reward for
    confidential balances, 69% of the NEAR that arrived in the days after the reward's snapshot was announced has
    left, 94% of that net inflow came from one account, and 51% of the float's best day was money the treasury had
@@ -208,6 +209,9 @@ the wrong sentence. A reviewer changed 27 numbers one at a time before this list
 | M1 | **4.8 basis points** | Revenue reaching NEAR's wallets per dollar of reported volume, 30 days to 2026-11-11 |
 | M2 | **6.5x** | How many times revenue would have to grow for buybacks to match net new supply |
 | H1 | **4.2x** | How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes |
+| Q1 | **6.3 years** | The float on 2026-11-13 as years of the revenue that reaches NEAR's wallets, at the rate of the 30 days to 2026-11-11 |
+| Q2 | **16%** | Part of the float whose loss would equal a full year of that revenue |
+| Q3 | **2.1 months** | The October hole at its largest as months of that revenue |
 | M3 | **$297B a year** | Reported volume that would take at today's rate of revenue per dollar of volume |
 | T4 | **$136.4M** | Highest the float has been, on the 2026-11-13 reading |
 | P8 | **3.5x** | Growth of the float without NEAR's own token since the B2B launch ($26.8M then) |
@@ -254,7 +258,7 @@ the wrong sentence. A reviewer changed 27 numbers one at a time before this list
 C, P, S and K rows are measured here from chain state (P: around NEAR's reward programme; S: shortfalls; K:
 custody). V and M rows combine a block-header reading with quoted figures. X and T rows are quoted from
 DefiLlama and labelled with their origin; this project does not vouch for them. N rows come from an indexer's list of transfers and count only days on which that list adds up, to the last
-unit, to the change in the balance read from the chain. A rows are the audit: credited against held, and the October hole block by block. W rows are one transfer
+unit, to the change in the balance read from the chain. Q rows set the float and the October hole against the revenue that reaches NEAR's wallets. A rows are the audit: credited against held, and the October hole block by block. W rows are one transfer
 followed from the chain. O rows are not measurements: they
 are the output of `make model`, a base rate drawn from the float's own past, and they say so.
 

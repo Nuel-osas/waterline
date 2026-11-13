@@ -410,6 +410,27 @@
    "what": "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes"
   },
   {
+   "grade": "chain, via an indexer",
+   "how": "C1 over (X3 times 12)",
+   "id": "Q1",
+   "shown": "6.3 years",
+   "what": "The float on 2026-11-13 as years of the revenue that reaches NEAR's wallets, at the rate of the 30 days to 2026-11-11"
+  },
+  {
+   "grade": "chain, via an indexer",
+   "how": "X3 times 12, over C1",
+   "id": "Q2",
+   "shown": "16%",
+   "what": "Part of the float whose loss would equal a full year of that revenue"
+  },
+  {
+   "grade": "chain, via an indexer",
+   "how": "A10 over X3",
+   "id": "Q3",
+   "shown": "2.1 months",
+   "what": "The October hole at its largest as months of that revenue"
+  },
+  {
    "grade": "reported",
    "how": "annualised X1 times M2",
    "id": "M3",
