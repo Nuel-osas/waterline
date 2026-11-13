@@ -316,6 +316,80 @@ class Model(unittest.TestCase):
         self.assertEqual(share(Fraction(53, 100)), "53%")
 
 
+class Trace(unittest.TestCase):
+    """Finding the block where a balance moved, and reading who moved it out of the receipt."""
+
+    def steps(self, jumps, start=1000):
+        def read(height):
+            return start + sum(size for at, size in jumps.items() if at <= height)
+        return read
+
+    def receipt(self, method, args, sender="intents.near"):
+        import base64
+        import json
+        packed = base64.b64encode(json.dumps(args).encode()).decode()
+        return {"receipt_id": "R1", "predecessor_id": sender, "receiver_id": "intents.near",
+                "receipt": {"Action": {"actions": [{"FunctionCall": {"method_name": method, "args": packed, "deposit": "0", "gas": 1}}]}}}
+
+    def signed(self, signer, intents, standard="nep413"):
+        import json
+        message = json.dumps({"signer_id": signer, "intents": intents})
+        return {"standard": standard, "payload": {"message": message, "nonce": "n", "recipient": "intents.near"} if standard == "nep413" else message}
+
+    def test_halving_finds_each_block_where_the_balance_moved_largest_first(self):
+        from pipeline import trace
+        read = self.steps({150: 1000, 420: 300, 777: -500})
+        self.assertEqual(trace.largest_moves(read, 100, 1000, 3), [(150, 1000), (777, -500), (420, 300)])
+        self.assertEqual(trace.largest_moves(read, 100, 1000, 1), [(150, 1000)])
+
+    def test_it_stops_once_enough_of_the_change_is_explained(self):
+        from pipeline import trace
+        read = self.steps({150: 1000, 420: 300, 777: 50})
+        self.assertEqual(trace.largest_moves(read, 100, 1000, 3, enough=Fraction(7, 10)), [(150, 1000)])
+
+    def test_moves_that_cancel_inside_the_window_are_not_seen(self):
+        from pipeline import trace
+        # in at 500, out again at 501: no net change over the window, so there is nothing to follow. A stated limit.
+        self.assertEqual(trace.largest_moves(self.steps({500: 100, 501: -100}), 100, 1000, 3), [])
+
+    def test_a_transfer_intent_names_the_signer_and_the_receiver(self):
+        from pipeline import trace
+        r = self.receipt("execute_intents", {"signed": [self.signed("alice", [{"intent": "transfer", "receiver_id": "treasury", "tokens": {"nep141:wrap.near": "1730", "nep141:usdc": "5"}}])]})
+        self.assertEqual(trace.legs(r, "nep141:wrap.near"), [{"from": "alice", "to": "treasury", "amount": 1730, "how": "transfer intent"}])
+        self.assertEqual(trace.legs(r, "nep141:other"), [])
+
+    def test_a_message_signed_under_another_standard_is_read_the_same_way(self):
+        from pipeline import trace
+        r = self.receipt("execute_intents", {"signed": [self.signed("0xabc", [{"intent": "ft_withdraw", "token": "wrap.near", "receiver_id": "bob.near", "amount": "7"}], standard="erc191")]})
+        self.assertEqual(trace.legs(r, "nep141:wrap.near"),
+                         [{"from": "0xabc", "to": "bob.near (outside intents.near)", "amount": 7, "how": "withdrawal intent"}])
+
+    def test_a_deposit_names_the_outside_sender_and_the_account_credited(self):
+        from pipeline import trace
+        named = self.receipt("ft_on_transfer", {"sender_id": "alice.near", "amount": "9", "msg": '{"receiver_id":"treasury"}'}, sender="wrap.near")
+        plain = self.receipt("ft_on_transfer", {"sender_id": "alice.near", "amount": "9", "msg": ""}, sender="wrap.near")
+        other = self.receipt("ft_on_transfer", {"sender_id": "alice.near", "amount": "9", "msg": ""}, sender="usdc.near")
+        self.assertEqual(trace.legs(named, "nep141:wrap.near"), [{"from": "alice.near (outside intents.near)", "to": "treasury", "amount": 9, "how": "deposit"}])
+        self.assertEqual(trace.legs(plain, "nep141:wrap.near")[0]["to"], "alice.near")
+        self.assertEqual(trace.legs(other, "nep141:wrap.near"), [])   # a deposit of another token
+
+    def test_the_key_that_signed_for_an_account_is_read_from_the_receipt(self):
+        from pipeline import trace
+        one = self.signed("treasury", [{"intent": "transfer", "receiver_id": "x", "tokens": {"nep141:wrap.near": "1"}}])
+        one["public_key"] = "ed25519:KEY"
+        self.assertEqual(trace.signers(self.receipt("execute_intents", {"signed": [one, {"standard": "weird"}]})), {"treasury": "ed25519:KEY"})
+        self.assertEqual(trace.signers(self.receipt("ft_on_transfer", {"sender_id": "a", "amount": "1", "msg": ""})), {})
+
+    def test_a_swap_leg_is_a_change_for_its_signer_and_an_unreadable_payload_is_skipped(self):
+        from pipeline import trace
+        r = self.receipt("execute_intents", {"signed": [
+            {"standard": "nep413", "payload": {"message": "not json"}},
+            {"standard": "weird"},
+            self.signed("maker", [{"intent": "token_diff", "diff": {"nep141:wrap.near": "-40", "nep141:usdc": "120"}}]),
+        ]})
+        self.assertEqual(trace.legs(r, "nep141:wrap.near"), [{"from": "maker", "to": None, "amount": 40, "how": "swap leg"}])
+
+
 class CommittedData(unittest.TestCase):
     """Sanity checks on whatever raw data is in the repository."""
 

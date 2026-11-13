@@ -112,6 +112,18 @@ of 15 and 28 September 12.6M NEAR entered, nearly all of it after that announcem
 for the first reward. We do not know who deposited it or why. In one day at the end of that month 3.9M NEAR
 left, the largest one-day fall in the series ($14.6M), and 69% of that inflow has now gone.
 
+**The best day in the series is half a round trip.** We followed the largest single transfer behind it, from
+the chain alone. The float's largest one-day rise is $12.0M, on the 2026-09-25 reading. $6.1M of it, 51%, is
+one transfer of 1.7M NEAR that reached the treasury at 08:52:40 UTC on 24 September. The treasury itself had
+paid out exactly that amount, to the last unit, at 23:35:58 UTC the evening before, 24 minutes before the daily
+reading. It sat in an account on the public ledger for nine hours, was withdrawn as plain NEAR to a deposit
+address, passed through the account that sweeps such addresses into NEAR Intents, and was back in the treasury
+31 blocks after the withdrawal. So a daily series can count the same money leaving on one day and arriving on
+the next. The ten-best-days figure above and reading R2 therefore overstate how much new money those days
+brought. We do not know why it was moved. The five steps, with block heights and receipt ids, are in
+`data/context/trace.json`; `make verify` re-reads four of them from the chain, and
+`make trace` finds the transfer again from nothing but balances.
+
 **The float is not activity.** Across 27 October, the day swaps moved to the private chain, the float changed by
 2.8%. Swaps pass through and leave. What stays is inventory and balances people choose to keep there. So the
 float measures commitment, how much money is willing to rest behind a chain nobody outside can read, and says
@@ -128,7 +140,8 @@ by the treasury. The treasury is public. What the private chain owes is not, and
 two match. October showed the failure is not hypothetical, though that one was on the public side, where it
 could be seen and was repaired in two days. And the treasury is not a contract: it is an ordinary account with
 1 key registered for it inside `intents.near`. Its own access key on NEAR has never signed a transaction.
-Nothing published says who holds that key or whether it is split among several parties.
+The payout in the transfer we followed above was signed by that registered key: one signature moved $6.1M out
+of the treasury. Nothing published says who holds that key or whether it is split among several parties.
 
 ## 5. What that means for a holder
 
@@ -206,7 +219,9 @@ treasury, the largest risk in section 4 mostly goes away and we would hold more.
   used: they say nothing about what sits behind the private chain, and querying them needs a billing account.
 - **What the private chain owes.** Not computable by anyone outside it. The treasury shows assets, not
   liabilities. If the private chain is also backed somewhere other than this one account, we do not see it.
-- **Who deposited.** We did not trace the September NEAR, or any other deposit, to its sender.
+- **Who deposited.** We followed one transfer, the largest of the float's best day, and it was the treasury's own
+  money coming back. We did not trace the rest of the September NEAR, or any other deposit, to its sender, and
+  we do not know who controls the accounts the followed transfer passed through.
 - **One price list.** Dollar history is in the prices NEAR Intents' own list showed on 2026-11-13. It shows
   tokens moving, not what the float was worth on each past day. NEAR's "$70M" in September was measured at that
   day's prices, not ours. The list changed during the day: ids that appeared later were added at the price

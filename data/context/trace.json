@@ -1,0 +1,183 @@
+{
+ "cases": [
+  {
+   "amount": "1730851324698195834932526948583",
+   "hops": [
+    {
+     "from": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe",
+     "height": 216973662,
+     "how": "transfer intent",
+     "receipt_id": "9tF9HZnUkAMEW78Ez4dCnZEQkJYmJepcpJ1T8pnZfU3e",
+     "seen": "chain",
+     "signed_by": "ed25519:6Wk4sb8Gc449VB4LoofP3AM8hMSMgbAwwUEc4RhBodV7",
+     "time_utc": "2026-09-23 23:35:58",
+     "timestamp": 1790206558623681784,
+     "to": "bf20691cf87e59d5fe736ea930c14d9a060dc6e6d0ceaded8e2ec3db4eddc5f9"
+    },
+    {
+     "from": "bf20691cf87e59d5fe736ea930c14d9a060dc6e6d0ceaded8e2ec3db4eddc5f9",
+     "height": 217029847,
+     "how": "withdrawal intent, unwrapped",
+     "receipt_id": "5WtU7FG6E27HuCTnDopXK42on49dVaj9kVtY1sseuYZy",
+     "seen": "chain",
+     "time_utc": "2026-09-24 08:52:21",
+     "timestamp": 1790239941660228166,
+     "to": "6ec9de2fb1bf4f758181fd88978e4926960bef9a5ce18f9cee464568c1fafbfd (outside intents.near)"
+    },
+    {
+     "from": "6ec9de2fb1bf4f758181fd88978e4926960bef9a5ce18f9cee464568c1fafbfd",
+     "height": 217029864,
+     "how": "native transfer",
+     "seen": "index",
+     "time_utc": "2026-09-24 08:52:32",
+     "timestamp": 1790239952514680008,
+     "to": "bridge-mng.near",
+     "transaction_id": "B4nXBFdnofcrUKNmwwxL7awiff8yj57CaMdgH5fQ6gsY"
+    },
+    {
+     "from": "bridge-mng.near (outside intents.near)",
+     "height": 217029871,
+     "how": "deposit",
+     "receipt_id": "3pAwqgD3BitCtrb7LKANSmUvJJbEKeU9SMtqxkojrFEZ",
+     "seen": "chain",
+     "time_utc": "2026-09-24 08:52:36",
+     "timestamp": 1790239956776292888,
+     "to": "7bb1641173c4cf0d2c72dee877f698ee728bff761c15e2e8e5b414ecf3503f2f"
+    },
+    {
+     "from": "7bb1641173c4cf0d2c72dee877f698ee728bff761c15e2e8e5b414ecf3503f2f",
+     "height": 217029878,
+     "how": "transfer intent",
+     "receipt_id": "CZ6jeGYpCZtESVcoDgT9xHSiQyVPmQrVrrs9MqgX5zvi",
+     "seen": "chain",
+     "time_utc": "2026-09-24 08:52:40",
+     "timestamp": 1790239960926307892,
+     "to": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe"
+    }
+   ],
+   "name": "The largest single wNEAR transfer into the treasury in September 2026 is the same money the treasury paid out nine hours earlier",
+   "token": "nep141:wrap.near",
+   "treasury_balance": {
+    "216973661": "16847170172459452330272646263202",
+    "216973662": "15116318847761256495340119314619",
+    "217029877": "16517665152844339698945778788050",
+    "217029878": "18248516477542535533878305736633"
+   }
+  }
+ ],
+ "note": "Moves found by pipeline/trace.py from the chain alone, and one case followed hop by hop. 'seen: chain' hops are receipts returned by EXPERIMENTAL_receipt on an archival node and are re-read by make verify; 'seen: index' hops come from FastNEAR's transfers index and are not re-read.",
+ "windows": [
+  {
+   "account": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe",
+   "balance_reads": 162,
+   "change": "3694818056993395469502160232065",
+   "explained": "1722444585723348213264392943381",
+   "from_day": "2026-09-24",
+   "from_height": 216976146,
+   "moves": [
+    {
+     "change": "1730851324698195834932526948583",
+     "height": 217029878,
+     "legs": [
+      {
+       "amount": "1730851324698195834932526948583",
+       "from": "7bb1641173c4cf0d2c72dee877f698ee728bff761c15e2e8e5b414ecf3503f2f",
+       "how": "transfer intent",
+       "receipt_id": "CZ6jeGYpCZtESVcoDgT9xHSiQyVPmQrVrrs9MqgX5zvi",
+       "to": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe"
+      }
+     ],
+     "legs_add_up": true
+    },
+    {
+     "change": "-43140109701023905976144457982",
+     "height": 216982579,
+     "legs": [
+      {
+       "amount": "43140109701023905976144457982",
+       "from": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe",
+       "how": "transfer intent",
+       "receipt_id": "5hePMq1twbyTyhCXbQLpn7e4w19goDnuWmbvdVkp5D36",
+       "to": "89b75ef8e3f78e8ea448f17a4a6a750f690107b300a73b703152c596b1dd95ad"
+      }
+     ],
+     "legs_add_up": true
+    },
+    {
+     "change": "34733370726176284308010452780",
+     "height": 217044945,
+     "legs": [
+      {
+       "amount": "34733370726176284308010452780",
+       "from": "solver-priv-liq.near",
+       "how": "transfer intent",
+       "receipt_id": "8dfcWqK1iNBPAhnUW8PKHEh3NUTqv4GGqxGj99kkabvL",
+       "to": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe"
+      }
+     ],
+     "legs_add_up": true
+    }
+   ],
+   "to_day": "2026-09-25",
+   "to_height": 217119000,
+   "token": "nep141:wrap.near",
+   "top": 3
+  },
+  {
+   "account": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe",
+   "balance_reads": 84,
+   "change": "2455220582475961951712290861492",
+   "explained": "139057261981176736011549045037",
+   "from_day": "2026-09-22",
+   "from_height": 216696066,
+   "moves": [
+    {
+     "change": "192131023580335018563464462326",
+     "height": 216772003,
+     "legs": [
+      {
+       "amount": "192131023580335018563464462326",
+       "from": "5fe8a8a026fb16537509cc9cdd09fee6b32aa79fe34939651c88a4b48861559c",
+       "how": "transfer intent",
+       "receipt_id": "CYGBACMnU2Di34XBEHDwKwCCFNPPV9C5TkyqGSW7Hfye",
+       "to": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe"
+      }
+     ],
+     "legs_add_up": true
+    },
+    {
+     "change": "-192131023580335018563464462326",
+     "height": 216771768,
+     "legs": [
+      {
+       "amount": "192131023580335018563464462326",
+       "from": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe",
+       "how": "transfer intent",
+       "receipt_id": "Cb69gfGt3dkT5g1QRhDyHF5dmxyyb5bQ3nSahqCnPxMW",
+       "to": "b04872a7a9defa730640a8fbdec4ddd9c05d4412e1f2a1ada47fcbf23c224193"
+      }
+     ],
+     "legs_add_up": true
+    },
+    {
+     "change": "139057261981176736011549045037",
+     "height": 216828355,
+     "legs": [
+      {
+       "amount": "139057261981176736011549045037",
+       "from": "43ebc52fb85ffbe58d47f5fcc4fa3a1c0c155bcc246ac4e087ec143a33cfb1d4",
+       "how": "transfer intent",
+       "receipt_id": "6YZ374uSYRVfQkxzjmARy8Eb3aZ5JnELwVjiC3ozGBaz",
+       "to": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe"
+      }
+     ],
+     "legs_add_up": true
+    }
+   ],
+   "to_day": "2026-09-23",
+   "to_height": 216835302,
+   "token": "nep141:wrap.near",
+   "top": 3
+  }
+ ]
+}

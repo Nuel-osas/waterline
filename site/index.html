@@ -134,7 +134,7 @@ intents.near.mt_tokens_for_owner(account_id=TREASURY)  then  mt_batch_balance_of
       <details class="query"><summary>The query behind this chart</summary><pre># the same daily reading as above; this chart is its day-to-day difference
 float(day) - float(day before), at the pinned prices
 # drawn from data/derived/series.json: days[].float_usd</pre></details>
-        <p class="note">Change in the float from one reading to the next. The ten largest rises are highlighted.</p>
+        <p class="note">Change in the float from one reading to the next. The ten largest rises are highlighted. The tallest, <span data-claim="W3">$12.0M</span> on the reading of 25 September, is <span data-claim="W4">51%</span> one transfer of <span data-claim="W1">1.7M NEAR</span> that the treasury itself had paid out nine hours earlier, 24 minutes before the daily reading. We followed it block by block: <code>make trace</code>.</p>
       </article>
 
       <article class="finding">

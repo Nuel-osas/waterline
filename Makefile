@@ -1,7 +1,7 @@
 # Everything runs on a stock Python 3.9+ with no packages to install and no keys.
 PY ?= python3
 
-.PHONY: verify check test build pull serve score model context all
+.PHONY: verify check test build pull serve score model trace context all
 
 all: test check
 
@@ -37,6 +37,11 @@ serve:
 ## Score the forward tests in PREREG.md against the readings taken since.
 score:
 	$(PY) -m pipeline.score
+
+## Find, from balances alone, the largest single move of NEAR into the treasury before the 25 September reading,
+## and print the receipt behind it. About 25 requests, about a minute.
+trace:
+	$(PY) -m pipeline.trace 2026-09-25 --top 1
 
 ## Replay the float's past daily changes forward and count how often the long-dated readings hold. Seeded.
 model:
