@@ -113,6 +113,8 @@ sit in one account on that ledger. Waterline reads all three at one block per da
 
 - an audit of the public books: credited against held, token by token, at the pinned block, on every stored
   reading, and at the latest block on demand (`make audit`, or the button on the dashboard);
+- a second, stricter test in the same audit: whether what a token holds over its credit fell below every
+  earlier reading. It fires on the three readings of the exploit and on no other;
 - a block-by-block replay of the one time the books were short, the October 2026 exploit, from ten dollars to
   $3.8M and back to whole;
 - a daily history of the money behind the private chain (the float), in tokens and in dollars at fixed prices,
@@ -222,6 +224,7 @@ the wrong sentence. A reviewer changed 27 numbers one at a time before this list
 | A2 | **$223.8M** | Value of the tokens audited on 2026-11-13, at pinned prices |
 | A3 | **1,090 checks** | Token-by-token checks of the 20 tracked tokens on 70 stored readings from 2026-02-19 to 2026-11-13. 58 readings cover every tracked token that had a balance; 12 readings around the October exploit cover only the token involved |
 | A4 | **3 of them short** | Checks in which more was credited than held: 2026-09-30 ($30), 2026-10-01 ($1.3M), 2026-10-02 ($3.8M), all one token: USDT(DEPRECATED) on bsc |
+| A15 | **3 new lows** | Checks, out of those 1,090, on which a token's held-minus-credited fell below every earlier reading of that token: the same readings as A4 and no others. This test also sees a hole smaller than the surplus a token already carries |
 | A5 | **$3.8M** | Largest hole on a daily reading, 2026-10-02: 67,669 held against 3,869,502 credited to everyone |
 | A6 | **98%** | Part of everything credited in that token that had nothing behind it on that reading |
 | A7 | **87%** | Part of that token's credit that belonged to the private chain's treasury on that reading |

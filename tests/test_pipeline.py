@@ -445,6 +445,23 @@ class Audit(unittest.TestCase):
         ex = {"steps": [step(5, 100, 130), step(10, 100, 90), step(20, 100, 40), step(21, 100, 100), step(30, 100, 60), step(40, 100, 100)]}
         self.assertEqual([st["height"] for st in verify.exploit_marks(ex)], [10, 20, 21])   # a surplus at 5 is not a hole
 
+    def test_a_new_low_of_the_surplus_is_seen_even_while_the_token_is_still_whole(self):
+        from pipeline import audit
+        # token a carries a surplus of 50; an attacker takes 10 while credit stays: still "whole", but a new low
+        days = [("d1", {"a": "1050", "b": "500"}, {"a": "1000", "b": "500"}),
+                ("d2", {"a": "1090", "b": "500"}, {"a": "1000", "b": "500"}),   # a deposit in flight: surplus up, no alarm
+                ("d3", {"a": "1050", "b": "500"}, {"a": "1000", "b": "500"}),   # back to where it was: not a new low
+                ("d4", {"a": "1040", "b": "500"}, {"a": "1000", "b": "500"}),   # 10 gone
+                ("d5", {"a": "1040", "b": None}, {"a": "1000", "b": "500"})]    # an unread total is skipped, not a low
+        lows, floor = audit.new_lows(days, ["a", "b"])
+        self.assertEqual(lows, [("d4", "a", 10)])
+        self.assertEqual(floor, {"a": 40, "b": 0})
+        self.assertEqual(audit.compare("1000", "1040")[0], "surplus")   # the sign test alone would have passed it
+        # the level a live reading is compared with looks only at recent readings, so an old hole does not become the floor
+        old_hole = [("d0", {"a": "900"}, {"a": "1000"})] + [(d, {"a": h["a"]}, {"a": c["a"]}) for d, h, c in days]
+        self.assertEqual(audit.recent_floor(old_hole, ["a"], n=3), {"a": 40})
+        self.assertEqual(audit.recent_floor(old_hole, ["a"], n=30), {"a": -100})
+
     def test_an_unread_block_stops_the_search_there_instead_of_guessing(self):
         from pipeline import audit
         self.assertEqual(audit.steps(lambda h: None if h == 550 else (1000 + (10 if h >= 600 else 0), 1000), 100, 1000, grid=1), [])

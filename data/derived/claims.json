@@ -494,6 +494,13 @@
   },
   {
    "grade": "chain",
+   "how": "pipeline/audit.py, new_lows: the running minimum of held minus credited, per token",
+   "id": "A15",
+   "shown": "3 new lows",
+   "what": "Checks, out of those 1,090, on which a token's held-minus-credited fell below every earlier reading of that token: the same readings as A4 and no others. This test also sees a hole smaller than the surplus a token already carries"
+  },
+  {
+   "grade": "chain",
    "how": "credited minus held, at the pinned price",
    "id": "A5",
    "shown": "$3.8M",

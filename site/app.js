@@ -506,7 +506,7 @@
       });
       return chain;
     }).then(function () {
-      var short = 0, unknown = 0, total = 0, tbl = document.getElementById("audit-table");
+      var short = 0, unknown = 0, lower = 0, total = 0, tbl = document.getElementById("audit-table");
       tbl.textContent = "";
       var head = document.createElement("thead"), tr = document.createElement("tr");
       [["Token", ""], ["", ""], ["Chain", ""], ["Credited", "num"], ["Held", "num"], ["Held minus credited", "num"]].forEach(function (c) { var th = html("th", c[1], c[0]); tr.appendChild(th); });
@@ -516,9 +516,10 @@
         var c = credited && credited[i] != null ? BigInt(credited[i]) : null, hv = rows[i] != null ? BigInt(rows[i]) : null, r = document.createElement("tr"), st;
         if (c === null || hv === null) { st = "unknown"; unknown += 1; }
         else if (c > hv) { st = "short"; short += 1; }
+        else if (t.floor != null && hv - c < BigInt(t.floor)) { st = "low"; lower += 1; }
         else st = c === hv ? "equal" : "surplus";
         if (hv !== null && t.price) total += Number(hv) / Math.pow(10, t.decimals) * t.price;
-        var cell = html("td"), tag = html("span", "st " + st, st === "short" ? "SHORT" : st === "unknown" ? "NOT READ" : "WHOLE"); cell.appendChild(tag);
+        var cell = html("td"), tag = html("span", "st " + st, st === "short" ? "SHORT" : st === "unknown" ? "NOT READ" : st === "low" ? "WHOLE, LOWER" : "WHOLE"); cell.appendChild(tag);
         r.appendChild(html("td", null, t.symbol)); r.appendChild(cell); r.appendChild(html("td", "chain", t.chain));
         r.appendChild(html("td", "num", c === null ? "not read" : units(c, t.decimals)));
         r.appendChild(html("td", "num", hv === null ? "not read" : units(hv, t.decimals)));
@@ -528,7 +529,8 @@
       tbl.appendChild(body);
       var v = document.getElementById("audit-verdict"), n = A.tracked.length - unknown;
       v.className = "verdict" + (short ? " short" : "");
-      v.textContent = short ? short + " of " + n + " tokens are short at this block." : (n - short) + " of " + n + " tokens whole. " + usd(total) + " held, nothing credited above it.";
+      v.textContent = short ? short + " of " + n + " tokens are short at this block." : (n - short) + " of " + n + " tokens whole. " + usd(total) + " held, nothing credited above it."
+        + (lower ? " " + lower + " hold less over their credit than on any of the last 30 daily readings: look at them." : "");
       var sm = html("small", null, "Block " + height.toLocaleString("en-US") + ", " + clock(when) + " UTC, read just now by your browser" + (unknown ? ". " + unknown + " could not be read and are not counted as whole." : "."));
       v.appendChild(sm);
       document.getElementById("audit-result").hidden = false;
