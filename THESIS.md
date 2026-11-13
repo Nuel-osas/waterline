@@ -92,6 +92,8 @@ This is a replay, run on 13 November, five weeks after the event. It is not live
 anyone would have acted. We say the evidence was public: two calls to two contracts showed it, for more than a
 day, before the first payout.
 
+The rest of this section is about the one account the audit cannot see into: what it holds, read from outside.
+
 **It is large and it grew.** First reading with a balance: 2026-02-19. $49.3M at the B2B launch on 13 July.
 $136.4M on the pinned day, 2.8x in four months, across 205 token types. That is also the highest it has been.
 
@@ -163,7 +165,7 @@ worth 265x that revenue. Over the latest 30 days against the 30 before, reported
 **The backing has already failed once, and one public key controls it.** $136.4M is described as "backed 1:1"
 by the treasury. The treasury is public. What the private chain owes is not, and nothing published proves the
 two match. October showed the failure is not hypothetical, though that one was on the public side, where it
-could be seen and was repaired in two days. And the treasury is not a contract: it is an ordinary account with
+could be seen and was closed within 76 hours. And the treasury is not a contract: it is an ordinary account with
 1 key registered for it inside `intents.near`. Its own access key on NEAR has never signed a transaction.
 The payout in the transfer we followed above was signed by that registered key: one signature moved $6.1M out
 of the treasury. Nothing published says who holds that key or whether it is split among several parties.
@@ -172,8 +174,7 @@ of the treasury. Nothing published says who holds that key or whether it is spli
 
 **What the audit is worth.** A holder of NEAR is exposed to NEAR Intents whether they use it or not. On the
 public side that exposure can be checked by anyone, at any block, at the cost of two calls per token, and a
-failure there shows in the block where it happens. Few financial systems of this size offer that, and it is a
-reason to hold. The same check is missing for the side that now holds 61.0%. Moving swaps to the private chain
+failure there shows in the block where it happens. That is unusual, and it is a reason to hold. The same check is missing for the side that now holds 61.0%. Moving swaps to the private chain
 gave users confidentiality and took this check away from them, and nothing has replaced it.
 
 **A simple model of what is needed.** NEAR's wallets receive 4.8 basis points per dollar of reported volume.
