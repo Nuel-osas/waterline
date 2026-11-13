@@ -417,6 +417,83 @@
   },
   {
    "grade": "chain",
+   "how": "pipeline/audit.py: mt_batch_supply on intents.near, ft_balance_of or mt_balance_of on each token contract, same block",
+   "id": "A1",
+   "shown": "214 tokens",
+   "what": "Tokens audited on 2026-11-13: every token in NEAR Intents' list whose credited total (intents.near.mt_batch_supply) could be set against what the token's own contract says intents.near holds. 184 are equal to the last unit, 30 hold more than is credited ($6,321 in all), 0 are short"
+  },
+  {
+   "grade": "chain",
+   "how": "sum of held, priced tokens",
+   "id": "A2",
+   "shown": "$223.8M",
+   "what": "Value of the tokens audited on 2026-11-13, at pinned prices"
+  },
+  {
+   "grade": "chain",
+   "how": "one audit per stored day",
+   "id": "A3",
+   "shown": "1,090 checks",
+   "what": "Token-by-token checks across the history: the 20 tracked tokens on each of 70 readings from 2026-02-19 to 2026-11-13 (a token is counted from the day it has a balance to read)"
+  },
+  {
+   "grade": "chain",
+   "how": "credited above held",
+   "id": "A4",
+   "shown": "3 of them short",
+   "what": "Checks in which more was credited than held: 2026-09-30 ($30), 2026-10-01 ($1.3M), 2026-10-02 ($3.8M), all one token: USDT(DEPRECATED) on bsc"
+  },
+  {
+   "grade": "chain",
+   "how": "credited minus held, at the pinned price",
+   "id": "A5",
+   "shown": "$3.8M",
+   "what": "Largest hole on a daily reading, 2026-10-02: 67,669 held against 3,869,502 credited to everyone"
+  },
+  {
+   "grade": "chain",
+   "how": "hole over credited",
+   "id": "A6",
+   "shown": "98%",
+   "what": "Part of everything credited in that token that had nothing behind it on that reading"
+  },
+  {
+   "grade": "chain",
+   "how": "treasury balance over credited",
+   "id": "A7",
+   "shown": "87%",
+   "what": "Part of that token's credit that belonged to the private chain's treasury on that reading"
+  },
+  {
+   "grade": "chain, one quoted time",
+   "how": "pipeline/audit.py --steps: halve the days between two readings down to each block where credited minus held changed; data/context/exploit.json",
+   "id": "A8",
+   "shown": "31 hours 40 minutes",
+   "what": "How long before the first payout CertiK reports (2026-09-30 23:54:30 UTC) the hole was already in the public books: it opens at block 217799506, 2026-09-29 16:14:22 UTC, at 10 USDT"
+  },
+  {
+   "grade": "chain",
+   "how": "credited minus held, at the pinned price",
+   "id": "A9",
+   "shown": "$1.3M",
+   "what": "The hole in the public books at 2026-09-30 23:41:28 UTC, the last change before that first payout"
+  },
+  {
+   "grade": "chain",
+   "how": "as A9",
+   "id": "A10",
+   "shown": "$3.8M",
+   "what": "The hole at its largest, 2026-10-01 01:29:28 UTC"
+  },
+  {
+   "grade": "chain, one quoted time",
+   "how": "first block after the peak with held at or above credited",
+   "id": "A11",
+   "shown": "76 hours",
+   "what": "How long the books stayed short: whole again at block 218251129, 2026-10-02 20:22:09 UTC, 9 minutes before the contract upgrade CertiK records (2026-10-02 20:31:41 UTC). The credited total did not fall while the hole closed, so the tokens came back"
+  },
+  {
+   "grade": "chain",
    "how": "pipeline/trace.py: halve the day to the block where the balance moved, then read that block's receipts; data/context/trace.json",
    "id": "W1",
    "shown": "1.7M NEAR",

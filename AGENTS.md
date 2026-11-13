@@ -4,8 +4,16 @@ This file is plain instructions for checking the project. It does not ask for a 
 
 ## What this is
 
-A reproducible investment thesis on NEAR (track: `thesis`). It reads, from public NEAR mainnet, what NEAR Intents'
-private chain holds, every day since the first deposit, and builds the thesis in `THESIS.md` on that.
+A reproducible investment thesis on NEAR (track: `thesis`), built on an outside audit of NEAR Intents. It reads,
+from public NEAR mainnet, what `intents.near` has credited for each token and what each token's contract says
+`intents.near` holds, at one block a day, and what the private chain's treasury holds on that ledger. The thesis
+in `THESIS.md` rests on those readings.
+
+One more command shows the central claim live, at the latest block, in under a minute:
+
+```sh
+make audit    # credited against held for the 20 largest tokens; prints RESULT: WHOLE, or the tokens that are short
+```
 
 ## Check it in three commands
 
@@ -34,14 +42,17 @@ default and takes one to three minutes; `python3 -m pipeline.verify --all` reads
 | `README.md` | Problem, findings table (generated from the data), how to run |
 | `data/derived/claims.json` | Every number the text quotes, with how it is computed |
 | `data/constants.json` | The only other numbers allowed in the prose: thresholds and facts quoted from others |
-| `data/blocks.json`, `data/float/`, `data/held/` | Raw readings: one block per day, balances at that block |
-| `pipeline/` | `rpc.py` (reads), `pull.py` (collect), `build.py` (series), `claims.py` (numbers), `score.py` (forward tests), `model.py` (base rates for the long-dated readings, `make model`), `verify.py` (checks) |
+| `data/blocks.json`, `data/float/`, `data/held/`, `data/credited/` | Raw readings: one block per day; the treasury's balances, what `intents.near` holds, what it has credited |
+| `data/context/exploit.json`, `data/context/trace.json` | The October 2026 hole block by block, and one transfer followed hop by hop; `make verify` re-reads the blocks their claims rest on |
+| `pipeline/` | `rpc.py` (reads), `pull.py` (collect), `build.py` (series), `claims.py` (numbers), `score.py` (forward tests), `audit.py` (credited against held, `make audit`), `trace.py` (the receipt behind a move, `make trace`), `model.py` (base rates for the long-dated readings, `make model`), `verify.py` (checks) |
 | `site/` | The dashboard: static files, `make serve` |
 | `docs/SOURCES.md` | Every constant, where it came from, how it was checked |
 
 ## What is and is not claimed
 
-- Claimed and checkable here: the balances, shares and changes in the findings table, as of the pinned block.
+- Claimed and checkable here: the balances, shares and changes in the findings table, as of the pinned block;
+  that no audited token was short at the pinned block; and the block-by-block record of the October 2026 hole.
+- Not claimed: that anyone would have acted on that hole. The record is a replay made in November.
 - Modelled, and labelled as such: the O rows, how often the long-dated readings hold when the float's past daily
   changes are replayed forward. Seeded and re-runnable; a base rate, not a forecast.
 - Quoted from others and labelled as such: reported volume, fees and revenue (DefiLlama; volume and fees from

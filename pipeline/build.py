@@ -214,6 +214,40 @@ def build(write=True):
                  "credited": d["balances"].get(tok, 0) // 10 ** m["decimals"]}
                 for d in days if span(lo, -8) <= d["day"] <= span(hi, 7) and d["held"].get(tok) is not None]
         series["shortfall_case"] = {"token": tok, "symbol": m["symbol"], "chain": m["chain"], "days": case}
+    # --- the audit: what intents.near has credited in total against what each token's contract says it holds
+    from . import audit as _audit
+    hist = _audit.history(meta, tracked=set(tracked))
+    pin_files = [(d, h, c) for d, h, c in _audit.stored_days() if d == pin["day"]]
+    pin_audit = _audit.audit_day(pin_files[0][1], pin_files[0][2], meta) if pin_files else None
+    exploit = load(os.path.join(DATA, "context", "exploit.json"), None)
+    if hist and pin_audit:
+        def short_rows(d):
+            return [{"day": d["day"], "token": r["token"], "symbol": meta[r["token"]]["symbol"], "chain": meta[r["token"]]["chain"],
+                     "credited": int(r["credited"]) // 10 ** meta[r["token"]]["decimals"],
+                     "held": int(r["held"]) // 10 ** meta[r["token"]]["decimals"],
+                     "hole_usd": f2(r["usd"], 0) if r["usd"] is not None else None}
+                    for r in d["not_equal"] if r["status"] == "short"]
+        series["audit"] = {
+            "pin": {"day": pin["day"], "checked": pin_audit["checked"], "equal": pin_audit["counts"]["equal"],
+                    "surplus": pin_audit["counts"]["surplus"], "short": pin_audit["counts"]["short"],
+                    "unknown": pin_audit["counts"]["unknown"],
+                    "held_usd": f2(pin_audit["held_usd"], 0), "surplus_usd": f2(pin_audit["surplus_usd"], 0)},
+            "days": [{"day": d["day"], "checked": d["checked"], "short": d["counts"]["short"],
+                      "short_usd": f2(d["short_usd"], 0), "held_usd": f2(d["held_usd"], 0)} for d in hist],
+            "short": [row for d in hist for row in short_rows(d)],
+            "tracked": [{"id": t, "symbol": meta[t]["symbol"], "chain": meta[t]["chain"], "decimals": meta[t]["decimals"],
+                         "price": float(meta[t]["price"]) if meta[t]["price"] is not None else None}
+                        for t in tracked if t in meta],
+        }
+    if exploit:
+        m = meta[exploit["token"]]
+        unit = 10 ** m["decimals"]
+        series["exploit"] = {
+            "token": exploit["token"], "symbol": m["symbol"], "chain": m["chain"], "quoted": exploit["quoted"],
+            "steps": [{"height": st["height"], "t": st["timestamp"] // 10**6,
+                       "credited": int(st["credited"]) // unit, "held": int(st["held"]) // unit,
+                       "hole": (int(st["credited"]) - int(st["held"])) // unit} for st in exploit["steps"]],
+        }
     anomalies = {
         "what": "Readings where the treasury's balance of a token is larger than the balance the token's own contract "
                 "reports for intents.near at the same block. They are left out of the share, never forced to 100%.",
@@ -223,7 +257,7 @@ def build(write=True):
         save(os.path.join(DATA, "derived", "anomalies.json"), anomalies)
         with open(os.path.join(ROOT, "site", "data.js"), "w") as f:
             f.write(site_js("WATERLINE", series))
-    build.last = {"series": series, "anomalies": anomalies}
+    build.last = {"series": series, "anomalies": anomalies, "audit": {"pin": pin_audit, "history": hist, "exploit": exploit}}
     return rows, series, meta, tracked
 
 

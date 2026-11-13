@@ -1,13 +1,15 @@
 # Waterline
 
-**NEAR Intents' swaps went private. The money behind them did not.** Waterline reads that money every day from
-public NEAR. It is an investment thesis for NEAR whose own measurements anyone can recompute, and which labels
-every number it only quotes. Run over past blocks, the same reading shows one token almost wholly unbacked on
-2 October 2026, which matches a published exploit.
+**NEAR Intents can be audited from outside, to the last unit, at any block. Its private chain cannot.**
+Waterline is that audit, and an investment thesis for NEAR built on it. Two questions to two contracts show
+whether NEAR Intents holds what it has credited. Asked at the pinned block: 214 tokens, $223.8M, none short.
+Asked over past blocks: the October 2026 exploit is in the public books 31 hours 40 minutes before the first
+payout. The audit stops at one account, the private chain's treasury, which now holds 61.0% of everything.
 
 Built at NEAR HACKATHON 2026. Track: Investment Thesis (`thesis`).
 
-Live dashboard: <https://nuel-osas.github.io/waterline/>
+Live dashboard, with a button that runs the audit on the latest block in your browser:
+<https://nuel-osas.github.io/waterline/>
 
 ## The problem
 
@@ -21,21 +23,22 @@ then the swap leg is private. A thesis "judged on the evidence" needs evidence t
 
 ## What this is
 
-One thing about the private chain is still fully public: the tokens that back it sit in one account inside the
-`intents.near` contract. Waterline reads that account at one block per day since it was created, asks each
-token's contract how much `intents.near` holds in total, and builds:
+Two things about NEAR Intents are still fully public. Its ledger, `intents.near`, says what it has credited for
+each token. Each token's own contract says what that ledger holds. And the tokens that back the private chain
+sit in one account on that ledger. Waterline reads all three at one block per day and builds:
 
-- a daily history of the money behind the private chain (the float), in tokens and in dollars at fixed prices;
-- the share of everything NEAR Intents holds that is now private;
-- a check, on every reading that has totals, that the treasury is never credited with more of a token than
-  `intents.near` holds. It fails on two readings in October, which match a published exploit by token, size
-  and day;
+- an audit of the public books: credited against held, token by token, at the pinned block, on every stored
+  reading, and at the latest block on demand (`make audit`, or the button on the dashboard);
+- a block-by-block replay of the one time the books were short, the October 2026 exploit, from ten dollars to
+  $3.8M and back to whole;
+- a daily history of the money behind the private chain (the float), in tokens and in dollars at fixed prices,
+  and the share of everything NEAR Intents holds that is now private;
 - the float read against NEAR's own reward programme for confidential balances;
+- a tracer that finds, from balances alone, the block and the receipt behind the largest move of a day:
+  `make trace`. It shows that half of the float's best day was money the treasury had paid out the evening before;
 - an investment thesis on NEAR that states which of its inputs are observed and which are reported, and the
   readings that would change it: [`THESIS.md`](THESIS.md);
 - forward tests written before their readings exist, scored by code: [`PREREG.md`](PREREG.md);
-- a tracer that finds, from balances alone, the block and the receipt behind the largest move of a day:
-  `make trace`. It shows that half of the float's best day was money the treasury had paid out the evening before;
 - a seeded model anyone can re-run, which replays the float's past daily changes forward and counts how often
   the thesis's long-dated readings hold: `make model`;
 - a dashboard that shows all of it: `make serve`.
@@ -119,6 +122,17 @@ types", and it cannot tell that a valid number was put in the wrong sentence.
 | P8 | **3.5x** | Growth of the float without NEAR's own token since the B2B launch ($26.8M then) |
 | K2 | **1 of 1** | Access keys of the treasury account on NEAR itself that have never signed a transaction (the nonce is still the value set at creation) |
 | K1 | **1 key** | Keys registered inside intents.near for the treasury account at the pinned block (the account itself has no contract code) |
+| A1 | **214 tokens** | Tokens audited on 2026-11-13: every token in NEAR Intents' list whose credited total (intents.near.mt_batch_supply) could be set against what the token's own contract says intents.near holds. 184 are equal to the last unit, 30 hold more than is credited ($6,321 in all), 0 are short |
+| A2 | **$223.8M** | Value of the tokens audited on 2026-11-13, at pinned prices |
+| A3 | **1,090 checks** | Token-by-token checks across the history: the 20 tracked tokens on each of 70 readings from 2026-02-19 to 2026-11-13 (a token is counted from the day it has a balance to read) |
+| A4 | **3 of them short** | Checks in which more was credited than held: 2026-09-30 ($30), 2026-10-01 ($1.3M), 2026-10-02 ($3.8M), all one token: USDT(DEPRECATED) on bsc |
+| A5 | **$3.8M** | Largest hole on a daily reading, 2026-10-02: 67,669 held against 3,869,502 credited to everyone |
+| A6 | **98%** | Part of everything credited in that token that had nothing behind it on that reading |
+| A7 | **87%** | Part of that token's credit that belonged to the private chain's treasury on that reading |
+| A8 | **31 hours 40 minutes** | How long before the first payout CertiK reports (2026-09-30 23:54:30 UTC) the hole was already in the public books: it opens at block 217799506, 2026-09-29 16:14:22 UTC, at 10 USDT |
+| A9 | **$1.3M** | The hole in the public books at 2026-09-30 23:41:28 UTC, the last change before that first payout |
+| A10 | **$3.8M** | The hole at its largest, 2026-10-01 01:29:28 UTC |
+| A11 | **76 hours** | How long the books stayed short: whole again at block 218251129, 2026-10-02 20:22:09 UTC, 9 minutes before the contract upgrade CertiK records (2026-10-02 20:31:41 UTC). The credited total did not fall while the hole closed, so the tokens came back |
 | W1 | **1.7M NEAR** | The largest single transfer of NEAR into the treasury in September, at 2026-09-24 08:52:40 UTC. The treasury had paid out the same amount, to the last unit, at 2026-09-23 23:35:58 UTC: 9 hours 16 minutes earlier, and 24 minutes before the 2026-09-24 reading |
 | W2 | **$6.1M** | That transfer at the pinned price |
 | W3 | **$12.0M** | The float's rise on the 2026-09-25 reading, which includes that transfer. It is the largest one-day rise in the series |
@@ -139,7 +153,8 @@ types", and it cannot tell that a valid number was put in the wrong sentence.
 
 C, P, S and K rows are measured here from chain state (P: around NEAR's reward programme; S: shortfalls; K:
 custody). V and M rows combine a block-header reading with quoted figures. X and T rows are quoted from
-DefiLlama and labelled with their origin; this project does not vouch for them. O rows are not measurements: they
+DefiLlama and labelled with their origin; this project does not vouch for them. A rows are the audit: credited against held, and the October hole block by block. W rows are one transfer
+followed from the chain. O rows are not measurements: they
 are the output of `make model`, a base rate drawn from the float's own past, and they say so.
 
 ## Try it
@@ -150,6 +165,7 @@ are the output of `make model`, a base rate drawn from the float's own past, and
 | `make check` | Every derived file, the table above and the numbers in the page are rebuilt in memory and compared with what is committed; every number in the prose is checked. Ends with `RESULT: PASS`. No network, writes nothing. |
 | `make verify` | First re-reads 8 days from a public NEAR archival node (balances, the largest totals, the supply headers, the treasury's keys), then does everything `make check` does. One to three minutes. |
 | `make score` | The forward tests in [`PREREG.md`](PREREG.md), each `PASS`, `FAIL`, `UNKNOWN` or `PENDING` until its reading exists. |
+| `make audit` | Audits the 20 largest tokens at the latest final block: what `intents.near` has credited against what each token's contract says it holds. Prints one line per token and `RESULT: WHOLE`, or the tokens that are short and exit code 1. About 25 requests, under a minute. `python3 -m pipeline.audit` prints the audit of every stored day with no network. |
 | `make trace` | Halves the day before the 25 September reading down to the one block where the treasury's NEAR balance jumped, then prints the receipt behind it: who signed it, for how much. About 25 requests to a public archival node, about a minute. `python3 -m pipeline.trace --help` lists the settings (`--account`, `--token`, `--top`). |
 | `make model` | How often the long-dated readings R1, R2 and R5 hold when the float's past daily changes are replayed forward to 2027-03-31, for three windows of past days. Seeded: the same numbers on any machine. `python3 -m pipeline.model --help` lists the settings (`--since`, `--until`, `--block`, `--paths`, `--seed`). |
 | `make pull` then `make build` | Adds the days since the last committed reading (about 30 requests a day added) and rebuilds, so `make score` can resolve tests whose day has come. |
@@ -192,26 +208,27 @@ It prints the private chain's wNEAR balance at that block, in yoctoNEAR. The sam
 
 ## The thesis in short
 
-1. NEAR's price needs growth: the value of its supply is 265x the revenue that reaches NEAR's wallets, that
+1. NEAR Intents' public books can be proven whole by anyone, at any block, in two calls per token. Today they
+   are: 214 tokens, $223.8M, none short. That is a reason to hold.
+2. The one time they were not, it showed. The October hole was in the public books 31 hours 40 minutes before
+   the first payout, and it peaked at $3.8M. This is a replay run in November, not live detection.
+3. The same proof does not reach the private chain, where 61.0% of the money now is. Since 27 October swaps
+   settle there. 87% of the credit in the token that broke in October belonged to that side.
+4. What sits behind the private chain is partly paid for and partly recycled. NEAR pays a reward for
+   confidential balances, 69% of the NEAR that arrived in the days after the reward's snapshot was announced has
+   left, and 51% of the float's best day was money the treasury had paid out the evening before.
+5. NEAR's price needs growth: the value of its supply is 265x the revenue that reaches NEAR's wallets, that
    revenue covers 15% of net new supply, and it would have to grow 6.5x to match it.
-2. The product that has to grow went private on 27 October. The float is an adoption measure that cannot be
-   restated afterwards, and it is up 2.8x since July.
-3. It can be inflated while it is read, though. NEAR pays a reward for confidential balances, and 69% of the
-   NEAR that arrived in the days after the reward's snapshot was announced has left. Without NEAR's own token
-   the float is $92.9M and steadier.
-4. The same float is an unpriced risk. For 2 readings in October one token in it was 98% unbacked, which
-   matches a published exploit. That was visible because it was on the public ledger; nothing public proves
-   the private chain owes what the treasury holds, and 1 key is registered for the treasury, with nothing
-   published on whether that key is split.
-5. Position: a small holding, an option on private settlement, conditional on dated readings. Replaying the
-   float's own past, the main reading (float at least $200M by 2027-03-31) holds on 53% of paths, on under 1% at
-   the pace before the reward, and on 82% at the pace since September. See [`THESIS.md`](THESIS.md).
+6. Position: a small holding, conditional on dated readings. Replaying the float's own past, the main reading
+   (float at least $200M by 2027-03-31) holds on 53% of paths, on under 1% at the pace before the reward, and on
+   82% at the pace since September. We would hold more on one disclosure: the private chain's totals per token,
+   published against a block height. See [`THESIS.md`](THESIS.md).
 
 ## What the track's example prompt asks for, and where it is
 
 | The prompt asks for | Here |
 | --- | --- |
-| "Onchain analytics, live dashboards and models anyone can re-run" (the track's description) | The readings are contract calls at pinned blocks (`make verify` repeats them). The hosted dashboard is rebuilt every morning from the new day's reading. `make model` is seeded and prints the same numbers on any machine |
+| "Onchain analytics, live dashboards and models anyone can re-run" (the track's description) | The readings are contract calls at pinned blocks (`make verify` repeats them). The hosted dashboard is rebuilt every morning from the new day's reading, and its audit button reads the latest block from the visitor's browser. `make model` is seeded and prints the same numbers on any machine |
 | "One command that rebuilds every chart from raw data" | `make build` rebuilds every series, every quoted number and the dashboard's data from `data/` |
 | "A static dashboard page: each chart, the query behind it, and one plain sentence on what it shows" | [`site/`](site/), hosted at the link above. Each chart has a note saying what it shows and a "query behind this chart" block with the contract calls |
 | "THESIS.md with the claim, the evidence for it, the evidence against it, and what result would change my mind" | [`THESIS.md`](THESIS.md), sections 1, 3, 4 and 6 |
@@ -230,12 +247,14 @@ public NEAR archival node
    |  block header at ~00:00 UTC each day            -> data/blocks.json
    |  intents.near.mt_batch_balance_of(treasury)     -> data/float/<day>.json
    |  <token>.ft_balance_of(intents.near)            -> data/held/<day>.json
+   |  intents.near.mt_batch_supply(token_ids)        -> data/credited/<day>.json
    v
 pipeline/build.py    exact integer and fraction arithmetic -> data/derived/series.json, site/data.js
 pipeline/context.py  token list, quoted figures, supply headers, custody -> data/tokens.json, data/context/
 pipeline/claims.py   every quoted number                   -> data/derived/claims.json, the table above,
                                                              the numbers written into site/index.html
 pipeline/score.py    forward tests written in PREREG.md     -> data/derived/forward.json
+pipeline/audit.py    credited (mt_batch_supply) against held  -> data/credited/<day>.json, data/context/exploit.json, the A rows
 pipeline/model.py    replays past daily changes forward     -> the O rows of the table above; prints, writes nothing
 pipeline/trace.py    halves a day to the block of a move, reads its receipts -> data/context/trace.json (one case, re-read by make verify)
 pipeline/verify.py   re-read from the chain, rebuild in memory, compare; writes nothing
@@ -278,10 +297,13 @@ why the history is short. No earlier code. Libraries: none beyond the Python sta
 plain HTML, CSS and JavaScript with no framework. GitHub Actions used: `actions/checkout`,
 `actions/setup-python`, `actions/cache`, `actions/configure-pages`, `actions/upload-pages-artifact`,
 `actions/deploy-pages`. Fonts: Geist and Geist Mono (SIL Open Font License), in `site/fonts/`. Data sources:
-NEAR mainnet through a public archival node, NEAR Intents' public token list, DefiLlama's public API. The code
+NEAR mainnet through a public archival node, NEAR Intents' public token list, DefiLlama's public API, CertiK's
+published incident report (three quoted times), and FastNEAR's transfers index for one hop of the transfer
+that was followed. The dashboard's audit button asks three public NEAR nodes from the visitor's browser. The code
 and text were written with an AI coding assistant (Claude Code) under the author's direction. Before
-submission the repository was reviewed twice by independent AI reviewers, and their findings were fixed in
-pull request 2.
+submission the repository was reviewed several times by independent AI reviewers. Their findings were fixed in
+pull requests 2, 4 and 5, and one review's proposal, to audit the whole ledger and not one account, is pull
+request 8.
 
 ## Errata
 
@@ -293,6 +315,13 @@ pull request 2.
   a hack" and matched "to the hour". Both overstated it. Every reading was taken on 13 November, five weeks
   after the event; the first data commit flagged the 1 October reading as unexplained, and the match to the
   published incident was made afterwards, by token, size and day.
+
+- Until pull request 8 this project measured the October hole only against the private chain's own credit and
+  reported it as 2 readings, 25% and then 98% of that credit, $3.3M. Against everything `intents.near` had
+  credited in that token it is three readings and $3.8M at the largest daily reading. Both are in the table (the
+  S rows and the A rows); the text now uses the second. The project was also first published as a reading of
+  the private chain's balance. A review pointed out that NEAR already publishes that balance as a metric; the
+  audit of the whole ledger was added on the same day and the thesis rebuilt around it.
 
 ## Licence
 

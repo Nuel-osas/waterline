@@ -31,6 +31,8 @@ def on_or_after(rows, day):
 
 def write_claims(write=True):
     rows, series, meta, tracked = build(write)
+    from .build import load_days
+    days_raw = load_days()
     pin = load(os.path.join(DATA, "pin.json"), None)["pin_day"]
     rows = [r for r in rows if r["day"] <= pin]
     last = rows[-1]
@@ -269,6 +271,73 @@ def write_claims(write=True):
             + ("(the account has contract code)" if cus["account_has_contract_code"] else "(the account itself has no contract code)"),
             "intents.near.public_keys_of(treasury) and view_account(treasury)", grade="chain")
 
+    # --- the audit: what intents.near has credited in total against what each token's contract says it holds
+    aud = build.last.get("audit") or {}
+    if aud.get("pin") and aud.get("history"):
+        ap, hist = aud["pin"], aud["history"]
+        add("A1", f"{ap['checked']} tokens",
+            f"Tokens audited on {pin}: every token in NEAR Intents' list whose credited total (intents.near.mt_batch_supply) could be set "
+            f"against what the token's own contract says intents.near holds. {ap['counts']['equal']} are equal to the last unit, "
+            f"{ap['counts']['surplus']} hold more than is credited ({money(ap['surplus_usd'])} in all), {ap['counts']['short']} are short",
+            "pipeline/audit.py: mt_batch_supply on intents.near, ft_balance_of or mt_balance_of on each token contract, same block", grade="chain")
+        add("A2", money(ap["held_usd"]), f"Value of the tokens audited on {pin}, at pinned prices", "sum of held, priced tokens", grade="chain")
+        token_days = sum(d["checked"] for d in hist)
+        short_days = [d for d in hist if d["counts"]["short"]]
+        add("A3", f"{token_days:,} checks",
+            f"Token-by-token checks across the history: the {len(tracked)} tracked tokens on each of {len(hist)} readings from {hist[0]['day']} to {hist[-1]['day']} "
+            f"(a token is counted from the day it has a balance to read)", "one audit per stored day", grade="chain")
+        shorts = [(d["day"], r) for d in short_days for r in d["not_equal"] if r["status"] == "short"]
+        tokens_short = sorted({r["token"] for _, r in shorts})
+        add("A4", f"{len(shorts)} of them short",
+            "Checks in which more was credited than held: " + ", ".join(f"{day} ({money(r['usd'])})" for day, r in shorts)
+            + (f", all one token: {meta[tokens_short[0]]['symbol']} on {meta[tokens_short[0]]['chain']}" if len(tokens_short) == 1 else ""),
+            "credited above held", grade="chain")
+        if shorts:
+            day, worst_r = max(shorts, key=lambda x: x[1]["usd"] or 0)
+            m = meta[worst_r["token"]]
+            add("A5", money(worst_r["usd"]),
+                f"Largest hole on a daily reading, {day}: {int(worst_r['held']) // 10**m['decimals']:,} held against "
+                f"{int(worst_r['credited']) // 10**m['decimals']:,} credited to everyone", "credited minus held, at the pinned price", grade="chain")
+            add("A6", pct(Fraction(int(worst_r["hole"]), int(worst_r["credited"])), 0),
+                "Part of everything credited in that token that had nothing behind it on that reading", "hole over credited", grade="chain")
+            owed = next((int(d["balances"].get(worst_r["token"], 0)) for d in days_raw if d["day"] == day), None)
+            if owed is not None:
+                add("A7", pct(Fraction(owed, int(worst_r["credited"])), 0),
+                    "Part of that token's credit that belonged to the private chain's treasury on that reading", "treasury balance over credited", grade="chain")
+    ex = aud.get("exploit")
+    if ex:
+        m = meta[ex["token"]]
+        unit = 10 ** m["decimals"]
+        hole = lambda st: int(st["credited"]) - int(st["held"])   # noqa: E731
+        stamp = lambda text: int(_dt2.datetime.strptime(text + " +0000", "%Y-%m-%d %H:%M:%S %z").timestamp())   # noqa: E731
+        import datetime as _dt2
+        steps_ = ex["steps"]
+        first = next(st for st in steps_ if hole(st) > 0)
+        peak = max(steps_, key=hole)
+        whole = next((st for st in steps_ if st["height"] > peak["height"] and hole(st) <= 0), None)
+        paid = stamp(ex["quoted"]["first_payout_utc"])
+        lead = paid - first["timestamp"] // 10**9
+        before = [st for st in steps_ if st["timestamp"] // 10**9 < paid][-1]
+        add("A8", f"{lead // 3600} hours {lead % 3600 // 60} minutes",
+            f"How long before the first payout CertiK reports ({ex['quoted']['first_payout_utc']} UTC) the hole was already in the public books: "
+            f"it opens at block {first['height']}, {first['time_utc']} UTC, at {hole(first) // unit:,} {m['symbol'].split('(')[0]}",
+            "pipeline/audit.py --steps: halve the days between two readings down to each block where credited minus held changed; data/context/exploit.json",
+            grade="chain, one quoted time")
+        add("A9", money(Fraction(hole(before), unit) * m["price"]),
+            f"The hole in the public books at {before['time_utc']} UTC, the last change before that first payout", "credited minus held, at the pinned price", grade="chain")
+        add("A10", money(Fraction(hole(peak), unit) * m["price"]), f"The hole at its largest, {peak['time_utc']} UTC", "as A9", grade="chain")
+        if whole:
+            shut = whole["timestamp"] // 10**9 - first["timestamp"] // 10**9
+            up = stamp(ex["quoted"]["upgrade_utc"]) - whole["timestamp"] // 10**9
+            add("A11", f"{shut // 3600} hours",
+                f"How long the books stayed short: whole again at block {whole['height']}, {whole['time_utc']} UTC, "
+                + (f"{up // 60} minutes before" if up >= 0 else f"{-up // 60} minutes after")
+                + f" the contract upgrade CertiK records ({ex['quoted']['upgrade_utc']} UTC)"
+                + (". The credited total did not fall while the hole closed, so the tokens came back"
+                   if int(whole["credited"]) >= max(int(st["credited"]) for st in steps_ if peak["height"] < st["height"] < whole["height"] and st["timestamp"] > whole["timestamp"] - 4 * 3600 * 10**9) else
+                   ". Part of the hole closed because credit was removed, not because tokens came back"),
+                "first block after the peak with held at or above credited", grade="chain, one quoted time")
+
     # --- one traced case: the largest single transfer of NEAR into the treasury in September
     blocks = load(os.path.join(DATA, "blocks.json"), {})
     traced = load(os.path.join(DATA, "context", "trace.json"), None)
@@ -369,6 +438,9 @@ def shown_for(claim, part=None, fmt=None):
         text = m.group(1) if m else text
     if fmt == "date":
         text = long_day(text)
+    if fmt == "hm":
+        m = re.fullmatch(r"(\d+) hours (\d+) minutes", text)
+        text = f"{m.group(1)}h {m.group(2)}m" if m else text
     return text
 
 

@@ -1,5 +1,5 @@
 # Publishes the dashboard. On every run it reads the days since the last committed reading from NEAR mainnet,
-# scores the forward tests in PREREG.md and publishes the result.
+# audits the new day (credited against held), scores the forward tests in PREREG.md and publishes the result.
 # Nothing is committed from here: main changes only through pull requests, and the numbers quoted in the text
 # stay pinned to the day in data/pin.json. Readings taken here are kept in a build cache between runs, so a run
 # only reads the new day. Two limits: the cache is not the repository, so the readings reach it only when someone
@@ -34,17 +34,21 @@ jobs:
           restore-keys: readings-
       - name: Use them where the repository has no reading for that day yet
         run: |
-          mkdir -p .readings/float .readings/held
+          mkdir -p .readings/float .readings/held .readings/credited
           cp -n .readings/float/*.json data/float/ 2>/dev/null || true
           cp -n .readings/held/*.json data/held/ 2>/dev/null || true
+          cp -n .readings/credited/*.json data/credited/ 2>/dev/null || true
           if [ -f .readings/blocks.json ]; then python3 -c "import json; a=json.load(open('.readings/blocks.json')); b=json.load(open('data/blocks.json')); a.update(b); json.dump(a, open('data/blocks.json','w'), indent=1, sort_keys=True)"; fi
       - name: Read the days since the last reading from NEAR mainnet
         run: python3 -m pipeline.pull --held
+      - name: Read what intents.near has credited on those days, for the audit
+        run: python3 -m pipeline.audit --pull
       - name: Keep the readings for the next run
         run: |
           cp data/blocks.json .readings/blocks.json
           cp data/float/*.json .readings/float/
           cp data/held/*.json .readings/held/
+          cp data/credited/*.json .readings/credited/
       - name: Rebuild the series, the quoted numbers and the forward-test scores
         run: make build
       - run: make test

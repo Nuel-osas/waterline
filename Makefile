@@ -1,7 +1,7 @@
 # Everything runs on a stock Python 3.9+ with no packages to install and no keys.
 PY ?= python3
 
-.PHONY: verify check test build pull serve score model trace context all
+.PHONY: verify check test build pull serve score model trace audit context all
 
 all: test check
 
@@ -29,6 +29,7 @@ context:
 ## Add any missing days from the chain (slow on public nodes; they rate-limit).
 pull:
 	$(PY) -m pipeline.pull --held
+	$(PY) -m pipeline.audit --pull
 
 ## Open the dashboard at http://localhost:8080
 serve:
@@ -37,6 +38,10 @@ serve:
 ## Score the forward tests in PREREG.md against the readings taken since.
 score:
 	$(PY) -m pipeline.score
+
+## Audit the 20 largest tokens at the latest final block: credited by intents.near against held, token by token.
+audit:
+	$(PY) -m pipeline.audit --now
 
 ## Find, from balances alone, the largest single move of NEAR into the treasury before the 25 September reading,
 ## and print the receipt behind it. About 25 requests, about a minute.
