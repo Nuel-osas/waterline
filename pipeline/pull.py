@@ -20,7 +20,8 @@ from . import rpc
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
 UTC = dt.timezone.utc
-WINDOW_NS = 15 * 10**9  # the day's block is a block stamped in the first 15 s after midnight UTC, or the first after it
+WINDOW_NS = 15 * 10**9  # before FIRST_BLOCK_FROM: the day's block is some block in the first 15 s after midnight UTC
+FIRST_BLOCK_FROM = "2026-11-14"  # from this day on: the first block stamped at or after 00:00:00 UTC
 
 
 def load(path, default):
@@ -50,31 +51,54 @@ def header_near(height):
     raise rpc.RpcError(f"no block near {height}")
 
 
-def block_at(target_ns, anchors):
-    """Find a block stamped in [target, target + WINDOW). `anchors` is a list of known (height, ns)."""
+def header_at(height):
+    """Header at exactly `height`, or None when that height was skipped."""
+    try:
+        return rpc.header(height)
+    except rpc.UnknownBlock:
+        return None
+
+
+def block_at(target_ns, anchors, first=False):
+    """Find the day's block. `anchors` is a list of known (height, ns).
+
+    With first=False (days before FIRST_BLOCK_FROM) any block stamped in [target, target + WINDOW) is accepted,
+    so which block is chosen depends on the search. With first=True the search goes on to the FIRST block stamped
+    at or after the target, so two people pulling the same day from scratch choose the same block.
+    """
     lo = max((a for a in anchors if a[1] < target_ns), key=lambda a: a[1], default=None)
     hi = min((a for a in anchors if a[1] >= target_ns), key=lambda a: a[1], default=None)
     if lo is None or hi is None:
         raise rpc.RpcError("target time is outside the known block range")
     for _ in range(60):
         if target_ns <= hi[1] < target_ns + WINDOW_NS:
-            return hi
+            break
         span_h, span_t = hi[0] - lo[0], hi[1] - lo[1]
         if span_h <= 1:
-            return hi
+            break
         guess = lo[0] + max(1, min(span_h - 1, round(span_h * (target_ns - lo[1] + WINDOW_NS // 3) / span_t)))
         head = header_near(guess)
         got = (head["height"], head["timestamp"])
         if got[0] >= hi[0]:
-            got = (guess, None)
             head = header_near(lo[0] + span_h // 2)
             got = (head["height"], head["timestamp"])
             if got[0] >= hi[0]:
-                return hi
+                break
         if got[1] < target_ns:
             lo = got
         else:
             hi = got
+    if not first:
+        return hi
+    # walk back, one height at a time, until the block below is stamped before the target
+    h = hi[0] - 1
+    while h > lo[0]:
+        head = header_at(h)
+        if head is not None:
+            if head["timestamp"] < target_ns:
+                break
+            hi = (head["height"], head["timestamp"])
+        h -= 1
     return hi
 
 
@@ -134,7 +158,7 @@ def main(argv):
         target = int(dt.datetime(d.year, d.month, d.day, tzinfo=UTC).timestamp()) * 10**9
         if target < old["timestamp"] or target > head["timestamp"]:
             return
-        h, ns = block_at(target, list(anchors))
+        h, ns = block_at(target, list(anchors), first=d.isoformat() >= FIRST_BLOCK_FROM)
         anchors.append((h, ns))
         blocks[d.isoformat()] = {"height": h, "timestamp": ns}
 

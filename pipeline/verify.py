@@ -14,6 +14,7 @@ What the offline part checks:
 
 Exit code 0 means every check passed. A failure prints what differs and exits 1.
 """
+import datetime as dt
 import hashlib
 import json
 import os
@@ -24,7 +25,7 @@ import sys
 from . import rpc
 from .build import build, site_js, token_meta, usd
 from .claims import write_claims
-from .pull import DATA, ROOT, load, read_float, read_held
+from .pull import DATA, FIRST_BLOCK_FROM, ROOT, header_at, load, read_float, read_held
 from .score import score
 
 PROSE = ("README.md", "THESIS.md", "PREREG.md")
@@ -71,6 +72,16 @@ def check_chain(days, blocks):
         if head["timestamp"] != blocks[day]["timestamp"]:
             print(f"FAIL {day}: block {height} is stamped {head['timestamp']}, file says {blocks[day]['timestamp']}")
             bad_day += 1
+        if day >= FIRST_BLOCK_FROM:
+            # from this day on the block must be the first one stamped at or after 00:00:00 UTC
+            y, m, d = map(int, day.split("-"))
+            midnight = int(dt.datetime(y, m, d, tzinfo=dt.timezone.utc).timestamp()) * 10**9
+            below, h = None, height - 1
+            while below is None and h > height - 40:
+                below, h = header_at(h), h - 1
+            if head["timestamp"] < midnight or below is None or below["timestamp"] >= midnight:
+                print(f"FAIL {day}: block {height} is not the first block stamped at or after 00:00:00 UTC")
+                bad_day += 1
         stored = load(os.path.join(DATA, "float", day + ".json"), None)["balances"]
         live = read_float(height)
         if live != stored:
