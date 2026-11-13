@@ -64,6 +64,11 @@ Docs pages: <https://docs.near-intents.org/integration/market-makers/confidentia
   `intents.near` on 2026-10-02 at 20:31:41 UTC, and reports NEAR Intents' general manager saying the money was
   returned in full, which CertiK does not itself verify. The first payout and upgrade times in
   `data/context/exploit.json` are these.
+- CertiK's page, as read again on 2026-11-13, dates the first verified exploit to "29 September at 16:14:19.280
+  UTC", a call that deposited "97 auxiliary entries of one unit each, plus 10 USDT, into Intents", and places the
+  fault in NEAR Intents' own contract: "The vulnerable resolver limited refunds by the available balance but
+  omitted the current deposit amount", so that "HOT returned the NEAR representation backing a deposit while
+  Intents retained the user's credit". Our first short block, 217799506, is stamped three seconds after that.
 - How the two line up: the hole opens at 16:14:22 UTC on 29 September at 10 of the token, grows by doubling to
   1,299,979 at 23:41:28 on 30 September, thirteen minutes before the first payout, peaks at 3,848,795 at 01:29:28
   on 1 October, and closes in seven steps between 19:26:35 and 20:22:09 on 2 October while the credited total
@@ -103,6 +108,12 @@ governance forum on 2026-10-07: it would lower maximum issuance from 2.5% a year
 The two rates are declared in `data/constants.json`. We read the proposal's text, not its status on chain.
 
 ## Custody
+
+NEAR Intents' docs, "Confidential Intents" (<https://docs.near-intents.org/integration/market-makers/confidential-intents>,
+read 2026-11-13): "Unshield (private → public): IMT tokens are burned on FAR. The PoA Bridge processes the burn
+request and releases the backing tokens from the Treasury on NEAR." The pages we read do not say how the key
+that signs for the Treasury is held. The same docs describe another bridge's key as held jointly by several
+operators, so a single public key does not by itself mean a single holder.
 
 `data/context/custody.json`: at the pinned block, `intents.near.public_keys_of(treasury)` returns one ed25519 key,
 `view_account(treasury)` shows an account with no contract code, and `view_access_key_list(treasury)` shows one
