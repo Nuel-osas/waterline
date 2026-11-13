@@ -1,4 +1,679 @@
 {
+ "audit": {
+  "days": [
+   {
+    "checked": 17,
+    "day": "2026-02-19",
+    "held_usd": 80575100.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-02-26",
+    "held_usd": 82740329.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-03-05",
+    "held_usd": 83513757.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-03-12",
+    "held_usd": 85927476.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-03-19",
+    "held_usd": 90177284.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-03-26",
+    "held_usd": 84902867.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-04-02",
+    "held_usd": 88581250.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-04-09",
+    "held_usd": 89554559.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-04-16",
+    "held_usd": 89980111.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-04-23",
+    "held_usd": 87391470.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-04-30",
+    "held_usd": 90747385.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-05-07",
+    "held_usd": 89916504.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-05-14",
+    "held_usd": 93200291.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-05-21",
+    "held_usd": 97610084.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-05-28",
+    "held_usd": 99821238.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-06-04",
+    "held_usd": 103320023.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-06-11",
+    "held_usd": 114777757.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-06-18",
+    "held_usd": 127336508.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-06-25",
+    "held_usd": 129139170.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 17,
+    "day": "2026-07-02",
+    "held_usd": 130071101.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-07-09",
+    "held_usd": 130546701.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-07-16",
+    "held_usd": 134721481.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-07-23",
+    "held_usd": 136225115.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-07-30",
+    "held_usd": 139659048.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-08-06",
+    "held_usd": 136337964.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-08-13",
+    "held_usd": 138145316.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-08-20",
+    "held_usd": 138808203.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-08-27",
+    "held_usd": 142776812.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-09-03",
+    "held_usd": 145234191.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 18,
+    "day": "2026-09-10",
+    "held_usd": 146279578.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 19,
+    "day": "2026-09-17",
+    "held_usd": 149213589.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 19,
+    "day": "2026-09-24",
+    "held_usd": 184914728.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-09-25",
+    "held_usd": 3907430.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-09-26",
+    "held_usd": 4158377.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-09-27",
+    "held_usd": 4017600.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-09-28",
+    "held_usd": 3976194.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-09-29",
+    "held_usd": 4055408.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-09-30",
+    "held_usd": 4026079.0,
+    "short": 1,
+    "short_usd": 30.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-01",
+    "held_usd": 193865229.0,
+    "short": 1,
+    "short_usd": 1298966.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-10-02",
+    "held_usd": 67617.0,
+    "short": 1,
+    "short_usd": 3798871.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-10-03",
+    "held_usd": 3601239.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-10-04",
+    "held_usd": 3569279.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-10-05",
+    "held_usd": 3569084.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-10-06",
+    "held_usd": 3569362.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 1,
+    "day": "2026-10-07",
+    "held_usd": 3587405.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-08",
+    "held_usd": 187919223.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-15",
+    "held_usd": 194248635.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-22",
+    "held_usd": 191996164.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-23",
+    "held_usd": 191849684.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-24",
+    "held_usd": 190667446.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-25",
+    "held_usd": 190791769.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-26",
+    "held_usd": 189397361.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-27",
+    "held_usd": 190579564.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-28",
+    "held_usd": 189142674.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-29",
+    "held_usd": 190008733.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-30",
+    "held_usd": 190051985.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-10-31",
+    "held_usd": 190261474.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-01",
+    "held_usd": 189703246.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-02",
+    "held_usd": 192959968.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-03",
+    "held_usd": 193219345.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-04",
+    "held_usd": 199455592.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-05",
+    "held_usd": 197130037.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-06",
+    "held_usd": 194976074.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-07",
+    "held_usd": 192255462.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-08",
+    "held_usd": 195141003.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-09",
+    "held_usd": 196879715.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-10",
+    "held_usd": 198072025.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-11",
+    "held_usd": 197628604.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-12",
+    "held_usd": 196853334.0,
+    "short": 0,
+    "short_usd": 0.0
+   },
+   {
+    "checked": 20,
+    "day": "2026-11-13",
+    "held_usd": 198847336.0,
+    "short": 0,
+    "short_usd": 0.0
+   }
+  ],
+  "pin": {
+   "checked": 214,
+   "day": "2026-11-13",
+   "equal": 184,
+   "held_usd": 223828473.0,
+   "short": 0,
+   "surplus": 30,
+   "surplus_usd": 6321.0,
+   "unknown": 0
+  },
+  "short": [
+   {
+    "chain": "bsc",
+    "credited": 4029247,
+    "day": "2026-09-30",
+    "held": 4029217,
+    "hole_usd": 30.0,
+    "symbol": "USDT(DEPRECATED)",
+    "token": "nep245:v2_1.omni.hot.tg:56_2CMMyVTGZkeyNZTSvS5sarzfir6g"
+   },
+   {
+    "chain": "bsc",
+    "credited": 3817696,
+    "day": "2026-10-01",
+    "held": 2517717,
+    "hole_usd": 1298966.0,
+    "symbol": "USDT(DEPRECATED)",
+    "token": "nep245:v2_1.omni.hot.tg:56_2CMMyVTGZkeyNZTSvS5sarzfir6g"
+   },
+   {
+    "chain": "bsc",
+    "credited": 3869502,
+    "day": "2026-10-02",
+    "held": 67669,
+    "hole_usd": 3798871.0,
+    "symbol": "USDT(DEPRECATED)",
+    "token": "nep245:v2_1.omni.hot.tg:56_2CMMyVTGZkeyNZTSvS5sarzfir6g"
+   }
+  ],
+  "tracked": [
+   {
+    "chain": "near",
+    "decimals": 6,
+    "id": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+    "price": 0.999542,
+    "symbol": "USDC"
+   },
+   {
+    "chain": "arb",
+    "decimals": 6,
+    "id": "nep141:arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near",
+    "price": 0.999542,
+    "symbol": "USDC"
+   },
+   {
+    "chain": "base",
+    "decimals": 6,
+    "id": "nep141:base-0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.omft.near",
+    "price": 0.999542,
+    "symbol": "USDC"
+   },
+   {
+    "chain": "btc",
+    "decimals": 8,
+    "id": "nep141:btc.omft.near",
+    "price": 69040.0,
+    "symbol": "BTC"
+   },
+   {
+    "chain": "near",
+    "decimals": 24,
+    "id": "nep141:cnear.assetize.near",
+    "price": 3.543673104,
+    "symbol": "cNEAR"
+   },
+   {
+    "chain": "eth",
+    "decimals": 8,
+    "id": "nep141:eth-0x0f38f1ce62776d4a0038bc6cac66877a5687383b.omft.near",
+    "price": 1.0285153070357742,
+    "symbol": "TLO"
+   },
+   {
+    "chain": "eth",
+    "decimals": 8,
+    "id": "nep141:eth-0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.omft.near",
+    "price": 68986.0,
+    "symbol": "WBTC"
+   },
+   {
+    "chain": "eth",
+    "decimals": 6,
+    "id": "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near",
+    "price": 0.999542,
+    "symbol": "USDC"
+   },
+   {
+    "chain": "eth",
+    "decimals": 6,
+    "id": "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+    "price": 0.999221,
+    "symbol": "USDT"
+   },
+   {
+    "chain": "eth",
+    "decimals": 18,
+    "id": "nep141:eth.omft.near",
+    "price": 1940.02,
+    "symbol": "ETH"
+   },
+   {
+    "chain": "near",
+    "decimals": 8,
+    "id": "nep141:nbtc.bridge.near",
+    "price": 69040.0,
+    "symbol": "BTC"
+   },
+   {
+    "chain": "qtc",
+    "decimals": 12,
+    "id": "nep141:qtc.omft.near",
+    "price": 46.513998755582385,
+    "symbol": "QTC"
+   },
+   {
+    "chain": "sol",
+    "decimals": 6,
+    "id": "nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near",
+    "price": 0.999542,
+    "symbol": "USDC"
+   },
+   {
+    "chain": "sol",
+    "decimals": 9,
+    "id": "nep141:sol.omft.near",
+    "price": 79.88,
+    "symbol": "SOL"
+   },
+   {
+    "chain": "tron",
+    "decimals": 6,
+    "id": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+    "price": 0.999221,
+    "symbol": "USDT"
+   },
+   {
+    "chain": "near",
+    "decimals": 24,
+    "id": "nep141:wrap.near",
+    "price": 3.52,
+    "symbol": "wNEAR"
+   },
+   {
+    "chain": "zec",
+    "decimals": 8,
+    "id": "nep141:zec.omft.near",
+    "price": 948.47,
+    "symbol": "ZEC"
+   },
+   {
+    "chain": "stellar",
+    "decimals": 7,
+    "id": "nep245:v2_1.omni.hot.tg:1100_111bzQBB5v7AhLyPMDwS8uJgQV24KaAPXtwyVWu2KXbbfQU6NXRCz",
+    "price": 0.145976,
+    "symbol": "XLM"
+   },
+   {
+    "chain": "stellar",
+    "decimals": 7,
+    "id": "nep245:v2_1.omni.hot.tg:1100_111bzQBB65GxAPAVoxqmMcgYo5oS3txhqs1Uh1cgahKQUeTUq1TJu",
+    "price": 0.999542,
+    "symbol": "USDC"
+   },
+   {
+    "chain": "bsc",
+    "decimals": 18,
+    "id": "nep245:v2_1.omni.hot.tg:56_2CMMyVTGZkeyNZTSvS5sarzfir6g",
+    "price": 0.999221,
+    "symbol": "USDT(DEPRECATED)"
+   }
+  ]
+ },
  "days": [
   {
    "day": "2026-02-18",
@@ -4848,6 +5523,418 @@
   "b2b_launch": "2026-07-13",
   "reward_announced": "2026-06-11",
   "reward_trigger": "2026-09-17"
+ },
+ "exploit": {
+  "chain": "bsc",
+  "quoted": {
+   "first_payout_utc": "2026-09-30 23:54:30",
+   "last_payout_utc": "2026-10-01 06:08:26",
+   "source": "CertiK, HOT Bridge / NEAR Intents, 2026-10-08, as read on 2026-11-13 (docs/SOURCES.md)",
+   "upgrade_utc": "2026-10-02 20:31:41"
+  },
+  "steps": [
+   {
+    "credited": 3925381,
+    "height": 217737622,
+    "held": 3925501,
+    "hole": -121,
+    "t": 1790661309000
+   },
+   {
+    "credited": 3925381,
+    "height": 217737623,
+    "held": 3925381,
+    "hole": 0,
+    "t": 1790661310000
+   },
+   {
+    "credited": 4097442,
+    "height": 217798996,
+    "held": 4101440,
+    "hole": -3998,
+    "t": 1790698163000
+   },
+   {
+    "credited": 4097442,
+    "height": 217798997,
+    "held": 4097442,
+    "hole": 0,
+    "t": 1790698163000
+   },
+   {
+    "credited": 4097442,
+    "height": 217798999,
+    "held": 4097443,
+    "hole": -1,
+    "t": 1790698164000
+   },
+   {
+    "credited": 4097443,
+    "height": 217799000,
+    "held": 4097443,
+    "hole": 0,
+    "t": 1790698165000
+   },
+   {
+    "credited": 4097967,
+    "height": 217799506,
+    "held": 4097957,
+    "hole": 10,
+    "t": 1790698462000
+   },
+   {
+    "credited": 4097967,
+    "height": 217799513,
+    "held": 4098007,
+    "hole": -40,
+    "t": 1790698466000
+   },
+   {
+    "credited": 4098017,
+    "height": 217799514,
+    "held": 4098007,
+    "hole": 10,
+    "t": 1790698466000
+   },
+   {
+    "credited": 4041478,
+    "height": 217804368,
+    "held": 4041448,
+    "hole": 30,
+    "t": 1790701354000
+   },
+   {
+    "credited": 4132450,
+    "height": 217806484,
+    "held": 4147091,
+    "hole": -14642,
+    "t": 1790702611000
+   },
+   {
+    "credited": 4147121,
+    "height": 217806485,
+    "held": 4147091,
+    "hole": 30,
+    "t": 1790702611000
+   },
+   {
+    "credited": 4029292,
+    "height": 217845835,
+    "held": 4029222,
+    "hole": 70,
+    "t": 1790726656000
+   },
+   {
+    "credited": 4029266,
+    "height": 217846480,
+    "held": 4029116,
+    "hole": 150,
+    "t": 1790727032000
+   },
+   {
+    "credited": 4029406,
+    "height": 217847120,
+    "held": 4029096,
+    "hole": 310,
+    "t": 1790727407000
+   },
+   {
+    "credited": 4029768,
+    "height": 217848081,
+    "held": 4029138,
+    "hole": 630,
+    "t": 1790727970000
+   },
+   {
+    "credited": 4031297,
+    "height": 217848728,
+    "held": 4030027,
+    "hole": 1270,
+    "t": 1790728354000
+   },
+   {
+    "credited": 4042003,
+    "height": 217849339,
+    "held": 4039453,
+    "hole": 2550,
+    "t": 1790728715000
+   },
+   {
+    "credited": 3833689,
+    "height": 217962137,
+    "held": 3828600,
+    "hole": 5089,
+    "t": 1790799333000
+   },
+   {
+    "credited": 3807399,
+    "height": 217977371,
+    "held": 3797232,
+    "hole": 10167,
+    "t": 1790808309000
+   },
+   {
+    "credited": 3805798,
+    "height": 217977987,
+    "held": 3805787,
+    "hole": 11,
+    "t": 1790808677000
+   },
+   {
+    "credited": 3815954,
+    "height": 217977988,
+    "held": 3805787,
+    "hole": 10167,
+    "t": 1790808678000
+   },
+   {
+    "credited": 3815954,
+    "height": 217977991,
+    "held": 3795631,
+    "hole": 20323,
+    "t": 1790808679000
+   },
+   {
+    "credited": 3838072,
+    "height": 217978867,
+    "held": 3797437,
+    "hole": 40635,
+    "t": 1790809199000
+   },
+   {
+    "credited": 3874122,
+    "height": 217980510,
+    "held": 3792863,
+    "hole": 81259,
+    "t": 1790810161000
+   },
+   {
+    "credited": 3911980,
+    "height": 217981119,
+    "held": 3749473,
+    "hole": 162507,
+    "t": 1790810521000
+   },
+   {
+    "credited": 3981105,
+    "height": 217981782,
+    "held": 3656102,
+    "hole": 325003,
+    "t": 1790810908000
+   },
+   {
+    "credited": 4157580,
+    "height": 217982469,
+    "held": 3507585,
+    "hole": 649995,
+    "t": 1790811317000
+   },
+   {
+    "credited": 3822462,
+    "height": 217983087,
+    "held": 3822451,
+    "hole": 11,
+    "t": 1790811686000
+   },
+   {
+    "credited": 4472446,
+    "height": 217983088,
+    "held": 3822451,
+    "hole": 649995,
+    "t": 1790811687000
+   },
+   {
+    "credited": 4472446,
+    "height": 217983091,
+    "held": 3172467,
+    "hole": 1299979,
+    "t": 1790811688000
+   },
+   {
+    "credited": 4317704,
+    "height": 217985692,
+    "held": 2517757,
+    "hole": 1799947,
+    "t": 1790813223000
+   },
+   {
+    "credited": 3824636,
+    "height": 217986238,
+    "held": 2024694,
+    "hole": 1799942,
+    "t": 1790813541000
+   },
+   {
+    "credited": 3824641,
+    "height": 217986239,
+    "held": 2024694,
+    "hole": 1799947,
+    "t": 1790813541000
+   },
+   {
+    "credited": 4824897,
+    "height": 217986270,
+    "held": 2025014,
+    "hole": 2799883,
+    "t": 1790813559000
+   },
+   {
+    "credited": 4627671,
+    "height": 217988641,
+    "held": 1027916,
+    "hole": 3599755,
+    "t": 1790814950000
+   },
+   {
+    "credited": 3950103,
+    "height": 217993458,
+    "held": 250604,
+    "hole": 3699499,
+    "t": 1790817767000
+   },
+   {
+    "credited": 3998093,
+    "height": 217994145,
+    "held": 149297,
+    "hole": 3848795,
+    "t": 1790818168000
+   },
+   {
+    "credited": 3847642,
+    "height": 217994550,
+    "held": 504,
+    "hole": 3847137,
+    "t": 1790818410000
+   },
+   {
+    "credited": 3837653,
+    "height": 217994642,
+    "held": 504,
+    "hole": 3837149,
+    "t": 1790818465000
+   },
+   {
+    "credited": 3832763,
+    "height": 218004292,
+    "held": 757,
+    "hole": 3832006,
+    "t": 1790824131000
+   },
+   {
+    "credited": 3833023,
+    "height": 218005202,
+    "held": 1034,
+    "hole": 3831988,
+    "t": 1790824670000
+   },
+   {
+    "credited": 3833023,
+    "height": 218005203,
+    "held": 1017,
+    "hole": 3832006,
+    "t": 1790824671000
+   },
+   {
+    "credited": 3830447,
+    "height": 218005205,
+    "held": 1017,
+    "hole": 3829430,
+    "t": 1790824672000
+   },
+   {
+    "credited": 3815616,
+    "height": 218006326,
+    "held": 31863,
+    "hole": 3783752,
+    "t": 1790825325000
+   },
+   {
+    "credited": 3804449,
+    "height": 218020373,
+    "held": 38776,
+    "hole": 3765672,
+    "t": 1790833647000
+   },
+   {
+    "credited": 3822529,
+    "height": 218020374,
+    "held": 38776,
+    "hole": 3783752,
+    "t": 1790833648000
+   },
+   {
+    "credited": 3822529,
+    "height": 218020377,
+    "held": 20696,
+    "hole": 3801832,
+    "t": 1790833650000
+   },
+   {
+    "credited": 3869502,
+    "height": 218240438,
+    "held": 67670,
+    "hole": 3801831,
+    "t": 1790966241000
+   },
+   {
+    "credited": 3869502,
+    "height": 218241075,
+    "held": 67671,
+    "hole": 3801830,
+    "t": 1790966612000
+   },
+   {
+    "credited": 3869502,
+    "height": 218245469,
+    "held": 167669,
+    "hole": 3701832,
+    "t": 1790969195000
+   },
+   {
+    "credited": 3869502,
+    "height": 218246318,
+    "held": 567669,
+    "hole": 3301832,
+    "t": 1790969699000
+   },
+   {
+    "credited": 3869502,
+    "height": 218247525,
+    "held": 1067669,
+    "hole": 2801832,
+    "t": 1790970408000
+   },
+   {
+    "credited": 3869502,
+    "height": 218248263,
+    "held": 1567669,
+    "hole": 2301832,
+    "t": 1790970840000
+   },
+   {
+    "credited": 3869502,
+    "height": 218248518,
+    "held": 2067669,
+    "hole": 1801832,
+    "t": 1790970992000
+   },
+   {
+    "credited": 3869502,
+    "height": 218249521,
+    "held": 3067669,
+    "hole": 801832,
+    "t": 1790971579430
+   },
+   {
+    "credited": 3869502,
+    "height": 218251129,
+    "held": 3869502,
+    "hole": 0,
+    "t": 1790972529971
+   }
+  ],
+  "symbol": "USDT(DEPRECATED)",
+  "token": "nep245:v2_1.omni.hot.tg:56_2CMMyVTGZkeyNZTSvS5sarzfir6g"
  },
  "first_day": "2026-02-18",
  "groups": [

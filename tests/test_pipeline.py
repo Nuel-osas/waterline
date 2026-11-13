@@ -390,6 +390,52 @@ class Trace(unittest.TestCase):
         self.assertEqual(trace.legs(r, "nep141:wrap.near"), [{"from": "maker", "to": None, "amount": 40, "how": "swap leg"}])
 
 
+class Audit(unittest.TestCase):
+    """Credited against held: the books are whole, in surplus or short, and unknown is never whole."""
+
+    def test_one_token_is_whole_in_surplus_short_or_unknown(self):
+        from pipeline import audit
+        self.assertEqual(audit.compare("100", "100"), ("equal", 0))
+        self.assertEqual(audit.compare("100", "130"), ("surplus", -30))
+        self.assertEqual(audit.compare("100", "70"), ("short", 30))
+        self.assertEqual(audit.compare("100", None), ("unknown", None))   # a failed read is not a pass
+        self.assertEqual(audit.compare(None, "100"), ("unknown", None))
+
+    def test_a_day_counts_each_kind_and_values_the_hole_at_the_pinned_price(self):
+        from pipeline import audit
+        meta = {"a": {"decimals": 6, "price": Fraction(1)}, "b": {"decimals": 6, "price": Fraction(2)},
+                "c": {"decimals": 0, "price": None}, "d": {"decimals": 6, "price": Fraction(1)}}
+        held = {"a": "5000000", "b": "1000000", "c": "7", "d": "9000000"}
+        credited = {"a": "5000000", "b": "4000000", "c": "9", "d": None}
+        got = audit.audit_day(held, credited, meta)
+        self.assertEqual(got["counts"], {"equal": 1, "surplus": 0, "short": 2, "unknown": 1})
+        self.assertEqual(got["checked"], 3)
+        self.assertEqual(got["short_usd"], 6)           # 3 units of b at 2 dollars; c is short too but has no price
+        self.assertEqual(got["held_usd"], 7)            # a and b; d could not be compared and is left out
+        self.assertEqual([(r["token"], r["status"], r["hole"]) for r in got["not_equal"]], [("b", "short", "3000000"), ("c", "short", "2")])
+
+    def test_halving_finds_every_block_where_the_hole_changed(self):
+        from pipeline import audit
+        credit = {150: 10, 400: 20, 401: -20, 777: 40}     # a hole opens, a move in and straight out again, then it grows
+
+        def read(height):
+            return 1000 + sum(v for at, v in credit.items() if at <= height), 1000
+        self.assertEqual(audit.steps(read, 100, 1000, grid=1), [150, 777])   # 400 and 401 cancel between two reads
+        self.assertEqual(audit.steps(read, 399, 402, grid=3), [400, 401])    # read block by block, they show
+
+    def test_the_blocks_the_exploit_claims_rest_on_are_where_it_opens_peaks_and_closes(self):
+        from pipeline import verify
+
+        def step(height, credited, held):
+            return {"height": height, "credited": str(credited), "held": str(held)}
+        ex = {"steps": [step(5, 100, 130), step(10, 100, 90), step(20, 100, 40), step(21, 100, 100), step(30, 100, 60), step(40, 100, 100)]}
+        self.assertEqual([st["height"] for st in verify.exploit_marks(ex)], [10, 20, 21])   # a surplus at 5 is not a hole
+
+    def test_an_unread_block_stops_the_search_there_instead_of_guessing(self):
+        from pipeline import audit
+        self.assertEqual(audit.steps(lambda h: None if h == 550 else (1000 + (10 if h >= 600 else 0), 1000), 100, 1000, grid=1), [])
+
+
 class CommittedData(unittest.TestCase):
     """Sanity checks on whatever raw data is in the repository."""
 

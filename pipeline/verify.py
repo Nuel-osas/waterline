@@ -22,14 +22,15 @@ import random
 import re
 import sys
 
-from . import rpc
+from . import audit, rpc
 from .build import build, site_js, token_meta, usd
 from .claims import write_claims
 from .pull import DATA, FIRST_BLOCK_FROM, ROOT, header_at, load, read_float, read_held
 from .score import score
 
 PROSE = ("README.md", "THESIS.md", "PREREG.md")
-NUMBER = re.compile(r"[+-]?\$\d[\d,]*(?:\.\d+)?[MBK]?|[+-]?\d[\d,]*(?:\.\d+)?%|\b\d[\d,]*(?:\.\d+)?x\b|\b\d[\d,]*(?:\.\d+)?M NEAR\b|\b\d{1,3}(?:,\d{3})+ NEAR\b")
+NUMBER = re.compile(r"[+-]?\$\d[\d,]*(?:\.\d+)?[MBK]?|[+-]?\d[\d,]*(?:\.\d+)?%|\b\d[\d,]*(?:\.\d+)?x\b|\b\d[\d,]*(?:\.\d+)?M NEAR\b|\b\d{1,3}(?:,\d{3})+ NEAR\b"
+                    r"|(?<![-\d,.])\b\d[\d,]* (?:checks|tokens|readings)\b|(?<![-\d,.:])\b\d+ hours(?: \d+ minutes)?\b")
 
 
 def read(path):
@@ -96,8 +97,19 @@ def check_chain(days, blocks):
             if got != held[t]:
                 bad_day += 1
                 print(f"FAIL {day} @ {height}: intents.near holds {got} of {t}, file says {held[t]}")
+        cred = load(os.path.join(DATA, "credited", day + ".json"), None)
+        n_cred = 0
+        if cred and cred.get("height") == height:
+            ids = sorted(cred["credited"])
+            live_cred = audit.read_credited(height, ids)
+            n_cred = len(ids)
+            wrong = [t for t in ids if live_cred.get(t) != cred["credited"][t]]
+            if wrong:
+                bad_day += 1
+                print(f"FAIL {day} @ {height}: intents.near credits {live_cred.get(wrong[0])} of {wrong[0]}, file says {cred['credited'][wrong[0]]}"
+                      + (f" (and {len(wrong) - 1} more)" if len(wrong) > 1 else ""))
         if not bad_day:
-            print(f"ok   {day}  block {height}  {len(stored)} balances and {len(probe)} totals match the chain")
+            print(f"ok   {day}  block {height}  {len(stored)} balances, {len(probe)} totals and {n_cred} credited totals match the chain")
         bad += bad_day
 
     supply = load(os.path.join(DATA, "context", "supply.json"), {"days": {}})["days"]
@@ -125,6 +137,38 @@ def check_chain(days, blocks):
             else:
                 print("ok   the treasury account's access keys and their nonces match data/context/custody.json")
     bad += check_trace_chain()
+    bad += check_exploit_chain()
+    return bad
+
+
+def exploit_marks(ex):
+    """The steps of the recorded exploit that carry the claims: where the hole opens, its peak, where it closes."""
+    hole = lambda st: int(st["credited"]) - int(st["held"])   # noqa: E731
+    steps = ex["steps"]
+    first = next(st for st in steps if hole(st) > 0)
+    peak = max(steps, key=hole)
+    whole = next((st for st in steps if st["height"] > peak["height"] and hole(st) <= 0), None)
+    return [st for st in (first, peak, whole) if st]
+
+
+def check_exploit_chain():
+    """Re-read from the chain the blocks on which the exploit's claims rest: the state at the block and one before."""
+    ex = load(audit.EXPLOIT, None)
+    if not ex:
+        return 0
+    bad = 0
+    marks = exploit_marks(ex)
+    for st in marks:
+        seen = {}
+        before, after = audit.hole_at(ex["token"], st["height"] - 1, seen), audit.hole_at(ex["token"], st["height"], seen)
+        want_before, want_after = (int(st["credited_before"]), int(st["held_before"])), (int(st["credited"]), int(st["held"]))
+        head = rpc.header(st["height"])
+        if before != want_before or after != want_after or head["timestamp"] // 10**9 != st["timestamp"] // 10**9:
+            print(f"FAIL exploit: block {st['height']} does not show the credited and held totals, or the time, in data/context/exploit.json")
+            bad += 1
+    if not bad:
+        print(f"ok   exploit replay: credited and held at {len(marks)} blocks, each with the block before it, match the chain "
+              f"(the hole opens at block {marks[0]['height']})")
     return bad
 
 
@@ -153,6 +197,25 @@ def check_trace_chain():
             print(f"ok   traced case: {len(hops)} receipts and {len(case['treasury_balance'])} balances match the chain "
                   f"({int(case['amount']) // 10**24:,} NEAR out of the treasury and back)")
     return bad
+
+
+def check_exploit_stored():
+    """The exploit's steps as stored: in order, inside the window, and each one starting where the last one ended
+    unless blocks in between were not read."""
+    ex = load(audit.EXPLOIT, None)
+    if not ex:
+        return 0
+    steps = ex["steps"]
+    ordered = all(a["height"] < b["height"] and a["timestamp"] <= b["timestamp"] for a, b in zip(steps, steps[1:]))
+    inside = all(ex["from_height"] < st["height"] <= ex["to_height"] for st in steps)
+    joined = all((b["credited_before"], b["held_before"]) == (a["credited"], a["held"])
+                 for a, b in zip(steps, steps[1:]) if b["height"] == a["height"] + 1)
+    moved = all((st["credited_before"], st["held_before"]) != (st["credited"], st["held"]) for st in steps)
+    if not (ordered and inside and joined and moved):
+        print("FAIL data/context/exploit.json: the steps are out of order, outside the window, or do not join up")
+        return 1
+    print(f"ok   data/context/exploit.json: {len(steps)} steps in order, inside the window, each a real change")
+    return 0
 
 
 def check_trace_stored():
@@ -267,6 +330,7 @@ def check_derived():
     bad += same("dashboard forward tests", f["forward_js"], os.path.join(ROOT, "site", "forward.js"))
     bad += same("findings table", c["readme"], os.path.join(ROOT, "README.md"))
     bad += same("numbers in the page", c["index"], os.path.join(ROOT, "site", "index.html"))
+    bad += check_exploit_stored()
     bad += check_trace_stored()
     bad += check_prose(c["claims"])
     bad += check_hashes()
