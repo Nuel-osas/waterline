@@ -219,7 +219,7 @@ h3 { font: 560 clamp(20px, 2vw, 28px)/1.15 var(--sans); letter-spacing: -.025em;
 .live-table td:nth-child(1) { font: 560 14px/1.3 var(--sans); color: var(--fog); } .live-table td:nth-child(n+3) { color: var(--fog-2); font: 500 13px/1.3 var(--mono); } .live-table td:nth-child(2) { padding-right: 20px; } .live-table td:nth-child(2) { font: 500 13px/1.3 var(--mono); }
 .live-table td.num, .live-table th.num { text-align: right; }
 .live-table .st { font: 600 11px/1 var(--mono); letter-spacing: .06em; padding: 4px 6px; border: 1px solid currentColor; color: #7FB2F0; }
-.live-table .st.short { color: #FFB23E; } .live-table .st.unknown { color: var(--fog-3); }
+.live-table .st.short { color: #FFB23E; } .live-table .st.low { color: #FFB23E; border-style: dashed; } .live-table .st.unknown { color: var(--fog-3); }
 .key.warnkey { background: #FFB23E; }
 .stop { margin-top: clamp(40px, 6vw, 88px); padding-top: 24px; border-top: 1px solid var(--fog-3); font: 500 clamp(19px, 2vw, 26px)/1.35 var(--sans); letter-spacing: -.015em; max-width: 46ch; color: var(--fog); }
 .stop span[data-claim] { color: #7FB2F0; white-space: nowrap; }

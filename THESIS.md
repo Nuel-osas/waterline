@@ -82,6 +82,12 @@ largest tokens: 1,090 checks, 3 of them short. All three are one token, a dollar
 30 September, 1 October and 2 October. On the last of them `intents.near` held 67,669 of it against 3,869,502
 credited: a hole of $3.8M, 98% of everything credited in that token.
 
+A stricter test gives the same answer. Many tokens hold a little more than is credited, and a hole smaller than
+that surplus would not turn the sign. So we also ask whether held minus credited fell below every earlier
+reading of the same token. Across the same checks that happened on 3 new lows: the same three readings, and no
+others. Tokens that arrive without a credit only add to the surplus, so in ordinary running it does not make
+new lows, and when it did, something owed had left.
+
 **That hole showed before the money left.** We replayed those days block by block. The hole opens at block
 217799506, stamped 16:14:22 UTC on 29 September, at ten dollars. CertiK dates the first exploit transaction to
 16:14:19 that day, three seconds earlier, and places the fault in NEAR Intents' own deposit handling: a refund
@@ -196,8 +202,7 @@ this one does.
 
 **What the audit is worth.** A holder of NEAR is exposed to NEAR Intents whether they use it or not, because its
 revenue is what funds the buyback. On the public side that exposure can be checked by anyone, at any block, for
-two calls per token, and a hole larger than the surplus a token already carries shows in the block where it
-opens. We have not surveyed other venues, so we do not say how rare that is. We say it is the one part of NEAR's
+two calls per token, and a hole shows in the block where it opens. We have not surveyed other venues, so we do not say how rare that is. We say it is the one part of NEAR's
 investment case we could verify end to end without trusting the party being valued, and it held up: whole
 today, and short only when something was in fact wrong. The same check is missing for the side that now holds
 61.0%. Moving swaps to the private chain gave users confidentiality and took this check away, and nothing has
@@ -314,9 +319,11 @@ sell: the one thing we can check would have failed.
   those tokens are themselves issued on NEAR by a bridge for tokens that live on another chain. Whether the
   bridge holds those is a further question that this audit does not ask. The audit takes `mt_batch_supply` as
   the sum of all credits and does not rebuild it from every account.
-- **A standing surplus hides a small hole.** The audit tests whether credited is above held. A token that
-  already holds more than is credited, as USDC on NEAR does, would not show a hole smaller than that surplus.
-  The first steps of an October-style attack on such a token would not appear until they exceeded it.
+- **A standing surplus and a small hole.** Whether credited is above held would miss a hole smaller than the
+  surplus a token already carries, as USDC on NEAR does. The second test, a new low of held minus credited,
+  covers that case on the stored readings, and `make audit` and the dashboard's button compare a live reading
+  with the lowest of the token's last 30 stored readings. That comparison is new and has no dated test of its
+  own: the tests in `PREREG-AUDIT.md` were hashed before it was written and are about the sign only.
 - **Which tokens.** On the pinned day: the tokens in NEAR Intents' list as first fetched that have a balance to
   read, and the unlisted ones the treasury holds. 15 tokens joined the list later that day and are left out of
   every pinned figure. Read once at the pinned block, they hold $291,069 in all. None is short and none is
