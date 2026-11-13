@@ -20,7 +20,7 @@ from . import rpc
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
 UTC = dt.timezone.utc
-WINDOW_NS = 15 * 10**9  # the day's block is any block stamped in the first 15 s after midnight UTC
+WINDOW_NS = 15 * 10**9  # the day's block is a block stamped in the first 15 s after midnight UTC, or the first after it
 
 
 def load(path, default):
@@ -122,10 +122,10 @@ def main(argv):
     blocks = load(os.path.join(DATA, "blocks.json"), {})
     head = rpc.header(None)
     today = dt.datetime.fromtimestamp(head["timestamp"] / 1e9, UTC).date()
-    first = dt.date.fromisoformat(os.environ.get("FIRST_DAY", "2026-06-01"))
+    first = dt.date.fromisoformat(os.environ.get("FIRST_DAY", "2026-02-18"))
     anchors = [(b["height"], b["timestamp"]) for b in blocks.values()] + [(head["height"], head["timestamp"])]
     # one old anchor so every target day is bracketed
-    old = header_near(int(os.environ.get("OLD_ANCHOR", "195000000")))
+    old = header_near(int(os.environ.get("OLD_ANCHOR", "185900000")))
     anchors.append((old["height"], old["timestamp"]))
 
     want = [] if "--no-new-days" in argv else [d for d in days(first, today) if d.isoformat() not in blocks]
