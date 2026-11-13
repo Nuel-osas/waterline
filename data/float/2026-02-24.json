@@ -1,0 +1,25 @@
+{
+ "balances": {
+  "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1": "1000230000",
+  "nep141:arb.omft.near": "500000000000000",
+  "nep141:base-0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.omft.near": "300003",
+  "nep141:btc.omft.near": "71676",
+  "nep141:cardano.omft.near": "71",
+  "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near": "50025936874",
+  "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near": "57077053",
+  "nep141:eth-0xdef1b2d939edc0e4d35806c59b3166f790175afe.omft.near": "153348118194645123790756",
+  "nep141:eth-0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c.omft.near": "10000000000",
+  "nep141:eth.omft.near": "10000000000000000",
+  "nep141:itlx.intellex_xyz.near": "38220370476520084965218106",
+  "nep141:nbtc.bridge.near": "70901544",
+  "nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near": "1159998",
+  "nep141:sol.omft.near": "211378423",
+  "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near": "2531489465",
+  "nep141:wrap.near": "257020551399214334179466901",
+  "nep141:zec.omft.near": "22302079",
+  "nep245:v2_1.omni.hot.tg:137_qiStmoQJDQPTebaPjgx5VBxZv6L": "750000",
+  "nep245:v2_1.omni.hot.tg:43114_11111111111111111111": "500000000000000000"
+ },
+ "day": "2026-02-24",
+ "height": 186866979
+}

@@ -1,0 +1,4 @@
+{
+ "pin_day": "2026-11-13",
+ "why": "Every number quoted in README.md and THESIS.md is computed as of this day's block, at the prices in data/tokens.json. Later days are added to the dashboard, but the quoted numbers do not move."
+}

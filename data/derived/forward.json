@@ -1,0 +1,47 @@
+{
+ "tests": [
+  {
+   "due": "2026-11-17",
+   "id": "F1",
+   "status": "PENDING",
+   "text": "The float on the 2026-11-17 reading is at least what it was on 2026-11-13 ($132.3M).",
+   "value": null
+  },
+  {
+   "due": "2026-11-17",
+   "id": "F2",
+   "status": "PENDING",
+   "text": "No single day between the two readings adds more than the tenth-largest rise so far ($4.7M): growth, if any, is not one more lump.",
+   "value": null
+  },
+  {
+   "due": "2026-11-17",
+   "id": "F3",
+   "status": "PENDING",
+   "text": "The private share of the tracked tokens on the 2026-11-17 reading is at least 60.0% (it was 61.8% on 2026-11-13).",
+   "value": null
+  },
+  {
+   "due": "2027-03-31",
+   "id": "R1",
+   "status": "PENDING",
+   "text": "The float is at least $200M.",
+   "value": null
+  },
+  {
+   "due": "2027-03-31",
+   "id": "R2",
+   "status": "PENDING",
+   "text": "The ten best days are less than 45% of the float.",
+   "value": null
+  },
+  {
+   "due": "2027-03-31",
+   "id": "R3",
+   "status": "PENDING",
+   "text": "The private share of the tracked tokens is at least 50%.",
+   "value": null
+  }
+ ],
+ "written": "2026-11-13"
+}

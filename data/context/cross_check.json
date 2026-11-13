@@ -1,0 +1,15 @@
+{
+ "what": "The same historical view call sent to two archival nodes, to check that a reading does not depend on the provider.",
+ "call": {
+  "block_id": 205000000,
+  "account_id": "intents.near",
+  "method_name": "mt_batch_balance_of",
+  "args": {"account_id": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe", "token_ids": ["nep141:wrap.near"]}
+ },
+ "results": {
+  "https://archival-rpc.mainnet.fastnear.com": ["4660686897290290582690012885009"],
+  "https://archival-rpc.mainnet.near.org": ["4660686897290290582690012885009"]
+ },
+ "observed_at": "2026-11-13, about 09:44 UTC",
+ "note": "Copied by hand from the terminal output at the time. The second node rate-limited later requests from the same address, so `make verify` runs against one provider. Anyone can repeat this call with the curl command in README.md."
+}
