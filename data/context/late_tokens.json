@@ -1,0 +1,82 @@
+{
+ "day": "2026-11-13",
+ "height": 224285109,
+ "tokens": {
+  "nep141:43d5b40dca52dfde6b794fa394e7796f34cb0c571655e4dfd9b0b7fcec06d84e": {
+   "credited": "0",
+   "held": "0",
+   "treasury": "0"
+  },
+  "nep141:base-0x3388d158fdcc31398b99478420e6945cdaace009.omft.near": {
+   "credited": "184562513841776294",
+   "held": "184562513841776294",
+   "treasury": "0"
+  },
+  "nep141:base-0x7429743f8adbbe932b27bc02267b0e70f1ba688b.omft.near": {
+   "credited": "186179114364506971",
+   "held": "186179114364506971",
+   "treasury": "0"
+  },
+  "nep141:base-0x959fc04dbf97a27073f89237cd62605f4d1b906d.omft.near": {
+   "credited": "178392950597028725025662",
+   "held": "178392950597028725025662",
+   "treasury": "0"
+  },
+  "nep141:base-0xa5c67d8d37b88c2d88647814da5578128e2c93b2.omft.near": {
+   "credited": "999954300189847335716550",
+   "held": "999954300189847335716550",
+   "treasury": "0"
+  },
+  "nep141:base-0xc343558b52b5757e3d59f0fe12ad33b52d3e2dd2.omft.near": {
+   "credited": "0",
+   "held": "0",
+   "treasury": "0"
+  },
+  "nep141:eth-0x06ea695b91700071b161a434fed42d1dcbad9f00.omft.near": {
+   "credited": "76001",
+   "held": "76001",
+   "treasury": "0"
+  },
+  "nep141:eth-0xaf08e292d62df255f7953665a44ed65f0380aa60.omft.near": {
+   "credited": "26418459722592707390090519",
+   "held": "26418459722592707390090519",
+   "treasury": "0"
+  },
+  "nep141:gnosis-0x5cb9073902f2035222b9749f8fb0c9bfe5527108.omft.near": {
+   "credited": "46301699567131824726981",
+   "held": "46301699567131824726981",
+   "treasury": "0"
+  },
+  "nep141:hood-0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34.omft.near": {
+   "credited": "0",
+   "held": "0",
+   "treasury": "0"
+  },
+  "nep141:lsd-usdt.rhealab.near": {
+   "credited": "41550802622440047",
+   "held": "41560802622440047",
+   "treasury": "0"
+  },
+  "nep141:pol-0x7b12598e3616261df1c05ec28de0d2fb10c1f206.omdep.near": {
+   "credited": "84609181946397713067177",
+   "held": "84609181946397713067177",
+   "treasury": "0"
+  },
+  "nep141:sol-bb27241c87aa401cc963c360c175dd7ca7035873.omft.near": {
+   "credited": "45981189229",
+   "held": "45981189229",
+   "treasury": "0"
+  },
+  "nep141:stjack.tkn.primitives.near": {
+   "credited": "941636511743516630982826",
+   "held": "941636511743516630982826",
+   "treasury": "0"
+  },
+  "nep141:strk-0xe646ef2a705bf5147ceffc8dfbcc7bee4946b8f7.omdep.near": {
+   "credited": "0",
+   "held": "0",
+   "treasury": "0"
+  }
+ },
+ "what": "Tokens that entered NEAR Intents' token list at its second fetch on 2026-11-13, after the pinned day's totals had been read. Read once, at the pinned block, so the effect of leaving them out of the pinned figures can be stated. They are not part of data/held/ or of any headline number."
+}
