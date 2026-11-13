@@ -1,15 +1,15 @@
 # Everything runs on a stock Python 3.9+ with no packages to install and no keys.
 PY ?= python3
 
-.PHONY: verify check test build pull serve score all
+.PHONY: verify check test build pull serve score context all
 
 all: test check
 
-## Re-read a sample of days from public NEAR mainnet, rebuild every number, compare. About a minute.
+## Re-read a sample of days from public NEAR mainnet, rebuild every number, compare. One to three minutes.
 verify:
 	$(PY) -m pipeline.verify
 
-## Same comparison with no network: rebuild every number from the raw data in data/.
+## Same comparison with no network: rebuild every number from data/ in memory. Writes nothing.
 check:
 	$(PY) -m pipeline.verify --offline
 
@@ -21,6 +21,10 @@ build:
 	$(PY) -m pipeline.build
 	$(PY) -m pipeline.claims
 	$(PY) -m pipeline.score
+
+## Refetch the token list, the quoted figures, the supply headers and the custody facts.
+context:
+	$(PY) -m pipeline.context
 
 ## Add any missing days from the chain (slow on public nodes; they rate-limit).
 pull:
