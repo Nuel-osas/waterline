@@ -416,6 +416,33 @@
    "what": "Keys registered inside intents.near for the treasury account at the pinned block (the account itself has no contract code)"
   },
   {
+   "grade": "chain",
+   "how": "pipeline/trace.py: halve the day to the block where the balance moved, then read that block's receipts; data/context/trace.json",
+   "id": "W1",
+   "shown": "1.7M NEAR",
+   "what": "The largest single transfer of NEAR into the treasury in September, at 2026-09-24 08:52:40 UTC. The treasury had paid out the same amount, to the last unit, at 2026-09-23 23:35:58 UTC: 9 hours 16 minutes earlier, and 24 minutes before the 2026-09-24 reading"
+  },
+  {
+   "grade": "chain",
+   "how": "amount times the pinned price",
+   "id": "W2",
+   "shown": "$6.1M",
+   "what": "That transfer at the pinned price"
+  },
+  {
+   "how": "one-day change, pinned prices",
+   "id": "W3",
+   "shown": "$12.0M",
+   "what": "The float's rise on the 2026-09-25 reading, which includes that transfer. It is the largest one-day rise in the series"
+  },
+  {
+   "grade": "chain",
+   "how": "W2 over W3",
+   "id": "W4",
+   "shown": "51%",
+   "what": "Part of that day's rise that is money the treasury had paid out the evening before"
+  },
+  {
    "grade": "model",
    "how": "python3 -m pipeline.model",
    "id": "O1",

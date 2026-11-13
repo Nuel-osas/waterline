@@ -269,6 +269,30 @@ def write_claims(write=True):
             + ("(the account has contract code)" if cus["account_has_contract_code"] else "(the account itself has no contract code)"),
             "intents.near.public_keys_of(treasury) and view_account(treasury)", grade="chain")
 
+    # --- one traced case: the largest single transfer of NEAR into the treasury in September
+    blocks = load(os.path.join(DATA, "blocks.json"), {})
+    traced = load(os.path.join(DATA, "context", "trace.json"), None)
+    for case in (traced or {}).get("cases", [])[:1]:
+        amount = int(case["amount"])
+        value = usd(amount, meta[case["token"]])
+        left, back = case["hops"][0], case["hops"][-1]
+        k = next(j for j in range(1, len(rows)) if rows[j]["height"] >= back["height"])      # the first reading that includes the return
+        cut = next(r for r in rows if r["height"] >= left["height"])                           # the reading it left just before
+        rise = rows[k]["float_usd"] - rows[k - 1]["float_usd"]
+        best = max(rows[j]["float_usd"] - rows[j - 1]["float_usd"] for j in range(1, len(rows)))
+        away = (back["timestamp"] - left["timestamp"]) // 10**9
+        early = (blocks[cut["day"]]["timestamp"] - left["timestamp"]) // 10**9
+        add("W1", f"{amount / 10**24 / 1e6:.1f}M NEAR",
+            f"The largest single transfer of NEAR into the treasury in September, at {back['time_utc']} UTC. The treasury had paid out "
+            f"the same amount, to the last unit, at {left['time_utc']} UTC: {away // 3600} hours {away % 3600 // 60} minutes earlier, "
+            f"and {early // 60} minutes before the {cut['day']} reading",
+            "pipeline/trace.py: halve the day to the block where the balance moved, then read that block's receipts; data/context/trace.json",
+            grade="chain")
+        add("W2", money(value), "That transfer at the pinned price", "amount times the pinned price", grade="chain")
+        add("W3", money(rise), f"The float's rise on the {rows[k]['day']} reading, which includes that transfer"
+            + (". It is the largest one-day rise in the series" if rise == best else ""), "one-day change, pinned prices")
+        add("W4", pct(value / rise, 0), "Part of that day's rise that is money the treasury had paid out the evening before", "W2 over W3", grade="chain")
+
     # --- the base-rate model: how often the float's own past, replayed, meets the long-dated readings
     from .model import BLOCK, PATHS, SEED, share, simulate, windows
     cut = {key: (label, since, until) for key, label, since, until in windows(rows, pin)}

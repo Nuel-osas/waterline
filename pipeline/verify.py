@@ -124,6 +124,55 @@ def check_chain(days, blocks):
                 bad += 1
             else:
                 print("ok   the treasury account's access keys and their nonces match data/context/custody.json")
+    bad += check_trace_chain()
+    return bad
+
+
+def check_trace_chain():
+    """Re-read from the chain every hop of a traced case that was read from the chain, and the balances around it."""
+    from . import trace
+    rec = load(trace.PATH, None)
+    bad = 0
+    for case in (rec or {}).get("cases", []):
+        hops = [h for h in case["hops"] if h["seen"] == "chain"]
+        for hop in hops:
+            receipt = rpc.call("EXPERIMENTAL_receipt", {"receipt_id": hop["receipt_id"]})
+            want = {"from": hop["from"], "to": hop["to"], "amount": int(case["amount"]), "how": hop["how"]}
+            if want not in trace.legs(receipt, case["token"]):
+                print(f"FAIL trace: receipt {hop['receipt_id']} does not carry {hop['how']} of {case['amount']} from {hop['from']} to {hop['to']}")
+                bad += 1
+            if hop.get("signed_by") and trace.signers(receipt).get(hop["from"]) != hop["signed_by"]:
+                print(f"FAIL trace: receipt {hop['receipt_id']} was not signed for {hop['from']} by {hop['signed_by']}")
+                bad += 1
+        seen = {}
+        for height, stored in case["treasury_balance"].items():
+            if trace.balance(rpc.TREASURY, case["token"], int(height), seen) != int(stored):
+                print(f"FAIL trace: treasury balance at block {height} differs from data/context/trace.json")
+                bad += 1
+        if not bad:
+            print(f"ok   traced case: {len(hops)} receipts and {len(case['treasury_balance'])} balances match the chain "
+                  f"({int(case['amount']) // 10**24:,} NEAR out of the treasury and back)")
+    return bad
+
+
+def check_trace_stored():
+    """The traced case as stored: the same amount leaves the treasury and comes back, signed by the registered key."""
+    from . import trace
+    bad = 0
+    registered = (load(os.path.join(DATA, "context", "custody.json"), None) or {}).get("keys_registered_in_intents_near", [])
+    for case in (load(trace.PATH, None) or {}).get("cases", []):
+        for hop in case["hops"]:
+            if hop.get("signed_by") and hop["from"] == rpc.TREASURY and hop["signed_by"] not in registered:
+                print("FAIL trace: the key recorded as signing the treasury's payout is not the key in data/context/custody.json")
+                bad += 1
+        b = {int(h): int(v) for h, v in case["treasury_balance"].items()}
+        hs = sorted(b)
+        steps = [b[hs[1]] - b[hs[0]], b[hs[3]] - b[hs[2]]]
+        if steps != [-int(case["amount"]), int(case["amount"])]:
+            print("FAIL trace: the stored balances do not show the amount leaving and coming back")
+            bad += 1
+        else:
+            print("ok   data/context/trace.json: the stored balances show the same amount leaving the treasury and coming back")
     return bad
 
 
@@ -218,6 +267,7 @@ def check_derived():
     bad += same("dashboard forward tests", f["forward_js"], os.path.join(ROOT, "site", "forward.js"))
     bad += same("findings table", c["readme"], os.path.join(ROOT, "README.md"))
     bad += same("numbers in the page", c["index"], os.path.join(ROOT, "site", "index.html"))
+    bad += check_trace_stored()
     bad += check_prose(c["claims"])
     bad += check_hashes()
     for t in f["forward"]["tests"]:
