@@ -72,10 +72,20 @@ tables uploaded under the `near` handle, while the revenue figure is derived fro
 handle to be NEAR's own because DefiLlama's adapter comments call the related queries "NEAR's own" and tie them
 to revenue.near.org; we did not verify who controls the handle.
 
+## The proposal to lower issuance
+
+HSP-029, "Establish a 24-Month Issuance Ramp to a 1.6% Target Rate Of NEAR Token Emissions", posted on NEAR's
+governance forum on 2026-10-07: it would lower maximum issuance from 2.5% a year to 1.6% over 24 months.
+<https://gov.near.org/t/hsp-029-establish-a-24-month-issuance-ramp-to-a-1-6-target-rate-of-near-token-emissions/42644>.
+The two rates are declared in `data/constants.json`. We read the proposal's text, not its status on chain.
+
 ## Custody
 
 `data/context/custody.json`: at the pinned block, `intents.near.public_keys_of(treasury)` returns one ed25519 key,
-and `view_account(treasury)` shows an account with no contract code. For an implicit account, a single key equal
+`view_account(treasury)` shows an account with no contract code, and `view_access_key_list(treasury)` shows one
+full-access key whose nonce is still the value set when the account was created, so the account has never
+signed a transaction on NEAR itself: its balances inside `intents.near` move by signed messages that the
+contract checks against the registered key. For an implicit account, a single key equal
 to the account id is the default. Nothing public that we found says who holds the key or how. `make verify`
 re-reads both.
 

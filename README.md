@@ -85,6 +85,7 @@ types", and it cannot tell that a valid number was put in the wrong sentence.
 | P1 | **$7.9M per 30 days** | Float growth before the reward programme (2026-02-19 to 2026-06-11) |
 | P2 | **$14.3M per 30 days** | Float growth while the first reward was open (2026-06-11 to 2026-09-17) |
 | P3 | **$31.8M per 30 days** | Float growth after the first reward's snapshot was triggered (2026-09-17 to 2026-11-13) |
+| P9 | **$76.0M** | The float on the 2026-09-17 reading, the day NEAR announced confidential balances had passed $70M (at that day's prices) |
 | P4 | **$92.9M** | Float without NEAR's own token on 2026-11-13 ($46.1M on 2026-09-17) |
 | P5 | **$46.1M** | Float without NEAR's own token on 2026-09-17 |
 | P6 | **$2.7M** | Largest one-day fall in the float without NEAR's own token |
@@ -108,9 +109,11 @@ types", and it cannot tell that a valid number was put in the wrong sentence.
 | V5 | **265x** | NEAR's total supply divided by that revenue, annualised, NEAR against NEAR |
 | M1 | **4.8 basis points** | Revenue reaching NEAR's wallets per dollar of reported volume, 30 days to 2026-11-11 |
 | M2 | **6.5x** | How many times revenue would have to grow for buybacks to match net new supply |
+| H1 | **4.2x** | How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes |
 | M3 | **$297B a year** | Reported volume that would take at today's rate of revenue per dollar of volume |
 | T4 | **$136.4M** | Highest the float has been, on the 2026-11-13 reading |
 | P8 | **3.5x** | Growth of the float without NEAR's own token since the B2B launch ($26.8M then) |
+| K2 | **1 of 1** | Access keys of the treasury account on NEAR itself that have never signed a transaction (the nonce is still the value set at creation) |
 | K1 | **1 key** | Keys registered inside intents.near for the treasury account at the pinned block (the account itself has no contract code) |
 <!-- claims:end -->
 
@@ -180,6 +183,21 @@ It prints the private chain's wNEAR balance at that block, in yoctoNEAR. The sam
 5. Position: a small holding, an option on private settlement, conditional on dated readings. See
    [`THESIS.md`](THESIS.md).
 
+## What the track's example prompt asks for, and where it is
+
+| The prompt asks for | Here |
+| --- | --- |
+| "One command that rebuilds every chart from raw data" | `make build` rebuilds every series, every quoted number and the dashboard's data from `data/` |
+| "A static dashboard page: each chart, the query behind it, and one plain sentence on what it shows" | [`site/`](site/), hosted at the link above. Each chart has a note saying what it shows and a "query behind this chart" block with the contract calls |
+| "THESIS.md with the claim, the evidence for it, the evidence against it, and what result would change my mind" | [`THESIS.md`](THESIS.md), sections 1, 3, 4 and 6 |
+| "If a metric can't be computed from these sources, write that in THESIS.md" | [`THESIS.md`](THESIS.md), section 7 |
+| "Never invent numbers" | `make check` fails on any dollar amount, percentage, multiple or NEAR amount in the prose that the data does not produce |
+| SQL against the NEAR BigQuery public dataset | Not used. The thesis is about what sits behind the private chain, which activity tables do not show, and BigQuery needs a billing account, which would end "no key, no account" |
+| A pull from the NEAR Intents Explorer API | Not used. It needs a partner key and returns the operator's own figures. Volume and fees are quoted from DefiLlama and labelled as reported |
+
+The prompt's own working hypothesis, that Intents volume leads network usage, is tested by several other entries
+in this track. This one asks a different question: what can still be checked now that the volume is private.
+
 ## How it works
 
 ```
@@ -219,7 +237,7 @@ permission.
 
 ## Limits
 
-The full list is in [`THESIS.md`](THESIS.md#5-limits). The main ones: dollar figures use one fixed price list;
+The full list is in [`THESIS.md`](THESIS.md#7-what-could-not-be-computed-and-other-limits). The main ones: dollar figures use one fixed price list;
 30 token types have no price and are left out; the 61.0% counts every listed token with a price on the pinned
 day, while the history follows the 20 largest and is weekly before 23 October; one reading a day cannot see
 money that enters and leaves within the day; the treasury shows assets, not what the private chain owes; the
