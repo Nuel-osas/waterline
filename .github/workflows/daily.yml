@@ -1,0 +1,49 @@
+# Publishes the dashboard. On a push to main it publishes what is in the repository. Every morning it also
+# reads the days since the last committed reading from NEAR mainnet, scores the forward tests in PREREG.md
+# and publishes the result, so the gauge keeps running after the hackathon.
+# Nothing is committed from here: main changes only through pull requests, and the numbers quoted in the
+# text stay pinned to the day in data/pin.json.
+name: dashboard
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "20 0 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: dashboard
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Read the days since the last committed reading from NEAR mainnet
+        if: github.event_name != 'push'
+        run: python3 -m pipeline.pull --held
+        env:
+          RPC_RATE: "0.7"
+      - name: Rebuild the series, the quoted numbers and the forward-test scores
+        run: make build
+      - run: make test
+      - run: make check
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
