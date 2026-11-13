@@ -36,6 +36,8 @@ sit in one account on that ledger. Waterline reads all three at one block per da
 - the float read against NEAR's own reward programme for confidential balances;
 - a tracer that finds, from balances alone, the block and the receipt behind the largest move of a day:
   `make trace`. It shows that half of the float's best day was money the treasury had paid out the evening before;
+- a list of who moved NEAR in and out of the treasury in September, taken from a public index and used only on
+  days where it adds up to the chain: `python3 -m pipeline.flows`;
 - an investment thesis on NEAR that states which of its inputs are observed and which are reported, and the
   readings that would change it: [`THESIS.md`](THESIS.md);
 - forward tests written before their readings exist, scored by code: [`PREREG.md`](PREREG.md);
@@ -137,6 +139,11 @@ types", and it cannot tell that a valid number was put in the wrong sentence.
 | W2 | **$6.1M** | That transfer at the pinned price |
 | W3 | **$12.0M** | The float's rise on the 2026-09-25 reading, which includes that transfer. It is the largest one-day rise in the series |
 | W4 | **51%** | Part of that day's rise that is money the treasury had paid out the evening before |
+| N1 | **20 of 20 days** | Days from 2026-09-12 to 2026-10-01 on which the treasury's NEAR transfers listed by FastNEAR's index (78,360 in all) add up, to the last unit, to the change in the balance read from the chain |
+| N2 | **33.8M NEAR** | NEAR transferred into the treasury between the readings of 2026-09-15 and 2026-09-28, gross (21.3M NEAR went out over the same days, which leaves the net inflow of C14) |
+| N3 | **94%** | Part of that net inflow that came from one account, solver-priv-liq.near: 17.0M NEAR in and 5.2M NEAR out, in 40,748 transfers |
+| N4 | **50%** | The same account's part of the gross inflow over those days |
+| N5 | **38%** | Part of the NEAR that left the treasury before the 2026-09-30 reading (5.6M NEAR gross, to 1,083 accounts) that went to the three largest receivers, each in a single transfer |
 | O1 | **53%** | Replayed paths on which R1 holds (the float is at least $200M on 2027-03-31), drawing from every day since the first deposit (267 daily changes): 138 days to 2027-03-31 built from runs of 7 consecutive past days, 10,000 paths, seed 20261113. A base rate, not a forecast |
 | O2 | **under 1%** | The same, drawing only from days before the reward programme was announced (2026-02-19 to 2026-06-11, 112 daily changes) |
 | O3 | **82%** | The same, drawing only from days since the first reward's snapshot was triggered (2026-09-17 to 2026-11-13, 57 daily changes) |
@@ -153,7 +160,8 @@ types", and it cannot tell that a valid number was put in the wrong sentence.
 
 C, P, S and K rows are measured here from chain state (P: around NEAR's reward programme; S: shortfalls; K:
 custody). V and M rows combine a block-header reading with quoted figures. X and T rows are quoted from
-DefiLlama and labelled with their origin; this project does not vouch for them. A rows are the audit: credited against held, and the October hole block by block. W rows are one transfer
+DefiLlama and labelled with their origin; this project does not vouch for them. N rows come from an indexer's list of transfers and count only days on which that list adds up, to the last
+unit, to the change in the balance read from the chain. A rows are the audit: credited against held, and the October hole block by block. W rows are one transfer
 followed from the chain. O rows are not measurements: they
 are the output of `make model`, a base rate drawn from the float's own past, and they say so.
 
@@ -216,7 +224,8 @@ It prints the private chain's wNEAR balance at that block, in yoctoNEAR. The sam
    settle there. 87% of the credit in the token that broke in October belonged to that side.
 4. What sits behind the private chain is partly paid for and partly recycled. NEAR pays a reward for
    confidential balances, 69% of the NEAR that arrived in the days after the reward's snapshot was announced has
-   left, and 51% of the float's best day was money the treasury had paid out the evening before.
+   left, 94% of that net inflow came from one account, and 51% of the float's best day was money the treasury had
+   paid out the evening before.
 5. NEAR's price needs growth: the value of its supply is 265x the revenue that reaches NEAR's wallets, that
    revenue covers 15% of net new supply, and it would have to grow 6.5x to match it.
 6. Position: a small holding, conditional on dated readings. Replaying the float's own past, the main reading
@@ -255,6 +264,7 @@ pipeline/claims.py   every quoted number                   -> data/derived/claim
                                                              the numbers written into site/index.html
 pipeline/score.py    forward tests written in PREREG.md     -> data/derived/forward.json
 pipeline/audit.py    credited (mt_batch_supply) against held  -> data/credited/<day>.json, data/context/exploit.json, the A rows
+pipeline/flows.py    an index's transfer list, kept where it adds up -> data/context/flows.json, the N rows
 pipeline/model.py    replays past daily changes forward     -> the O rows of the table above; prints, writes nothing
 pipeline/trace.py    halves a day to the block of a move, reads its receipts -> data/context/trace.json (one case, re-read by make verify)
 pipeline/verify.py   re-read from the chain, rebuild in memory, compare; writes nothing
@@ -298,8 +308,8 @@ plain HTML, CSS and JavaScript with no framework. GitHub Actions used: `actions/
 `actions/setup-python`, `actions/cache`, `actions/configure-pages`, `actions/upload-pages-artifact`,
 `actions/deploy-pages`. Fonts: Geist and Geist Mono (SIL Open Font License), in `site/fonts/`. Data sources:
 NEAR mainnet through a public archival node, NEAR Intents' public token list, DefiLlama's public API, CertiK's
-published incident report (three quoted times), and FastNEAR's transfers index for one hop of the transfer
-that was followed. The dashboard's audit button asks three public NEAR nodes from the visitor's browser. The code
+published incident report (three quoted times), and FastNEAR's transfers index for the list of September NEAR
+transfers and one hop of the transfer that was followed. The dashboard's audit button asks three public NEAR nodes from the visitor's browser. The code
 and text were written with an AI coding assistant (Claude Code) under the author's direction. Before
 submission the repository was reviewed several times by independent AI reviewers. Their findings were fixed in
 pull requests 2, 4 and 5, and one review's proposal, to audit the whole ledger and not one account, is pull

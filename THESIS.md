@@ -136,8 +136,16 @@ reward-seeking, and we do not claim to.
 **The NEAR in it came late and mostly left.** The ten best days add up to $75.5M, which is 55% of the float.
 The treasury held 8.5M NEAR on the day NEAR announced that the snapshot had been triggered. Between the readings
 of 15 and 28 September 12.6M NEAR entered, nearly all of it after that announcement, so it was not positioned
-for the first reward. We do not know who deposited it or why. In one day at the end of that month 3.9M NEAR
+for the first reward. In one day at the end of that month 3.9M NEAR
 left, the largest one-day fall in the series ($14.6M), and 69% of that inflow has now gone.
+
+**Most of it came from one account.** A public index lists every transfer in and out of the treasury. We use
+it only where it agrees with the chain: on 20 of 20 days tested, its list adds up, to the last unit, to the
+change in the balance we read. Between the readings of 15 and 28 September 33.8M NEAR went in and 21.3M NEAR
+came out. One account, `solver-priv-liq.near`, is 94% of the net: 17.0M NEAR in, 5.2M NEAR out. Its name
+suggests a solver's own liquidity; nothing published says who runs it or why it moved. So the September lump
+was not a crowd of depositors arriving for a reward. And when 5.6M NEAR left before the 30 September reading,
+38% of it went to three accounts, each in a single transfer.
 
 **The best day in the series is half a round trip.** We followed the largest single transfer behind it, from
 the chain alone. The float's largest one-day rise is $12.0M, on the 2026-09-25 reading. $6.1M of it, 51%, is
@@ -264,9 +272,10 @@ closed within days, we would sell: the one thing we can check would have failed.
   used: they say nothing about what sits behind the private chain, and querying them needs a billing account.
 - **What the private chain owes.** Not computable by anyone outside it. The treasury shows assets, not
   liabilities. If the private chain is also backed somewhere other than this one account, we do not see it.
-- **Who deposited.** We followed one transfer, the largest of the float's best day, and it was the treasury's own
-  money coming back. We did not trace the rest of the September NEAR, or any other deposit, to its sender, and
-  we do not know who controls the accounts the followed transfer passed through.
+- **Who deposited.** A public index names the account on the other side of each NEAR transfer from 12 September
+  to 1 October, and one account supplied most of the net inflow. An account is not a person: many of the others
+  are one-time deposit addresses. We followed only one transfer back to where its money came from, and it was
+  the treasury's own. We did not look at tokens other than NEAR, or at other months.
 - **One price list.** Dollar history is in the prices NEAR Intents' own list showed on 2026-11-13. It shows
   tokens moving, not what the float was worth on each past day. NEAR's "$70M" in September was measured at that
   day's prices, not ours. The list changed during the day: ids that appeared later were added at the price

@@ -132,6 +132,21 @@ down to one block (19 balance reads). `EXPERIMENTAL_changes` then names the rece
 `intents.near` in that block. `make trace` repeats this. `make verify` re-reads the four receipts and the four
 balances. Full account ids are in the file.
 
+## Who moved the NEAR in September
+
+- Source: FastNEAR's transfers index, `POST https://transfers.main.fastnear.com/v0/transfers` with
+  `{"account_id": <treasury>, "asset_id": "nep245:intents.near:nep141:wrap.near", "from_timestamp_ms", "to_timestamp_ms", "limit": 100, "resume_token"}`.
+  No key. 100 rows a page; it answers HTTP 429 when asked faster than about once every two seconds.
+- It is an indexer's list, not a chain read, so it is tested before use: for each day, the transfers between the
+  two daily readings (by block height) must add up, to the last unit, to the change in the wNEAR balance stored
+  in `data/float/`. All 20 days from 2026-09-12 to 2026-10-01 do. `make check` repeats that test from the files.
+- Stored: `data/context/flows.json`, one entry a day: gross in and out, each account that moved 1,000 NEAR or
+  more that day, the rest added up, and the largest single transfer each way with its receipt id. The raw pages
+  (about 2 MB a day) are not committed; `python3 -m pipeline.flows --pull 2026-09-12 2026-10-01` fetches them
+  again, in about an hour and a half.
+- `solver-priv-liq.near` is a named account with no contract code (checked with `view_account` at the pinned
+  block). It is not named in NEAR Intents' documentation that we found. We describe it by what the list shows.
+
 ## How a reading is taken
 
 For each day, one block stamped just after 00:00 UTC. From 2026-11-14 it is the first block stamped at or after

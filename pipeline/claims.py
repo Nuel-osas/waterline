@@ -362,6 +362,38 @@ def write_claims(write=True):
             + (". It is the largest one-day rise in the series" if rise == best else ""), "one-day change, pinned prices")
         add("W4", pct(value / rise, 0), "Part of that day's rise that is money the treasury had paid out the evening before", "W2 over W3", grade="chain")
 
+    # --- who moved the NEAR in September: an indexer's transfer list, used only on days that add up to the chain
+    fl = load(os.path.join(DATA, "context", "flows.json"), None)
+    if fl and fl.get("days"):
+        from .flows import span
+        fdays = sorted(fl["days"])
+        good = [d for d in fdays if fl["days"][d]["adds_up"]]
+        add("N1", f"{len(good)} of {len(fdays)} days",
+            f"Days from {fdays[0]} to {fdays[-1]} on which the treasury's NEAR transfers listed by FastNEAR's index "
+            f"({sum(fl['days'][d]['transfers'] for d in fdays):,} in all) add up, to the last unit, to the change in the balance read from the chain",
+            "pipeline/flows.py: sum of listed transfers between two daily readings against the change in data/float/", grade="index, checked against the chain")
+        win = span(fl, "2026-09-16", "2026-09-28")
+        net = win["in"] - win["out"]
+        if win["days"] and not win["skipped"] and net > 0:
+            top_id, top = max(win["accounts"].items(), key=lambda kv: kv[1][0] - kv[1][1])
+            add("N2", f"{win['in'] / 10**24 / 1e6:.1f}M NEAR",
+                f"NEAR transferred into the treasury between the readings of 2026-09-15 and 2026-09-28, gross "
+                f"({win['out'] / 10**24 / 1e6:.1f}M NEAR went out over the same days, which leaves the net inflow of C14)",
+                "sum of incoming transfers on days that add up", grade="index, checked against the chain")
+            add("N3", pct(Fraction(top[0] - top[1], net), 0),
+                f"Part of that net inflow that came from one account, {top_id}: {top[0] / 10**24 / 1e6:.1f}M NEAR in and "
+                f"{top[1] / 10**24 / 1e6:.1f}M NEAR out, in {top[2]:,} transfers", "the account's in minus out, over the net inflow",
+                grade="index, checked against the chain")
+            add("N4", pct(Fraction(top[0], win["in"]), 0), "The same account's part of the gross inflow over those days", "the account's in over all in",
+                grade="index, checked against the chain")
+        ex_day = fl["days"].get("2026-09-30")
+        if ex_day and ex_day["adds_up"]:
+            biggest = sorted((int(v[1]) for v in ex_day["by_account"].values()), reverse=True)[:3]
+            add("N5", pct(Fraction(sum(biggest), int(ex_day["out"])), 0),
+                f"Part of the NEAR that left the treasury before the 2026-09-30 reading ({int(ex_day['out']) / 10**24 / 1e6:.1f}M NEAR gross, "
+                f"to {ex_day['accounts']:,} accounts) that went to the three largest receivers, each in a single transfer",
+                "three largest outgoing totals over all out", grade="index, checked against the chain")
+
     # --- the base-rate model: how often the float's own past, replayed, meets the long-dated readings
     from .model import BLOCK, PATHS, SEED, share, simulate, windows
     cut = {key: (label, since, until) for key, label, since, until in windows(rows, pin)}
