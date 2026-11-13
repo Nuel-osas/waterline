@@ -1,9 +1,9 @@
 # Waterline
 
-**NEAR's swaps went private. The money behind them did not.** Waterline reads that money every day from public
-NEAR. It is an investment thesis for NEAR whose own measurements anyone can recompute, and which labels every
-number it only quotes. On 2 October the same reading showed one token almost wholly unbacked, before its author
-knew there had been a hack.
+**NEAR Intents' swaps went private. The money behind them did not.** Waterline reads that money every day from
+public NEAR. It is an investment thesis for NEAR whose own measurements anyone can recompute, and which labels
+every number it only quotes. Run over past blocks, the same reading shows one token almost wholly unbacked on
+2 October 2026, which matches a published exploit.
 
 Built at NEAR HACKATHON 2026. Track: Investment Thesis (`thesis`).
 
@@ -16,8 +16,8 @@ a private chain. The docs describe it as "a permissioned instance of the NEAR pr
 validator set with no public networking", where a swap is "invisible to public indexers".
 
 The volume and fee figures that investors quote have come from NEAR-run sources since 2025. Until 27 October an
-outsider could cross-check them against public settlement in `intents.near`. Since then the swap leg is
-private. A thesis "judged on the evidence" needs evidence that does not depend on the party being valued.
+outsider could in principle cross-check them against public settlement in `intents.near` (we did not). Since
+then the swap leg is private. A thesis "judged on the evidence" needs evidence that does not depend on the party being valued.
 
 ## What this is
 
@@ -27,8 +27,9 @@ token's contract how much `intents.near` holds in total, and builds:
 
 - a daily history of the money behind the private chain (the float), in tokens and in dollars at fixed prices;
 - the share of everything NEAR Intents holds that is now private;
-- a check, on every reading, that the treasury is never credited with more of a token than `intents.near`
-  holds. It failed on two readings in October, which turned out to match a published exploit to the hour;
+- a check, on every reading that has totals, that the treasury is never credited with more of a token than
+  `intents.near` holds. It fails on two readings in October, which match a published exploit by token, size
+  and day;
 - the float read against NEAR's own reward programme for confidential balances;
 - an investment thesis on NEAR that states which of its inputs are observed and which are reported, and the
   readings that would change it: [`THESIS.md`](THESIS.md);
@@ -42,7 +43,8 @@ No key, no account, no package to install. Python 3.9 or newer.
 As of NEAR mainnet block 224285109 (2026-11-13, 00:00 UTC). This table is written by `pipeline/claims.py` from
 the raw readings. `make check` rebuilds it in memory and fails if it differs, and fails if any dollar amount,
 percentage, multiple or NEAR amount in the prose of this file, `THESIS.md` or `PREREG.md` is neither one of
-these rows nor a constant declared in `data/constants.json`.
+these rows nor a constant declared in `data/constants.json`. It does not check plain counts such as "205 token
+types", and it cannot tell that a valid number was put in the wrong sentence.
 
 <!-- claims:start -->
 | # | Number | What it is |
@@ -71,7 +73,7 @@ these rows nor a constant declared in `data/constants.json`.
 | B2 | **58%** | Four-day windows since the B2B launch in which the float did not fall (the base rate of test F1) |
 | B3 | **79%** | Four-day windows since the B2B launch with no day above the tenth-largest rise (the base rate of test F2) |
 | C9 | **$14.6M** | Largest one-day fall in the float, between the readings of 2026-09-29 and 2026-09-30 |
-| C10 | **2.8%** | Change in the float across the day every 1Click swap moved to the private chain (2026-10-26 to 2026-10-28) |
+| C10 | **2.8%** | Change in the float across the day 1Click swaps began to settle on the private chain (2026-10-26 to 2026-10-28) |
 | C11 | **$20.7M** | Added to the float between 2026-10-27 and 2026-11-13 |
 | C12 | **Stablecoins: $49.3M** | Largest asset group in the float on 2026-11-13 |
 | C13 | **NEAR: $43.5M** | NEAR's own token in the float on 2026-11-13 |
@@ -79,6 +81,7 @@ these rows nor a constant declared in `data/constants.json`.
 | C14 | **12.6M NEAR** | wNEAR that entered the float between the readings of 2026-09-15 and 2026-09-28 |
 | C15 | **3.9M NEAR** | wNEAR that left the float in one day, between the readings of 2026-09-29 and 2026-09-30 |
 | C16 | **12.4M NEAR** | wNEAR in the float on 2026-11-13 |
+| C27 | **8.5M NEAR** | wNEAR in the float on the 2026-09-17 reading, the day NEAR announced the reward's snapshot had been triggered |
 | P1 | **$7.9M per 30 days** | Float growth before the reward programme (2026-02-19 to 2026-06-11) |
 | P2 | **$14.3M per 30 days** | Float growth while the first reward was open (2026-06-11 to 2026-09-17) |
 | P3 | **$31.8M per 30 days** | Float growth after the first reward's snapshot was triggered (2026-09-17 to 2026-11-13) |
@@ -89,6 +92,7 @@ these rows nor a constant declared in `data/constants.json`.
 | S1 | **2 readings** | Readings where the treasury was credited with more of a token than intents.near held: 2026-10-01, 2026-10-02 |
 | S2 | **$3.3M** | Largest such shortfall, on the 2026-10-02 reading: USDT(DEPRECATED) on bsc, 67,669 held against 3,373,849 credited |
 | S3 | **98%** | Part of the treasury's credit in that token that had nothing behind it on that reading |
+| S5 | **25%** | Part of the treasury's credit in that token with nothing behind it on the earlier reading, 2026-10-01 |
 | S4 | **2026-10-03** | First reading on which that token was fully held again |
 | X1 | **$3.73B** | Reported swap volume, 30 days to 2026-11-11 (DefiLlama, from a table uploaded to Dune under the near team's name) |
 | X2 | **$6.0M** | Reported gross fees, 30 days to 2026-11-11 (same kind of source) |
@@ -164,13 +168,15 @@ It prints the private chain's wNEAR balance at that block, in yoctoNEAR. The sam
 
 1. NEAR's price needs growth: the value of its supply is 265x the revenue that reaches NEAR's wallets, that
    revenue covers 15% of net new supply, and it would have to grow 6.5x to match it.
-2. The product that has to grow went private on 27 October. The float is the one adoption measure that cannot
-   be misreported, and it is up 2.8x since July.
-3. It can be rented, though. NEAR pays a reward for confidential balances, and 69% of the NEAR that arrived
-   around the reward's snapshot has left. Without NEAR's own token the float is $92.9M and steadier.
+2. The product that has to grow went private on 27 October. The float is an adoption measure that cannot be
+   restated afterwards, and it is up 2.8x since July.
+3. It can be inflated while it is read, though. NEAR pays a reward for confidential balances, and 69% of the
+   NEAR that arrived in the days after the reward's snapshot was announced has left. Without NEAR's own token
+   the float is $92.9M and steadier.
 4. The same float is an unpriced risk. For 2 readings in October one token in it was 98% unbacked, which
    matches a published exploit. That was visible because it was on the public ledger; nothing public proves
-   the private chain owes what the treasury holds, and 1 key is registered for the treasury.
+   the private chain owes what the treasury holds, and 1 key is registered for the treasury, with nothing
+   published on whether that key is split.
 5. Position: a small holding, an option on private settlement, conditional on dated readings. See
    [`THESIS.md`](THESIS.md).
 
@@ -190,7 +196,9 @@ pipeline/score.py    forward tests written in PREREG.md     -> data/derived/forw
 pipeline/verify.py   re-read from the chain, rebuild in memory, compare; writes nothing
 ```
 
-- A reading is tied to a block height, so it never changes and anyone gets the same bytes.
+- A reading is tied to a block height, so it never changes: anyone who reads the recorded heights gets the same
+  bytes. From 2026-11-14 the day's block is the first one stamped at or after 00:00:00 UTC, so a pull from
+  scratch also chooses the same block; earlier days were taken as some block in the first 15 seconds.
 - A read that fails is stored as `null` and left out. It is never counted as zero.
 - If the treasury is credited with more of a token than the token's contract says `intents.near` holds, that
   reading is left out of the share and listed in `data/derived/anomalies.json` with its size. It is never
@@ -230,6 +238,18 @@ and text were written with an AI coding assistant (Claude Code) under the author
 submission the repository was reviewed twice by independent AI reviewers, and their findings were fixed in
 pull request 2.
 
+## Errata
+
+- `PREREG.md` dates its two amendments "about 13:30 UTC" and "about 15:00 UTC" on 2026-11-13. Both times are
+  wrong. The commit that contains them was made at 13:07 UTC, and the price list was completed at 12:57 UTC
+  (`data/tokens.json`). The file is left byte for byte as it was, because its hash is recorded and timestamped:
+  `data/derived/prereg.sha256.ots` is an OpenTimestamps proof that is now confirmed in a Bitcoin block.
+- The first version of this README said the October shortfall was found "before its author knew there had been
+  a hack" and matched "to the hour". Both overstated it. Every reading was taken on 13 November, five weeks
+  after the event; the first data commit flagged the 1 October reading as unexplained, and the match to the
+  published incident was made afterwards, by token, size and day.
+
 ## Licence
 
-MIT. See [`LICENSE`](LICENSE). The licence holder, Veltri Labs, is the author's team.
+MIT. See [`LICENSE`](LICENSE). The licence holder, Veltri Labs, is the author's team; the repository is under
+the author's GitHub account.
