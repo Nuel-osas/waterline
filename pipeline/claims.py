@@ -161,6 +161,9 @@ def write_claims(write=True):
         f"Float growth while the first reward was open ({REWARD_ANNOUNCED} to {REWARD_TRIGGER})", "as P1")
     add("P3", money(per30(trig, last, whole)) + " per 30 days",
         f"Float growth after the first reward's snapshot was triggered ({REWARD_TRIGGER} to {pin})", "as P1")
+    add("P9", money(trig["float_usd"]),
+        f"The float on the {REWARD_TRIGGER} reading, the day NEAR announced confidential balances had passed $70M (at that day's prices)",
+        "float at the pinned prices")
     add("P4", money(ex_near(last)), f"Float without NEAR's own token on {pin} ({money(ex_near(trig))} on {REWARD_TRIGGER})",
         "float minus the NEAR group, pinned prices")
     add("P5", money(ex_near(trig)), f"Float without NEAR's own token on {REWARD_TRIGGER}", "as P4")
@@ -242,6 +245,11 @@ def write_claims(write=True):
         need = (per_day * 30) / rev_near
         add("M1", f"{float(rev / vol * 10000):.1f} basis points", f"Revenue reaching NEAR's wallets per dollar of reported volume, {span}", "X3 over X1", grade="reported")
         add("M2", f"{float(need):.1f}x", "How many times revenue would have to grow for buybacks to match net new supply", "one over V4", grade="chain, via an indexer")
+        # the proposal to lower issuance (HSP-029): the same sum if net new supply ran at the proposed target
+        target = Fraction(16, 1000)
+        need_target = (Fraction(s1, 10**24) * target * Fraction(30, 365)) / rev_near
+        add("H1", f"{float(need_target):.1f}x", "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes",
+            "supply times 1.6%, over a year, against 30-day revenue in NEAR", grade="chain, via an indexer")
         add("M3", f"${float(vol * Fraction(365, 30) * need) / 1e9:.0f}B a year", "Reported volume that would take at today's rate of revenue per dollar of volume",
             "annualised X1 times M2", grade="reported")
 
@@ -250,6 +258,11 @@ def write_claims(write=True):
     add("P8", f"{float(ex_near(last) / ex_near(launch)):.1f}x", f"Growth of the float without NEAR's own token since the B2B launch ({money(ex_near(launch))} then)", "as C7, without the NEAR group")
 
     cus = load(os.path.join(DATA, "context", "custody.json"), None)
+    if cus and cus.get("account_access_keys"):
+        unused = [k for k in cus["account_access_keys"] if k["nonce"] % 1_000_000 == 0]
+        add("K2", f"{len(unused)} of {len(cus['account_access_keys'])}",
+            "Access keys of the treasury account on NEAR itself that have never signed a transaction (the nonce is still the value set at creation)",
+            "view_access_key_list(treasury) at the pinned block", grade="chain", must_appear=False)
     if cus:
         add("K1", f"{len(cus['keys_registered_in_intents_near'])} key",
             "Keys registered inside intents.near for the treasury account at the pinned block "

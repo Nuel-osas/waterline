@@ -116,6 +116,14 @@ def check_chain(days, blocks):
             bad += 1
         else:
             print(f"ok   {len(keys)} key registered for the treasury in intents.near, as in data/context/custody.json")
+        if cus.get("account_access_keys") is not None:
+            live = rpc.call("query", {"request_type": "view_access_key_list", "block_id": cus["height"], "account_id": rpc.TREASURY})["keys"]
+            got = [(k["public_key"], k["access_key"]["nonce"]) for k in live]
+            if got != [(k["public_key"], k["nonce"]) for k in cus["account_access_keys"]]:
+                print("FAIL custody: the treasury account's access keys on NEAR differ from data/context/custody.json")
+                bad += 1
+            else:
+                print("ok   the treasury account's access keys and their nonces match data/context/custody.json")
     return bad
 
 
