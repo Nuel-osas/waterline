@@ -100,6 +100,38 @@ def history(meta, tracked=None):
     return out
 
 
+def new_lows(days, tokens):
+    """Readings on which held minus credited fell below every earlier reading of the same token: [(day, token, by)].
+
+    A sign test alone misses a hole smaller than the surplus a token already carries. Tokens that reach the
+    ledger without a credit only ever add to that surplus, so a new low means something left that was owed."""
+    out, low = [], {}
+    for day, held, credited in days:
+        for t in tokens:
+            if held.get(t) is None or credited.get(t) is None:
+                continue
+            margin = int(held[t]) - int(credited[t])
+            if t in low and margin < low[t]:
+                out.append((day, t, low[t] - margin))
+            low[t] = margin if t not in low else min(low[t], margin)
+    return out, low
+
+
+RECENT = 30
+
+
+def recent_floor(days, tokens, n=RECENT):
+    """The lowest held-minus-credited of each token over its last `n` stored readings: the level a live reading is
+    compared with. The whole history is not used here, because a token that was once short would keep that hole as
+    its floor for ever."""
+    out = {}
+    for t in tokens:
+        margins = [int(h[t]) - int(c[t]) for _d, h, c in days if h.get(t) is not None and c.get(t) is not None][-n:]
+        if margins:
+            out[t] = min(margins)
+    return out
+
+
 def pull(only=None):
     blocks = load(os.path.join(DATA, "blocks.json"), {})
     done = 0
@@ -192,22 +224,29 @@ def main():
         height, stamp, got = now(tracked)
         when = dt.datetime.fromtimestamp(stamp / 1e9, dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
         print(f"block {height}, {when} UTC")
-        short = unread = 0
+        short = unread = lower = 0
+        floor = recent_floor(stored_days(), tracked)
         for tid, (credited, held) in got.items():
             status, hole = compare(credited, held)
             m = meta.get(tid, {})
             unit = 10 ** m.get("decimals", 0)
             short += status == "short"
             unread += status == "unknown"
-            print(f"  {status.upper() if status == 'short' else status:8} {m.get('symbol', '?'):8} {m.get('chain', '?'):6} "
+            if status in ("equal", "surplus") and tid in floor and -hole < floor[tid]:
+                lower += 1
+                status = "low"
+            print(f"  {status.upper() if status in ('short', 'low') else status:8} {m.get('symbol', '?'):8} {m.get('chain', '?'):6} "
                   + (f"credited {int(credited) / unit:18,.2f}  held {int(held) / unit:18,.2f}" if hole is not None else "could not be read"))
         if short:
             print(f"RESULT: {short} token(s) SHORT")
         elif unread:
             print(f"RESULT: INCOMPLETE: {unread} of {len(got)} tokens could not be read, so nothing is claimed. Run it again; public nodes rate-limit.")
+        elif lower:
+            print(f"RESULT: WHOLE, BUT {lower} token(s) hold less over their credit than on any of the last {RECENT} stored readings "
+                  "(marked low). Over the whole stored history a new low happened only during the October 2026 exploit")
         else:
-            print("RESULT: WHOLE: no token is credited above what is held")
-        return 1 if short else 2 if unread else 0
+            print(f"RESULT: WHOLE: no token is credited above what is held, and none holds less over its credit than on the last {RECENT} stored readings")
+        return 1 if short else 2 if unread else 3 if lower else 0
     if args.steps:
         blocks = load(os.path.join(DATA, "blocks.json"), {})
         token = args.token or (load(EXPLOIT, None) or {}).get("token")

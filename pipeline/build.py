@@ -220,6 +220,9 @@ def build(write=True):
     pin_files = [(d, h, c) for d, h, c in _audit.stored_days() if d == pin["day"]]
     pin_audit = _audit.audit_day(pin_files[0][1], pin_files[0][2], meta) if pin_files else None
     exploit = load(os.path.join(DATA, "context", "exploit.json"), None)
+    stored = [x for x in _audit.stored_days() if x[0] <= pin["day"]]
+    lows, _ = _audit.new_lows(stored, tracked)
+    floors = _audit.recent_floor(stored, tracked)
     if hist and pin_audit:
         def short_rows(d):
             return [{"day": d["day"], "token": r["token"], "symbol": meta[r["token"]]["symbol"], "chain": meta[r["token"]]["chain"],
@@ -235,9 +238,13 @@ def build(write=True):
             "days": [{"day": d["day"], "checked": d["checked"], "short": d["counts"]["short"],
                       "short_usd": f2(d["short_usd"], 0), "held_usd": f2(d["held_usd"], 0)} for d in hist],
             "short": [row for d in hist for row in short_rows(d)],
+            # floor: the lowest held-minus-credited over the token's last 30 stored readings up to the pinned day, base units
             "tracked": [{"id": t, "symbol": meta[t]["symbol"], "chain": meta[t]["chain"], "decimals": meta[t]["decimals"],
-                         "price": float(meta[t]["price"]) if meta[t]["price"] is not None else None}
+                         "price": float(meta[t]["price"]) if meta[t]["price"] is not None else None,
+                         "floor": str(floors[t]) if t in floors else None}
                         for t in tracked if t in meta],
+            "new_lows": [{"day": d, "token": t, "symbol": meta[t]["symbol"], "chain": meta[t]["chain"],
+                          "by": int(by) // 10 ** meta[t]["decimals"]} for d, t, by in lows],
         }
     if exploit:
         m = meta[exploit["token"]]
@@ -257,7 +264,8 @@ def build(write=True):
         save(os.path.join(DATA, "derived", "anomalies.json"), anomalies)
         with open(os.path.join(ROOT, "site", "data.js"), "w") as f:
             f.write(site_js("WATERLINE", series))
-    build.last = {"series": series, "anomalies": anomalies, "audit": {"pin": pin_audit, "history": hist, "exploit": exploit}}
+    build.last = {"series": series, "anomalies": anomalies,
+                  "audit": {"pin": pin_audit, "history": hist, "exploit": exploit, "new_lows": lows}}
     return rows, series, meta, tracked
 
 

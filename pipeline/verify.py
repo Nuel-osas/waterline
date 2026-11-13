@@ -31,7 +31,7 @@ from .score_audit import score as score_audit
 
 PROSE = ("README.md", "THESIS.md", "PREREG.md", "PREREG-AUDIT.md")
 NUMBER = re.compile(r"[+-]?\$\d[\d,]*(?:\.\d+)?[MBK]?|[+-]?\d[\d,]*(?:\.\d+)?%|\b\d[\d,]*(?:\.\d+)?x\b|\b\d[\d,]*(?:\.\d+)?M NEAR\b|\b\d{1,3}(?:,\d{3})+ NEAR\b"
-                    r"|(?<![-\d,.])\b\d[\d,]* (?:checks|tokens|readings|paths|transfers|accounts|days|blocks|steps)\b"
+                    r"|(?<![-\d,.])\b\d[\d,]* (?:checks|tokens|readings|paths|transfers|accounts|days|blocks|steps|new lows)\b"
                     r"|(?<![-\d,.:])\b\d+ hours(?: \d+ minutes)?\b|(?<![-\d,.:])\b\d+ minutes\b|(?<![-\d,:])\b\d+\.\d+ (?:years|months)\b"
                     r"|\b\d+(?:\.\d+)? basis points\b|\b\d+ of them short\b|\b\d+ of \d+ days\b"
                     r"|\b\d{2}:\d{2}:\d{2}\b|(?<![\d.])\b\d{9}\b(?![\d.])")

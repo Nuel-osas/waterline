@@ -331,6 +331,13 @@ def write_claims(write=True):
             "Checks in which more was credited than held: " + ", ".join(f"{day} ({money(r['usd'])})" for day, r in shorts)
             + (f", all one token: {meta[tokens_short[0]]['symbol']} on {meta[tokens_short[0]]['chain']}" if len(tokens_short) == 1 else ""),
             "credited above held", grade="chain")
+        lows_ = aud.get("new_lows") or []
+        same_days = sorted({d for d, _, _ in lows_}) == sorted({d for d, _ in shorts})
+        add("A15", f"{len(lows_)} new lows",
+            f"Checks, out of those {token_days:,}, on which a token's held-minus-credited fell below every earlier reading of that token"
+            + (": the same readings as A4 and no others" if same_days else ": " + ", ".join(sorted({d for d, _, _ in lows_})))
+            + ". This test also sees a hole smaller than the surplus a token already carries",
+            "pipeline/audit.py, new_lows: the running minimum of held minus credited, per token", grade="chain")
         if shorts:
             day, worst_r = max(shorts, key=lambda x: x[1]["usd"] or 0)
             m = meta[worst_r["token"]]
