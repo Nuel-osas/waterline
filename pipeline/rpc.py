@@ -18,14 +18,15 @@ ENDPOINTS = [u for u in os.environ.get(
 ).split(",") if u]
 
 LEDGER = "intents.near"
-# The account that holds, on public NEAR, everything the private chain owes its users.
-# Source: docs.near-intents.org, "Confidential Intents" (PRIVATE_TREASURY_ACCOUNT_ID, "production
-# constants shared by all solver operators"). Recorded with how it was checked in docs/SOURCES.md.
+# The account that holds, on public NEAR, the tokens that back the private chain. What the private chain owes
+# cannot be seen from here. Source: docs.near-intents.org, "Confidential Intents" (PRIVATE_TREASURY_ACCOUNT_ID).
+# Recorded with how it was checked in docs/SOURCES.md.
 TREASURY = "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe"
 
 
-# Public nodes rate-limit by address. Stay under it: at most RPC_RATE requests a second, all threads together.
-_RATE = float(os.environ.get("RPC_RATE", "3"))
+# Public nodes rate-limit by address (under one request a second once a burst is spent). Stay under it:
+# at most RPC_RATE requests a second, all threads together.
+_RATE = float(os.environ.get("RPC_RATE", "0.7"))
 _lock = threading.Lock()
 _next = [0.0]
 
@@ -74,7 +75,7 @@ def call(method, params, tries=14):
             text = json.dumps(out["error"])
             if "UNKNOWN_BLOCK" in text or "DB Not Found" in text:
                 raise UnknownBlock(text[:200])
-            if "TIMEOUT" in text or "Too Many" in text or "rate" in text.lower():
+            if "TIMEOUT" in text or "Too Many" in text or "rate limit" in text.lower():
                 last = RpcError(text[:200])
                 time.sleep(min(8, 0.6 * 2 ** attempt))
                 continue

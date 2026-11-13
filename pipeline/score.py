@@ -12,6 +12,7 @@ from .build import build
 from .pull import DATA, load, save
 
 WRITTEN = "2026-11-13"      # the pinned day: the last reading the authors had seen
+FIRST_CHECK = "2026-11-14"  # scored on the next day's reading, before the submission deadline
 NEAR_TERM = "2026-11-17"    # scored on this day's reading, during judging
 LONG_DATED = "2027-03-31"
 SHARE_FLOOR = Fraction(60, 100)
@@ -31,22 +32,31 @@ def tests(rows):
             out.append({"id": tid, "text": text, "due": due, "status": "PENDING", "value": None})
             return
         ok, value = check(r)
-        out.append({"id": tid, "text": text, "due": due, "status": "PASS" if ok else "FAIL", "value": value})
+        status = "UNKNOWN" if ok is None else "PASS" if ok else "FAIL"
+        out.append({"id": tid, "text": text, "due": due, "status": status, "value": value})
 
-    add("F1", f"The float on the {NEAR_TERM} reading is at least what it was on {WRITTEN} (${float(base['float_usd']) / 1e6:.1f}M).",
-        NEAR_TERM, lambda r: (r["float_usd"] >= base["float_usd"], f"${float(r['float_usd']) / 1e6:.1f}M"))
+    def breadth(due):
+        def check(r):
+            later = [x for x in rows if WRITTEN <= x["day"] <= due]
+            biggest = max(later[k]["float_usd"] - later[k - 1]["float_usd"] for k in range(1, len(later)))
+            return biggest < tenth, f"largest one-day rise ${float(biggest) / 1e6:.1f}M"
+        return check
 
-    def breadth(r):
-        later = [x for x in rows if WRITTEN <= x["day"] <= NEAR_TERM]
-        biggest = max(later[k]["float_usd"] - later[k - 1]["float_usd"] for k in range(1, len(later)))
-        return biggest < tenth, f"largest one-day rise ${float(biggest) / 1e6:.1f}M"
-    add("F2", f"No single day between the two readings adds more than the tenth-largest rise so far (${float(tenth) / 1e6:.1f}M): "
-              "growth, if any, is not one more lump.", NEAR_TERM, breadth)
+    def share_at(floor):
+        def check(r):
+            # a share over only some of the tracked tokens is not the share that was written down: unknown, not a fail
+            if not r.get("tracked_complete") or r["share_usd"] is None:
+                return None, "not every tracked total could be read"
+            return r["share_usd"] >= floor, f"{float(r['share_usd']) * 100:.1f}%"
+        return check
 
-    add("F3", f"The private share of the tracked tokens on the {NEAR_TERM} reading is at least 60.0% "
-              f"(it was {float(base['share_usd']) * 100:.1f}% on {WRITTEN}).",
-        NEAR_TERM, lambda r: (r["share_usd"] is not None and r["share_usd"] >= SHARE_FLOOR,
-                              "unknown" if r["share_usd"] is None else f"{float(r['share_usd']) * 100:.1f}%"))
+    for prefix, due in (("E", FIRST_CHECK), ("F", NEAR_TERM)):
+        add(prefix + "1", f"The float on the {due} reading is at least what it was on {WRITTEN} (${float(base['float_usd']) / 1e6:.1f}M).",
+            due, lambda r: (r["float_usd"] >= base["float_usd"], f"${float(r['float_usd']) / 1e6:.1f}M"))
+        add(prefix + "2", f"No single day between {WRITTEN} and {due} adds more than the tenth-largest rise so far "
+                          f"(${float(tenth) / 1e6:.1f}M): growth, if any, is not one more lump.", due, breadth(due))
+        add(prefix + "3", f"The private share of the tracked tokens on the {due} reading is at least 60.0% "
+                          f"(it was {float(base['share_usd']) * 100:.1f}% on {WRITTEN}).", due, share_at(SHARE_FLOOR))
 
     add("R1", "The float is at least $200M.", LONG_DATED,
         lambda r: (r["float_usd"] >= 200_000_000, f"${float(r['float_usd']) / 1e6:.1f}M"))
@@ -58,20 +68,23 @@ def tests(rows):
         return ratio < Fraction(45, 100), f"{float(ratio) * 100:.0f}%"
     add("R2", "The ten best days are less than 45% of the float.", LONG_DATED, concentration)
 
-    add("R3", "The private share of the tracked tokens is at least 50%.", LONG_DATED,
-        lambda r: (r["share_usd"] is not None and r["share_usd"] >= Fraction(1, 2),
-                   "unknown" if r["share_usd"] is None else f"{float(r['share_usd']) * 100:.1f}%"))
+    add("R3", "The private share of the tracked tokens is at least 50%.", LONG_DATED, share_at(Fraction(1, 2)))
+    add("R5", "The float without NEAR's own token is at least $130M.", LONG_DATED,
+        lambda r: (r["float_usd"] - r["groups"]["NEAR"] >= 130_000_000,
+                   f"${float(r['float_usd'] - r['groups']['NEAR']) / 1e6:.1f}M"))
     return out
 
 
-def score():
-    rows, _, _, _ = build()
-    out = {"written": WRITTEN, "tests": tests(rows)}
-    save(os.path.join(DATA, "derived", "forward.json"), out)
-    import json
+def score(write=True):
+    from .build import site_js
     from .pull import ROOT
-    with open(os.path.join(ROOT, "site", "forward.js"), "w") as f:
-        f.write("window.WATERLINE_FORWARD = " + json.dumps(out, separators=(",", ":")) + ";\n")
+    rows, _, _, _ = build(write)
+    out = {"written": WRITTEN, "tests": tests(rows)}
+    score.last = {"forward": out, "forward_js": site_js("WATERLINE_FORWARD", out)}
+    if write:
+        save(os.path.join(DATA, "derived", "forward.json"), out)
+        with open(os.path.join(ROOT, "site", "forward.js"), "w") as f:
+            f.write(score.last["forward_js"])
     return out
 
 

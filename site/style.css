@@ -9,7 +9,7 @@
   --fog: #E9ECE8; --fog-2: #AAB4B9; --fog-3: #7C878D;
   --accent: #3987E5; --accent-ink: #1B56B4;
   --s-near: #3987e5; --s-stable: #d95926; --s-zec: #199e70; --s-btc: #c98500; --s-eth: #d55181; --s-other: #5E6A71;
-  --warn: #B26A00;
+  --warn: #8F5200;
   --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --gutter: clamp(16px, 4vw, 56px);
@@ -74,7 +74,7 @@ h3 { font: 560 clamp(20px, 2vw, 28px)/1.15 var(--sans); letter-spacing: -.025em;
 .deep .legend { color: var(--fog-2); }
 .legend li { display: inline-flex; align-items: center; gap: 8px; }
 .key { width: 12px; height: 12px; display: inline-block; border-radius: 2px; }
-.key.ink { background: var(--ink); } .key.accent { background: var(--accent); }
+.key.ink { background: var(--ink); } .key.accent { background: var(--accent); } .key.near { background: var(--s-eth); } .key.fog { background: var(--fog-2); }
 
 .chart { position: relative; width: 100%; }
 .chart svg { display: block; width: 100%; height: auto; overflow: visible; }

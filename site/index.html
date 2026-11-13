@@ -5,9 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Waterline: what NEAR's private chain holds</title>
 <meta name="description" content="What NEAR Intents' private chain holds, read every day from public NEAR. An investment thesis built only on numbers anyone can recompute.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nuel-osas.github.io/waterline/">
 <meta property="og:title" content="Waterline: what NEAR's private chain holds">
 <meta property="og:description" content="An investment thesis for NEAR built only on numbers anyone can recompute.">
-<meta property="og:image" content="og.png">
+<meta property="og:image" content="https://nuel-osas.github.io/waterline/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Waterline: what NEAR's private chain holds">
+<meta name="twitter:description" content="An investment thesis for NEAR built only on numbers anyone can recompute.">
+<meta name="twitter:image" content="https://nuel-osas.github.io/waterline/og.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -25,36 +33,36 @@
     <a href="#readings">Readings</a>
     <a href="#check">Check it</a>
   </nav>
-  <span class="pin" title="Every quoted number is computed at this NEAR mainnet block"><i></i>block <b data-pin="height"></b></span>
+  <span class="pin" title="Every quoted number is computed at this NEAR mainnet block"><i></i>block <b data-pin="height">224,285,109</b></span>
 </header>
 
 <main id="top">
 
 <section class="hero paper">
   <div class="wrap">
-    <p class="labels"><span class="label">NEAR Hackathon 2026</span><span class="label">Investment thesis</span><span class="label">Pinned <b data-pin="day"></b></span></p>
-    <h1><span class="num" data-claim="C4"></span> of NEAR Intents is under the waterline.</h1>
+    <p class="labels"><span class="label">NEAR Hackathon 2026</span><span class="label">Investment thesis</span><span class="label">Pinned <b data-pin="day">13 Nov 2026</b></span></p>
+    <h1><span class="num" data-claim="C4">61.0%</span> of NEAR Intents is under the waterline.</h1>
     <p class="lede">On 27 October 2026, NEAR's main product moved its 1Click swaps to a private chain. Nobody outside can read it. The money behind it still sits in a public contract, so we read that instead: one block a day, since the first deposit.</p>
     <dl class="stats">
-      <div><dt>Behind the private chain</dt><dd data-claim="C1"></dd></div>
-      <div><dt>Since the July launch</dt><dd data-claim="C7"></dd></div>
-      <div><dt>Held in</dt><dd data-claim="C2"></dd></div>
-      <div><dt>First deposit</dt><dd data-claim="C3" data-fmt="date"></dd></div>
+      <div><dt>Behind the private chain</dt><dd data-claim="C1">$136.4M</dd></div>
+      <div><dt>Since the July launch</dt><dd data-claim="C7">2.8x</dd></div>
+      <div><dt>Held in</dt><dd data-claim="C2">205 token types</dd></div>
+      <div><dt>First reading with a balance</dt><dd data-claim="C3" data-fmt="date">19 Feb 2026</dd></div>
     </dl>
   </div>
 </section>
 
 <section class="waterline" aria-labelledby="wl-title">
   <div class="wrap wl-head">
-    <h2 id="wl-title">Above the line, what stayed public. Below it, what moved to the private chain.</h2>
+    <h2 id="wl-title">Above the line, what NEAR Intents holds in public. Below it, what sits behind the private chain.</h2>
     <ul class="legend" aria-label="Series">
       <li><i class="key ink"></i>Public side of <code>intents.near</code></li>
       <li><i class="key accent"></i>Private-chain treasury</li>
     </ul>
   </div>
-  <div class="chart" id="chart-waterline" role="img" aria-label="Mirrored area chart. Above the line: value NEAR Intents holds on its public side. Below the line: value held by the private-chain treasury. The part below grows from zero in February to more than twice the part above."></div>
+  <div class="chart" id="chart-waterline" role="img" aria-label="Mirrored area chart of the 20 largest tokens. Above the line: value NEAR Intents holds on its public side, roughly level since February. Below the line: value held by the private-chain treasury, which grows from zero to more than the part above. The table below the chart has every value."></div>
   <div class="wl-foot"><div class="wrap">
-    <p class="note">The 20 largest tokens by total held, <span data-claim="C18"></span> of everything NEAR Intents holds. Each token's own contract says how much NEAR Intents holds; the treasury's balance says how much of that is private. Dollars at the prices of the pinned day. One reading a week before 23 October, one a day after. The headline above counts every token with a price on the pinned day.</p>
+    <p class="note">The 20 largest tokens by total held, <span data-claim="C18">89%</span> of everything NEAR Intents holds. Each token's own contract says how much NEAR Intents holds; the treasury's balance says how much of that is private. Dollars at the prices of the pinned day. One reading a week before 23 October, one a day after. The headline above counts every token with a price on the pinned day.</p>
     <details class="table-view"><summary>Show these numbers as a table</summary><div class="scroll"><table id="table-waterline"></table></div></details>
   </div></div>
 </section>
@@ -66,18 +74,31 @@
     <article class="finding">
       <header>
         <h3>It compounds.</h3>
-        <p>First balance on <span data-claim="C3" data-fmt="date"></span>. <span data-claim="C7" data-part="then"></span> at the B2B launch in July. <span data-claim="C1"></span> today, in stablecoins, NEAR, ZEC, bitcoin and ETH.</p>
+        <p>First reading with a balance: <span data-claim="C3" data-fmt="date">19 Feb 2026</span>. <span data-claim="C7" data-part="then">$49.3M</span> at the B2B launch in July. <span data-claim="C1">$136.4M</span> on the pinned day, in stablecoins, NEAR, ZEC, bitcoin and ETH.</p>
       </header>
       <ul class="legend" id="legend-stack" aria-label="Asset groups"></ul>
-      <div class="chart" id="chart-stack" role="img" aria-label="Stacked area chart of the private float by asset group, daily since February 2026, rising to 132 million dollars."></div>
-      <p class="note">Every token the treasury holds that has a price, daily, at the prices of the pinned day. <span data-claim="C2" data-part="unpriced"></span> token types have no price and are left out.</p>
+      <div class="chart" id="chart-stack" role="img" aria-label="Stacked area chart of the private float by asset group, daily since February 2026. The figures are in the text above and in the tooltip."></div>
+      <p class="note">Every token the treasury holds that has a price, daily, at the prices of the pinned day. <span data-claim="C2" data-part="unpriced">30</span> token types have no price and are left out.</p>
+    </article>
+
+    <article class="finding">
+      <header>
+        <h3>Part of it is paid for.</h3>
+        <p>On 11 June NEAR announced a reward for keeping money on the private side, with the snapshot taken once it held $70M. On 17 September NEAR said that had happened. The float grew <span data-claim="P1">$7.9M per 30 days</span> before the programme, <span data-claim="P2">$14.3M per 30 days</span> while the first reward was open, and <span data-claim="P3">$31.8M per 30 days</span> since. A second round is promised, so nobody outside can separate use from reward-seeking.</p>
+      </header>
+      <ul class="legend" aria-label="Series">
+        <li><i class="key fog"></i>Float without NEAR's own token</li>
+        <li><i class="key accent"></i>NEAR's own token in the float</li>
+      </ul>
+      <div class="chart" id="chart-reward" role="img" aria-label="Two lines from February to November 2026. The float without NEAR's own token rises steadily. NEAR's own token in the float more than doubles in the ten days after 17 September and then falls back most of the way."></div>
+      <p class="note">Without NEAR's own token the float is <span data-claim="P4">$92.9M</span>, up from <span data-claim="P5">$46.1M</span> at the snapshot, and its worst day ever is a fall of <span data-claim="P6">$2.7M</span>. Of the NEAR that arrived around the snapshot, <span data-claim="P7">69%</span> has left.</p>
     </article>
 
     <div class="pair">
       <article class="finding">
         <header>
           <h3>It arrives in lumps.</h3>
-          <p>The ten best days add up to <span data-claim="C8"></span>, which is <span data-claim="C17"></span> of today's float. <span data-claim="C14"></span> entered in two weeks of September. <span data-claim="C15"></span> left in one day.</p>
+          <p>The ten best days add up to <span data-claim="C8">$75.5M</span>, which is <span data-claim="C17">55%</span> of the float. <span data-claim="C14">12.6M NEAR</span> entered in two weeks of September. <span data-claim="C15">3.9M NEAR</span> left in one day.</p>
         </header>
         <div class="chart small" id="chart-lumps" role="img" aria-label="Bar chart of the float's change each day. Ten tall bars, most of them in late September, stand out from hundreds of small ones."></div>
         <p class="note">Change in the float from one reading to the next. The ten largest rises are highlighted.</p>
@@ -85,18 +106,31 @@
 
       <article class="finding">
         <header>
-          <h3>The switch moved nothing.</h3>
-          <p>Across 27 October the float changed by <span data-claim="C10"></span>. Swaps pass through the private chain and leave. The float measures money at rest, not activity.</p>
+          <h3>The switch itself moved little.</h3>
+          <p>Across 27 October the float changed by <span data-claim="C10">2.8%</span>. Swaps pass through the private chain and leave. The float measures money at rest, not activity. In the 17 days since, it has added <span data-claim="C11">$20.7M</span>.</p>
         </header>
         <div class="chart small" id="chart-switch" role="img" aria-label="Line chart of the float from mid October to mid November. It stays level across 27 October and then rises slowly."></div>
-        <p class="note">Daily float around the day every 1Click swap began to settle privately. Since then: <span data-claim="C11"></span> added.</p>
+        <p class="note">Daily float around the day 1Click swaps began to settle privately, on an axis that starts at zero.</p>
       </article>
     </div>
 
     <article class="finding">
       <header>
+        <h3>The reading caught a real shortfall.</h3>
+        <p>On <span data-claim="S1">2 readings</span> in October, the ledger credited the private chain with more of one dollar token than NEAR Intents held: <span data-claim="S2">$3.3M</span> missing, <span data-claim="S3">98%</span> of the claim. We flagged it before we knew why. It matches a published exploit of the token's bridge to the hour, and it was whole again on <span data-claim="S4" data-fmt="date">3 Oct 2026</span>.</p>
+      </header>
+      <ul class="legend" aria-label="Series">
+        <li><i class="key fog"></i>What NEAR Intents held of the token</li>
+        <li><i class="key accent"></i>What the private chain was credited</li>
+      </ul>
+      <div class="chart small" id="chart-short" role="img" aria-label="Two lines from 24 September to 8 October 2026 for one token. The amount credited to the private chain stays level. The amount NEAR Intents held falls to almost nothing on 2 October and returns on 3 October. The figures are in the text above."></div>
+      <p class="note">The old BNB Chain USDT id, one reading a day at 00:00 UTC. When the backing broke on the public ledger, anyone could see it by asking two contracts one question each. Nothing like that question can be asked of the private chain.</p>
+    </article>
+
+    <article class="finding">
+      <header>
         <h3>Most of the NEAR, the dollars and the ZEC. Not most of the bitcoin.</h3>
-        <p>How much of each kind of asset NEAR Intents holds is already on the private side, on the pinned day, counting every token with a price. Below it, the 20 largest tokens one by one.</p>
+        <p>How much of each kind of asset NEAR Intents holds is on the private side, on the pinned day, counting every token with a price. Below it, the 20 largest tokens one by one, also on the pinned day.</p>
       </header>
       <div class="bars" id="bars-groups"></div>
       <div class="bars sub" id="bars-tokens"></div>
@@ -112,37 +146,37 @@
     <table class="ledger">
       <thead><tr><th>Number</th><th>Latest</th><th>Where it comes from</th><th>Can an outsider recompute it?</th></tr></thead>
       <tbody>
-        <tr><td>Swap volume, 30 days</td><td data-claim="X1"></td><td>A table NEAR's team uploads to Dune, read by DefiLlama</td><td><span class="tag reported">Reported</span></td></tr>
-        <tr><td>Gross fees, 30 days</td><td data-claim="X2"></td><td>Tables NEAR's team uploads to Dune</td><td><span class="tag reported">Reported</span></td></tr>
-        <tr><td>Revenue reaching NEAR's wallets, 30 days</td><td data-claim="X3"></td><td>NEAR received by three public wallets</td><td><span class="tag observed">Observed</span> with an indexer</td></tr>
-        <tr><td>Net new NEAR supply</td><td data-claim="V2"></td><td>Block headers</td><td><span class="tag observed">Observed</span> here</td></tr>
-        <tr><td>Private float</td><td data-claim="C1"></td><td>Balances of one account in <code>intents.near</code></td><td><span class="tag observed">Observed</span> here</td></tr>
+        <tr><td>Swap volume, 30 days</td><td data-claim="X1">$3.73B</td><td>A table uploaded to Dune under the <code>near</code> team's name, read by DefiLlama</td><td><span class="tag reported">Reported</span></td></tr>
+        <tr><td>Gross fees, 30 days</td><td data-claim="X2">$6.0M</td><td>Tables uploaded to Dune under the <code>near</code> team's name</td><td><span class="tag reported">Reported</span></td></tr>
+        <tr><td>Revenue reaching NEAR's wallets, 30 days</td><td data-claim="X3">$1.8M</td><td>NEAR received by three public wallets</td><td><span class="tag observed">Observed</span> with an indexer</td></tr>
+        <tr><td>Net new NEAR supply</td><td data-claim="V2">88,704 NEAR a day</td><td>Block headers</td><td><span class="tag observed">Observed</span> here</td></tr>
+        <tr><td>Private float</td><td data-claim="C1">$136.4M</td><td>Balances of one account in <code>intents.near</code></td><td><span class="tag observed">Observed</span> here</td></tr>
       </tbody>
     </table>
     </div>
-    <p class="note">We are not saying the uploaded numbers are wrong. They are reported, not observed, and a thesis should say which of its inputs are which. NEAR's docs describe a swap on the private chain as "invisible to public indexers".</p>
+    <p class="note">We are not saying the uploaded numbers are wrong. Before the switch an outsider could recompute them from public transactions. Since the switch they can be read but not recomputed. NEAR's docs describe a swap on the private chain as "invisible to public indexers".</p>
   </div>
 </section>
 
 <section class="deep" id="thesis">
   <div class="wrap">
     <p class="labels"><span class="label">03</span><span class="label">The thesis</span></p>
-    <h2>Constructive on NEAR, as a bet on private settlement. Conditional on what the chain keeps showing.</h2>
+    <h2>A small position: an option on private settlement. Conditional on what the chain keeps showing.</h2>
     <div class="cards">
       <article>
-        <p class="big" data-claim="V5"></p>
-        <h3>The price is a growth price.</h3>
-        <p>NEAR's market value is <span data-claim="V1"></span>, <span data-claim="V5"></span> the revenue that reaches its wallets in a year. That revenue covers <span data-claim="V4"></span> of net new supply. Nobody holds NEAR for today's cash flow.</p>
+        <p class="big" data-claim="V5">265x</p>
+        <h3>The price needs growth.</h3>
+        <p>NEAR's supply is worth <span data-claim="V1">$4.48B</span>, <span data-claim="V5">265x</span> the revenue that reaches its wallets in a year. That revenue covers <span data-claim="V4">15%</span> of net new supply and would have to grow <span data-claim="M2">6.5x</span> to match it. Over the latest 30 days it is <span data-claim="T3">-20%</span>.</p>
       </article>
       <article>
-        <p class="big" data-claim="C7"></p>
-        <h3>The float is the growth signal that cannot be reported into existence.</h3>
-        <p>Volume can be restated by whoever keeps the table. A balance in a public contract cannot. If the float and NEAR's revenue wallets stall while reported volume climbs, believe the chain.</p>
+        <p class="big" data-claim="P8">3.5x</p>
+        <h3>The float is the adoption measure that cannot be misreported. It can be rented.</h3>
+        <p>A table can be restated by whoever keeps it. A balance in a public contract cannot. But a reward can put balances there for a while, so we watch the float without NEAR's own token: <span data-claim="P4">$92.9M</span>, <span data-claim="P8">3.5x</span> since the July launch.</p>
       </article>
       <article>
-        <p class="big" data-claim="C1"></p>
-        <h3>The same float is the largest unpriced risk.</h3>
-        <p>It is described as "backed 1:1" by the treasury. The treasury is public. What the private chain owes is not, and nothing published proves the two match. A shortfall would stay invisible until a withdrawal failed.</p>
+        <p class="big" data-claim="C1">$136.4M</p>
+        <h3>The same float is an unpriced risk, and one key holds it.</h3>
+        <p>It is described as "backed 1:1" by the treasury. The treasury is public. What the private chain owes is not, and nothing published proves the two match. October showed backing can fail: one token was <span data-claim="S3">98%</span> unbacked for two readings. The treasury is an ordinary account with <span data-claim="K1">1 key</span>.</p>
       </article>
     </div>
   </div>
@@ -151,10 +185,10 @@
 <section class="paper" id="readings">
   <div class="wrap">
     <p class="labels"><span class="label">04</span><span class="label">What would change our mind</span></p>
-    <h2>Four readings, written down on the pinned day, checked again on 31 March 2027.</h2>
+    <h2>Five readings as of the pinned day, written down then, checked again on 31 March 2027.</h2>
     <div class="meters" id="meters"></div>
     <p class="note">A fifth item has no threshold: if NEAR publishes a proof that the private chain's balances add up to the treasury, the risk above mostly goes away.</p>
-    <h3 class="fwd-title">Three more that resolve on <span data-fwd="near"></span>, scored by the same code</h3>
+    <h3 class="fwd-title">Shorter tests, scored by the same code as their readings arrive</h3>
     <div class="fwd" id="forward"></div>
   </div>
 </section>
@@ -165,10 +199,11 @@
     <h2>No key, no account, nothing to install. Python and a public node.</h2>
     <div class="steps">
       <div><code>make test</code><p>Unit tests. No network. About a second.</p></div>
-      <div><code>make check</code><p>Rebuilds every number on this page from the raw readings and compares. No network.</p></div>
-      <div><code>make verify</code><p>Re-reads a sample of days from NEAR mainnet first, then does the same. About a minute.</p></div>
+      <div><code>make check</code><p>Rebuilds every number on this page from the raw readings in memory and compares. No network, writes nothing.</p></div>
+      <div><code>make verify</code><p>Re-reads a sample of days from NEAR mainnet first, then does the same. One to three minutes.</p></div>
     </div>
-    <p class="note">Each reading is tied to a block height, so it never changes and anyone gets the same bytes. A read that fails is stored as unknown and left out. It is never counted as zero.</p>
+    <p class="note">Each reading is tied to a block height, so it never changes and anyone gets the same bytes. A read that fails is stored as unknown and left out. It is never counted as zero. The checks write nothing, and they fail if any number on this page or in the thesis is not what the data produces.</p>
+    <noscript><p class="note">The charts need JavaScript. Every number in the text is in the page itself, and every value behind the charts is in the repository under <code>data/derived/</code>.</p></noscript>
     <p class="links" id="links"></p>
   </div>
 </section>
@@ -178,7 +213,7 @@
 <footer class="foot deep">
   <div class="wrap">
     <p>Waterline. Built at NEAR HACKATHON 2026, Investment Thesis track. MIT licence.</p>
-    <p>Prices pinned at <span data-pin="priced"></span>. Reported figures from DefiLlama. Research, not investment advice.</p>
+    <p>Prices pinned at <span data-pin="priced">2026-11-13 09:41:11 UTC</span>. Reported figures from DefiLlama. Research, not investment advice.</p>
   </div>
 </footer>
 

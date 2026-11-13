@@ -1,0 +1,69 @@
+{
+ "what": "Numbers that appear in the prose and are not computed from the data: thresholds we chose and facts quoted from others. `make check` fails on any number in the prose that is neither a computed claim nor listed here.",
+ "constants": [
+  {
+   "value": "$200M",
+   "why": "threshold of reading R1 (THESIS.md, PREREG.md, pipeline/score.py)"
+  },
+  {
+   "value": "$130M",
+   "why": "threshold of reading R5"
+  },
+  {
+   "value": "45%",
+   "why": "threshold of reading R2"
+  },
+  {
+   "value": "50%",
+   "why": "threshold of reading R3"
+  },
+  {
+   "value": "40%",
+   "why": "break level of reading R3"
+  },
+  {
+   "value": "25%",
+   "why": "threshold of reading R4"
+  },
+  {
+   "value": "10%",
+   "why": "break level of reading R4"
+  },
+  {
+   "value": "60%",
+   "why": "threshold of the forward tests E3 and F3"
+  },
+  {
+   "value": "60.0%",
+   "why": "threshold of the forward tests E3 and F3, as written in PREREG.md"
+  },
+  {
+   "value": "100%",
+   "why": "the bound a share can never exceed"
+  },
+  {
+   "value": "$70M",
+   "why": "NEAR's reward programme: confidential balances that trigger the first snapshot (docs/SOURCES.md)"
+  },
+  {
+   "value": "$100",
+   "why": "NEAR's reward programme: minimum confidential balance (docs/SOURCES.md)"
+  },
+  {
+   "value": "2%",
+   "why": "NEAR's reward programme: cap per wallet (docs/SOURCES.md)"
+  },
+  {
+   "value": "$3.86M",
+   "why": "CertiK's total for the October incident (docs/SOURCES.md)"
+  },
+  {
+   "value": "$132.3M",
+   "why": "the pinned day's float before the price list was completed; quoted in PREREG.md's amendment note"
+  },
+  {
+   "value": "61.8%",
+   "why": "the tracked share before the price list was completed; quoted in PREREG.md's amendment note"
+  }
+ ]
+}

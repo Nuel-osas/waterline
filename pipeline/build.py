@@ -19,6 +19,8 @@ NEAR = {"WNEAR", "NEAR"}
 ZEC = {"ZEC"}
 GROUPS = ["NEAR", "Stablecoins", "ZEC", "BTC", "ETH", "Other"]
 
+REWARD_ANNOUNCED = "2026-06-11"  # near.org/blog/milestone-incentive-program: reward for confidential balances
+REWARD_TRIGGER = "2026-09-17"    # NEAR press release: confidential TVL passed $70M, the Drop 1 snapshot is triggered
 B2B_LAUNCH = "2026-07-13"   # docs.near-intents.org changelog: "Confidential Intents B2B launch"
 ALL_PRIVATE = "2026-10-27"  # docs.near-intents.org changelog: "1Click swaps settle confidentially"
 
@@ -65,20 +67,6 @@ def load_days():
     return days
 
 
-def pick_tracked(days, meta, floor=Fraction(1, 400), since="2026-07-01"):
-    """Tokens worth reading a denominator for: at least 0.25% of the float on some day since `since`."""
-    keep = set()
-    for d in days:
-        if d["day"] < since:
-            continue
-        vals = {t: usd(u, meta.get(t)) for t, u in d["balances"].items()}
-        total = sum(v for v in vals.values() if v)
-        if not total:
-            continue
-        keep |= {t for t, v in vals.items() if v and v / total >= floor}
-    return sorted(keep)
-
-
 def day_row(d, meta, tracked):
     bal = d["balances"]
     row = {"day": d["day"], "height": d["height"], "types": sum(1 for u in bal.values() if u > 0)}
@@ -120,7 +108,9 @@ def day_row(d, meta, tracked):
             # The ledger credits the treasury with more than the token's contract says intents.near holds.
             # That has no meaning as a share, so it is never turned into a number: the token is left out of
             # this day's share and the reading is listed in data/derived/anomalies.json.
-            anomalies.append({"day": d["day"], "height": d["height"], "token": t, "treasury": str(mine), "held": str(held)})
+            gap = usd(mine - held, meta.get(t))
+            anomalies.append({"day": d["day"], "height": d["height"], "token": t, "treasury": str(mine), "held": str(held),
+                              "short_usd": f2(gap, 0), "short_share": f2(Fraction(mine - held, mine) * 100, 1)})
             continue
         if t in tracked_set:
             shares[t] = Fraction(mine, held)
@@ -143,40 +133,40 @@ def day_row(d, meta, tracked):
                   "share": (num_all / den_all) if den_all else None,
                   "group_share": {g: (g_num[g] / g_den[g]) if g_den[g] else None for g in GROUPS},
                   "group_held": g_den, "group_private": g_num}
+    # A day makes a point in the history only if every tracked token was asked for that day. A day on which
+    # only some were read (for example one token, to date an incident) has no tracked share at all.
+    complete = all(t in d["held"] for t in tracked)
+    row["tracked_complete"] = complete and all(d["held"][t] is not None for t in tracked)
     row["anomalies"] = anomalies
     row["shares"] = shares
-    row["share_usd"] = (num / den) if den else None
+    row["share_usd"] = (num / den) if (den and complete) else None
     row["share_cover"] = {"tokens": covered, "private_usd": num, "held_usd": den}
     return row
 
 
-def at(rows, day):
-    """The row for `day`, or the first row after it."""
-    for r in rows:
-        if r["day"] >= day:
-            return r
-    return rows[-1]
+def site_js(name, obj):
+    return "window." + name + " = " + json.dumps(obj, separators=(",", ":"), sort_keys=True) + ";\n"
 
 
 def f2(x, nd=2):
     return None if x is None else round(float(x), nd)
 
 
-def build():
+def build(write=True):
     meta, priced_at = token_meta()
     days = load_days()
     if not days:
         raise SystemExit("no data yet: run `python3 -m pipeline.pull` first")
     tracked = load(os.path.join(DATA, "tracked.json"), None)
     if tracked is None:
-        tracked = pick_tracked(days, meta)
-        save(os.path.join(DATA, "tracked.json"), tracked)
+        raise SystemExit("no data/tracked.json: run `python3 -m pipeline.context tracked`")
     rows = [day_row(d, meta, tracked) for d in days]
     last, first = rows[-1], rows[0]
     with_share = [r for r in rows if r["share_usd"] is not None]
 
     pin_day = load(os.path.join(DATA, "pin.json"), {"pin_day": last["day"]})["pin_day"]
     pin = next((r for r in rows if r["day"] == pin_day), last)
+    pin_d = next((d for d in days if d["day"] == pin["day"]), days[-1])
     series = {
         "priced_at": priced_at,
         "pin": {
@@ -190,11 +180,14 @@ def build():
                        for g in GROUPS],
         },
         "first_day": first["day"], "last_day": last["day"], "last_height": last["height"],
-        "events": {"b2b_launch": B2B_LAUNCH, "all_private": ALL_PRIVATE},
+        "events": {"b2b_launch": B2B_LAUNCH, "all_private": ALL_PRIVATE,
+                   "reward_announced": REWARD_ANNOUNCED, "reward_trigger": REWARD_TRIGGER},
+        "shortfalls": [a for r in rows for a in r["anomalies"]],
         "groups": GROUPS,
         "days": [{
             "day": r["day"], "height": r["height"], "types": r["types"],
             "float_usd": f2(r["float_usd"], 0),
+            "ex_near_usd": f2(r["float_usd"] - r["groups"]["NEAR"], 0),
             "groups": [f2(r["groups"][g], 0) for g in GROUPS],
             "share": f2(r["share_usd"] * 100, 2) if r["share_usd"] is not None else None,
             "public_usd": f2(r["share_cover"]["held_usd"] - r["share_cover"]["private_usd"], 0) if r["share_usd"] is not None else None,
@@ -202,20 +195,35 @@ def build():
         } for r in rows],
         "tokens": [{
             "id": t, "symbol": meta[t]["symbol"], "chain": meta[t]["chain"],
-            "private_usd": f2(usd(days[-1]["balances"].get(t, 0), meta[t]), 0),
-            "held_usd": f2(usd(days[-1]["held"].get(t), meta[t]), 0),
-            "share_now": f2(last["shares"][t] * 100, 1) if t in last["shares"] else None,
+            "private_usd": f2(usd(pin_d["balances"].get(t, 0), meta[t]), 0),
+            "held_usd": f2(usd(pin_d["held"].get(t), meta[t]), 0),
+            "share_now": f2(pin["shares"][t] * 100, 1) if t in pin["shares"] else None,
             "share": [f2(r["shares"][t] * 100, 1) if t in r["shares"] else None for r in rows],
         } for t in tracked if t in meta],
     }
     series["tokens"].sort(key=lambda t: -(t["held_usd"] or 0))
-    save(os.path.join(DATA, "derived", "series.json"), series)
-    save(os.path.join(DATA, "derived", "anomalies.json"), {
+    # the readings around the largest shortfall, for the one token concerned, in whole tokens
+    if series["shortfalls"]:
+        worst = max(series["shortfalls"], key=lambda a: a["short_usd"] or 0)
+        tok, m = worst["token"], meta[worst["token"]]
+        hit = [a["day"] for a in series["shortfalls"] if a["token"] == tok]
+        lo, hi = min(hit), max(hit)
+        import datetime as _dt
+        span = lambda day, n: (_dt.date.fromisoformat(day) + _dt.timedelta(days=n)).isoformat()
+        case = [{"day": d["day"], "held": d["held"][tok] // 10 ** m["decimals"],
+                 "credited": d["balances"].get(tok, 0) // 10 ** m["decimals"]}
+                for d in days if span(lo, -8) <= d["day"] <= span(hi, 7) and d["held"].get(tok) is not None]
+        series["shortfall_case"] = {"token": tok, "symbol": m["symbol"], "chain": m["chain"], "days": case}
+    anomalies = {
         "what": "Readings where the treasury's balance of a token is larger than the balance the token's own contract "
                 "reports for intents.near at the same block. They are left out of the share, never forced to 100%.",
-        "readings": [a for r in rows for a in r["anomalies"]]})
-    with open(os.path.join(ROOT, "site", "data.js"), "w") as f:
-        f.write("window.WATERLINE = " + json.dumps(series, separators=(",", ":")) + ";\n")
+        "readings": [a for r in rows for a in r["anomalies"]]}
+    if write:
+        save(os.path.join(DATA, "derived", "series.json"), series)
+        save(os.path.join(DATA, "derived", "anomalies.json"), anomalies)
+        with open(os.path.join(ROOT, "site", "data.js"), "w") as f:
+            f.write(site_js("WATERLINE", series))
+    build.last = {"series": series, "anomalies": anomalies}
     return rows, series, meta, tracked
 
 

@@ -3,26 +3,26 @@
   {
    "how": "sum over the treasury's balances in intents.near at the pinned block, times data/tokens.json prices",
    "id": "C1",
-   "shown": "$132.3M",
+   "shown": "$136.4M",
    "what": "Value locked behind the private chain on 2026-11-13, at pinned prices"
   },
   {
    "how": "count of non-zero balances",
    "id": "C2",
    "shown": "205 token types",
-   "what": "Different tokens the private chain held on 2026-11-13 (52 of them have no price and are left out of every dollar figure)"
+   "what": "Different tokens the private chain held on 2026-11-13 (30 of them have no price and are left out of every dollar figure)"
   },
   {
    "how": "first day with a non-zero balance",
    "id": "C3",
    "shown": "2026-02-19",
-   "what": "First day the treasury held anything"
+   "what": "First reading (00:00 UTC) on which the treasury held anything; the account was created the day before"
   },
   {
    "how": "treasury balance divided by the token contract's balance for intents.near, value-weighted, all tokens",
    "id": "C4",
-   "shown": "60.2%",
-   "what": "Share of everything intents.near holds that sits behind the private chain on 2026-11-13: every token in NEAR Intents' token list that has a price and a readable total (158 tokens, $219.6M in total; 27 listed tokens could not be read and are left out)"
+   "shown": "61.0%",
+   "what": "Share of everything intents.near holds that sits behind the private chain on 2026-11-13: every token in NEAR Intents' token list that has a price and a balance inside intents.near (180 tokens, $223.8M in total; 27 listed ids are not balances inside intents.near or could not be read, and are left out)"
   },
   {
    "how": "as C4, one asset group",
@@ -33,8 +33,8 @@
   {
    "how": "as C4, one asset group",
    "id": "C6-Stablecoins",
-   "shown": "67.5%",
-   "what": "The same share for stablecoins alone on 2026-11-13 ($70.6M held in total)"
+   "shown": "68.2%",
+   "what": "The same share for stablecoins alone on 2026-11-13 ($72.3M held in total)"
   },
   {
    "how": "as C4, one asset group",
@@ -57,13 +57,13 @@
   {
    "how": "as C4, tracked tokens only",
    "id": "C23",
-   "shown": "61.8%",
+   "shown": "62.3%",
    "what": "The same share on 2026-11-13 for the 20 tokens tracked through time (the largest by total held)"
   },
   {
    "how": "tracked total over all-token total",
    "id": "C18",
-   "shown": "90%",
+   "shown": "89%",
    "what": "Part of everything intents.near holds that the tracked tokens cover"
   },
   {
@@ -76,12 +76,12 @@
    "how": "held minus treasury, pinned prices",
    "id": "C20",
    "shown": "$83.5M",
-   "what": "Public side of intents.near on 2026-04-02, tracked tokens ($75.7M on 2026-11-13)"
+   "what": "Public side of intents.near on 2026-04-02, tracked tokens ($75.0M on 2026-11-13)"
   },
   {
    "how": "as C20",
    "id": "C24",
-   "shown": "$75.7M",
+   "shown": "$75.0M",
    "what": "Public side of intents.near on 2026-11-13, tracked tokens"
   },
   {
@@ -99,20 +99,44 @@
   {
    "how": "float on the pinned day divided by float at launch, same prices",
    "id": "C7",
-   "shown": "2.7x",
+   "shown": "2.8x",
    "what": "Growth of the private float since the B2B launch on 2026-07-13 ($49.3M then)"
   },
   {
    "how": "sum of the ten largest one-day changes in the float, pinned prices",
    "id": "C8",
-   "shown": "$75.0M",
-   "what": "Added on the 10 best days out of 268 (the float today is $132.3M)"
+   "shown": "$75.5M",
+   "what": "Added on the 10 best days out of 268 (the float on 2026-11-13 is $136.4M)"
   },
   {
    "how": "C8 divided by C1",
    "id": "C17",
-   "shown": "57%",
-   "what": "The ten best days as a share of today's float (the concentration reading)"
+   "shown": "55%",
+   "what": "The ten best days as a share of the float on 2026-11-13 (the concentration reading)"
+  },
+  {
+   "how": "tenth of the one-day changes, largest first",
+   "id": "C25",
+   "shown": "$4.7M",
+   "what": "The tenth-largest one-day rise in the float so far (the bar for 'one more lump' in PREREG.md)"
+  },
+  {
+   "how": "count of non-negative one-day changes",
+   "id": "B1",
+   "shown": "63%",
+   "what": "Days on which the float did not fall, out of 268 (the base rate of test E1)"
+  },
+  {
+   "how": "share of four-day windows",
+   "id": "B2",
+   "shown": "58%",
+   "what": "Four-day windows since the B2B launch in which the float did not fall (the base rate of test F1)"
+  },
+  {
+   "how": "share of four-day windows",
+   "id": "B3",
+   "shown": "79%",
+   "what": "Four-day windows since the B2B launch with no day above the tenth-largest rise (the base rate of test F2)"
   },
   {
    "how": "smallest one-day change",
@@ -123,19 +147,19 @@
   {
    "how": "float two days apart, pinned prices",
    "id": "C10",
-   "shown": "2.6%",
+   "shown": "2.8%",
    "what": "Change in the float across the day every 1Click swap moved to the private chain (2026-10-26 to 2026-10-28)"
   },
   {
    "how": "difference of the two days",
    "id": "C11",
-   "shown": "$18.0M",
+   "shown": "$20.7M",
    "what": "Added to the float between 2026-10-27 and 2026-11-13"
   },
   {
    "how": "group totals at pinned prices",
    "id": "C12",
-   "shown": "Stablecoins: $47.6M",
+   "shown": "Stablecoins: $49.3M",
    "what": "Largest asset group in the float on 2026-11-13"
   },
   {
@@ -148,7 +172,7 @@
    "how": "one minus C13 over C1",
    "id": "C22",
    "must_appear": false,
-   "shown": "67%",
+   "shown": "68%",
    "what": "Part of the float that is not NEAR's own token on 2026-11-13"
   },
   {
@@ -171,40 +195,124 @@
    "what": "wNEAR in the float on 2026-11-13"
   },
   {
+   "how": "change in float over the days, times 30",
+   "id": "P1",
+   "shown": "$7.9M per 30 days",
+   "what": "Float growth before the reward programme (2026-02-19 to 2026-06-11)"
+  },
+  {
+   "how": "as P1",
+   "id": "P2",
+   "shown": "$14.3M per 30 days",
+   "what": "Float growth while the first reward was open (2026-06-11 to 2026-09-17)"
+  },
+  {
+   "how": "as P1",
+   "id": "P3",
+   "shown": "$31.8M per 30 days",
+   "what": "Float growth after the first reward's snapshot was triggered (2026-09-17 to 2026-11-13)"
+  },
+  {
+   "how": "float minus the NEAR group, pinned prices",
+   "id": "P4",
+   "shown": "$92.9M",
+   "what": "Float without NEAR's own token on 2026-11-13 ($46.1M on 2026-09-17)"
+  },
+  {
+   "how": "as P4",
+   "id": "P5",
+   "shown": "$46.1M",
+   "what": "Float without NEAR's own token on 2026-09-17"
+  },
+  {
+   "how": "smallest one-day change of P4's series",
+   "id": "P6",
+   "shown": "$2.7M",
+   "what": "Largest one-day fall in the float without NEAR's own token"
+  },
+  {
+   "how": "wNEAR balance at the peak minus today, over the inflow",
+   "id": "P7",
+   "shown": "69%",
+   "what": "Part of the wNEAR that arrived between 2026-09-15 and 2026-09-28 that had left again by the pinned day"
+  },
+  {
+   "how": "treasury balance above the token contract's balance for intents.near",
+   "id": "S1",
+   "shown": "2 readings",
+   "what": "Readings where the treasury was credited with more of a token than intents.near held: 2026-10-01, 2026-10-02"
+  },
+  {
+   "how": "treasury minus held, at the pinned price",
+   "id": "S2",
+   "shown": "$3.3M",
+   "what": "Largest such shortfall, on the 2026-10-02 reading: USDT(DEPRECATED) on bsc, 67,669 held against 3,373,849 credited"
+  },
+  {
+   "how": "shortfall over treasury credit",
+   "id": "S3",
+   "shown": "98%",
+   "what": "Part of the treasury's credit in that token that had nothing behind it on that reading"
+  },
+  {
+   "how": "next reading with treasury at or below held",
+   "id": "S4",
+   "shown": "2026-10-03",
+   "what": "First reading on which that token was fully held again"
+  },
+  {
    "grade": "reported",
-   "how": "sum of the last 30 daily values in data/context/defillama.json",
+   "how": "sum of 30 daily values in data/context/defillama.json",
    "id": "X1",
-   "shown": "$3.77B",
-   "what": "Reported 30-day swap volume (DefiLlama, from a table NEAR uploads to Dune)"
+   "shown": "$3.73B",
+   "what": "Reported swap volume, 30 days to 2026-11-11 (DefiLlama, from a table uploaded to Dune under the near team's name)"
   },
   {
    "grade": "reported",
    "how": "as X1",
    "id": "X2",
-   "shown": "$5.8M",
-   "what": "Reported 30-day gross fees (same kind of source)"
+   "shown": "$6.0M",
+   "what": "Reported gross fees, 30 days to 2026-11-11 (same kind of source)"
   },
   {
    "grade": "chain, via an indexer",
    "how": "as X1",
    "id": "X3",
    "shown": "$1.8M",
-   "what": "30-day revenue that reached NEAR's public revenue wallets (DefiLlama, from chain tables)"
+   "what": "Revenue that reached NEAR's public revenue wallets, 30 days to 2026-11-11 (DefiLlama, from chain tables, in dollars at each day's price)"
+  },
+  {
+   "how": "ratio of two 30-day sums",
+   "id": "T1",
+   "shown": "-22%",
+   "what": "Change in reported volume, 30 days to 2026-11-11 against the 30 days before"
+  },
+  {
+   "how": "ratio of two 30-day sums",
+   "id": "T2",
+   "shown": "-26%",
+   "what": "Change in reported fees, 30 days to 2026-11-11 against the 30 days before"
+  },
+  {
+   "how": "ratio of two 30-day sums",
+   "id": "T3",
+   "shown": "-20%",
+   "what": "Change in revenue reaching NEAR's wallets, 30 days to 2026-11-11 against the 30 days before"
   },
   {
    "grade": "reported",
    "how": "X1 / 30 / total held",
    "id": "X4",
    "must_appear": false,
-   "shown": "0.57x a day",
+   "shown": "0.56x a day",
    "what": "Reported daily volume divided by everything intents.near holds"
   },
   {
-   "grade": "chain",
-   "how": "total_supply at the pinned block, times the wNEAR price in data/tokens.json",
+   "grade": "chain, one quoted price",
+   "how": "total_supply at the pinned block, times the price in data/context/near_price.json",
    "id": "V1",
-   "shown": "$4.62B",
-   "what": "NEAR market value on 2026-11-13: supply in the block header times the pinned price of $3.52"
+   "shown": "$4.48B",
+   "what": "Value of NEAR's total supply on 2026-11-13: supply in the block header times CoinGecko's price of $3.42"
   },
   {
    "grade": "chain",
@@ -214,25 +322,65 @@
    "what": "Net new NEAR supply, average of the 30 days to the pinned day"
   },
   {
-   "grade": "chain",
+   "grade": "chain, one quoted price",
    "how": "V2 times price times 365",
    "id": "V3",
-   "shown": "$114.0M a year",
-   "what": "The same, in dollars at the pinned price"
+   "shown": "$110.7M a year",
+   "what": "The same, in dollars at that price"
   },
   {
    "grade": "chain, via an indexer",
-   "how": "X3 divided by 30 days of V2 at the pinned price",
+   "how": "each day's quoted revenue divided by that day's price, summed, over 30 days of V2",
    "id": "V4",
-   "shown": "20%",
-   "what": "Revenue reaching NEAR's wallets as a share of net new supply (30 days)"
+   "shown": "15%",
+   "what": "Revenue reaching NEAR's wallets as a share of net new supply, NEAR against NEAR, 30 days to 2026-11-11"
   },
   {
    "grade": "chain, via an indexer",
-   "how": "V1 divided by (X3 times 365/30)",
+   "how": "supply over (30-day revenue in NEAR times 365/30)",
    "id": "V5",
-   "shown": "207x",
-   "what": "NEAR market value divided by that revenue, annualised"
+   "shown": "265x",
+   "what": "NEAR's total supply divided by that revenue, annualised, NEAR against NEAR"
+  },
+  {
+   "grade": "reported",
+   "how": "X3 over X1",
+   "id": "M1",
+   "shown": "4.8 basis points",
+   "what": "Revenue reaching NEAR's wallets per dollar of reported volume, 30 days to 2026-11-11"
+  },
+  {
+   "grade": "chain, via an indexer",
+   "how": "one over V4",
+   "id": "M2",
+   "shown": "6.5x",
+   "what": "How many times revenue would have to grow for buybacks to match net new supply"
+  },
+  {
+   "grade": "reported",
+   "how": "annualised X1 times M2",
+   "id": "M3",
+   "shown": "$297B a year",
+   "what": "Reported volume that would take at today's rate of revenue per dollar of volume"
+  },
+  {
+   "how": "largest daily value, pinned prices",
+   "id": "T4",
+   "shown": "$136.4M",
+   "what": "Highest the float has been, on the 2026-11-13 reading"
+  },
+  {
+   "how": "as C7, without the NEAR group",
+   "id": "P8",
+   "shown": "3.5x",
+   "what": "Growth of the float without NEAR's own token since the B2B launch ($26.8M then)"
+  },
+  {
+   "grade": "chain",
+   "how": "intents.near.public_keys_of(treasury) and view_account(treasury)",
+   "id": "K1",
+   "shown": "1 key",
+   "what": "Keys registered inside intents.near for the treasury account at the pinned block (the account itself has no contract code)"
   }
  ],
  "pin_day": "2026-11-13",

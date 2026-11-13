@@ -1,7 +1,7 @@
 # Waterline
 
-**What NEAR Intents' private chain holds, read every day from public NEAR. An investment thesis for NEAR built
-only on numbers anyone can recompute.**
+**What NEAR Intents' private chain holds, read every day from public NEAR. An investment thesis for NEAR whose
+own measurements anyone can recompute, and which labels every number it only quotes.**
 
 Built at NEAR HACKATHON 2026. Track: Investment Thesis (`thesis`).
 
@@ -9,13 +9,13 @@ Live dashboard: <https://nuel-osas.github.io/waterline/>
 
 ## The problem
 
-NEAR's investment case rests on NEAR Intents. On 27 October 2026, NEAR Intents moved its 1Click swaps to a
-private chain. The docs describe it as "a permissioned instance of the NEAR protocol operated by a small validator set
-with no public networking", where a swap is "invisible to public indexers".
+NEAR's investment case leans on NEAR Intents. On 27 October 2026, NEAR Intents' 1Click swaps began to settle on
+a private chain. The docs describe it as "a permissioned instance of the NEAR protocol operated by a small
+validator set with no public networking", where a swap is "invisible to public indexers".
 
-Since that day, the volume and fee figures that investors quote come from tables NEAR's own team uploads. An
-outsider can read them but cannot recompute them. A thesis "judged on the evidence" needs evidence that does not
-depend on the party being valued.
+The volume and fee figures that investors quote have come from NEAR-run sources since 2025. Until 27 October an
+outsider could cross-check them against public settlement in `intents.near`. Since then the swap leg is
+private. A thesis "judged on the evidence" needs evidence that does not depend on the party being valued.
 
 ## What this is
 
@@ -25,8 +25,12 @@ token's contract how much `intents.near` holds in total, and builds:
 
 - a daily history of the money behind the private chain (the float), in tokens and in dollars at fixed prices;
 - the share of everything NEAR Intents holds that is now private;
+- a check, on every reading, that the treasury is never credited with more of a token than `intents.near`
+  holds. It failed on two readings in October, which turned out to match a published exploit to the hour;
+- the float read against NEAR's own reward programme for confidential balances;
 - an investment thesis on NEAR that states which of its inputs are observed and which are reported, and the
-  four readings that would change it: [`THESIS.md`](THESIS.md);
+  readings that would change it: [`THESIS.md`](THESIS.md);
+- forward tests written before their readings exist, scored by code: [`PREREG.md`](PREREG.md);
 - a dashboard that shows all of it: `make serve`.
 
 No key, no account, no package to install. Python 3.9 or newer.
@@ -34,75 +38,108 @@ No key, no account, no package to install. Python 3.9 or newer.
 ## Findings
 
 As of NEAR mainnet block 224285109 (2026-11-13, 00:00 UTC). This table is written by `pipeline/claims.py` from
-the raw readings; `make check` rebuilds it and fails if any number in this file or in `THESIS.md` differs.
+the raw readings. `make check` rebuilds it in memory and fails if it differs, and fails if any dollar amount,
+percentage, multiple or NEAR amount in the prose of this file, `THESIS.md` or `PREREG.md` is neither one of
+these rows nor a constant declared in `data/constants.json`.
 
 <!-- claims:start -->
 | # | Number | What it is |
 | --- | --- | --- |
-| C1 | **$132.3M** | Value locked behind the private chain on 2026-11-13, at pinned prices |
-| C2 | **205 token types** | Different tokens the private chain held on 2026-11-13 (52 of them have no price and are left out of every dollar figure) |
-| C3 | **2026-02-19** | First day the treasury held anything |
-| C4 | **60.2%** | Share of everything intents.near holds that sits behind the private chain on 2026-11-13: every token in NEAR Intents' token list that has a price and a readable total (158 tokens, $219.6M in total; 27 listed tokens could not be read and are left out) |
+| C1 | **$136.4M** | Value locked behind the private chain on 2026-11-13, at pinned prices |
+| C2 | **205 token types** | Different tokens the private chain held on 2026-11-13 (30 of them have no price and are left out of every dollar figure) |
+| C3 | **2026-02-19** | First reading (00:00 UTC) on which the treasury held anything; the account was created the day before |
+| C4 | **61.0%** | Share of everything intents.near holds that sits behind the private chain on 2026-11-13: every token in NEAR Intents' token list that has a price and a balance inside intents.near (180 tokens, $223.8M in total; 27 listed ids are not balances inside intents.near or could not be read, and are left out) |
 | C6-NEAR | **69.9%** | The same share for NEAR alone on 2026-11-13 ($62.3M held in total) |
-| C6-Stablecoins | **67.5%** | The same share for stablecoins alone on 2026-11-13 ($70.6M held in total) |
+| C6-Stablecoins | **68.2%** | The same share for stablecoins alone on 2026-11-13 ($72.3M held in total) |
 | C6-ZEC | **60.3%** | The same share for ZEC alone on 2026-11-13 ($23.7M held in total) |
 | C6-ETH | **57.5%** | The same share for ETH alone on 2026-11-13 ($7.7M held in total) |
 | C6-BTC | **28.8%** | The same share for bitcoin alone on 2026-11-13 ($27.5M held in total) |
-| C23 | **61.8%** | The same share on 2026-11-13 for the 20 tokens tracked through time (the largest by total held) |
-| C18 | **90%** | Part of everything intents.near holds that the tracked tokens cover |
+| C23 | **62.3%** | The same share on 2026-11-13 for the 20 tokens tracked through time (the largest by total held) |
+| C18 | **89%** | Part of everything intents.near holds that the tracked tokens cover |
 | C19 | **6%** | Tracked-token share on 2026-04-02, the first reading of April |
-| C20 | **$83.5M** | Public side of intents.near on 2026-04-02, tracked tokens ($75.7M on 2026-11-13) |
-| C24 | **$75.7M** | Public side of intents.near on 2026-11-13, tracked tokens |
+| C20 | **$83.5M** | Public side of intents.near on 2026-04-02, tracked tokens ($75.0M on 2026-11-13) |
+| C24 | **$75.0M** | Public side of intents.near on 2026-11-13, tracked tokens |
 | C5 | **36.2%** | Tracked-token share on 2026-07-16, the first reading after the B2B launch of 2026-07-13 |
 | C21 | **56.2%** | Tracked-token share on 2026-10-26, the day before the switch |
-| C7 | **2.7x** | Growth of the private float since the B2B launch on 2026-07-13 ($49.3M then) |
-| C8 | **$75.0M** | Added on the 10 best days out of 268 (the float today is $132.3M) |
-| C17 | **57%** | The ten best days as a share of today's float (the concentration reading) |
+| C7 | **2.8x** | Growth of the private float since the B2B launch on 2026-07-13 ($49.3M then) |
+| C8 | **$75.5M** | Added on the 10 best days out of 268 (the float on 2026-11-13 is $136.4M) |
+| C17 | **55%** | The ten best days as a share of the float on 2026-11-13 (the concentration reading) |
+| C25 | **$4.7M** | The tenth-largest one-day rise in the float so far (the bar for 'one more lump' in PREREG.md) |
+| B1 | **63%** | Days on which the float did not fall, out of 268 (the base rate of test E1) |
+| B2 | **58%** | Four-day windows since the B2B launch in which the float did not fall (the base rate of test F1) |
+| B3 | **79%** | Four-day windows since the B2B launch with no day above the tenth-largest rise (the base rate of test F2) |
 | C9 | **$14.6M** | Largest one-day fall in the float, between the readings of 2026-09-29 and 2026-09-30 |
-| C10 | **2.6%** | Change in the float across the day every 1Click swap moved to the private chain (2026-10-26 to 2026-10-28) |
-| C11 | **$18.0M** | Added to the float between 2026-10-27 and 2026-11-13 |
-| C12 | **Stablecoins: $47.6M** | Largest asset group in the float on 2026-11-13 |
+| C10 | **2.8%** | Change in the float across the day every 1Click swap moved to the private chain (2026-10-26 to 2026-10-28) |
+| C11 | **$20.7M** | Added to the float between 2026-10-27 and 2026-11-13 |
+| C12 | **Stablecoins: $49.3M** | Largest asset group in the float on 2026-11-13 |
 | C13 | **NEAR: $43.5M** | NEAR's own token in the float on 2026-11-13 |
-| C22 | **67%** | Part of the float that is not NEAR's own token on 2026-11-13 |
+| C22 | **68%** | Part of the float that is not NEAR's own token on 2026-11-13 |
 | C14 | **12.6M NEAR** | wNEAR that entered the float between the readings of 2026-09-15 and 2026-09-28 |
 | C15 | **3.9M NEAR** | wNEAR that left the float in one day, between the readings of 2026-09-29 and 2026-09-30 |
 | C16 | **12.4M NEAR** | wNEAR in the float on 2026-11-13 |
-| X1 | **$3.77B** | Reported 30-day swap volume (DefiLlama, from a table NEAR uploads to Dune) |
-| X2 | **$5.8M** | Reported 30-day gross fees (same kind of source) |
-| X3 | **$1.8M** | 30-day revenue that reached NEAR's public revenue wallets (DefiLlama, from chain tables) |
-| X4 | **0.57x a day** | Reported daily volume divided by everything intents.near holds |
-| V1 | **$4.62B** | NEAR market value on 2026-11-13: supply in the block header times the pinned price of $3.52 |
+| P1 | **$7.9M per 30 days** | Float growth before the reward programme (2026-02-19 to 2026-06-11) |
+| P2 | **$14.3M per 30 days** | Float growth while the first reward was open (2026-06-11 to 2026-09-17) |
+| P3 | **$31.8M per 30 days** | Float growth after the first reward's snapshot was triggered (2026-09-17 to 2026-11-13) |
+| P4 | **$92.9M** | Float without NEAR's own token on 2026-11-13 ($46.1M on 2026-09-17) |
+| P5 | **$46.1M** | Float without NEAR's own token on 2026-09-17 |
+| P6 | **$2.7M** | Largest one-day fall in the float without NEAR's own token |
+| P7 | **69%** | Part of the wNEAR that arrived between 2026-09-15 and 2026-09-28 that had left again by the pinned day |
+| S1 | **2 readings** | Readings where the treasury was credited with more of a token than intents.near held: 2026-10-01, 2026-10-02 |
+| S2 | **$3.3M** | Largest such shortfall, on the 2026-10-02 reading: USDT(DEPRECATED) on bsc, 67,669 held against 3,373,849 credited |
+| S3 | **98%** | Part of the treasury's credit in that token that had nothing behind it on that reading |
+| S4 | **2026-10-03** | First reading on which that token was fully held again |
+| X1 | **$3.73B** | Reported swap volume, 30 days to 2026-11-11 (DefiLlama, from a table uploaded to Dune under the near team's name) |
+| X2 | **$6.0M** | Reported gross fees, 30 days to 2026-11-11 (same kind of source) |
+| X3 | **$1.8M** | Revenue that reached NEAR's public revenue wallets, 30 days to 2026-11-11 (DefiLlama, from chain tables, in dollars at each day's price) |
+| T1 | **-22%** | Change in reported volume, 30 days to 2026-11-11 against the 30 days before |
+| T2 | **-26%** | Change in reported fees, 30 days to 2026-11-11 against the 30 days before |
+| T3 | **-20%** | Change in revenue reaching NEAR's wallets, 30 days to 2026-11-11 against the 30 days before |
+| X4 | **0.56x a day** | Reported daily volume divided by everything intents.near holds |
+| V1 | **$4.48B** | Value of NEAR's total supply on 2026-11-13: supply in the block header times CoinGecko's price of $3.42 |
 | V2 | **88,704 NEAR a day** | Net new NEAR supply, average of the 30 days to the pinned day |
-| V3 | **$114.0M a year** | The same, in dollars at the pinned price |
-| V4 | **20%** | Revenue reaching NEAR's wallets as a share of net new supply (30 days) |
-| V5 | **207x** | NEAR market value divided by that revenue, annualised |
+| V3 | **$110.7M a year** | The same, in dollars at that price |
+| V4 | **15%** | Revenue reaching NEAR's wallets as a share of net new supply, NEAR against NEAR, 30 days to 2026-11-11 |
+| V5 | **265x** | NEAR's total supply divided by that revenue, annualised, NEAR against NEAR |
+| M1 | **4.8 basis points** | Revenue reaching NEAR's wallets per dollar of reported volume, 30 days to 2026-11-11 |
+| M2 | **6.5x** | How many times revenue would have to grow for buybacks to match net new supply |
+| M3 | **$297B a year** | Reported volume that would take at today's rate of revenue per dollar of volume |
+| T4 | **$136.4M** | Highest the float has been, on the 2026-11-13 reading |
+| P8 | **3.5x** | Growth of the float without NEAR's own token since the B2B launch ($26.8M then) |
+| K1 | **1 key** | Keys registered inside intents.near for the treasury account at the pinned block (the account itself has no contract code) |
 <!-- claims:end -->
 
-C rows are measured here from chain state. V rows combine a block-header reading with one quoted figure. X rows
-are quoted from DefiLlama and labelled with their origin; this project does not vouch for them.
+C, P, S and K rows are measured here from chain state (P: around NEAR's reward programme; S: shortfalls; K:
+custody). V and M rows combine a block-header reading with quoted figures. X and T rows are quoted from
+DefiLlama and labelled with their origin; this project does not vouch for them.
 
 ## Try it
 
 | Do | See |
 | --- | --- |
-| `make test` | The unit tests pass. No network. About a second. |
-| `make check` | Every number above is rebuilt from `data/` and compared. Ends with `RESULT: PASS`. No network. |
-| `make verify` | First re-reads 8 days from a public NEAR archival node and compares them with the stored readings, then does everything `make check` does. About a minute. |
-| `make score` | The forward tests in [`PREREG.md`](PREREG.md), each `PASS`, `FAIL` or `PENDING` until its reading exists. |
-| `make serve` | The dashboard at <http://localhost:8080>. |
+| `make test` | `OK` after the unit tests. No network. Under a second. |
+| `make check` | Every derived file, the table above and the numbers in the page are rebuilt in memory and compared with what is committed; every number in the prose is checked. Ends with `RESULT: PASS`. No network, writes nothing. |
+| `make verify` | First re-reads 8 days from a public NEAR archival node (balances, the largest totals, the supply headers, the treasury's keys), then does everything `make check` does. One to three minutes. |
+| `make score` | The forward tests in [`PREREG.md`](PREREG.md), each `PASS`, `FAIL`, `UNKNOWN` or `PENDING` until its reading exists. |
+| `make pull` then `make build` | Adds the days since the last committed reading (about 30 requests a day added) and rebuilds, so `make score` can resolve tests whose day has come. |
+| `make serve` | The dashboard at <http://localhost:8080>. The command keeps running; stop it with Ctrl-C. |
 | `python3 -m pipeline.verify --all` | Re-reads every day. Slow: public nodes allow under one request a second. |
+
+Settings, all optional: `ARCHIVAL_RPC` (another archival node), `RPC_RATE` (requests a second, default 0.7),
+`FIRST_DAY` and `OLD_ANCHOR` (where a pull from scratch starts; defaults cover the whole history).
 
 What `make verify` prints, shortened:
 
 ```
 re-reading 8 days from https://archival-rpc.mainnet.fastnear.com
 ok   2026-02-18  block 186012275  0 balances and 0 totals match the chain
-ok   2026-10-27  block 221760250  180 balances and 3 totals match the chain
-ok   2026-11-13  block 224285109  205 balances and 3 totals match the chain
+ok   2026-10-02  block 218126936  172 balances and 1 totals match the chain
+ok   2026-11-13  block 224285109  205 balances and 20 totals match the chain
 ...
-ok   series rebuilt from raw data is identical (269 days)
-ok   C1: $132.3M  (Value locked behind the private chain on 2026-11-13, at pinned prices)
-ok   C4: 60.2%  (Share of everything intents.near holds that sits behind the private chain ...)
+ok   total supply in 5 block headers matches data/context/supply.json
+ok   1 key registered for the treasury in intents.near, as in data/context/custody.json
+ok   data/derived/series.json is exactly what the data produces
+ok   README.md is exactly what the data produces
+ok   THESIS.md: all 79 numbers in the prose are computed claims or declared constants
 ...
 RESULT: PASS
 ```
@@ -123,13 +160,17 @@ It prints the private chain's wNEAR balance at that block, in yoctoNEAR. The sam
 
 ## The thesis in short
 
-1. NEAR's price is a growth price: its market value is 207x the revenue that reaches NEAR's wallets, and that
-   revenue covers 20% of net new supply.
-2. The growth is in a product whose activity went private on 27 October. The float is the growth signal that
-   cannot be reported into existence, and it is up 2.7x since July.
-3. The same float is the largest unpriced risk: nothing public proves the private chain owes what the treasury
-   holds.
-4. Position: constructive, conditional on four dated readings. See [`THESIS.md`](THESIS.md).
+1. NEAR's price needs growth: the value of its supply is 265x the revenue that reaches NEAR's wallets, that
+   revenue covers 15% of net new supply, and it would have to grow 6.5x to match it.
+2. The product that has to grow went private on 27 October. The float is the one adoption measure that cannot
+   be misreported, and it is up 2.8x since July.
+3. It can be rented, though. NEAR pays a reward for confidential balances, and 69% of the NEAR that arrived
+   around the reward's snapshot has left. Without NEAR's own token the float is $92.9M and steadier.
+4. The same float is an unpriced risk. For 2 readings in October one token in it was 98% unbacked, which
+   matches a published exploit. That was visible because it was on the public ledger; nothing public proves
+   the private chain owes what the treasury holds, and 1 key is registered for the treasury.
+5. Position: a small holding, an option on private settlement, conditional on dated readings. See
+   [`THESIS.md`](THESIS.md).
 
 ## How it works
 
@@ -140,20 +181,24 @@ public NEAR archival node
    |  <token>.ft_balance_of(intents.near)            -> data/held/<day>.json
    v
 pipeline/build.py    exact integer and fraction arithmetic -> data/derived/series.json, site/data.js
-pipeline/claims.py   every quoted number                   -> data/derived/claims.json, the table above
+pipeline/context.py  token list, quoted figures, supply headers, custody -> data/tokens.json, data/context/
+pipeline/claims.py   every quoted number                   -> data/derived/claims.json, the table above,
+                                                             the numbers written into site/index.html
 pipeline/score.py    forward tests written in PREREG.md     -> data/derived/forward.json
-pipeline/verify.py   re-read from the chain, rebuild, compare
+pipeline/verify.py   re-read from the chain, rebuild in memory, compare; writes nothing
 ```
 
 - A reading is tied to a block height, so it never changes and anyone gets the same bytes.
 - A read that fails is stored as `null` and left out. It is never counted as zero.
-- If the treasury shows more of a token than the token's contract says `intents.near` holds, that reading is
-  left out of the share and listed in `data/derived/anomalies.json`. It is never turned into a share above
-  100%. One such reading exists so far: 2026-10-01, the old BNB Chain USDT id.
+- If the treasury is credited with more of a token than the token's contract says `intents.near` holds, that
+  reading is left out of the share and listed in `data/derived/anomalies.json` with its size. It is never
+  turned into a share above 100%. Two such readings exist, 2026-10-01 and 2026-10-02, for one token.
 - Constants and how each was checked: [`docs/SOURCES.md`](docs/SOURCES.md).
 - A scheduled workflow (`.github/workflows/daily.yml`) reads the new days every morning, scores the forward
-  tests and republishes the dashboard, so the gauge outlives the hackathon. It commits nothing: the numbers
-  quoted in the text stay pinned to the block above.
+  tests and republishes the dashboard. It commits nothing: main changes only through pull requests, and the
+  numbers quoted in the text stay pinned to the block above. Two limits: readings it takes are kept in a build
+  cache, not in the repository, until someone merges them; and GitHub pauses scheduled workflows after 60 days
+  without repository activity.
 
 ## How NEAR fits
 
@@ -165,20 +210,24 @@ permission.
 ## Limits
 
 The full list is in [`THESIS.md`](THESIS.md#5-limits). The main ones: dollar figures use one fixed price list;
-52 token types have no price and are left out; the 60.2% counts every listed token with a price on the pinned
+30 token types have no price and are left out; the 61.0% counts every listed token with a price on the pinned
 day, while the history follows the 20 largest and is weekly before 23 October; one reading a day cannot see
-money that enters and leaves within the day; the treasury shows assets, not what the private chain owes; volume,
-fees and revenue are quoted from DefiLlama, not recomputed here.
+money that enters and leaves within the day; the treasury shows assets, not what the private chain owes; the
+October shortfall is matched to the published exploit by token, size and time, not by transaction; volume, fees
+and revenue are quoted from DefiLlama, not recomputed here.
 
 ## What was built for this hackathon
 
-Everything in this repository was written during the hackathon window (after 2026-10-19). No earlier code.
-Libraries: none beyond the Python standard library; the dashboard is plain HTML, CSS and JavaScript with no
-framework. Fonts: Geist and Geist Mono (SIL Open Font License), in `site/fonts/`. Data sources: NEAR mainnet
-through a public archival node, NEAR Intents' public token list, DefiLlama's public API. The code and text were
-written with an AI coding assistant (Claude Code) under the author's direction, and every number was checked
-against the chain by the commands above.
+Everything in this repository was written during the hackathon window: all of it on 13 November 2026, which is
+why the history is short. No earlier code. Libraries: none beyond the Python standard library; the dashboard is
+plain HTML, CSS and JavaScript with no framework. GitHub Actions used: `actions/checkout`,
+`actions/setup-python`, `actions/cache`, `actions/configure-pages`, `actions/upload-pages-artifact`,
+`actions/deploy-pages`. Fonts: Geist and Geist Mono (SIL Open Font License), in `site/fonts/`. Data sources:
+NEAR mainnet through a public archival node, NEAR Intents' public token list, DefiLlama's public API. The code
+and text were written with an AI coding assistant (Claude Code) under the author's direction. Before
+submission the repository was reviewed twice by independent AI reviewers, and their findings were fixed in
+pull request 2.
 
 ## Licence
 
-MIT. See [`LICENSE`](LICENSE).
+MIT. See [`LICENSE`](LICENSE). The licence holder, Veltri Labs, is the author's team.
