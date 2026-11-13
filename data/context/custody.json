@@ -1,0 +1,10 @@
+{
+ "account_code_hash": "11111111111111111111111111111111",
+ "account_has_contract_code": false,
+ "height": 224285109,
+ "keys_registered_in_intents_near": [
+  "ed25519:6Wk4sb8Gc449VB4LoofP3AM8hMSMgbAwwUEc4RhBodV7"
+ ],
+ "treasury": "51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe",
+ "what": "intents.near.public_keys_of(treasury) and view_account(treasury) at the pinned block. An implicit account's id is its own public key in hex, so one key equal to the id is the default."
+}
