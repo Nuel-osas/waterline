@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Waterline: what NEAR's private chain holds</title>
-<meta name="description" content="What NEAR Intents' private chain holds, read every day from public NEAR. An investment thesis built only on numbers anyone can recompute.">
+<meta name="description" content="NEAR's swaps went private. The money behind them did not. An investment thesis for NEAR whose own measurements anyone can recompute.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nuel-osas.github.io/waterline/">
 <meta property="og:title" content="Waterline: what NEAR's private chain holds">
-<meta property="og:description" content="An investment thesis for NEAR built only on numbers anyone can recompute.">
+<meta property="og:description" content="NEAR's swaps went private. The money behind them did not. Read from the public chain, one block a day.">
 <meta property="og:image" content="https://nuel-osas.github.io/waterline/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Waterline: what NEAR's private chain holds">
-<meta name="twitter:description" content="An investment thesis for NEAR built only on numbers anyone can recompute.">
+<meta name="twitter:description" content="NEAR's swaps went private. The money behind them did not. Read from the public chain, one block a day.">
 <meta name="twitter:image" content="https://nuel-osas.github.io/waterline/og.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
@@ -41,13 +41,13 @@
 <section class="hero paper">
   <div class="wrap">
     <p class="labels"><span class="label">NEAR Hackathon 2026</span><span class="label">Investment thesis</span><span class="label">Pinned <b data-pin="day">13 Nov 2026</b></span></p>
-    <h1><span class="num" data-claim="C4">61.0%</span> of NEAR Intents is under the waterline.</h1>
-    <p class="lede">On 27 October 2026, NEAR's main product moved its 1Click swaps to a private chain. Nobody outside can read it. The money behind it still sits in a public contract, so we read that instead: one block a day, since the first deposit.</p>
+    <h1>NEAR's swaps went private. <span class="num">The money behind them did not.</span></h1>
+    <p class="lede">Since 27 October 2026, 1Click swaps on NEAR Intents settle on a chain nobody outside can read. What backs that chain sits in one public account, so we read it: one block a day, since the first deposit. <span data-claim="C4">61.0%</span> of everything NEAR Intents holds is now behind the private chain. On 2 October the same reading showed <span data-claim="S2">$3.3M</span> missing, before we knew there had been a hack.</p>
     <dl class="stats">
       <div><dt>Behind the private chain</dt><dd data-claim="C1">$136.4M</dd></div>
-      <div><dt>Since the July launch</dt><dd data-claim="C7">2.8x</dd></div>
-      <div><dt>Held in</dt><dd data-claim="C2">205 token types</dd></div>
-      <div><dt>First reading with a balance</dt><dd data-claim="C3" data-fmt="date">19 Feb 2026</dd></div>
+      <div><dt>Share now private</dt><dd data-claim="C4">61.0%</dd></div>
+      <div><dt>Shortfall caught on 2 October</dt><dd data-claim="S2">$3.3M</dd></div>
+      <div><dt>Without NEAR's own token</dt><dd data-claim="P4">$92.9M</dd></div>
     </dl>
   </div>
 </section>
@@ -73,12 +73,15 @@
 
     <article class="finding">
       <header>
-        <h3>It compounds.</h3>
-        <p>First reading with a balance: <span data-claim="C3" data-fmt="date">19 Feb 2026</span>. <span data-claim="C7" data-part="then">$49.3M</span> at the B2B launch in July. <span data-claim="C1">$136.4M</span> on the pinned day, in stablecoins, NEAR, ZEC, bitcoin and ETH.</p>
+        <h3>The reading caught a real shortfall.</h3>
+        <p>On <span data-claim="S1">2 readings</span> in October, the ledger credited the private chain with more of one dollar token than NEAR Intents held: <span data-claim="S2">$3.3M</span> missing, <span data-claim="S3">98%</span> of the claim. We flagged it before we knew why. It matches a published exploit of the token's bridge to the hour, and it was whole again on <span data-claim="S4" data-fmt="date">3 Oct 2026</span>.</p>
       </header>
-      <ul class="legend" id="legend-stack" aria-label="Asset groups"></ul>
-      <div class="chart" id="chart-stack" role="img" aria-label="Stacked area chart of the private float by asset group, daily since February 2026. The figures are in the text above and in the tooltip."></div>
-      <p class="note">Every token the treasury holds that has a price, daily, at the prices of the pinned day. <span data-claim="C2" data-part="unpriced">30</span> token types have no price and are left out.</p>
+      <ul class="legend" aria-label="Series">
+        <li><i class="key fog"></i>What NEAR Intents held of the token</li>
+        <li><i class="key accent"></i>What the private chain was credited</li>
+      </ul>
+      <div class="chart small" id="chart-short" role="img" aria-label="Two lines from 24 September to 8 October 2026 for one token. The amount credited to the private chain stays level. The amount NEAR Intents held falls to almost nothing on 2 October and returns on 3 October. The figures are in the text above."></div>
+      <p class="note">The old BNB Chain USDT id, one reading a day at 00:00 UTC. When the backing broke on the public ledger, anyone could see it by asking two contracts one question each. Nothing like that question can be asked of the private chain.</p>
     </article>
 
     <article class="finding">
@@ -92,6 +95,16 @@
       </ul>
       <div class="chart" id="chart-reward" role="img" aria-label="Two lines from February to November 2026. The float without NEAR's own token rises steadily. NEAR's own token in the float more than doubles in the ten days after 17 September and then falls back most of the way."></div>
       <p class="note">Without NEAR's own token the float is <span data-claim="P4">$92.9M</span>, up from <span data-claim="P5">$46.1M</span> at the snapshot, and its worst day ever is a fall of <span data-claim="P6">$2.7M</span>. Of the NEAR that arrived around the snapshot, <span data-claim="P7">69%</span> has left.</p>
+    </article>
+
+    <article class="finding">
+      <header>
+        <h3>It compounds.</h3>
+        <p>First reading with a balance: <span data-claim="C3" data-fmt="date">19 Feb 2026</span>. <span data-claim="C7" data-part="then">$49.3M</span> at the B2B launch in July. <span data-claim="C1">$136.4M</span> on the pinned day, in stablecoins, NEAR, ZEC, bitcoin and ETH.</p>
+      </header>
+      <ul class="legend" id="legend-stack" aria-label="Asset groups"></ul>
+      <div class="chart" id="chart-stack" role="img" aria-label="Stacked area chart of the private float by asset group, daily since February 2026. The figures are in the text above and in the tooltip."></div>
+      <p class="note">Every token the treasury holds that has a price, daily, at the prices of the pinned day. <span data-claim="C2" data-part="unpriced">30</span> token types have no price and are left out.</p>
     </article>
 
     <div class="pair">
@@ -113,19 +126,6 @@
         <p class="note">Daily float around the day 1Click swaps began to settle privately, on an axis that starts at zero.</p>
       </article>
     </div>
-
-    <article class="finding">
-      <header>
-        <h3>The reading caught a real shortfall.</h3>
-        <p>On <span data-claim="S1">2 readings</span> in October, the ledger credited the private chain with more of one dollar token than NEAR Intents held: <span data-claim="S2">$3.3M</span> missing, <span data-claim="S3">98%</span> of the claim. We flagged it before we knew why. It matches a published exploit of the token's bridge to the hour, and it was whole again on <span data-claim="S4" data-fmt="date">3 Oct 2026</span>.</p>
-      </header>
-      <ul class="legend" aria-label="Series">
-        <li><i class="key fog"></i>What NEAR Intents held of the token</li>
-        <li><i class="key accent"></i>What the private chain was credited</li>
-      </ul>
-      <div class="chart small" id="chart-short" role="img" aria-label="Two lines from 24 September to 8 October 2026 for one token. The amount credited to the private chain stays level. The amount NEAR Intents held falls to almost nothing on 2 October and returns on 3 October. The figures are in the text above."></div>
-      <p class="note">The old BNB Chain USDT id, one reading a day at 00:00 UTC. When the backing broke on the public ledger, anyone could see it by asking two contracts one question each. Nothing like that question can be asked of the private chain.</p>
-    </article>
 
     <article class="finding">
       <header>
