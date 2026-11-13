@@ -44,13 +44,14 @@ class Shares(unittest.TestCase):
         r = build.day_row(day({"nep141:usdc": 5}, {}), META, ["nep141:usdc"])
         self.assertIsNone(r["share_usd"])
 
-    def test_treasury_above_the_contract_total_is_listed_and_left_out_never_a_share(self):
-        bal = {"nep141:usdc": 11, "nep141:wrap.near": 10**24}
-        held = {"nep141:usdc": 10, "nep141:wrap.near": 4 * 10**24}
+    def test_treasury_above_the_contract_total_is_listed_with_its_size_and_left_out_never_a_share(self):
+        bal = {"nep141:usdc": 11_000_000, "nep141:wrap.near": 10**24}
+        held = {"nep141:usdc": 10_000_000, "nep141:wrap.near": 4 * 10**24}
         r = build.day_row(day(bal, held), META, sorted(bal))
         self.assertNotIn("nep141:usdc", r["shares"])
         self.assertEqual(r["share_usd"], Fraction(1, 4))
-        self.assertEqual(r["anomalies"], [{"day": "2026-10-27", "height": 1, "token": "nep141:usdc", "treasury": "11", "held": "10"}])
+        self.assertEqual(r["anomalies"], [{"day": "2026-10-27", "height": 1, "token": "nep141:usdc",
+                                           "treasury": "11000000", "held": "10000000", "short_usd": 1.0, "short_share": 9.1}])
 
     def test_unpriced_tokens_are_counted_not_valued_at_zero(self):
         r = build.day_row(day({"nep141:mystery": 10**18, "nep141:usdc": 2_000_000}, {}), META, [])
@@ -83,6 +84,12 @@ class Scope(unittest.TestCase):
         self.assertLess(self.row["all"]["share"], self.row["share_usd"])
         self.assertEqual(self.row["all"]["tokens"], 2)
 
+    def test_a_day_with_only_some_tracked_tokens_read_makes_no_point_in_the_history(self):
+        # usdc was read that day, wnear was never asked: the day has no tracked share, though usdc's own share stands
+        r = build.day_row(day(self.bal, {"nep141:usdc": 100_000_000}), META, ["nep141:usdc", "nep141:wrap.near"])
+        self.assertIsNone(r["share_usd"])
+        self.assertEqual(r["shares"]["nep141:usdc"], Fraction(9, 10))
+
     def test_group_shares(self):
         g = self.row["all"]["group_share"]
         self.assertEqual(g["Stablecoins"], Fraction(9, 10))
@@ -101,7 +108,8 @@ class Forward(unittest.TestCase):
     def rows(self, extra):
         from pipeline import score
         days = ["2026-11-%02d" % d for d in range(1, 14)]
-        rows = [{"day": d, "float_usd": Fraction(100_000_000 + 1_000_000 * i), "share_usd": Fraction(62, 100)} for i, d in enumerate(days)]
+        rows = [{"day": d, "float_usd": Fraction(100_000_000 + 1_000_000 * i), "share_usd": Fraction(62, 100), "tracked_complete": True}
+                for i, d in enumerate(days)]
         rows[5]["float_usd"] += 0  # ten rises of exactly $1M each among the first twelve steps
         return score, rows + extra
 
@@ -111,26 +119,50 @@ class Forward(unittest.TestCase):
 
     def test_pass_and_fail(self):
         score, rows = self.rows([
-            {"day": "2026-11-14", "float_usd": Fraction(112_500_000), "share_usd": Fraction(62, 100)},
-            {"day": "2026-11-15", "float_usd": Fraction(113_000_000), "share_usd": Fraction(62, 100)},
-            {"day": "2026-11-16", "float_usd": Fraction(113_500_000), "share_usd": Fraction(61, 100)},
-            {"day": "2026-11-17", "float_usd": Fraction(114_000_000), "share_usd": Fraction(59, 100)},
+            {"day": "2026-11-14", "float_usd": Fraction(112_500_000), "share_usd": Fraction(62, 100), "tracked_complete": True},
+            {"day": "2026-11-15", "float_usd": Fraction(113_000_000), "share_usd": Fraction(62, 100), "tracked_complete": True},
+            {"day": "2026-11-16", "float_usd": Fraction(113_500_000), "share_usd": Fraction(61, 100), "tracked_complete": True},
+            {"day": "2026-11-17", "float_usd": Fraction(114_000_000), "share_usd": Fraction(59, 100), "tracked_complete": True},
         ])
         got = {t["id"]: t["status"] for t in score.tests(rows)}
         self.assertEqual(got["F1"], "PASS")   # 114.0M >= 112.0M on the 13th
         self.assertEqual(got["F2"], "PASS")   # largest later rise 0.5M < tenth-largest so far 1.0M
         self.assertEqual(got["F3"], "FAIL")   # 59% is below the 60% floor
+        self.assertEqual(got["E1"], "PASS")   # the 14 November checkpoint is scored on its own reading
+        self.assertEqual(got["E3"], "PASS")   # 62% on the 14th
         self.assertEqual(got["R1"], "PENDING")
 
     def test_a_lump_fails_the_breadth_test_and_a_fall_fails_growth(self):
         score, rows = self.rows([
-            {"day": "2026-11-14", "float_usd": Fraction(120_000_000), "share_usd": Fraction(62, 100)},
-            {"day": "2026-11-17", "float_usd": Fraction(111_000_000), "share_usd": None},
+            {"day": "2026-11-14", "float_usd": Fraction(120_000_000), "share_usd": Fraction(62, 100), "tracked_complete": True},
+            {"day": "2026-11-17", "float_usd": Fraction(111_000_000), "share_usd": Fraction(70, 100), "tracked_complete": False},
         ])
         got = {t["id"]: t["status"] for t in score.tests(rows)}
         self.assertEqual(got["F2"], "FAIL")
         self.assertEqual(got["F1"], "FAIL")
-        self.assertEqual(got["F3"], "FAIL")   # an unknown share is not a pass
+        # a share over only some of the tracked tokens is neither a pass nor a fail, even when it looks like a pass
+        self.assertEqual(got["F3"], "UNKNOWN")
+        self.assertEqual(got["E2"], "FAIL")   # the lump on the 14th is above the tenth-largest rise
+
+
+class Prose(unittest.TestCase):
+    """The check that the prose cannot carry a number the data does not produce."""
+
+    def test_numbers_are_found_and_code_and_tables_are_not_prose(self):
+        from pipeline import verify
+        text = "It is $136.4M, 61.0% and 2.8x; 12.6M NEAR came in, 88,704 NEAR a day. In 2026 NEAR said so.\n`$9.9M`\n```\n$1.0M\n```\n<!-- claims:start -->\n| C1 | **$5.0M** |\n<!-- claims:end -->"
+        found = verify.NUMBER.findall(verify.prose_only(text))
+        self.assertEqual(found, ["$136.4M", "61.0%", "2.8x", "12.6M NEAR", "88,704 NEAR"])
+
+    def test_a_typed_in_number_is_refused(self):
+        from pipeline import verify
+        claims = {"claims": [{"id": "C1", "shown": "$136.4M", "what": "the float ($49.3M then)"}]}
+        ok = verify.allowed_numbers(claims)
+        self.assertIn("$136.4M", ok)
+        self.assertIn("$49.3M", ok)       # a number inside a claim's description is computed too
+        self.assertIn("$200M", ok)        # a declared threshold
+        self.assertNotIn("$200.0M", ok)
+        self.assertNotIn("999x", ok)
 
 
 class Sample(unittest.TestCase):
@@ -142,7 +174,7 @@ class Sample(unittest.TestCase):
         a, b = verify.sample_days(blocks, 8), verify.sample_days(blocks, 8)
         self.assertEqual(a, b)
         self.assertEqual(len(a), 8)
-        for d in (min(blocks), max(blocks), "2026-07-13", "2026-10-27"):
+        for d in (min(blocks), max(blocks), "2026-07-13", "2026-10-02", "2026-10-27"):
             self.assertIn(d, a)
 
 
@@ -226,7 +258,8 @@ class CommittedData(unittest.TestCase):
             y, m, dd = map(int, d.split("-"))
             midnight = int(dt.datetime(y, m, dd, tzinfo=dt.timezone.utc).timestamp()) * 10**9
             self.assertGreaterEqual(b["timestamp"], midnight, d)
-            self.assertLess(b["timestamp"], midnight + pull.WINDOW_NS, d)
+            # normally within 15 seconds; never as late as ten minutes, even across a gap in block production
+            self.assertLess(b["timestamp"], midnight + 600 * 10**9, d)
 
     def test_heights_rise_with_the_days(self):
         hs = [self.blocks[d]["height"] for d in sorted(self.blocks)]
