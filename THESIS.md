@@ -203,6 +203,13 @@ today, and short only when something was in fact wrong. The same check is missin
 61.0%. Moving swaps to the private chain gave users confidentiality and took this check away, and nothing has
 replaced it.
 
+**What that is in money.** The revenue that funds the buyback is the only cash flow in NEAR's case, so it is the
+right ruler. October's hole at its largest was 2.1 months of that revenue, and it was closed. The balance now
+beyond the audit is 6.3 years of it. A loss of 16% of that balance would equal a full year of the revenue. We
+do not say such a loss is likely. We say that the part nobody outside can check is large against the cash flow
+a holder is counting on, and the part that can be checked has already shown a failure of two months' worth.
+That gap, not a view on NEAR's technology, is why the position below is small.
+
 **A simple model of what is needed.** NEAR's wallets receive 4.8 basis points per dollar of reported volume.
 For buybacks to match net new supply, revenue has to grow 6.5x. At today's rate per dollar of volume that means
 about $297B a year of volume, against $3.73B in the last 30 days. A governance proposal, HSP-029, would lower
@@ -296,8 +303,10 @@ dollars, nothing compounds, and the model knows nothing about why money moved. R
 
 Two more items have no threshold. If NEAR publishes what the private chain owes, per token, in a form that can
 be set against the treasury at a block height, the largest risk in section 4 mostly goes away and we would hold
-more. And if the audit of the public books, which the dashboard repeats every day, shows a hole that is not
-closed within days, we would sell: the one thing we can check would have failed.
+more. That disclosure does not have to reveal anyone's balance: committing to each balance and proving the
+sums, a proof of liabilities, is a known technique that publishes totals and nothing else. And if the audit of
+the public books, which the dashboard repeats every day, shows a hole that is not closed within days, we would
+sell: the one thing we can check would have failed.
 
 ## 7. What could not be computed, and other limits
 
