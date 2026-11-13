@@ -166,6 +166,17 @@ def write_claims(write=True):
     add("P9", money(trig["float_usd"]),
         f"The float on the {REWARD_TRIGGER} reading, the day NEAR announced confidential balances had passed $70M (at that day's prices)",
         "float at the pinned prices")
+    px_day = load(os.path.join(DATA, "context", "near_price.json"), None)
+    if px_day and REWARD_TRIGGER in units:
+        nxt = rows[[r["day"] for r in rows].index(trig["day"]) + 1]
+        def at_day_price(r):
+            p = Fraction(str(px_day["daily"][r["day"]]))
+            return r["float_usd"] + Fraction(units[r["day"]], 10**24) * (p - meta["nep141:wrap.near"]["price"])
+        if trig["day"] in px_day["daily"] and nxt["day"] in px_day["daily"] and nxt["day"] in units:
+            add("P10", money(at_day_price(trig)),
+                f"The float on the {REWARD_TRIGGER} reading with wNEAR at that day's CoinGecko price and every other token at the pinned price "
+                f"({money(at_day_price(nxt))} on the next reading): it crosses the $70M of NEAR's announcement between the two",
+                "P9 with the wNEAR balance repriced at data/context/near_price.json", grade="chain, one quoted price")
     add("P4", money(ex_near(last)), f"Float without NEAR's own token on {pin} ({money(ex_near(trig))} on {REWARD_TRIGGER})",
         "float minus the NEAR group, pinned prices")
     add("P5", money(ex_near(trig)), f"Float without NEAR's own token on {REWARD_TRIGGER}", "as P4")
@@ -244,6 +255,13 @@ def write_claims(write=True):
             "each day's quoted revenue divided by that day's price, summed, over 30 days of V2", grade="chain, via an indexer")
         add("V5", f"{float(Fraction(s1, 10**24) / (rev_near * Fraction(365, 30))):.0f}x", "NEAR's total supply divided by that revenue, annualised, NEAR against NEAR",
             "supply over (30-day revenue in NEAR times 365/30)", grade="chain, via an indexer")
+        # the same three figures with both sides in dollars: revenue at each day's price, supply at the pinned price
+        usd_share = rev / (per_day * 30 * near_usd)
+        add("V6", pct(usd_share, 0), "V4 with both sides in dollars: revenue as DefiLlama counts it, at each day's price, against net new supply at the "
+            f"price of the pinned block. It is higher than V4 because NEAR averaged ${float(rev / rev_near):.2f} over those 30 days and was ${float(near_usd):.2f} on the pinned day",
+            "X3 over (30 days of V2 times the pinned price)", grade="chain, via an indexer")
+        add("V7", f"{float(cap / (rev * Fraction(365, 30))):.0f}x", "V5 on the same dollar basis", "V1 over (X3 times 365/30)", grade="chain, via an indexer")
+        add("V8", f"{float(1 / usd_share):.1f}x", "M2 on the same dollar basis", "one over V6", grade="chain, via an indexer")
         need = (per_day * 30) / rev_near
         add("M1", f"{float(rev / vol * 10000):.1f} basis points", f"Revenue reaching NEAR's wallets per dollar of reported volume, {span}", "X3 over X1", grade="reported")
         add("M2", f"{float(need):.1f}x", "How many times revenue would have to grow for buybacks to match net new supply", "one over V4", grade="chain, via an indexer")
@@ -275,17 +293,24 @@ def write_claims(write=True):
     aud = build.last.get("audit") or {}
     if aud.get("pin") and aud.get("history"):
         ap, hist = aud["pin"], aud["history"]
+        listed = {t["assetId"] for t in load(os.path.join(DATA, "tokens.json"), {"tokens": []})["tokens"]}
+        pin_held = load(os.path.join(DATA, "held", pin + ".json"), {"held": {}})["held"]
+        unlisted = sum(1 for t, v in pin_held.items() if v is not None and t not in listed)
         add("A1", f"{ap['checked']} tokens",
-            f"Tokens audited on {pin}: every token in NEAR Intents' list whose credited total (intents.near.mt_batch_supply) could be set "
+            f"Tokens audited on {pin}: every token with a balance to read that was in NEAR Intents' list when the day's totals were taken, "
+            f"and {unlisted} unlisted ones the treasury holds. For each, the credited total (intents.near.mt_batch_supply) is set "
             f"against what the token's own contract says intents.near holds. {ap['counts']['equal']} are equal to the last unit, "
             f"{ap['counts']['surplus']} hold more than is credited ({money(ap['surplus_usd'])} in all), {ap['counts']['short']} are short",
             "pipeline/audit.py: mt_batch_supply on intents.near, ft_balance_of or mt_balance_of on each token contract, same block", grade="chain")
         add("A2", money(ap["held_usd"]), f"Value of the tokens audited on {pin}, at pinned prices", "sum of held, priced tokens", grade="chain")
         token_days = sum(d["checked"] for d in hist)
         short_days = [d for d in hist if d["counts"]["short"]]
+        thin = sum(1 for d in hist if d["checked"] < 10)
         add("A3", f"{token_days:,} checks",
-            f"Token-by-token checks across the history: the {len(tracked)} tracked tokens on each of {len(hist)} readings from {hist[0]['day']} to {hist[-1]['day']} "
-            f"(a token is counted from the day it has a balance to read)", "one audit per stored day", grade="chain")
+            f"Token-by-token checks of the {len(tracked)} tracked tokens on {len(hist)} stored readings from {hist[0]['day']} to {hist[-1]['day']}. "
+            + (f"{len(hist) - thin} readings cover every tracked token that had a balance; {thin} readings around the October exploit cover only the token involved"
+               if thin else "Every reading covers every tracked token that had a balance that day"),
+            "one audit per stored day", grade="chain")
         shorts = [(d["day"], r) for d in short_days for r in d["not_equal"] if r["status"] == "short"]
         tokens_short = sorted({r["token"] for _, r in shorts})
         add("A4", f"{len(shorts)} of them short",
@@ -337,6 +362,33 @@ def write_claims(write=True):
                    if int(whole["credited"]) >= max(int(st["credited"]) for st in steps_ if peak["height"] < st["height"] < whole["height"] and st["timestamp"] > whole["timestamp"] - 4 * 3600 * 10**9) else
                    ". Part of the hole closed because credit was removed, not because tokens came back"),
                 "first block after the peak with held at or above credited", grade="chain, one quoted time")
+
+    if ex:
+        def ago(seconds):
+            h, m_ = seconds // 3600, seconds % 3600 // 60
+            return (f"{h} hour{'s' if h != 1 else ''} " if h else "") + f"{m_} minute{'s' if m_ != 1 else ''}"
+        rungs = []
+        for level in (100, 1_000, 10_000, 100_000, 1_000_000):
+            hit = next((st for st in steps_ if hole(st) >= level * unit and st["timestamp"] // 10**9 < paid), None)
+            if hit:
+                rungs.append((level, paid - hit["timestamp"] // 10**9))
+        small = next((st for st in steps_ if hole(st) >= 3_000 * unit), None)
+        if small and rungs:
+            quiet = small["timestamp"] // 10**9 - first["timestamp"] // 10**9
+            add("A12", f"{quiet // 3600} hours",
+                f"Of those {lead // 3600} hours {lead % 3600 // 60} minutes, the time the hole stayed under $3,000 ({ago(quiet)}). "
+                "How long before the first payout each size was first reached: " + ", ".join(f"{money(level)} at {ago(t)}" for level, t in rungs),
+                "first step at or above each size, against the quoted payout time", grade="chain, one quoted time")
+            add("A13", ago(rungs[-1][1]), f"How long before the first payout the hole first passed {money(rungs[-1][0])}", "as A12", grade="chain, one quoted time")
+    late = load(os.path.join(DATA, "context", "late_tokens.json"), None)
+    if late and last["all"]["share"] is not None:
+        extra = sum((usd(int(v["held"]), meta[t]) or 0) for t, v in late["tokens"].items() if v["held"] is not None and t in meta)
+        extra_private = sum((usd(int(v["treasury"]), meta[t]) or 0) for t, v in late["tokens"].items() if v["treasury"] is not None and t in meta)
+        whole_late = all(v["held"] is not None and v["credited"] is not None and int(v["credited"]) <= int(v["held"]) for v in late["tokens"].values())
+        add("A14", pct((last["all"]["private_usd"] + extra_private) / (last["all"]["held_usd"] + extra)),
+            f"What C4 would be with the {len(late['tokens'])} tokens that joined NEAR Intents' list later on the pinned day. They were read once, at the "
+            f"pinned block: {money(extra)} held, " + ("none short" if whole_late else "not all whole") + f", {money(extra_private)} of it in the treasury. "
+            "They are left out of every pinned figure", "data/context/late_tokens.json added to both sides of C4", grade="chain")
 
     # --- one traced case: the largest single transfer of NEAR into the treasury in September
     blocks = load(os.path.join(DATA, "blocks.json"), {})
@@ -422,6 +474,9 @@ def write_claims(write=True):
         add(cid, money(m["median_usd"]),
             f"Median float on {m['target']} across the replayed paths, drawing {drawn[key].split(' (')[0]} "
             f"(one path in ten ends below {money(m['p10_usd'])}, one in ten above {money(m['p90_usd'])})", "as O1", grade="model")
+    add("O13", share(simulate(rows, pin, cut["after"][1], cut["after"][2], wrap=True)["r1_holds"]),
+        "O3 when a run may wrap from the end of the window to its start. Without wrapping, the window's first and last days are drawn less often",
+        "as O3, with wrap", grade="model")
     lengths = (1, 3, BLOCK, 14, 30)
     for cid, key in (("O11", "whole"), ("O12", "after")):
         got = [run[key]["r1_holds"] if b == BLOCK else simulate(rows, pin, cut[key][1], cut[key][2], block=b)["r1_holds"] for b in lengths]

@@ -76,6 +76,14 @@
   {
    "value": "3 readings",
    "why": "threshold of test G3 (PREREG-AUDIT.md, pipeline/score_audit.py): the October hole was open on three daily readings"
+  },
+  {
+   "value": "1%",
+   "why": "our position rule in THESIS.md section 5: the most we would hold while most of NEAR Intents is beyond the audit. A judgment, not a result"
+  },
+  {
+   "value": "3%",
+   "why": "our position rule in THESIS.md section 5: the most we would hold if the private chain's totals were published. A judgment, not a result"
   }
  ]
 }
