@@ -305,7 +305,8 @@ def write_claims(write=True):
     # --- the audit: what intents.near has credited in total against what each token's contract says it holds
     aud = build.last.get("audit") or {}
     if aud.get("pin") and aud.get("history"):
-        ap, hist = aud["pin"], aud["history"]
+        # like every quoted number, the audit's counts stop at the pinned day: a reading added later must not change the text
+        ap, hist = aud["pin"], [d for d in aud["history"] if d["day"] <= pin]
         listed = {t["assetId"] for t in load(os.path.join(DATA, "tokens.json"), {"tokens": []})["tokens"]}
         pin_held = load(os.path.join(DATA, "held", pin + ".json"), {"held": {}})["held"]
         unlisted = sum(1 for t, v in pin_held.items() if v is not None and t not in listed)
