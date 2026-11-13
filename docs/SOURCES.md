@@ -30,25 +30,48 @@ Docs pages: <https://docs.near-intents.org/integration/market-makers/confidentia
 - Both are paraphrased, not quoted. The two dates are the constants `REWARD_ANNOUNCED` and `REWARD_TRIGGER` in
   `pipeline/build.py`.
 
-## The October shortfall
+## The audit: credited against held
 
-- Our readings: `data/derived/anomalies.json`, and the daily totals of the token
-  `nep245:v2_1.omni.hot.tg:56_2CMMyVTGZkeyNZTSvS5sarzfir6g` in `data/held/2026-09-24.json` to
-  `data/held/2026-10-08.json`.
+- Credited: `intents.near.mt_batch_supply({"token_ids": [...]})` returns, for each token id, the total the ledger
+  has credited to all accounts together (`mt_supply` is the same for one id). Stored per day in
+  `data/credited/<day>.json`, read at the day's block. How it was checked: on the pinned day the answer equals,
+  to the last unit, what the token's own contract reports for 184 of 214 tokens, and is slightly below it for
+  the other 30, which is what a sum of credits should do; it is above it only for one token on three readings,
+  all inside a published exploit.
+- Held: `ft_balance_of(intents.near)` on the token's contract for `nep141:` ids, `mt_balance_of(intents.near, id)`
+  for `nep245:` ids. Stored per day in `data/held/<day>.json`.
+- Live: `make audit` and the dashboard's button ask the same two questions at the latest final block. The button
+  uses `rpc.mainnet.fastnear.com`, `free.rpc.fastnear.com` and `rpc.mainnet.near.org`, in that order, from the
+  visitor's browser; all three were checked on 2026-11-13 to answer cross-origin requests.
+- What it does not cover: most tokens on the ledger are issued on NEAR by a bridge for tokens that live on
+  another chain. Whether the bridge holds those is not asked here.
+
+## The October hole, block by block
+
+- The token: `nep245:v2_1.omni.hot.tg:56_2CMMyVTGZkeyNZTSvS5sarzfir6g`, a dollar token bridged from BNB Chain by
+  HOT, listed by NEAR Intents as `USDT(DEPRECATED)` with 18 decimals.
+- Our record: `data/context/exploit.json`. Every block between the readings of 2026-09-29 and 2026-10-03 at which
+  credited minus held was found to change, with both totals before and after and the block time. Found by
+  halving (`python3 -m pipeline.audit --steps 2026-09-29 2026-10-03`, about 1,200 reads, slow on a public
+  node). The scan starts from a grid of readings two hours apart, so two changes that cancel between two blocks
+  that were read are not in it. `make verify` re-reads the three blocks the claims rest on, each with the block
+  before it: where the hole opens (217799506), its peak, and where it closes (218251129).
 - The published incident: CertiK, "HOT Bridge / NEAR Intents", 2026-10-08,
   <https://www.certik.com/blog/hot-bridge-near-intents>. As read on 2026-11-13 it lists five payouts of USDT
   from the bridge's BNB Chain treasury (2026-09-30 23:54:30 UTC 800,000; 2026-10-01 00:24:02 1,200,000;
   00:50:42 1,500,000; 01:46:20 330,000; 06:08:26 35,000; 3,865,000 in all), describes the cause as a refund that
   returned the tokens backing a deposit while the credit inside NEAR Intents remained, records an upgrade of
   `intents.near` on 2026-10-02 at 20:31:41 UTC, and reports NEAR Intents' general manager saying the money was
-  returned in full, which CertiK does not itself verify.
-- All of our readings were taken on 2026-11-13, five weeks after the event. The first data commit of this
-  repository lists the 2026-10-01 reading as an unexplained anomaly; the match to CertiK's report was made
-  afterwards.
-- How the two line up: our 2026-09-30 reading (00:00 UTC) shows the token fully held; our 2026-10-01 reading,
-  at a block stamped six minutes after the first payout, shows 859,274 missing; our 2026-10-02 reading, after all five, shows
-  67,669 held against 3,373,849 credited to the treasury; our 2026-10-03 reading, after the upgrade, shows it
-  whole. We matched by token, size and time. We did not trace the attacker's transactions.
+  returned in full, which CertiK does not itself verify. The first payout and upgrade times in
+  `data/context/exploit.json` are these.
+- How the two line up: the hole opens at 16:14:22 UTC on 29 September at 10 of the token, grows by doubling to
+  1,299,979 at 23:41:28 on 30 September, thirteen minutes before the first payout, peaks at 3,848,795 at 01:29:28
+  on 1 October, and closes in seven steps between 19:26:35 and 20:22:09 on 2 October while the credited total
+  stays at 3,869,502. So the chain record supports "returned in full". We matched by token, size and time; we
+  did not trace the attacker's transactions or follow the tokens on BNB Chain.
+- All of it was read on 2026-11-13, five weeks after the event. The first data commit of this repository lists
+  the 2026-10-01 reading as an unexplained anomaly, measured then only against the private chain's own credit
+  (the S rows); the match to CertiK's report and the audit against every holder's credit came afterwards.
 
 ## Where the reported numbers come from
 
