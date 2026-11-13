@@ -225,6 +225,13 @@
    "what": "The float on the 2026-09-17 reading, the day NEAR announced confidential balances had passed $70M (at that day's prices)"
   },
   {
+   "grade": "chain, one quoted price",
+   "how": "P9 with the wNEAR balance repriced at data/context/near_price.json",
+   "id": "P10",
+   "shown": "$68.3M",
+   "what": "The float on the 2026-09-17 reading with wNEAR at that day's CoinGecko price and every other token at the pinned price ($74.1M on the next reading): it crosses the $70M of NEAR's announcement between the two"
+  },
+  {
    "how": "float minus the NEAR group, pinned prices",
    "id": "P4",
    "shown": "$92.9M",
@@ -361,6 +368,27 @@
    "what": "NEAR's total supply divided by that revenue, annualised, NEAR against NEAR"
   },
   {
+   "grade": "chain, via an indexer",
+   "how": "X3 over (30 days of V2 times the pinned price)",
+   "id": "V6",
+   "shown": "20%",
+   "what": "V4 with both sides in dollars: revenue as DefiLlama counts it, at each day's price, against net new supply at the price of the pinned block. It is higher than V4 because NEAR averaged $4.42 over those 30 days and was $3.42 on the pinned day"
+  },
+  {
+   "grade": "chain, via an indexer",
+   "how": "V1 over (X3 times 365/30)",
+   "id": "V7",
+   "shown": "205x",
+   "what": "V5 on the same dollar basis"
+  },
+  {
+   "grade": "chain, via an indexer",
+   "how": "one over V6",
+   "id": "V8",
+   "shown": "5.1x",
+   "what": "M2 on the same dollar basis"
+  },
+  {
    "grade": "reported",
    "how": "X3 over X1",
    "id": "M1",
@@ -420,7 +448,7 @@
    "how": "pipeline/audit.py: mt_batch_supply on intents.near, ft_balance_of or mt_balance_of on each token contract, same block",
    "id": "A1",
    "shown": "214 tokens",
-   "what": "Tokens audited on 2026-11-13: every token in NEAR Intents' list whose credited total (intents.near.mt_batch_supply) could be set against what the token's own contract says intents.near holds. 184 are equal to the last unit, 30 hold more than is credited ($6,321 in all), 0 are short"
+   "what": "Tokens audited on 2026-11-13: every token with a balance to read that was in NEAR Intents' list when the day's totals were taken, and 27 unlisted ones the treasury holds. For each, the credited total (intents.near.mt_batch_supply) is set against what the token's own contract says intents.near holds. 184 are equal to the last unit, 30 hold more than is credited ($6,321 in all), 0 are short"
   },
   {
    "grade": "chain",
@@ -434,7 +462,7 @@
    "how": "one audit per stored day",
    "id": "A3",
    "shown": "1,090 checks",
-   "what": "Token-by-token checks across the history: the 20 tracked tokens on each of 70 readings from 2026-02-19 to 2026-11-13 (a token is counted from the day it has a balance to read)"
+   "what": "Token-by-token checks of the 20 tracked tokens on 70 stored readings from 2026-02-19 to 2026-11-13. 58 readings cover every tracked token that had a balance; 12 readings around the October exploit cover only the token involved"
   },
   {
    "grade": "chain",
@@ -491,6 +519,27 @@
    "id": "A11",
    "shown": "76 hours",
    "what": "How long the books stayed short: whole again at block 218251129, 2026-10-02 20:22:09 UTC, 9 minutes before the contract upgrade CertiK records (2026-10-02 20:31:41 UTC). The credited total did not fall while the hole closed, so the tokens came back"
+  },
+  {
+   "grade": "chain, one quoted time",
+   "how": "first step at or above each size, against the quoted payout time",
+   "id": "A12",
+   "shown": "28 hours",
+   "what": "Of those 31 hours 40 minutes, the time the hole stayed under $3,000 (28 hours 1 minute). How long before the first payout each size was first reached: $100 at 23 hours 43 minutes, $1,000 at 23 hours 21 minutes, $10,000 at 1 hour 9 minutes, $100,000 at 32 minutes, $1.0M at 13 minutes"
+  },
+  {
+   "grade": "chain, one quoted time",
+   "how": "as A12",
+   "id": "A13",
+   "shown": "13 minutes",
+   "what": "How long before the first payout the hole first passed $1.0M"
+  },
+  {
+   "grade": "chain",
+   "how": "data/context/late_tokens.json added to both sides of C4",
+   "id": "A14",
+   "shown": "60.9%",
+   "what": "What C4 would be with the 15 tokens that joined NEAR Intents' list later on the pinned day. They were read once, at the pinned block: $291,069 held, none short, $0 of it in the treasury. They are left out of every pinned figure"
   },
   {
    "grade": "chain",
@@ -623,6 +672,13 @@
    "id": "O10",
    "shown": "$258.7M",
    "what": "Median float on 2027-03-31 across the replayed paths, drawing only from days since the first reward's snapshot was triggered (one path in ten ends below $176.1M, one in ten above $353.0M)"
+  },
+  {
+   "grade": "model",
+   "how": "as O3, with wrap",
+   "id": "O13",
+   "shown": "89%",
+   "what": "O3 when a run may wrap from the end of the window to its start. Without wrapping, the window's first and last days are drawn less often"
   },
   {
    "grade": "model",

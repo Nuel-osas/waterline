@@ -45,7 +45,7 @@ def ex_near(r):
     return r["float_usd"] - r["groups"]["NEAR"]
 
 
-def simulate(rows, pin, since=None, until=None, block=BLOCK, paths=PATHS, seed=SEED, target=LONG_DATED):
+def simulate(rows, pin, since=None, until=None, block=BLOCK, paths=PATHS, seed=SEED, target=LONG_DATED, wrap=False):
     """Share of paths on which each reading holds, and breaks, on the target day. `rows` is the daily series."""
     seen = [r for r in rows if r["day"] <= pin]
     since, until = since or seen[0]["day"], until or pin
@@ -62,7 +62,8 @@ def simulate(rows, pin, since=None, until=None, block=BLOCK, paths=PATHS, seed=S
     # R2 counts the ten largest one-day rises over the whole history, past and drawn
     past_top = sorted((cents(seen[k]["float_usd"]) - cents(seen[k - 1]["float_usd"]) for k in range(1, len(seen))),
                       reverse=True)[:10]
-    starts = len(moves) - block + 1
+    # without wrap a run cannot start in the last block-1 days, so the window's first and last days are drawn less often
+    starts = len(moves) if wrap else len(moves) - block + 1
     rng = random.Random(seed)
     n = {"r1_holds": 0, "r1_breaks": 0, "r2_holds": 0, "r2_breaks": 0, "r5_holds": 0, "r5_breaks": 0}
     ends = []
@@ -70,7 +71,7 @@ def simulate(rows, pin, since=None, until=None, block=BLOCK, paths=PATHS, seed=S
         f, e, day, rises = f0, e0, 0, []
         while day < horizon:
             at = int(rng.random() * starts)
-            for df, de in moves[at:at + block]:
+            for df, de in (moves[at:at + block] if not wrap else [moves[(at + k) % len(moves)] for k in range(block)]):
                 if day == horizon:
                     break
                 df, de = max(df, -f), max(de, -e)   # a balance cannot go below nothing

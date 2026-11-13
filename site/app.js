@@ -485,7 +485,8 @@
   }
   function units(v, decimals) {   // whole tokens from base units, without losing digits
     var b = BigInt(v), u = BigInt(10) ** BigInt(decimals), whole = b / u, frac = Number(b % u) / Number(u);
-    return (Number(whole) + frac).toLocaleString("en-US", { maximumFractionDigits: 2 });
+    var v = Number(whole) + frac;
+    return v.toLocaleString("en-US", { maximumFractionDigits: v !== 0 && v < 1 ? 8 : 2 });
   }
   function auditNow() {
     var A = W.audit, btn = document.getElementById("audit-run"), status = document.getElementById("audit-status");
@@ -572,8 +573,8 @@
       { id: "R1", name: "Private float", now: K.C1.shown, v: num("C1"), max: 250, from: 200, to: 250, tick: 200, tickLabel: "$200M", rule: ["Holds at ", "$200M or more", ". Breaks below the pinned day's level."] },
       { id: "R2", name: "Ten best days as a share of the float", now: K.C17.shown, v: num("C17"), max: 100, from: 0, to: 45, tick: 45, tickLabel: "45%", rule: ["Holds ", "below 45%", ": new money arrives on many days. Breaks if it is still at the pinned day's level."] },
       { id: "R3", name: "Private share, the 20 tracked tokens", now: K.C23 ? K.C23.shown : "n/a", v: K.C23 ? num("C23") : 0, max: 100, from: 50, to: 100, tick: 50, tickLabel: "50%", rule: ["Holds at ", "50% or more", ". Breaks below 40%: money is moving back to the public side."] },
-      { id: "R5", name: "Float without NEAR's own token", now: K.P4.shown, v: num("P4"), max: 180, from: 130, to: 180, tick: 130, tickLabel: "$130M", rule: ["Holds at ", "$130M or more", ". Breaks below the pinned day's level: the rest was rented too."] },
-      { id: "R4", name: "Revenue reaching NEAR's wallets, as a share of new supply", now: K.V4.shown, v: num("V4"), max: 60, from: 25, to: 60, tick: 25, tickLabel: "25%", rule: ["Holds at ", "25% or more", ". Breaks below 10%. Counted NEAR against NEAR. Uses a quoted revenue figure, so it is scored by hand."] }
+      { id: "R4", name: "Revenue reaching NEAR's wallets, as a share of new supply", now: K.V4.shown, v: num("V4"), max: 60, from: 25, to: 60, tick: 25, tickLabel: "25%", rule: ["Holds at ", "25% or more", ". Breaks below 10%. Counted NEAR against NEAR. Uses a quoted revenue figure, so it is scored by hand."] },
+      { id: "R5", name: "Float without NEAR's own token", now: K.P4.shown, v: num("P4"), max: 180, from: 130, to: 180, tick: 130, tickLabel: "$130M", rule: ["Holds at ", "$130M or more", ". Breaks below the pinned day's level."] }
     ].forEach(function (r) {
       var mEl = html("div", "meter"), head = html("div", "head"), name = html("div", "name"), tag = html("small", null, r.id);
       name.appendChild(tag); name.appendChild(document.createTextNode(r.name));
@@ -596,7 +597,8 @@
     if (!F || !box) return;
     box.textContent = "";
     var near = F.tests.filter(function (t) { return t.id.charAt(0) === "E" || t.id.charAt(0) === "F"; });
-    near.forEach(function (t) {
+    var G = window.WATERLINE_FORWARD_AUDIT;   // the audit's own tests come first: they test the claim the page leads with
+    (G ? G.tests : []).concat(near).forEach(function (t) {
       var item = html("div", "item");
       item.appendChild(html("span", "id", t.id));
       item.appendChild(html("span", "txt", t.text + (t.value ? " Result: " + t.value + "." : " Scored on the " + dayLong(t.due) + " reading.")));

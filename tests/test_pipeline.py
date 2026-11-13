@@ -482,6 +482,35 @@ class Flows(unittest.TestCase):
         self.assertNotIn("2026-09-03", got)   # unknown is not zero
 
 
+class AuditForward(unittest.TestCase):
+    """The audit's forward tests: a reading that could not be read is unknown, and an open hole fails in time."""
+
+    def days(self, rows):
+        # rows: [(day, {token: (credited, held)})]
+        return [(d, {t: str(v[1]) if v[1] is not None else None for t, v in toks.items()},
+                 {t: str(v[0]) if v[0] is not None else None for t, v in toks.items()}) for d, toks in rows]
+
+    def run_tests(self, rows):
+        from pipeline import score_audit
+        return {t["id"]: t["status"] for t in score_audit.tests(self.days(rows), ["a", "b"])}
+
+    def test_pending_until_the_reading_exists_then_pass_fail_or_unknown(self):
+        whole = {"a": (10, 10), "b": (5, 9)}
+        self.assertEqual(self.run_tests([("2026-11-13", whole)])["G1"], "PENDING")
+        self.assertEqual(self.run_tests([("2026-11-14", whole)])["G1"], "PASS")
+        self.assertEqual(self.run_tests([("2026-11-14", {"a": (10, 7), "b": (5, 9)})])["G1"], "FAIL")
+        # a total that could not be read is never a pass, even when everything that was read is whole
+        self.assertEqual(self.run_tests([("2026-11-14", {"a": (10, 10), "b": (5, None)})])["G1"], "UNKNOWN")
+
+    def test_a_hole_must_close_within_three_readings(self):
+        short, whole = {"a": (10, 7), "b": (5, 5)}, {"a": (10, 10), "b": (5, 5)}
+        closed = [("2026-11-14", short), ("2026-11-15", short), ("2026-11-16", short), ("2026-11-17", whole)]
+        self.assertEqual(self.run_tests(closed)["G3"], "PENDING")   # closed in time; the long test is not over yet
+        stuck = closed[:3] + [("2026-11-17", short)]
+        self.assertEqual(self.run_tests(stuck)["G3"], "FAIL")       # fails on the fourth short reading, not in March
+        self.assertEqual(self.run_tests(stuck)["G2"], "FAIL")
+
+
 class CommittedData(unittest.TestCase):
     """Sanity checks on whatever raw data is in the repository."""
 

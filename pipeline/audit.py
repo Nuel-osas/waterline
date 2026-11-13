@@ -192,16 +192,22 @@ def main():
         height, stamp, got = now(tracked)
         when = dt.datetime.fromtimestamp(stamp / 1e9, dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
         print(f"block {height}, {when} UTC")
-        short = 0
+        short = unread = 0
         for tid, (credited, held) in got.items():
             status, hole = compare(credited, held)
             m = meta.get(tid, {})
             unit = 10 ** m.get("decimals", 0)
             short += status == "short"
+            unread += status == "unknown"
             print(f"  {status.upper() if status == 'short' else status:8} {m.get('symbol', '?'):8} {m.get('chain', '?'):6} "
                   + (f"credited {int(credited) / unit:18,.2f}  held {int(held) / unit:18,.2f}" if hole is not None else "could not be read"))
-        print("RESULT:", "WHOLE: no token is credited above what is held" if not short else f"{short} token(s) SHORT")
-        return 1 if short else 0
+        if short:
+            print(f"RESULT: {short} token(s) SHORT")
+        elif unread:
+            print(f"RESULT: INCOMPLETE: {unread} of {len(got)} tokens could not be read, so nothing is claimed. Run it again; public nodes rate-limit.")
+        else:
+            print("RESULT: WHOLE: no token is credited above what is held")
+        return 1 if short else 2 if unread else 0
     if args.steps:
         blocks = load(os.path.join(DATA, "blocks.json"), {})
         token = args.token or (load(EXPLOIT, None) or {}).get("token")

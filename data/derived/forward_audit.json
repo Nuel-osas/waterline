@@ -1,0 +1,33 @@
+{
+ "tests": [
+  {
+   "due": "2026-11-14",
+   "id": "G1",
+   "status": "PENDING",
+   "text": "On the 2026-11-14 reading none of the 20 tracked tokens is short: intents.near holds at least what it has credited.",
+   "value": null
+  },
+  {
+   "due": "2026-11-17",
+   "id": "G2",
+   "status": "PENDING",
+   "text": "On the 2026-11-17 reading none of the 20 tracked tokens is short: intents.near holds at least what it has credited.",
+   "value": null
+  },
+  {
+   "due": "2027-03-31",
+   "id": "G3",
+   "status": "PENDING",
+   "text": "From 2026-11-14 to 2027-03-31, any tracked token found short on a reading is whole again within 3 readings.",
+   "value": null
+  },
+  {
+   "due": "2027-03-31",
+   "id": "G4",
+   "status": "PENDING",
+   "text": "On the 2027-03-31 reading both questions can still be asked for every tracked token: no total is unreadable.",
+   "value": null
+  }
+ ],
+ "written": "2026-11-13"
+}

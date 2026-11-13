@@ -43,7 +43,7 @@
   <div class="wrap">
     <p class="labels"><span class="label">NEAR Hackathon 2026</span><span class="label">Investment thesis</span><span class="label">Pinned <b data-pin="day">13 Nov 2026</b></span></p>
     <h1>NEAR Intents can be audited from outside. <span class="num">Its private chain cannot.</span></h1>
-    <p class="lede">Ask NEAR Intents what it has credited for a token. Ask the token's own contract what NEAR Intents holds. Two calls, any block, no key. We did it for <span data-claim="A1">214 tokens</span> worth <span data-claim="A2">$223.8M</span>, and none is short. Run over past blocks, the same audit shows the October exploit in the public books <span data-claim="A8">31 hours 40 minutes</span> before the first payout. It stops at one account, the private chain's treasury, which now holds <span data-claim="C4">61.0%</span> of everything.</p>
+    <p class="lede">Ask NEAR Intents what it has credited for a token. Ask the token's own contract what NEAR Intents holds. Two calls, any block, no key. We did it for <span data-claim="A1">214 tokens</span> worth <span data-claim="A2">$223.8M</span>, and none is short. Run over past blocks, the same audit shows the October exploit in the public books <span data-claim="A8">31 hours 40 minutes</span> before the first payout: ten dollars at first, <span data-claim="A9">$1.3M</span> by the end. It stops at one account, the private chain's treasury, which now holds <span data-claim="C4">61.0%</span> of everything.</p>
     <dl class="stats">
       <div><dt>Audited, none short</dt><dd data-claim="A2">$223.8M</dd></div>
       <div><dt>Hole in the books before the payout</dt><dd data-claim="A8" data-fmt="hm">31h 40m</dd></div>
@@ -82,7 +82,7 @@
         <p>The 20 largest tokens, audited on every stored reading since February: <span data-claim="A3">1,090 checks</span>, <span data-claim="A4">3 of them short</span>. All three are one token, a bridged dollar token, on 30 September, 1 October and 2 October. On the last of them <span data-claim="A6">98%</span> of everything credited in that token had nothing behind it, and <span data-claim="A7">87%</span> of that credit belonged to the private chain.</p>
       </header>
       <ul class="legend" aria-label="Result of each reading">
-        <li><i class="key accent"></i>Every token whole</li>
+        <li><i class="key accent"></i>Every token read was whole</li>
         <li><i class="key warnkey"></i>A hole</li>
       </ul>
       <div class="chart" id="chart-audit" role="img" aria-label="A timeline from February to November 2026 with one mark per audited reading. Every mark is the same colour except three at the turn of September to October, where a hole was found. The figures are in the text above."></div>
@@ -96,7 +96,7 @@ intents.near.mt_batch_supply(token_ids=[the 20 tracked tokens])   -> credited, d
     <article class="finding">
       <header>
         <h3>The one hole showed <span data-claim="A8">31 hours 40 minutes</span> before the money left.</h3>
-        <p>It opens at ten dollars on 29 September, an attacker testing a refund bug, and doubles. By the last change before the first payout it is <span data-claim="A9">$1.3M</span>. It peaks at <span data-claim="A10">$3.8M</span> and stays open <span data-claim="A11">76 hours</span>. This is a replay run in November, not live detection. Anyone asking these two contracts that week would have seen it.</p>
+        <p>It opens at ten dollars on 29 September, at the second CertiK gives for the first exploit transaction, and stays under $3,000 for <span data-claim="A12">28 hours</span>. Then it doubles. It passes $1M <span data-claim="A13">13 minutes</span> before the first payout, peaks at <span data-claim="A10">$3.8M</span> and stays open <span data-claim="A11">76 hours</span>. This is a replay run in November, not live detection. What it adds to the published timeline is that the hole could be seen and sized from outside at every step.</p>
       </header>
       <ul class="legend" aria-label="Series">
         <li><i class="key warnkey"></i>Hole in the public books: credited minus held, one bridged dollar token</li>
@@ -107,7 +107,7 @@ intents.near.mt_supply(token_id="nep245:v2_1.omni.hot.tg:56_2CMM...")           
 v2_1.omni.hot.tg.mt_balance_of(account_id="intents.near", token_id="56_2CMM...")                -> held
 # the blocks were found by halving: python3 -m pipeline.audit --steps 2026-09-29 2026-10-03
 # payout and upgrade times are CertiK's, quoted; drawn from data/derived/series.json: exploit.steps[]</pre></details>
-      <p class="note">The scale is logarithmic so that the first ten dollars and the last millions fit on one chart. Changes that reversed within a few seconds are left out of the line and kept in the data. The audit also confirms what was only reported: the hole closed with the credited total unchanged, so the tokens came back.</p>
+      <p class="note">The scale is logarithmic so that the first ten dollars and the last millions fit on one chart. Changes that reversed within a few seconds are left out of the line and kept in the data. The hole closed with the credited total unchanged, which is consistent with the reported statement that the money was returned. What the chain shows is the balance on NEAR being refilled, not the tokens on BNB Chain.</p>
     </article>
 
     <p class="stop">This is where the audit stops. The largest account on these books is the private chain's treasury. What that chain owes its own users cannot be asked of any contract, and <span data-claim="C4">61.0%</span> of everything NEAR Intents holds is now behind it.</p>
@@ -179,7 +179,7 @@ intents.near.mt_tokens_for_owner(account_id=TREASURY)  then  mt_batch_balance_of
       <details class="query"><summary>The query behind this chart</summary><pre># the same daily reading as above; this chart is its day-to-day difference
 float(day) - float(day before), at the pinned prices
 # drawn from data/derived/series.json: days[].float_usd</pre></details>
-        <p class="note">Change in the float from one reading to the next. The ten largest rises are highlighted. The tallest, <span data-claim="W3">$12.0M</span> on the reading of 25 September, is <span data-claim="W4">51%</span> one transfer of <span data-claim="W1">1.7M NEAR</span> that the treasury itself had paid out nine hours earlier, 24 minutes before the daily reading. We followed it block by block: <code>make trace</code>.</p>
+        <p class="note">Change in the float from one reading to the next. The ten largest rises are highlighted. The tallest, <span data-claim="W3">$12.0M</span> during 24 September (it is in the reading of the 25th), is <span data-claim="W4">51%</span> one transfer of <span data-claim="W1">1.7M NEAR</span> that the treasury itself had paid out nine hours earlier, 24 minutes before the daily reading. We followed it block by block: <code>make trace</code>.</p>
       </article>
 
       <article class="finding">
@@ -223,6 +223,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
         <tr><td>Revenue reaching NEAR's wallets, 30 days</td><td data-claim="X3">$1.8M</td><td>NEAR received by three public wallets</td><td><span class="tag observed">Observed</span> with an indexer</td></tr>
         <tr><td>Net new NEAR supply</td><td data-claim="V2">88,704 NEAR a day</td><td>Block headers</td><td><span class="tag observed">Observed</span> here</td></tr>
         <tr><td>Private float</td><td data-claim="C1">$136.4M</td><td>Balances of one account in <code>intents.near</code></td><td><span class="tag observed">Observed</span> here</td></tr>
+        <tr><td>Backing of the public books</td><td data-claim="A2">$223.8M</td><td>The ledger's credited totals against each token's own contract</td><td><span class="tag observed">Observed</span> here, and by the button above</td></tr>
       </tbody>
     </table>
     </div>
@@ -247,8 +248,8 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
       </article>
       <article>
         <p class="big" data-claim="C1">$136.4M</p>
-        <h3>The same float is an unpriced risk, and one public key controls it.</h3>
-        <p>It is described as "backed 1:1" by the treasury. The treasury is public. What the private chain owes is not, and nothing published proves the two match. October showed backing can fail: one token was <span data-claim="S3">98%</span> unbacked for two readings. The treasury is an ordinary account with <span data-claim="K1">1 key</span>, and nothing published says whether that key is split.</p>
+        <h3>The same float is an unpriced risk, and one public key signs for it.</h3>
+        <p>It is described as "backed 1:1" by the treasury. The treasury is public. What the private chain owes is not, and nothing published proves the two match. October showed backing can fail: on the 2 October reading <span data-claim="A6">98%</span> of everything credited in one token had nothing behind it. The treasury is an ordinary account with <span data-claim="K1">1 key</span> registered for it. NEAR's docs say a bridge releases tokens from it; they do not say how that key is held, and one public key can stand for several parties signing together.</p>
       </article>
     </div>
   </div>
@@ -257,9 +258,9 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
 <section class="paper" id="readings">
   <div class="wrap">
     <p class="labels"><span class="label">05</span><span class="label">What would change our mind</span></p>
-    <h2>Five readings as of the pinned day, written down then, checked again on 31 March 2027.</h2>
+    <h2>Five readings about the money behind the private chain, written down on the pinned day, checked again on 31 March 2027.</h2>
     <div class="meters" id="meters"></div>
-    <p class="note">A fifth item has no threshold: if NEAR publishes a proof that the private chain's balances add up to the treasury, the risk above mostly goes away.</p>
+    <p class="note">One more item has no threshold: if NEAR publishes what the private chain owes, per token, against a block height, the audit at the top of this page covers everything and we would hold more. These five readings were written for the project's first question, whether the private side is growing. The audit has its own dated tests, listed first below.</p>
     <h3 class="fwd-title">How often the float's own past, replayed, meets them</h3>
     <div class="scroll">
     <table class="ledger odds">
@@ -274,7 +275,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
     <p class="note">A base rate, not a forecast. <code>make model</code> replays the float's past daily changes forward to 31 March 2027: 10,000 seeded paths, each built from runs of 7 consecutive past days and scored with the thresholds above. At the pace before the reward neither reading holds. Both need the pace since September to continue, and a reward is still in force. The result moves with the length of the runs: from single days to runs of 30, R1 on the whole history holds on <span data-claim="O11">51% to 60%</span> of paths, and on the last window on <span data-claim="O12">38% to 96%</span>. The readings were fixed and hashed before this model was written.</p>
     <details class="query"><summary>The command behind this table</summary><pre>make model
 python3 -m pipeline.model --since 2026-10-01 --block 14 --seed 7</pre></details>
-    <h3 class="fwd-title">Shorter tests, scored by the same code as their readings arrive</h3>
+    <h3 class="fwd-title">Dated tests, scored by the same code as their readings arrive: the audit's first (G), then the float's (E, F)</h3>
     <div class="fwd" id="forward"></div>
   </div>
 </section>
@@ -288,7 +289,7 @@ python3 -m pipeline.model --since 2026-10-01 --block 14 --seed 7</pre></details>
       <div><code>make check</code><p>Rebuilds every number on this page from the raw readings in memory and compares. No network, writes nothing.</p></div>
       <div><code>make verify</code><p>Re-reads a sample of days from NEAR mainnet first, then does the same. One to three minutes.</p></div>
     </div>
-    <p class="note">Each reading is tied to a block height, so it never changes: anyone who reads the recorded heights gets the same bytes. A read that fails is stored as unknown and left out. It is never counted as zero. The checks write nothing, and they fail if a dollar amount, a percentage or a multiple on this page or in the thesis is not what the data produces.</p>
+    <p class="note">Each reading is tied to a block height, so it never changes: anyone who reads the recorded heights gets the same bytes. A read that fails is stored as unknown and left out. It is never counted as zero. The checks write nothing. They fail if a number on this page that is filled in from the data, or a dollar amount, percentage, multiple or count in the thesis, is not what the data produces. Sentences typed by hand on this page are not checked.</p>
     <noscript><p class="note">The charts need JavaScript. Every number in the text is in the page itself, and every value behind the charts is in the repository under <code>data/derived/</code>.</p></noscript>
     <p class="links" id="links"></p>
   </div>
@@ -308,6 +309,7 @@ python3 -m pipeline.model --since 2026-10-01 --block 14 --seed 7</pre></details>
 <script src="data.js"></script>
 <script src="claims.js"></script>
 <script src="forward.js"></script>
+<script src="forward_audit.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
