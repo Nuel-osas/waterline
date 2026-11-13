@@ -269,6 +269,41 @@ def write_claims(write=True):
             + ("(the account has contract code)" if cus["account_has_contract_code"] else "(the account itself has no contract code)"),
             "intents.near.public_keys_of(treasury) and view_account(treasury)", grade="chain")
 
+    # --- the base-rate model: how often the float's own past, replayed, meets the long-dated readings
+    from .model import BLOCK, PATHS, SEED, share, simulate, windows
+    cut = {key: (label, since, until) for key, label, since, until in windows(rows, pin)}
+    run = {key: simulate(rows, pin, since, until) for key, (_, since, until) in cut.items()}
+    whole, before, after = run["whole"], run["before"], run["after"]
+    setup = (f"{whole['horizon_days']} days to {whole['target']} built from runs of {BLOCK} consecutive past days, "
+             f"{PATHS:,} paths, seed {SEED}")
+    drawn = {"whole": f"from every day since the first deposit ({whole['changes']} daily changes)",
+             "before": f"only from days before the reward programme was announced ({before['since']} to {before['until']}, {before['changes']} daily changes)",
+             "after": f"only from days since the first reward's snapshot was triggered ({after['since']} to {after['until']}, {after['changes']} daily changes)"}
+    add("O1", share(whole["r1_holds"]),
+        f"Replayed paths on which R1 holds (the float is at least $200M on {whole['target']}), drawing {drawn['whole']}: "
+        f"{setup}. A base rate, not a forecast", "python3 -m pipeline.model", grade="model")
+    add("O2", share(before["r1_holds"]), f"The same, drawing {drawn['before']}", "as O1", grade="model")
+    add("O3", share(after["r1_holds"]), f"The same, drawing {drawn['after']}", "as O1", grade="model")
+    add("O4", share(whole["r5_holds"]),
+        f"Replayed paths on which R5 holds (the float without NEAR's own token is at least $130M), drawing {drawn['whole']}",
+        "as O1", grade="model")
+    add("O5", share(before["r5_holds"]), "The same, drawing only from days before the reward programme was announced", "as O1", grade="model")
+    add("O6", share(after["r5_holds"]), "The same, drawing only from days since the first reward's snapshot was triggered", "as O1", grade="model")
+    add("O7", share(whole["r2_holds"]),
+        "Replayed paths on which R2 holds (the ten best days are under 45% of the float), drawing from every day since the first deposit",
+        "as O1", grade="model")
+    for cid, key in (("O8", "whole"), ("O9", "before"), ("O10", "after")):
+        m = run[key]
+        add(cid, money(m["median_usd"]),
+            f"Median float on {m['target']} across the replayed paths, drawing {drawn[key].split(' (')[0]} "
+            f"(one path in ten ends below {money(m['p10_usd'])}, one in ten above {money(m['p90_usd'])})", "as O1", grade="model")
+    lengths = (1, 3, BLOCK, 14, 30)
+    for cid, key in (("O11", "whole"), ("O12", "after")):
+        got = [run[key]["r1_holds"] if b == BLOCK else simulate(rows, pin, cut[key][1], cut[key][2], block=b)["r1_holds"] for b in lengths]
+        add(cid, f"{share(min(got))} to {share(max(got))}",
+            f"How far O{'1' if key == 'whole' else '3'} moves when the runs are {', '.join(str(b) for b in lengths[:-1])} or {lengths[-1]} days long",
+            "as O1, five run lengths", grade="model")
+
     out = {"pin_day": pin, "pin_height": last["height"], "priced_at": series["priced_at"], "claims": C}
     site = {"pin_day": pin, "pin_height": last["height"], "priced_at": series["priced_at"], "by_id": {c["id"]: c for c in C}}
     lines = ["| # | Number | What it is |", "| --- | --- | --- |"]
