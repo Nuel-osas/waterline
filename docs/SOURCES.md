@@ -89,6 +89,26 @@ contract checks against the registered key. For an implicit account, a single ke
 to the account id is the default. Nothing public that we found says who holds the key or how. `make verify`
 re-reads both.
 
+## The transfer followed from the chain
+
+`data/context/trace.json`, written with `pipeline/trace.py`. Each account below was read from a receipt or a
+balance at the block given, not taken from a label. None of them is named in NEAR Intents' documentation that
+we found, so each is described by what it did, not by who runs it.
+
+| Account | What it did | Block | How it was checked |
+| --- | --- | --- | --- |
+| `51e8f94d...7cbe` (the treasury) | Paid out 1,730,851.324698195834932526948583 NEAR by a transfer intent signed with the one key registered for it | 216973662, 2026-09-23 23:35:58 UTC | `EXPERIMENTAL_receipt` of `9tF9HZnUkAMEW78Ez4dCnZEQkJYmJepcpJ1T8pnZfU3e`; treasury balance one block before and at that block |
+| `bf20691c...c5f9` | Received it on the public ledger, held it nine hours, then withdrew it as plain NEAR | 217029847, 2026-09-24 08:52:21 UTC | `EXPERIMENTAL_receipt` of `5WtU7FG6E27HuCTnDopXK42on49dVaj9kVtY1sseuYZy` |
+| `6ec9de2f...fbfd` | A NEAR account that received the plain NEAR and passed it on eight seconds later | 217029864 | FastNEAR transfers index only (transaction `B4nXBFdnofcrUKNmwwxL7awiff8yj57CaMdgH5fQ6gsY`); not re-read from the chain |
+| `bridge-mng.near` | Wrapped it and deposited it into `intents.near`, crediting the next account | 217029871 | `EXPERIMENTAL_receipt` of `3pAwqgD3BitCtrb7LKANSmUvJJbEKeU9SMtqxkojrFEZ` |
+| `7bb16411...3f2f` | Received the deposit and sent it to the treasury four seconds later. It has no other transfer | 217029878, 2026-09-24 08:52:40 UTC | `EXPERIMENTAL_receipt` of `CZ6jeGYpCZtESVcoDgT9xHSiQyVPmQrVrrs9MqgX5zvi`; treasury balance one block before and at that block |
+
+How the block was found: the treasury's wNEAR balance is a view call at any past height, so the day between the
+readings of 24 and 25 September was halved 17 times, each time keeping the half whose balance changed more,
+down to one block (19 balance reads). `EXPERIMENTAL_changes` then names the receipts that changed
+`intents.near` in that block. `make trace` repeats this. `make verify` re-reads the four receipts and the four
+balances. Full account ids are in the file.
+
 ## How a reading is taken
 
 For each day, one block stamped just after 00:00 UTC. From 2026-11-14 it is the first block stamped at or after

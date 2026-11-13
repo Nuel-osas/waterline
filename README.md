@@ -34,6 +34,8 @@ token's contract how much `intents.near` holds in total, and builds:
 - an investment thesis on NEAR that states which of its inputs are observed and which are reported, and the
   readings that would change it: [`THESIS.md`](THESIS.md);
 - forward tests written before their readings exist, scored by code: [`PREREG.md`](PREREG.md);
+- a tracer that finds, from balances alone, the block and the receipt behind the largest move of a day:
+  `make trace`. It shows that half of the float's best day was money the treasury had paid out the evening before;
 - a seeded model anyone can re-run, which replays the float's past daily changes forward and counts how often
   the thesis's long-dated readings hold: `make model`;
 - a dashboard that shows all of it: `make serve`.
@@ -117,6 +119,10 @@ types", and it cannot tell that a valid number was put in the wrong sentence.
 | P8 | **3.5x** | Growth of the float without NEAR's own token since the B2B launch ($26.8M then) |
 | K2 | **1 of 1** | Access keys of the treasury account on NEAR itself that have never signed a transaction (the nonce is still the value set at creation) |
 | K1 | **1 key** | Keys registered inside intents.near for the treasury account at the pinned block (the account itself has no contract code) |
+| W1 | **1.7M NEAR** | The largest single transfer of NEAR into the treasury in September, at 2026-09-24 08:52:40 UTC. The treasury had paid out the same amount, to the last unit, at 2026-09-23 23:35:58 UTC: 9 hours 16 minutes earlier, and 24 minutes before the 2026-09-24 reading |
+| W2 | **$6.1M** | That transfer at the pinned price |
+| W3 | **$12.0M** | The float's rise on the 2026-09-25 reading, which includes that transfer. It is the largest one-day rise in the series |
+| W4 | **51%** | Part of that day's rise that is money the treasury had paid out the evening before |
 | O1 | **53%** | Replayed paths on which R1 holds (the float is at least $200M on 2027-03-31), drawing from every day since the first deposit (267 daily changes): 138 days to 2027-03-31 built from runs of 7 consecutive past days, 10,000 paths, seed 20261113. A base rate, not a forecast |
 | O2 | **under 1%** | The same, drawing only from days before the reward programme was announced (2026-02-19 to 2026-06-11, 112 daily changes) |
 | O3 | **82%** | The same, drawing only from days since the first reward's snapshot was triggered (2026-09-17 to 2026-11-13, 57 daily changes) |
@@ -144,6 +150,7 @@ are the output of `make model`, a base rate drawn from the float's own past, and
 | `make check` | Every derived file, the table above and the numbers in the page are rebuilt in memory and compared with what is committed; every number in the prose is checked. Ends with `RESULT: PASS`. No network, writes nothing. |
 | `make verify` | First re-reads 8 days from a public NEAR archival node (balances, the largest totals, the supply headers, the treasury's keys), then does everything `make check` does. One to three minutes. |
 | `make score` | The forward tests in [`PREREG.md`](PREREG.md), each `PASS`, `FAIL`, `UNKNOWN` or `PENDING` until its reading exists. |
+| `make trace` | Halves the day before the 25 September reading down to the one block where the treasury's NEAR balance jumped, then prints the receipt behind it: who signed it, for how much. About 25 requests to a public archival node, about a minute. `python3 -m pipeline.trace --help` lists the settings (`--account`, `--token`, `--top`). |
 | `make model` | How often the long-dated readings R1, R2 and R5 hold when the float's past daily changes are replayed forward to 2027-03-31, for three windows of past days. Seeded: the same numbers on any machine. `python3 -m pipeline.model --help` lists the settings (`--since`, `--until`, `--block`, `--paths`, `--seed`). |
 | `make pull` then `make build` | Adds the days since the last committed reading (about 30 requests a day added) and rebuilds, so `make score` can resolve tests whose day has come. |
 | `make serve` | The dashboard at <http://localhost:8080>. The command keeps running; stop it with Ctrl-C. |
@@ -230,6 +237,7 @@ pipeline/claims.py   every quoted number                   -> data/derived/claim
                                                              the numbers written into site/index.html
 pipeline/score.py    forward tests written in PREREG.md     -> data/derived/forward.json
 pipeline/model.py    replays past daily changes forward     -> the O rows of the table above; prints, writes nothing
+pipeline/trace.py    halves a day to the block of a move, reads its receipts -> data/context/trace.json (one case, re-read by make verify)
 pipeline/verify.py   re-read from the chain, rebuild in memory, compare; writes nothing
 ```
 
