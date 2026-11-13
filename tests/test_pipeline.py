@@ -165,6 +165,20 @@ class Prose(unittest.TestCase):
         self.assertNotIn("999x", ok)
 
 
+    def test_the_kinds_of_number_the_check_sees_and_the_ones_it_leaves_alone(self):
+        from pipeline.verify import NUMBER
+        seen = NUMBER.findall("at 16:14:22 UTC, block 217799506, 24 minutes before, 4.8 basis points, 10,000 paths, "
+                              "17 days, 3 of them short, 20 of 20 days, 31 hours 40 minutes, 214 tokens, $3.8M, 61.0%, 2.8x")
+        self.assertEqual(seen, ["16:14:22", "217799506", "24 minutes", "4.8 basis points", "10,000 paths", "17 days",
+                                "3 of them short", "20 of 20 days", "31 hours 40 minutes", "214 tokens", "$3.8M", "61.0%", "2.8x"])
+        # a date is not a count, and words are not numbers: both are stated limits of the check
+        self.assertEqual(NUMBER.findall("the 2026-11-17 readings, on 29 September, ten dollars, four months"), [])
+
+    def test_text_typed_on_the_page_is_checked_and_text_filled_from_the_data_is_not_checked_twice(self):
+        from pipeline.verify import NUMBER, page_text
+        html = '<p>It passes $9M <span data-claim="A13">13 minutes</span> before.</p><pre>$5</pre><script>var x = "$7M";</script>'
+        self.assertEqual(NUMBER.findall(page_text(html)), ["$9M"])
+
 class Sample(unittest.TestCase):
     def test_the_verify_sample_is_fixed_by_the_data_and_always_has_the_key_days(self):
         from pipeline import verify
