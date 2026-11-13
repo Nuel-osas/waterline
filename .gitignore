@@ -3,3 +3,5 @@ __pycache__/
 *.tmp
 data/*.log
 .DS_Store
+.flows/
+.work/
