@@ -1,7 +1,7 @@
 # Everything runs on a stock Python 3.9+ with no packages to install and no keys.
 PY ?= python3
 
-.PHONY: verify check test build pull serve score context all
+.PHONY: verify check test build pull serve score model context all
 
 all: test check
 
@@ -37,3 +37,7 @@ serve:
 ## Score the forward tests in PREREG.md against the readings taken since.
 score:
 	$(PY) -m pipeline.score
+
+## Replay the float's past daily changes forward and count how often the long-dated readings hold. Seeded.
+model:
+	$(PY) -m pipeline.model
