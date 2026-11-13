@@ -148,7 +148,7 @@
    "how": "float two days apart, pinned prices",
    "id": "C10",
    "shown": "2.8%",
-   "what": "Change in the float across the day every 1Click swap moved to the private chain (2026-10-26 to 2026-10-28)"
+   "what": "Change in the float across the day 1Click swaps began to settle on the private chain (2026-10-26 to 2026-10-28)"
   },
   {
    "how": "difference of the two days",
@@ -193,6 +193,12 @@
    "must_appear": false,
    "shown": "12.4M NEAR",
    "what": "wNEAR in the float on 2026-11-13"
+  },
+  {
+   "how": "balance in tokens",
+   "id": "C27",
+   "shown": "8.5M NEAR",
+   "what": "wNEAR in the float on the 2026-09-17 reading, the day NEAR announced the reward's snapshot had been triggered"
   },
   {
    "how": "change in float over the days, times 30",
@@ -253,6 +259,12 @@
    "id": "S3",
    "shown": "98%",
    "what": "Part of the treasury's credit in that token that had nothing behind it on that reading"
+  },
+  {
+   "how": "shortfall over treasury credit",
+   "id": "S5",
+   "shown": "25%",
+   "what": "Part of the treasury's credit in that token with nothing behind it on the earlier reading, 2026-10-01"
   },
   {
    "how": "next reading with treasury at or below held",

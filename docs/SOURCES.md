@@ -42,8 +42,11 @@ Docs pages: <https://docs.near-intents.org/integration/market-makers/confidentia
   returned the tokens backing a deposit while the credit inside NEAR Intents remained, records an upgrade of
   `intents.near` on 2026-10-02 at 20:31:41 UTC, and reports NEAR Intents' general manager saying the money was
   returned in full, which CertiK does not itself verify.
+- All of our readings were taken on 2026-11-13, five weeks after the event. The first data commit of this
+  repository lists the 2026-10-01 reading as an unexplained anomaly; the match to CertiK's report was made
+  afterwards.
 - How the two line up: our 2026-09-30 reading (00:00 UTC) shows the token fully held; our 2026-10-01 reading,
-  taken six minutes after the first payout, shows 859,274 missing; our 2026-10-02 reading, after all five, shows
+  at a block stamped six minutes after the first payout, shows 859,274 missing; our 2026-10-02 reading, after all five, shows
   67,669 held against 3,373,849 credited to the treasury; our 2026-10-03 reading, after the upgrade, shows it
   whole. We matched by token, size and time. We did not trace the attacker's transactions.
 
@@ -78,8 +81,10 @@ re-reads both.
 
 ## How a reading is taken
 
-For each day, one block stamped just after 00:00 UTC, normally within the first 15 seconds; which block inside
-that window is not fixed, so the heights in `data/blocks.json` are the record. At that exact height:
+For each day, one block stamped just after 00:00 UTC. From 2026-11-14 it is the first block stamped at or after
+00:00:00 UTC, and `make verify` checks that. For earlier days it is some block in the first 15 seconds, so the
+heights in `data/blocks.json` are the record: re-pulling such a day from scratch can choose a neighbouring
+block. At that exact height:
 
 1. `intents.near.mt_tokens_for_owner(treasury)` lists the token ids, then `mt_batch_balance_of` returns the balances
    (`data/float/<day>.json`).

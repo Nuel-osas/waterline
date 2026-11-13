@@ -228,6 +228,7 @@ class BlockSearch(unittest.TestCase):
                 raise rpc.UnknownBlock(str(height))
             return {"height": height, "timestamp": self.times[height]}
         rpc.header = fake
+        pull.rpc.header = fake
 
     def tearDown(self):
         rpc.header = self._orig
@@ -240,6 +241,16 @@ class BlockSearch(unittest.TestCase):
             self.assertGreaterEqual(ns, target)
             self.assertLess(ns, target + pull.WINDOW_NS)
         self.assertLess(self.calls, 60)
+
+    def test_first_mode_returns_the_first_block_at_or_after_the_target_whatever_the_search_did(self):
+        anchors = [(0, self.times[0]), (399_999, self.times[399_999])]
+        for target_h in (1_234, 200_000, 398_000, 101, 103):   # 101 and 103 sit either side of a skipped height
+            for back in (0, 1, 250_000_000, 9_000_000_000):     # target on the block, just before it, up to 9 s before
+                target = self.times[target_h] - back
+                h, ns = pull.block_at(target, anchors, first=True)
+                want = min(x for x, t in self.times.items() if t >= target)
+                self.assertEqual(h, want, (target_h, back))
+                self.assertEqual(ns, self.times[want])
 
     def test_target_outside_known_range_is_refused(self):
         with self.assertRaises(rpc.RpcError):

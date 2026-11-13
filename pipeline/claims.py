@@ -119,7 +119,7 @@ def write_claims(write=True):
 
     before, after = on_or_after(rows, "2026-10-26"), on_or_after(rows, "2026-10-28")
     add("C10", pct(after["float_usd"] / before["float_usd"] - 1),
-        f"Change in the float across the day every 1Click swap moved to the private chain ({before['day']} to {after['day']})",
+        f"Change in the float across the day 1Click swaps began to settle on the private chain ({before['day']} to {after['day']})",
         "float two days apart, pinned prices")
     switch = on_or_after(rows, ALL_PRIVATE)
     add("C11", money(last["float_usd"] - switch["float_usd"]),
@@ -140,6 +140,10 @@ def write_claims(write=True):
         add("C15", f"{(units['2026-09-29'] - units['2026-09-30']) / 10**24 / 1e6:.1f}M NEAR",
             "wNEAR that left the float in one day, between the readings of 2026-09-29 and 2026-09-30", "as C14")
     add("C16", f"{units[pin] / 10**24 / 1e6:.1f}M NEAR", f"wNEAR in the float on {pin}", "balance in tokens", must_appear=False)
+    if REWARD_TRIGGER in units:
+        add("C27", f"{units[REWARD_TRIGGER] / 10**24 / 1e6:.1f}M NEAR",
+            f"wNEAR in the float on the {REWARD_TRIGGER} reading, the day NEAR announced the reward's snapshot had been triggered",
+            "balance in tokens")
 
     # --- the reward programme: growth before it, during it, and after its snapshot was triggered
     def ex_near(r):
@@ -182,6 +186,10 @@ def write_claims(write=True):
             "treasury minus held, at the pinned price")
         add("S3", pct(Fraction(str(worst_s["short_share"])) / 100, 0),
             "Part of the treasury's credit in that token that had nothing behind it on that reading", "shortfall over treasury credit")
+        first_s = min(shorts, key=lambda a: a["day"])
+        add("S5", pct(Fraction(str(first_s["short_share"])) / 100, 0),
+            f"Part of the treasury's credit in that token with nothing behind it on the earlier reading, {first_s['day']}",
+            "shortfall over treasury credit")
         days_all = [r["day"] for r in rows]
         after = days_all[days_all.index(max(a["day"] for a in shorts)) + 1]
         add("S4", after, "First reading on which that token was fully held again", "next reading with treasury at or below held")
