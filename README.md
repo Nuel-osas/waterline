@@ -34,6 +34,8 @@ token's contract how much `intents.near` holds in total, and builds:
 - an investment thesis on NEAR that states which of its inputs are observed and which are reported, and the
   readings that would change it: [`THESIS.md`](THESIS.md);
 - forward tests written before their readings exist, scored by code: [`PREREG.md`](PREREG.md);
+- a seeded model anyone can re-run, which replays the float's past daily changes forward and counts how often
+  the thesis's long-dated readings hold: `make model`;
 - a dashboard that shows all of it: `make serve`.
 
 No key, no account, no package to install. Python 3.9 or newer.
@@ -115,11 +117,24 @@ types", and it cannot tell that a valid number was put in the wrong sentence.
 | P8 | **3.5x** | Growth of the float without NEAR's own token since the B2B launch ($26.8M then) |
 | K2 | **1 of 1** | Access keys of the treasury account on NEAR itself that have never signed a transaction (the nonce is still the value set at creation) |
 | K1 | **1 key** | Keys registered inside intents.near for the treasury account at the pinned block (the account itself has no contract code) |
+| O1 | **53%** | Replayed paths on which R1 holds (the float is at least $200M on 2027-03-31), drawing from every day since the first deposit (267 daily changes): 138 days to 2027-03-31 built from runs of 7 consecutive past days, 10,000 paths, seed 20261113. A base rate, not a forecast |
+| O2 | **under 1%** | The same, drawing only from days before the reward programme was announced (2026-02-19 to 2026-06-11, 112 daily changes) |
+| O3 | **82%** | The same, drawing only from days since the first reward's snapshot was triggered (2026-09-17 to 2026-11-13, 57 daily changes) |
+| O4 | **72%** | Replayed paths on which R5 holds (the float without NEAR's own token is at least $130M), drawing from every day since the first deposit (267 daily changes) |
+| O5 | **under 1%** | The same, drawing only from days before the reward programme was announced |
+| O6 | **over 99%** | The same, drawing only from days since the first reward's snapshot was triggered |
+| O7 | **67%** | Replayed paths on which R2 holds (the ten best days are under 45% of the float), drawing from every day since the first deposit |
+| O8 | **$202.6M** | Median float on 2027-03-31 across the replayed paths, drawing from every day since the first deposit (one path in ten ends below $164.8M, one in ten above $252.7M) |
+| O9 | **$170.0M** | Median float on 2027-03-31 across the replayed paths, drawing only from days before the reward programme was announced (one path in ten ends below $159.5M, one in ten above $181.5M) |
+| O10 | **$258.7M** | Median float on 2027-03-31 across the replayed paths, drawing only from days since the first reward's snapshot was triggered (one path in ten ends below $176.1M, one in ten above $353.0M) |
+| O11 | **51% to 60%** | How far O1 moves when the runs are 1, 3, 7, 14 or 30 days long |
+| O12 | **38% to 96%** | How far O3 moves when the runs are 1, 3, 7, 14 or 30 days long |
 <!-- claims:end -->
 
 C, P, S and K rows are measured here from chain state (P: around NEAR's reward programme; S: shortfalls; K:
 custody). V and M rows combine a block-header reading with quoted figures. X and T rows are quoted from
-DefiLlama and labelled with their origin; this project does not vouch for them.
+DefiLlama and labelled with their origin; this project does not vouch for them. O rows are not measurements: they
+are the output of `make model`, a base rate drawn from the float's own past, and they say so.
 
 ## Try it
 
@@ -129,6 +144,7 @@ DefiLlama and labelled with their origin; this project does not vouch for them.
 | `make check` | Every derived file, the table above and the numbers in the page are rebuilt in memory and compared with what is committed; every number in the prose is checked. Ends with `RESULT: PASS`. No network, writes nothing. |
 | `make verify` | First re-reads 8 days from a public NEAR archival node (balances, the largest totals, the supply headers, the treasury's keys), then does everything `make check` does. One to three minutes. |
 | `make score` | The forward tests in [`PREREG.md`](PREREG.md), each `PASS`, `FAIL`, `UNKNOWN` or `PENDING` until its reading exists. |
+| `make model` | How often the long-dated readings R1, R2 and R5 hold when the float's past daily changes are replayed forward to 2027-03-31, for three windows of past days. Seeded: the same numbers on any machine. `python3 -m pipeline.model --help` lists the settings (`--since`, `--until`, `--block`, `--paths`, `--seed`). |
 | `make pull` then `make build` | Adds the days since the last committed reading (about 30 requests a day added) and rebuilds, so `make score` can resolve tests whose day has come. |
 | `make serve` | The dashboard at <http://localhost:8080>. The command keeps running; stop it with Ctrl-C. |
 | `python3 -m pipeline.verify --all` | Re-reads every day. Slow: public nodes allow under one request a second. |
@@ -180,13 +196,15 @@ It prints the private chain's wNEAR balance at that block, in yoctoNEAR. The sam
    matches a published exploit. That was visible because it was on the public ledger; nothing public proves
    the private chain owes what the treasury holds, and 1 key is registered for the treasury, with nothing
    published on whether that key is split.
-5. Position: a small holding, an option on private settlement, conditional on dated readings. See
-   [`THESIS.md`](THESIS.md).
+5. Position: a small holding, an option on private settlement, conditional on dated readings. Replaying the
+   float's own past, the main reading (float at least $200M by 2027-03-31) holds on 53% of paths, on under 1% at
+   the pace before the reward, and on 82% at the pace since September. See [`THESIS.md`](THESIS.md).
 
 ## What the track's example prompt asks for, and where it is
 
 | The prompt asks for | Here |
 | --- | --- |
+| "Onchain analytics, live dashboards and models anyone can re-run" (the track's description) | The readings are contract calls at pinned blocks (`make verify` repeats them). The hosted dashboard is rebuilt every morning from the new day's reading. `make model` is seeded and prints the same numbers on any machine |
 | "One command that rebuilds every chart from raw data" | `make build` rebuilds every series, every quoted number and the dashboard's data from `data/` |
 | "A static dashboard page: each chart, the query behind it, and one plain sentence on what it shows" | [`site/`](site/), hosted at the link above. Each chart has a note saying what it shows and a "query behind this chart" block with the contract calls |
 | "THESIS.md with the claim, the evidence for it, the evidence against it, and what result would change my mind" | [`THESIS.md`](THESIS.md), sections 1, 3, 4 and 6 |
@@ -211,6 +229,7 @@ pipeline/context.py  token list, quoted figures, supply headers, custody -> data
 pipeline/claims.py   every quoted number                   -> data/derived/claims.json, the table above,
                                                              the numbers written into site/index.html
 pipeline/score.py    forward tests written in PREREG.md     -> data/derived/forward.json
+pipeline/model.py    replays past daily changes forward     -> the O rows of the table above; prints, writes nothing
 pipeline/verify.py   re-read from the chain, rebuild in memory, compare; writes nothing
 ```
 

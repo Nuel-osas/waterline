@@ -174,6 +174,26 @@ Shorter tests resolve on the 2026-11-14 and 2026-11-17 readings: the float does 
 another lump, and the tracked share stays at 60% or more. They are written, with their thresholds and their
 base rates, in [`PREREG.md`](PREREG.md). A fail will be reported as a fail.
 
+**How likely are they? A base rate from the float's own history.** `make model` replays the float's past daily
+changes forward to 2027-03-31: 10,000 seeded paths, each built from runs of 7 consecutive past days drawn at
+random, each scored with the thresholds above. The readings were fixed and hashed before this model was
+written, so it did not shape them.
+
+| Days the paths are drawn from | R1 holds | R5 holds | Median float on the day |
+| --- | --- | --- | --- |
+| Every day since the first deposit | 53% | 72% | $202.6M |
+| Only days before the reward programme was announced | under 1% | under 1% | $170.0M |
+| Only days since the first reward's snapshot was triggered | 82% | over 99% | $258.7M |
+
+On the whole history R1 is close to a coin flip, and R2 holds on 67% of paths. At the pace before the reward
+neither R1 nor R5 holds: both need the pace of the last two months to continue, and that pace has a reward and
+a promised second round behind it. So these readings do test the claim; they are not set where the float
+already was heading without help. The result also moves with the length of the runs. From single days to runs
+of 30 days, R1 on the whole history holds on 51% to 60% of paths, and on the last window on 38% to 96%, because
+that window is short and contains the September exit. This is a base rate, not a forecast: changes are in
+dollars, nothing compounds, and the model knows nothing about why money moved. R3 and R4 are not modelled.
+`python3 -m pipeline.model --help` lists the settings.
+
 One more item has no threshold. If NEAR publishes a proof that the private chain's balances add up to the
 treasury, the largest risk in section 4 mostly goes away and we would hold more.
 
