@@ -1,4 +1,5 @@
-/* Waterline dashboard. Plain JavaScript, no framework, no network: it reads data.js and claims.js. */
+/* Waterline dashboard. Plain JavaScript, no framework. It reads data.js and claims.js; the only network use is the
+   "Audit the latest block" button, which asks a public NEAR node from the reader's own browser. */
 (function () {
   "use strict";
   var W = window.WATERLINE, CL = window.WATERLINE_CLAIMS, K = CL.by_id;
@@ -93,6 +94,7 @@
       if (part === "then" && (m = /\(([^)]+) then\)/.exec(c.what))) s = m[1];
       if (part === "unpriced" && (m = /\((\d+) of them/.exec(c.what))) s = m[1];
       if (n.getAttribute("data-fmt") === "date") s = dayLong(s);
+      if (n.getAttribute("data-fmt") === "hm" && (m = /^(\d+) hours (\d+) minutes$/.exec(s))) s = m[1] + "h " + m[2] + "m";
       n.textContent = s;
       n.title = c.id + ": " + c.what;
     });
@@ -352,46 +354,191 @@
   }
 
   // ---------- one token around the October shortfall: held against credited ----------
-  function chartShort() {
-    var box = document.getElementById("chart-short"), C = W.shortfall_case;
-    if (!box || !C || C.days.length < 2) return;
+  var WARN = "#FFB23E";
+  function clock(ms) { var d = new Date(ms); return d.getUTCDate() + " " + MONTHS[d.getUTCMonth()] + " " + ("0" + d.getUTCHours()).slice(-2) + ":" + ("0" + d.getUTCMinutes()).slice(-2) + ":" + ("0" + d.getUTCSeconds()).slice(-2); }
+  function stamp(s) { return Date.parse(s.replace(" ", "T") + "Z"); }
+
+  // one mark per audited reading: blue when every token was whole, amber and taller when one was short
+  function chartAudit() {
+    var box = document.getElementById("chart-audit"), A = W.audit;
+    if (!box || !A || !A.days.length) return;
     box.textContent = "";
-    var days = C.days, w = box.clientWidth, h = Math.round(Math.max(240, Math.min(340, w * 0.3))), m = { l: 0, r: 0, t: 22, b: 26 };
-    var max = Math.max.apply(null, days.map(function (d) { return Math.max(d.held, d.credited); })), step = niceStep(max, 4), top = Math.ceil(max * 1.05 / step) * step;
-    var t0 = T(days[0].day), t1 = T(days[days.length - 1].day);
-    function X(t) { return m.l + 44 + (t - t0) / (t1 - t0) * (w - m.l - m.r - 88); }
-    function Y(v) { return m.t + (1 - v / top) * (h - m.t - m.b); }
-    function tok(v) { return v >= 1e6 ? (v / 1e6).toFixed(2) + "M" : Math.round(v / 1e3) + "K"; }
+    var days = A.days, w = box.clientWidth, h = 132, m = { l: 0, r: 0, t: 34, b: 26 };
+    var t0 = T(W.first_day), t1 = T(W.last_day);
+    function X(t) { return m.l + 6 + (t - t0) / (t1 - t0) * (w - m.l - m.r - 12); }
     var s = el("svg", { viewBox: "0 0 " + w + " " + h, width: w, height: h }, box);
-    for (var v = 0; v <= top; v += step) {
-      el("line", { x1: m.l, x2: w - m.r, y1: Y(v), y2: Y(v), stroke: FOG, "stroke-opacity": v ? .1 : .3 }, s);
-      if (v) text(s, m.l, Y(v) - 6, tok(v), { fill: FOG3 });
+    el("line", { x1: m.l, x2: w - m.r, y1: h - m.b, y2: h - m.b, stroke: FOG, "stroke-opacity": .3 }, s);
+    monthTicks(t0, t1).forEach(function (mt) { text(s, X(mt.t), h - 8, mt.label, { fill: FOG3, "text-anchor": "middle" }); });
+    var bw = Math.max(1.5, Math.min(4, (w - 12) / ((t1 - t0) / 864e5) - 1));
+    days.forEach(function (d) {
+      var x = X(T(d.day)), bad = d.short > 0;
+      el("rect", { x: x - bw / 2, y: bad ? m.t - 14 : m.t + 14, width: bw, height: (h - m.b) - (bad ? m.t - 14 : m.t + 14), fill: bad ? WARN : ACCENT, rx: 1 }, s);
+    });
+    var bads = days.filter(function (d) { return d.short > 0; });
+    if (bads.length) {
+      var bx = X(T(bads[0].day)), label = "hole: " + bads.map(function (d) { return dayShort(d.day) + " " + usd(d.short_usd); }).join(", ");
+      if (w < 640) label = bads.length + " readings with a hole";
+      text(s, bx - 10, m.t - 2, label, { fill: FOG, "text-anchor": "end" });
     }
-    days.forEach(function (d, i) { if (i % 2 === 0) text(s, X(T(d.day)), h - 8, dayShort(d.day), { fill: FOG3, "text-anchor": "middle" }); });
-    // shade the gap wherever less was held than was credited
-    for (var i = 1; i < days.length; i++) {
-      var a = days[i - 1], b = days[i];
-      if (a.held < a.credited || b.held < b.credited) {
-        el("path", { d: "M" + X(T(a.day)) + "," + Y(a.credited) + "L" + X(T(b.day)) + "," + Y(b.credited) + "L" + X(T(b.day)) + "," + Y(Math.min(b.held, b.credited)) + "L" + X(T(a.day)) + "," + Y(Math.min(a.held, a.credited)) + "Z", fill: "#FFB23E", "fill-opacity": .22 }, s);
-      }
-    }
-    function line(key, color) {
-      el("path", { d: days.map(function (q, k) { return (k ? "L" : "M") + X(T(q.day)).toFixed(1) + "," + Y(q[key]).toFixed(1); }).join(""), fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, s);
-      days.forEach(function (q) { el("circle", { cx: X(T(q.day)), cy: Y(q[key]), r: 3.5, fill: color, stroke: DEEP, "stroke-width": 2 }, s); });
-    }
-    line("credited", ACCENT); line("held", "#AAB4B9");
-    var low = days.reduce(function (p, q) { return q.held < p.held ? q : p; });
-    text(s, X(T(low.day)) + 10, Y(low.held) - 10, tok(low.held) + " held on " + dayShort(low.day), { fill: FOG });
-    var cross = el("line", { y1: m.t, y2: h - m.b, stroke: FOG, "stroke-opacity": .5, visibility: "hidden" }, s);
+    var cross = el("line", { y1: 8, y2: h - m.b, stroke: FOG, "stroke-opacity": .5, visibility: "hidden" }, s);
     hover(s, function (ev, x) {
       var d = days[nearest(days, x, function (q) { return X(T(q.day)); })], px = X(T(d.day));
       cross.setAttribute("x1", px); cross.setAttribute("x2", px); cross.setAttribute("visibility", "visible");
-      showTip(ev, dayLong(d.day) + ", 00:00 UTC", [{ name: "Held by NEAR Intents", value: d.held.toLocaleString("en-US"), color: "#AAB4B9" }, { name: "Credited to the private chain", value: d.credited.toLocaleString("en-US"), color: ACCENT }],
-        d.held < d.credited ? { name: "Missing", value: (d.credited - d.held).toLocaleString("en-US") } : null);
+      showTip(ev, dayLong(d.day) + ", 00:00 UTC", [{ name: "Tokens audited", value: String(d.checked) }, { name: "Held by NEAR Intents", value: usd(d.held_usd) }],
+        d.short ? { name: "Hole", value: usd(d.short_usd) } : { name: "Short", value: "none" });
     }, function () { cross.setAttribute("visibility", "hidden"); });
   }
 
-  // ---------- 5. share by asset group, then token by token ----------
+  // the hole, block by block, on a log scale: ten dollars to millions on one chart
+  function chartExploit() {
+    var box = document.getElementById("chart-exploit"), E = W.exploit;
+    if (!box || !E || E.steps.length < 3) return;
+    box.textContent = "";
+    // leave out changes that reversed within a few seconds; they stay in the data
+    var raw = E.steps, pts = [], i = 0;
+    while (i < raw.length) {
+      var prev = pts.length ? pts[pts.length - 1].hole : 0;
+      if (i + 1 < raw.length && raw[i + 1].t - raw[i].t < 8000 && raw[i + 1].hole === prev) { i += 2; continue; }
+      pts.push(raw[i]); i += 1;
+    }
+    var open = pts.filter(function (p) { return p.hole > 0; });
+    if (!open.length) return;
+    var first = open[0], peak = open.reduce(function (a, b) { return b.hole > a.hole ? b : a; });
+    var shut = pts.filter(function (p) { return p.t > peak.t && p.hole <= 0; })[0];
+    var paid = stamp(E.quoted.first_payout_utc), lastPaid = stamp(E.quoted.last_payout_utc), fix = stamp(E.quoted.upgrade_utc);
+    var w = box.clientWidth, narrow = w < 640, h = Math.round(Math.max(300, Math.min(420, w * 0.4))), m = { l: 0, r: 0, t: narrow ? 64 : 48, b: 28 };
+    var t0 = first.t - 6 * 36e5, t1 = (shut ? shut.t : fix) + 5 * 36e5;
+    var lo = 0, hi = 7;   // powers of ten: $1 to $10M
+    function X(t) { return m.l + 50 + (t - t0) / (t1 - t0) * (w - m.l - m.r - 62); }
+    function Y(v) { var p = v <= 1 ? 0 : Math.log(v) / Math.LN10; return m.t + (1 - (p - lo) / (hi - lo)) * (h - m.t - m.b); }
+    var s = el("svg", { viewBox: "0 0 " + w + " " + h, width: w, height: h }, box);
+    [[1, "0"], [10, "$10"], [1e3, "$1K"], [1e5, "$100K"], [1e7, "$10M"]].forEach(function (g) {
+      el("line", { x1: m.l, x2: w - m.r, y1: Y(g[0]), y2: Y(g[0]), stroke: FOG, "stroke-opacity": g[0] === 1 ? .3 : .1 }, s);
+      text(s, m.l, Y(g[0]) - 6, g[1], { fill: FOG3 });
+    });
+    for (var day = Math.ceil(t0 / 864e5) * 864e5; day < t1; day += 864e5) {
+      var d = new Date(day);
+      el("line", { x1: X(day), x2: X(day), y1: h - m.b, y2: h - m.b + 5, stroke: FOG3 }, s);
+      text(s, X(day), h - 8, d.getUTCDate() + " " + MONTHS[d.getUTCMonth()], { fill: FOG3, "text-anchor": X(day) > w - 26 ? "end" : "middle" });
+    }
+    // the stretch in which the hole was visible and nothing had been paid out yet
+    el("rect", { x: X(first.t), y: m.t, width: X(paid) - X(first.t), height: h - m.t - m.b, fill: WARN, "fill-opacity": .08 }, s);
+    // the line
+    var path = "M" + X(t0).toFixed(1) + "," + Y(0).toFixed(1), y = Y(0);
+    pts.forEach(function (p) {
+      if (p.t < t0 || p.t > t1) return;
+      path += "L" + X(p.t).toFixed(1) + "," + y.toFixed(1); y = Y(Math.max(p.hole, 0)); path += "L" + X(p.t).toFixed(1) + "," + y.toFixed(1);
+    });
+    path += "L" + X(t1).toFixed(1) + "," + y.toFixed(1);
+    el("path", { d: path, fill: "none", stroke: WARN, "stroke-width": 2, "stroke-linejoin": "round" }, s);
+    // quoted times
+    function mark(t, label, row, anchor) {
+      el("line", { x1: X(t), x2: X(t), y1: m.t - 6, y2: h - m.b, stroke: FOG, "stroke-opacity": .45, "stroke-dasharray": "3 4" }, s);
+      text(s, X(t) + (anchor === "end" ? -6 : 6), 14 + row * 16, label, { fill: FOG2(), "text-anchor": anchor || "start", "class": "ann" });
+    }
+    function FOG2() { return "#AAB4B9"; }
+    mark(paid, narrow ? "first payout" : "first payout, " + clock(paid).slice(-8) + " (CertiK)", 0, "end");
+    mark(fix, narrow ? "upgrade" : "contract upgrade, " + clock(fix).slice(-8) + " (CertiK)", 0, "end");
+    // our own marks
+    el("circle", { cx: X(first.t), cy: Y(first.hole), r: 4, fill: WARN, stroke: DEEP, "stroke-width": 2 }, s);
+    text(s, X(first.t) + 8, Y(first.hole) + 16, "$" + first.hole + (narrow ? "" : ", " + clock(first.t)), { fill: FOG });
+    el("circle", { cx: X(peak.t), cy: Y(peak.hole), r: 4, fill: WARN, stroke: DEEP, "stroke-width": 2 }, s);
+    text(s, X(peak.t) + 8, Y(peak.hole) - 8, usd(peak.hole) + (narrow ? "" : " at its largest"), { fill: FOG });
+    if (shut) {
+      el("circle", { cx: X(shut.t), cy: Y(0), r: 4, fill: ACCENT, stroke: DEEP, "stroke-width": 2 }, s);
+      text(s, X(shut.t) - 8, Y(0) - 10, narrow ? "whole" : "whole again, " + clock(shut.t).slice(-8), { fill: FOG, "text-anchor": "end" });
+    }
+    if (!narrow) {
+      var mid = (X(first.t) + X(paid)) / 2, by = m.t + 14;
+      text(s, mid, by, K.A8 ? "in the books " + K.A8.shown + " before the first payout" : "", { fill: WARN, "text-anchor": "middle" });
+    }
+    var cross = el("line", { y1: m.t, y2: h - m.b, stroke: FOG, "stroke-opacity": .5, visibility: "hidden" }, s);
+    hover(s, function (ev, x) {
+      var k = 0;
+      for (var j = 0; j < raw.length; j++) if (X(raw[j].t) <= x) k = j;
+      var p = raw[k], px = Math.max(X(t0), Math.min(X(t1), x));
+      cross.setAttribute("x1", px); cross.setAttribute("x2", px); cross.setAttribute("visibility", "visible");
+      showTip(ev, "from " + clock(p.t) + " UTC, block " + p.height.toLocaleString("en-US"),
+        [{ name: "Credited to everyone", value: p.credited.toLocaleString("en-US") }, { name: "Held by NEAR Intents", value: p.held.toLocaleString("en-US") }],
+        { name: p.hole > 0 ? "Hole" : "Hole", value: p.hole > 0 ? p.hole.toLocaleString("en-US") : "none" });
+    }, function () { cross.setAttribute("visibility", "hidden"); });
+  }
+
+  // ---------- the same audit, live, in the reader's browser ----------
+  var NODES = ["https://rpc.mainnet.fastnear.com", "https://free.rpc.fastnear.com", "https://rpc.mainnet.near.org"];
+  function rpc(method, params, n) {
+    n = n || 0;
+    return fetch(NODES[n % NODES.length], { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: method, params: params }) })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (j) { if (j.error) throw new Error(JSON.stringify(j.error).slice(0, 120)); return j.result; })
+      .catch(function (e) { if (n >= 5) throw e; return new Promise(function (ok) { setTimeout(ok, 350 * (n + 1)); }).then(function () { return rpc(method, params, n + 1); }); });
+  }
+  function view(height, contract, method, args) {
+    return rpc("query", { request_type: "call_function", block_id: height, account_id: contract, method_name: method, args_base64: btoa(JSON.stringify(args)) })
+      .then(function (res) { return JSON.parse(String.fromCharCode.apply(null, res.result)); });
+  }
+  function heldCall(height, id) {
+    var k = id.indexOf(":"), kind = id.slice(0, k), rest = id.slice(k + 1);
+    if (kind === "nep141") return view(height, rest, "ft_balance_of", { account_id: "intents.near" });
+    var c = rest.indexOf(":");
+    return view(height, rest.slice(0, c), "mt_balance_of", { account_id: "intents.near", token_id: rest.slice(c + 1) });
+  }
+  function units(v, decimals) {   // whole tokens from base units, without losing digits
+    var b = BigInt(v), u = BigInt(10) ** BigInt(decimals), whole = b / u, frac = Number(b % u) / Number(u);
+    return (Number(whole) + frac).toLocaleString("en-US", { maximumFractionDigits: 2 });
+  }
+  function auditNow() {
+    var A = W.audit, btn = document.getElementById("audit-run"), status = document.getElementById("audit-status");
+    if (!A || !btn) return;
+    btn.disabled = true; status.textContent = "Asking for the latest final block...";
+    var height, when, credited, rows = [];
+    rpc("block", { finality: "final" }).then(function (b) {
+      height = b.header.height; when = Math.round(b.header.timestamp / 1e6);
+      status.textContent = "Block " + height.toLocaleString("en-US") + ": asking intents.near what it has credited...";
+      return view(height, "intents.near", "mt_batch_supply", { token_ids: A.tracked.map(function (t) { return t.id; }) });
+    }).then(function (c) {
+      credited = c;
+      var done = 0, chain = Promise.resolve();
+      A.tracked.forEach(function (t, i) {
+        chain = chain.then(function () { return heldCall(height, t.id).then(function (hv) { return String(hv); }, function () { return null; }); })
+          .then(function (hv) { rows[i] = hv; done += 1; status.textContent = "Block " + height.toLocaleString("en-US") + ": asking each token what NEAR Intents holds, " + done + " of " + A.tracked.length + "..."; });
+      });
+      return chain;
+    }).then(function () {
+      var short = 0, unknown = 0, total = 0, tbl = document.getElementById("audit-table");
+      tbl.textContent = "";
+      var head = document.createElement("thead"), tr = document.createElement("tr");
+      [["Token", ""], ["", ""], ["Chain", ""], ["Credited", "num"], ["Held", "num"], ["Held minus credited", "num"]].forEach(function (c) { var th = html("th", c[1], c[0]); tr.appendChild(th); });
+      head.appendChild(tr); tbl.appendChild(head);
+      var body = document.createElement("tbody");
+      A.tracked.forEach(function (t, i) {
+        var c = credited && credited[i] != null ? BigInt(credited[i]) : null, hv = rows[i] != null ? BigInt(rows[i]) : null, r = document.createElement("tr"), st;
+        if (c === null || hv === null) { st = "unknown"; unknown += 1; }
+        else if (c > hv) { st = "short"; short += 1; }
+        else st = c === hv ? "equal" : "surplus";
+        if (hv !== null && t.price) total += Number(hv) / Math.pow(10, t.decimals) * t.price;
+        var cell = html("td"), tag = html("span", "st " + st, st === "short" ? "SHORT" : st === "unknown" ? "NOT READ" : "WHOLE"); cell.appendChild(tag);
+        r.appendChild(html("td", null, t.symbol)); r.appendChild(cell); r.appendChild(html("td", "chain", t.chain));
+        r.appendChild(html("td", "num", c === null ? "not read" : units(c, t.decimals)));
+        r.appendChild(html("td", "num", hv === null ? "not read" : units(hv, t.decimals)));
+        r.appendChild(html("td", "num", c === null || hv === null ? "" : (hv >= c ? "+" + units(hv - c, t.decimals) : "-" + units(c - hv, t.decimals))));
+        body.appendChild(r);
+      });
+      tbl.appendChild(body);
+      var v = document.getElementById("audit-verdict"), n = A.tracked.length - unknown;
+      v.className = "verdict" + (short ? " short" : "");
+      v.textContent = short ? short + " of " + n + " tokens are short at this block." : (n - short) + " of " + n + " tokens whole. " + usd(total) + " held, nothing credited above it.";
+      var sm = html("small", null, "Block " + height.toLocaleString("en-US") + ", " + clock(when) + " UTC, read just now by your browser" + (unknown ? ". " + unknown + " could not be read and are not counted as whole." : "."));
+      v.appendChild(sm);
+      document.getElementById("audit-result").hidden = false;
+      status.textContent = "Done. Run it again for a newer block.";
+      btn.disabled = false; btn.textContent = "Audit the latest block again";
+    }).catch(function (e) {
+      status.textContent = "The public node did not answer (" + String(e.message || e).slice(0, 80) + "). Try again, or run: python3 -m pipeline.audit --now";
+      btn.disabled = false;
+    });
+  }
+
   function barRow(name, small, share, sub, title) {
     var row = html("div", "row"), n = html("div", "name", name);
     if (small) n.appendChild(html("small", null, small));
@@ -467,7 +614,9 @@
       .forEach(function (l) { var a = html("a", null, l[0]); a.href = l[1]; box.appendChild(a); });
   }
 
-  function charts() { chartWaterline(); chartStack(); chartReward(); chartLumps(); chartSwitch(); chartShort(); }
+  function charts() { chartAudit(); chartExploit(); chartWaterline(); chartStack(); chartReward(); chartLumps(); chartSwitch(); }
+  var runBtn = document.getElementById("audit-run");
+  if (runBtn) runBtn.addEventListener("click", auditNow);
   fillClaims(); barsTokens(); meters(); forward(); links(); charts();
   var timer;
   addEventListener("resize", function () { clearTimeout(timer); timer = setTimeout(charts, 150); });

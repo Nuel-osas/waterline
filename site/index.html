@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Waterline: what NEAR's private chain holds</title>
-<meta name="description" content="NEAR Intents' swaps went private. The money behind them did not. An investment thesis for NEAR whose own measurements anyone can recompute.">
+<title>Waterline: an outside audit of NEAR Intents</title>
+<meta name="description" content="NEAR Intents can be audited from outside, to the last unit, at any block. Its private chain cannot. An investment thesis for NEAR built on that audit.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nuel-osas.github.io/waterline/">
-<meta property="og:title" content="Waterline: what NEAR's private chain holds">
-<meta property="og:description" content="NEAR Intents' swaps went private. The money behind them did not. Read from the public chain, one block a day.">
+<meta property="og:title" content="Waterline: an outside audit of NEAR Intents">
+<meta property="og:description" content="NEAR Intents can be audited from outside, to the last unit. Its private chain cannot. Two calls per token, any block, no key.">
 <meta property="og:image" content="https://nuel-osas.github.io/waterline/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Waterline: what NEAR's private chain holds">
-<meta name="twitter:description" content="NEAR Intents' swaps went private. The money behind them did not. Read from the public chain, one block a day.">
+<meta name="twitter:title" content="Waterline: an outside audit of NEAR Intents">
+<meta name="twitter:description" content="NEAR Intents can be audited from outside, to the last unit. Its private chain cannot. Two calls per token, any block, no key.">
 <meta name="twitter:image" content="https://nuel-osas.github.io/waterline/og.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
@@ -27,6 +27,7 @@
     <span>Waterline</span>
   </a>
   <nav aria-label="Sections">
+    <a href="#audit">Audit</a>
     <a href="#findings">Findings</a>
     <a href="#ledger">Observed or reported</a>
     <a href="#thesis">Thesis</a>
@@ -41,14 +42,75 @@
 <section class="hero paper">
   <div class="wrap">
     <p class="labels"><span class="label">NEAR Hackathon 2026</span><span class="label">Investment thesis</span><span class="label">Pinned <b data-pin="day">13 Nov 2026</b></span></p>
-    <h1>NEAR Intents' swaps went private. <span class="num">The money behind them did not.</span></h1>
-    <p class="lede">Since 27 October 2026, 1Click swaps on NEAR Intents settle on a chain nobody outside can read. What backs that chain sits in one public account, so we read it: one block a day, since the first deposit. <span data-claim="C4">61.0%</span> of everything NEAR Intents holds is now behind the private chain. Run over past blocks, the same reading shows <span data-claim="S2">$3.3M</span> missing on 2 October, which matches a published exploit.</p>
+    <h1>NEAR Intents can be audited from outside. <span class="num">Its private chain cannot.</span></h1>
+    <p class="lede">Ask NEAR Intents what it has credited for a token. Ask the token's own contract what NEAR Intents holds. Two calls, any block, no key. We did it for <span data-claim="A1">214 tokens</span> worth <span data-claim="A2">$223.8M</span>, and none is short. Run over past blocks, the same audit shows the October exploit in the public books <span data-claim="A8">31 hours 40 minutes</span> before the first payout. It stops at one account, the private chain's treasury, which now holds <span data-claim="C4">61.0%</span> of everything.</p>
     <dl class="stats">
-      <div><dt>Behind the private chain</dt><dd data-claim="C1">$136.4M</dd></div>
-      <div><dt>Share now private</dt><dd data-claim="C4">61.0%</dd></div>
-      <div><dt>Shortfall in the 2 October reading</dt><dd data-claim="S2">$3.3M</dd></div>
-      <div><dt>Without NEAR's own token</dt><dd data-claim="P4">$92.9M</dd></div>
+      <div><dt>Audited, none short</dt><dd data-claim="A2">$223.8M</dd></div>
+      <div><dt>Hole in the books before the payout</dt><dd data-claim="A8" data-fmt="hm">31h 40m</dd></div>
+      <div><dt>That hole at its largest</dt><dd data-claim="A10">$3.8M</dd></div>
+      <div><dt>Now behind the private chain</dt><dd data-claim="C4">61.0%</dd></div>
     </dl>
+  </div>
+</section>
+
+<section class="deep" id="audit">
+  <div class="wrap">
+    <p class="labels"><span class="label">01</span><span class="label">The audit</span></p>
+    <h2>Two questions, two contracts, one block.</h2>
+    <div class="ask">
+      <div><p class="ask-k">Credited</p><p class="ask-q">What NEAR Intents says it owes, to all accounts together.</p><code>intents.near.mt_batch_supply(token_ids)</code></div>
+      <div><p class="ask-k">Held</p><p class="ask-q">What the token's own contract says NEAR Intents has.</p><code>&lt;token&gt;.ft_balance_of("intents.near")</code></div>
+      <div><p class="ask-k">The test</p><p class="ask-q">Held at or above credited: whole. Credited above held: a hole, and the difference is its size.</p><code>hole = credited - held</code></div>
+    </div>
+
+    <div class="live" id="live">
+      <div class="live-head">
+        <button type="button" id="audit-run">Audit the latest block</button>
+        <p id="audit-status">Runs in your browser against a public NEAR node: about 25 requests, a few seconds. Nothing is sent anywhere else.</p>
+      </div>
+      <div id="audit-result" hidden>
+        <p class="verdict" id="audit-verdict"></p>
+        <div class="scroll"><table class="ledger live-table" id="audit-table"></table></div>
+      </div>
+      <noscript><p class="note">The live check needs JavaScript. The same audit from a terminal: <code>python3 -m pipeline.audit --now</code>.</p></noscript>
+    </div>
+    <p class="note">At the pinned block the same audit covers <span data-claim="A1">214 tokens</span> and <span data-claim="A2">$223.8M</span>: every token in NEAR Intents' own list that has a balance to read. Most are equal to the last unit. The rest hold a little more than is credited. None is short. From a terminal: <code>python3 -m pipeline.audit --now</code>.</p>
+
+    <article class="finding">
+      <header>
+        <h3>Whole on every reading but three.</h3>
+        <p>The 20 largest tokens, audited on every stored reading since February: <span data-claim="A3">1,090 checks</span>, <span data-claim="A4">3 of them short</span>. All three are one token, a bridged dollar token, on 30 September, 1 October and 2 October. On the last of them <span data-claim="A6">98%</span> of everything credited in that token had nothing behind it, and <span data-claim="A7">87%</span> of that credit belonged to the private chain.</p>
+      </header>
+      <ul class="legend" aria-label="Result of each reading">
+        <li><i class="key accent"></i>Every token whole</li>
+        <li><i class="key warnkey"></i>A hole</li>
+      </ul>
+      <div class="chart" id="chart-audit" role="img" aria-label="A timeline from February to November 2026 with one mark per audited reading. Every mark is the same colour except three at the turn of September to October, where a hole was found. The figures are in the text above."></div>
+      <details class="query"><summary>The query behind this chart</summary><pre># at the day's block in data/blocks.json, on a NEAR archival node
+intents.near.mt_batch_supply(token_ids=[the 20 tracked tokens])   -> credited, data/credited/&lt;day&gt;.json
+&lt;token&gt;.ft_balance_of(account_id="intents.near")              -> held, data/held/&lt;day&gt;.json
+# a reading is short when credited is above held for any token
+# drawn from data/derived/series.json: audit.days[]</pre></details>
+    </article>
+
+    <article class="finding">
+      <header>
+        <h3>The one hole showed <span data-claim="A8">31 hours 40 minutes</span> before the money left.</h3>
+        <p>It opens at ten dollars on 29 September, an attacker testing a refund bug, and doubles. By the last change before the first payout it is <span data-claim="A9">$1.3M</span>. It peaks at <span data-claim="A10">$3.8M</span> and stays open <span data-claim="A11">76 hours</span>. This is a replay run in November, not live detection. Anyone asking these two contracts that week would have seen it.</p>
+      </header>
+      <ul class="legend" aria-label="Series">
+        <li><i class="key warnkey"></i>Hole in the public books: credited minus held, one bridged dollar token</li>
+      </ul>
+      <div class="chart" id="chart-exploit" role="img" aria-label="Step chart on a logarithmic scale from 29 September to 3 October 2026. The hole starts at ten dollars, climbs in doubling steps to 1.3 million before the first payout marked on the chart, peaks at 3.8 million, and closes on the evening of 2 October shortly before the contract upgrade. The figures are in the text above."></div>
+      <details class="query"><summary>The query behind this chart</summary><pre># one token, at every block where the answer changed between the readings of 29 September and 3 October
+intents.near.mt_supply(token_id="nep245:v2_1.omni.hot.tg:56_2CMM...")                           -> credited
+v2_1.omni.hot.tg.mt_balance_of(account_id="intents.near", token_id="56_2CMM...")                -> held
+# the blocks were found by halving: python3 -m pipeline.audit --steps 2026-09-29 2026-10-03
+# payout and upgrade times are CertiK's, quoted; drawn from data/derived/series.json: exploit.steps[]</pre></details>
+      <p class="note">The scale is logarithmic so that the first ten dollars and the last millions fit on one chart. Changes that reversed within a few seconds are left out of the line and kept in the data. The audit also confirms what was only reported: the hole closed with the credited total unchanged, so the tokens came back.</p>
+    </article>
+
+    <p class="stop">This is where the audit stops. The largest account on these books is the private chain's treasury. What that chain owes its own users cannot be asked of any contract, and <span data-claim="C4">61.0%</span> of everything NEAR Intents holds is now behind it.</p>
   </div>
 </section>
 
@@ -74,24 +136,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, token_ids=[the 20 tracked 
 
 <section class="deep" id="findings">
   <div class="wrap">
-    <p class="labels"><span class="label">01</span><span class="label">What the float shows</span></p>
-
-    <article class="finding">
-      <header>
-        <h3>The check finds a real shortfall.</h3>
-        <p>On <span data-claim="S1">2 readings</span> in October, the ledger credited the private chain with more of one dollar token than NEAR Intents held: <span data-claim="S5">25%</span> of the claim unbacked on the first, <span data-claim="S3">98%</span> on the second (<span data-claim="S2">$3.3M</span>). This is not live detection: every reading here was taken on 13 November. Our first build flagged the first of them as unexplained, and we matched it afterwards to a published exploit of the token's bridge, by token, size and day. It was whole again on <span data-claim="S4" data-fmt="date">3 Oct 2026</span>.</p>
-      </header>
-      <ul class="legend" aria-label="Series">
-        <li><i class="key fog"></i>What NEAR Intents held of the token</li>
-        <li><i class="key accent"></i>What the private chain was credited</li>
-      </ul>
-      <div class="chart small" id="chart-short" role="img" aria-label="Two lines from 24 September to 8 October 2026 for one token. The amount credited to the private chain stays level. The amount NEAR Intents held falls to almost nothing on 2 October and returns on 3 October. The figures are in the text above."></div>
-      <details class="query"><summary>The query behind this chart</summary><pre># one token, one block a day, 24 September to 8 October 2026
-v2_1.omni.hot.tg.mt_balance_of(account_id="intents.near", token_id="56_2CMMyVTGZkeyNZTSvS5sarzfir6g")   -> held
-intents.near.mt_batch_balance_of(account_id=TREASURY, token_ids=["nep245:v2_1.omni.hot.tg:56_2CMM..."])  -> credited
-# drawn from data/derived/series.json: shortfall_case.days[]</pre></details>
-      <p class="note">The old BNB Chain USDT id, one reading a day at 00:00 UTC. When the backing broke on the public ledger, anyone could see it by asking two contracts one question each. Nothing like that question can be asked of the private chain.</p>
-    </article>
+    <p class="labels"><span class="label">02</span><span class="label">Behind the wall: what the treasury shows</span></p>
 
     <article class="finding">
       <header>
@@ -167,7 +212,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
 
 <section class="paper" id="ledger">
   <div class="wrap">
-    <p class="labels"><span class="label">02</span><span class="label">Observed or reported</span></p>
+    <p class="labels"><span class="label">03</span><span class="label">Observed or reported</span></p>
     <h2>Since 27 October, the numbers investors quote are not all the same kind of number.</h2>
     <div class="scroll">
     <table class="ledger">
@@ -187,7 +232,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
 
 <section class="deep" id="thesis">
   <div class="wrap">
-    <p class="labels"><span class="label">03</span><span class="label">The thesis</span></p>
+    <p class="labels"><span class="label">04</span><span class="label">The thesis</span></p>
     <h2>A small position: an option on private settlement. Conditional on what the chain keeps showing.</h2>
     <div class="cards">
       <article>
@@ -211,7 +256,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
 
 <section class="paper" id="readings">
   <div class="wrap">
-    <p class="labels"><span class="label">04</span><span class="label">What would change our mind</span></p>
+    <p class="labels"><span class="label">05</span><span class="label">What would change our mind</span></p>
     <h2>Five readings as of the pinned day, written down then, checked again on 31 March 2027.</h2>
     <div class="meters" id="meters"></div>
     <p class="note">A fifth item has no threshold: if NEAR publishes a proof that the private chain's balances add up to the treasury, the risk above mostly goes away.</p>
@@ -236,7 +281,7 @@ python3 -m pipeline.model --since 2026-10-01 --block 14 --seed 7</pre></details>
 
 <section class="deep" id="check">
   <div class="wrap">
-    <p class="labels"><span class="label">05</span><span class="label">Check it yourself</span></p>
+    <p class="labels"><span class="label">06</span><span class="label">Check it yourself</span></p>
     <h2>No key, no account, nothing to install. Python and a public node.</h2>
     <div class="steps">
       <div><code>make test</code><p>Unit tests. No network. About a second.</p></div>
