@@ -257,6 +257,65 @@ class BlockSearch(unittest.TestCase):
             pull.block_at(5, [(10, self.times[10]), (20, self.times[20])])
 
 
+class Model(unittest.TestCase):
+    """The base-rate model: seeded, exact on series whose answer is known, and honest at the edges."""
+
+    def rows(self, floats, near=10_000_000):
+        import datetime as dt
+        first = dt.date(2026, 10, 1)
+        return [{"day": (first + dt.timedelta(days=i)).isoformat(), "float_usd": Fraction(f), "groups": {"NEAR": Fraction(near)}, "types": 1}
+                for i, f in enumerate(floats)]
+
+    def run_model(self, floats, **kw):
+        import datetime as dt
+        from pipeline import model
+        rows = self.rows(floats)
+        pin = rows[-1]["day"]
+        target = (dt.date.fromisoformat(pin) + dt.timedelta(days=kw.pop("days", 100))).isoformat()
+        return model.simulate(rows, pin, target=target, paths=kw.pop("paths", 200), **kw)
+
+    def test_a_steady_rise_reaches_the_reading_on_every_path(self):
+        m = self.run_model([100_000_000 + 1_000_000 * i for i in range(30)])
+        self.assertEqual(m["median_usd"], 229_000_000)   # 129M on the pinned day plus 100 days of 1M
+        self.assertEqual((m["r1_holds"], m["r1_breaks"]), (1, 0))
+        self.assertEqual((m["r5_holds"], m["r5_breaks"]), (1, 0))   # 219M without the 10M of NEAR
+
+    def test_a_steady_fall_breaks_it_and_a_balance_stops_at_nothing(self):
+        m = self.run_model([100_000_000 - 2_000_000 * i for i in range(30)])
+        self.assertEqual(m["median_usd"], 0)
+        self.assertEqual((m["r1_holds"], m["r1_breaks"]), (0, 1))
+        self.assertEqual((m["r5_holds"], m["r5_breaks"]), (0, 1))
+
+    def test_the_same_seed_gives_the_same_paths_and_another_seed_does_not(self):
+        steps = [5, -3, 1, -4, 8, 2, -6, 7, 0, -1] * 4
+        floats = [100_000_000]
+        for s in steps:
+            floats.append(floats[-1] + s * 1_000_000)
+        a, b, c = self.run_model(floats, seed=1), self.run_model(floats, seed=1), self.run_model(floats, seed=2)
+        self.assertEqual(a, b)
+        self.assertNotEqual((a["p10_usd"], a["median_usd"], a["p90_usd"]), (c["p10_usd"], c["median_usd"], c["p90_usd"]))
+
+    def test_the_ten_best_days_count_the_past_as_well_as_the_days_drawn(self):
+        # one lump of 100M and then nothing: drawing only from the quiet days cannot dilute the lump
+        rows_floats = [0, 100_000_000] + [100_000_000] * 20
+        from pipeline import model
+        rows = self.rows(rows_floats, near=0)
+        m = model.simulate(rows, rows[-1]["day"], since=rows[1]["day"], target="2027-03-31", paths=50)
+        self.assertEqual((m["r2_holds"], m["r2_breaks"]), (0, 1))
+
+    def test_a_window_too_short_for_one_run_is_refused(self):
+        with self.assertRaises(SystemExit):
+            self.run_model([100_000_000 + i for i in range(5)], block=7)
+
+    def test_a_share_is_never_rounded_to_never_or_always(self):
+        from pipeline.model import share
+        self.assertEqual(share(Fraction(0)), "none")
+        self.assertEqual(share(Fraction(1)), "all")
+        self.assertEqual(share(Fraction(3, 10000)), "under 1%")
+        self.assertEqual(share(Fraction(9998, 10000)), "over 99%")
+        self.assertEqual(share(Fraction(53, 100)), "53%")
+
+
 class CommittedData(unittest.TestCase):
     """Sanity checks on whatever raw data is in the repository."""
 

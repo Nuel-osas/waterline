@@ -35,13 +35,15 @@ default and takes one to three minutes; `python3 -m pipeline.verify --all` reads
 | `data/derived/claims.json` | Every number the text quotes, with how it is computed |
 | `data/constants.json` | The only other numbers allowed in the prose: thresholds and facts quoted from others |
 | `data/blocks.json`, `data/float/`, `data/held/` | Raw readings: one block per day, balances at that block |
-| `pipeline/` | `rpc.py` (reads), `pull.py` (collect), `build.py` (series), `claims.py` (numbers), `score.py` (forward tests), `verify.py` (checks) |
+| `pipeline/` | `rpc.py` (reads), `pull.py` (collect), `build.py` (series), `claims.py` (numbers), `score.py` (forward tests), `model.py` (base rates for the long-dated readings, `make model`), `verify.py` (checks) |
 | `site/` | The dashboard: static files, `make serve` |
 | `docs/SOURCES.md` | Every constant, where it came from, how it was checked |
 
 ## What is and is not claimed
 
 - Claimed and checkable here: the balances, shares and changes in the findings table, as of the pinned block.
+- Modelled, and labelled as such: the O rows, how often the long-dated readings hold when the float's past daily
+  changes are replayed forward. Seeded and re-runnable; a base rate, not a forecast.
 - Quoted from others and labelled as such: reported volume, fees and revenue (DefiLlama; volume and fees from
   tables uploaded to Dune under the `near` name), and one NEAR price a day (CoinGecko through DefiLlama).
 - Not claimed: that the private chain is or is not fully backed. Nothing public can show that either way.

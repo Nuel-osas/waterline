@@ -215,6 +215,20 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
     <h2>Five readings as of the pinned day, written down then, checked again on 31 March 2027.</h2>
     <div class="meters" id="meters"></div>
     <p class="note">A fifth item has no threshold: if NEAR publishes a proof that the private chain's balances add up to the treasury, the risk above mostly goes away.</p>
+    <h3 class="fwd-title">How often the float's own past, replayed, meets them</h3>
+    <div class="scroll">
+    <table class="ledger odds">
+      <thead><tr><th>Paths drawn from</th><th>R1 holds</th><th>R5 holds</th><th>Median float, 31 Mar 2027</th></tr></thead>
+      <tbody>
+        <tr><td>Every day since the first deposit</td><td data-claim="O1">53%</td><td data-claim="O4">72%</td><td data-claim="O8">$202.6M</td></tr>
+        <tr><td>Only days before the reward programme was announced</td><td data-claim="O2">under 1%</td><td data-claim="O5">under 1%</td><td data-claim="O9">$170.0M</td></tr>
+        <tr><td>Only days since the first reward's snapshot was triggered</td><td data-claim="O3">82%</td><td data-claim="O6">over 99%</td><td data-claim="O10">$258.7M</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">A base rate, not a forecast. <code>make model</code> replays the float's past daily changes forward to 31 March 2027: 10,000 seeded paths, each built from runs of 7 consecutive past days and scored with the thresholds above. At the pace before the reward neither reading holds. Both need the pace since September to continue, and a reward is still in force. The result moves with the length of the runs: from single days to runs of 30, R1 on the whole history holds on <span data-claim="O11">51% to 60%</span> of paths, and on the last window on <span data-claim="O12">38% to 96%</span>. The readings were fixed and hashed before this model was written.</p>
+    <details class="query"><summary>The command behind this table</summary><pre>make model
+python3 -m pipeline.model --since 2026-10-01 --block 14 --seed 7</pre></details>
     <h3 class="fwd-title">Shorter tests, scored by the same code as their readings arrive</h3>
     <div class="fwd" id="forward"></div>
   </div>

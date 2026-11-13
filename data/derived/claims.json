@@ -414,6 +414,90 @@
    "id": "K1",
    "shown": "1 key",
    "what": "Keys registered inside intents.near for the treasury account at the pinned block (the account itself has no contract code)"
+  },
+  {
+   "grade": "model",
+   "how": "python3 -m pipeline.model",
+   "id": "O1",
+   "shown": "53%",
+   "what": "Replayed paths on which R1 holds (the float is at least $200M on 2027-03-31), drawing from every day since the first deposit (267 daily changes): 138 days to 2027-03-31 built from runs of 7 consecutive past days, 10,000 paths, seed 20261113. A base rate, not a forecast"
+  },
+  {
+   "grade": "model",
+   "how": "as O1",
+   "id": "O2",
+   "shown": "under 1%",
+   "what": "The same, drawing only from days before the reward programme was announced (2026-02-19 to 2026-06-11, 112 daily changes)"
+  },
+  {
+   "grade": "model",
+   "how": "as O1",
+   "id": "O3",
+   "shown": "82%",
+   "what": "The same, drawing only from days since the first reward's snapshot was triggered (2026-09-17 to 2026-11-13, 57 daily changes)"
+  },
+  {
+   "grade": "model",
+   "how": "as O1",
+   "id": "O4",
+   "shown": "72%",
+   "what": "Replayed paths on which R5 holds (the float without NEAR's own token is at least $130M), drawing from every day since the first deposit (267 daily changes)"
+  },
+  {
+   "grade": "model",
+   "how": "as O1",
+   "id": "O5",
+   "shown": "under 1%",
+   "what": "The same, drawing only from days before the reward programme was announced"
+  },
+  {
+   "grade": "model",
+   "how": "as O1",
+   "id": "O6",
+   "shown": "over 99%",
+   "what": "The same, drawing only from days since the first reward's snapshot was triggered"
+  },
+  {
+   "grade": "model",
+   "how": "as O1",
+   "id": "O7",
+   "shown": "67%",
+   "what": "Replayed paths on which R2 holds (the ten best days are under 45% of the float), drawing from every day since the first deposit"
+  },
+  {
+   "grade": "model",
+   "how": "as O1",
+   "id": "O8",
+   "shown": "$202.6M",
+   "what": "Median float on 2027-03-31 across the replayed paths, drawing from every day since the first deposit (one path in ten ends below $164.8M, one in ten above $252.7M)"
+  },
+  {
+   "grade": "model",
+   "how": "as O1",
+   "id": "O9",
+   "shown": "$170.0M",
+   "what": "Median float on 2027-03-31 across the replayed paths, drawing only from days before the reward programme was announced (one path in ten ends below $159.5M, one in ten above $181.5M)"
+  },
+  {
+   "grade": "model",
+   "how": "as O1",
+   "id": "O10",
+   "shown": "$258.7M",
+   "what": "Median float on 2027-03-31 across the replayed paths, drawing only from days since the first reward's snapshot was triggered (one path in ten ends below $176.1M, one in ten above $353.0M)"
+  },
+  {
+   "grade": "model",
+   "how": "as O1, five run lengths",
+   "id": "O11",
+   "shown": "51% to 60%",
+   "what": "How far O1 moves when the runs are 1, 3, 7, 14 or 30 days long"
+  },
+  {
+   "grade": "model",
+   "how": "as O1, five run lengths",
+   "id": "O12",
+   "shown": "38% to 96%",
+   "what": "How far O3 moves when the runs are 1, 3, 7, 14 or 30 days long"
   }
  ],
  "pin_day": "2026-11-13",
