@@ -127,7 +127,7 @@ h3 { font: 560 clamp(20px, 2vw, 28px)/1.15 var(--sans); letter-spacing: -.025em;
 .fwd .id { font: 500 12px/1 var(--mono); color: var(--ink-3); }
 .fwd .txt { color: var(--ink-2); font-size: 15px; }
 .fwd .st { font: 600 11px/1 var(--mono); letter-spacing: .06em; padding: 5px 7px; border: 1px solid currentColor; color: var(--ink-3); white-space: nowrap; }
-.fwd .st.PASS { color: var(--accent-ink); } .fwd .st.FAIL { color: var(--warn); }
+.fwd .st.PASS { color: var(--accent-ink); } .fwd .st.FAIL { color: var(--warn); } .fwd .st.UNKNOWN { color: var(--ink-2); }
 
 /* ledger */
 .ledger { width: 100%; border-collapse: collapse; margin-top: clamp(24px, 4vw, 48px); min-width: 720px; }

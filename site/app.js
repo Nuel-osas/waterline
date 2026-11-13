@@ -453,7 +453,8 @@
       var item = html("div", "item");
       item.appendChild(html("span", "id", t.id));
       item.appendChild(html("span", "txt", t.text + (t.value ? " Result: " + t.value + "." : " Scored on the " + dayLong(t.due) + " reading.")));
-      item.appendChild(html("span", "st " + t.status, t.status === "PENDING" ? "Pending" : t.status === "PASS" ? "Passed" : "Failed"));
+      var label = { PENDING: "Pending", PASS: "Passed", FAIL: "Failed", UNKNOWN: "Unknown" }[t.status] || t.status;
+      item.appendChild(html("span", "st " + t.status, label));
       box.appendChild(item);
     });
   }
