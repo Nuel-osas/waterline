@@ -297,10 +297,13 @@ why the history is short. No earlier code. Libraries: none beyond the Python sta
 plain HTML, CSS and JavaScript with no framework. GitHub Actions used: `actions/checkout`,
 `actions/setup-python`, `actions/cache`, `actions/configure-pages`, `actions/upload-pages-artifact`,
 `actions/deploy-pages`. Fonts: Geist and Geist Mono (SIL Open Font License), in `site/fonts/`. Data sources:
-NEAR mainnet through a public archival node, NEAR Intents' public token list, DefiLlama's public API. The code
+NEAR mainnet through a public archival node, NEAR Intents' public token list, DefiLlama's public API, CertiK's
+published incident report (three quoted times), and FastNEAR's transfers index for one hop of the transfer
+that was followed. The dashboard's audit button asks three public NEAR nodes from the visitor's browser. The code
 and text were written with an AI coding assistant (Claude Code) under the author's direction. Before
-submission the repository was reviewed twice by independent AI reviewers, and their findings were fixed in
-pull request 2.
+submission the repository was reviewed several times by independent AI reviewers. Their findings were fixed in
+pull requests 2, 4 and 5, and one review's proposal, to audit the whole ledger and not one account, is pull
+request 8.
 
 ## Errata
 
@@ -312,6 +315,13 @@ pull request 2.
   a hack" and matched "to the hour". Both overstated it. Every reading was taken on 13 November, five weeks
   after the event; the first data commit flagged the 1 October reading as unexplained, and the match to the
   published incident was made afterwards, by token, size and day.
+
+- Until pull request 8 this project measured the October hole only against the private chain's own credit and
+  reported it as 2 readings, 25% and then 98% of that credit, $3.3M. Against everything `intents.near` had
+  credited in that token it is three readings and $3.8M at the largest daily reading. Both are in the table (the
+  S rows and the A rows); the text now uses the second. The project was also first published as a reading of
+  the private chain's balance. A review pointed out that NEAR already publishes that balance as a metric; the
+  audit of the whole ledger was added on the same day and the thesis rebuilt around it.
 
 ## Licence
 
