@@ -520,6 +520,41 @@
    "what": "Part of that day's rise that is money the treasury had paid out the evening before"
   },
   {
+   "grade": "index, checked against the chain",
+   "how": "pipeline/flows.py: sum of listed transfers between two daily readings against the change in data/float/",
+   "id": "N1",
+   "shown": "20 of 20 days",
+   "what": "Days from 2026-09-12 to 2026-10-01 on which the treasury's NEAR transfers listed by FastNEAR's index (78,360 in all) add up, to the last unit, to the change in the balance read from the chain"
+  },
+  {
+   "grade": "index, checked against the chain",
+   "how": "sum of incoming transfers on days that add up",
+   "id": "N2",
+   "shown": "33.8M NEAR",
+   "what": "NEAR transferred into the treasury between the readings of 2026-09-15 and 2026-09-28, gross (21.3M NEAR went out over the same days, which leaves the net inflow of C14)"
+  },
+  {
+   "grade": "index, checked against the chain",
+   "how": "the account's in minus out, over the net inflow",
+   "id": "N3",
+   "shown": "94%",
+   "what": "Part of that net inflow that came from one account, solver-priv-liq.near: 17.0M NEAR in and 5.2M NEAR out, in 40,748 transfers"
+  },
+  {
+   "grade": "index, checked against the chain",
+   "how": "the account's in over all in",
+   "id": "N4",
+   "shown": "50%",
+   "what": "The same account's part of the gross inflow over those days"
+  },
+  {
+   "grade": "index, checked against the chain",
+   "how": "three largest outgoing totals over all out",
+   "id": "N5",
+   "shown": "38%",
+   "what": "Part of the NEAR that left the treasury before the 2026-09-30 reading (5.6M NEAR gross, to 1,083 accounts) that went to the three largest receivers, each in a single transfer"
+  },
+  {
    "grade": "model",
    "how": "python3 -m pipeline.model",
    "id": "O1",
