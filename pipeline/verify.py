@@ -199,6 +199,35 @@ def check_trace_chain():
     return bad
 
 
+def check_flows():
+    """The indexed transfer list is used only where it adds up to the balances read from the chain. Recheck that."""
+    from . import flows, trace
+    bad = 0
+    rec = load(flows.PATH, None)
+    if rec:
+        days = sorted(rec["days"])
+        cal = sorted(set(days) | {(dt.date.fromisoformat(d) - dt.timedelta(days=1)).isoformat() for d in days})
+        chain = flows.chain_balances(cal)
+        good = 0
+        for day in days:
+            d = rec["days"][day]
+            before = (dt.date.fromisoformat(day) - dt.timedelta(days=1)).isoformat()
+            parts_in = sum(int(v[0]) for v in d["by_account"].values()) + int(d["rest"][0])
+            parts_out = sum(int(v[1]) for v in d["by_account"].values()) + int(d["rest"][1])
+            change = None if chain[day] is None or chain[before] is None else chain[day] - chain[before]
+            if parts_in != int(d["in"]) or parts_out != int(d["out"]) or change is None or int(d["chain_change"]) != change:
+                print(f"FAIL flows {day}: the stored totals do not match their parts or the chain balances in data/float/")
+                bad += 1
+            elif d["adds_up"] != (parts_in - parts_out == change):
+                print(f"FAIL flows {day}: marked {'as adding up' if d['adds_up'] else 'as not adding up'}, and the opposite is true")
+                bad += 1
+            else:
+                good += d["adds_up"]
+        if not bad:
+            print(f"ok   data/context/flows.json: on {good} of {len(days)} days the listed transfers add up exactly to the change in the chain balance")
+    return bad
+
+
 def check_exploit_stored():
     """The exploit's steps as stored: in order, inside the window, and each one starting where the last one ended
     unless blocks in between were not read."""
@@ -330,6 +359,7 @@ def check_derived():
     bad += same("dashboard forward tests", f["forward_js"], os.path.join(ROOT, "site", "forward.js"))
     bad += same("findings table", c["readme"], os.path.join(ROOT, "README.md"))
     bad += same("numbers in the page", c["index"], os.path.join(ROOT, "site", "index.html"))
+    bad += check_flows()
     bad += check_exploit_stored()
     bad += check_trace_stored()
     bad += check_prose(c["claims"])

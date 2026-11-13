@@ -436,6 +436,52 @@ class Audit(unittest.TestCase):
         self.assertEqual(audit.steps(lambda h: None if h == 550 else (1000 + (10 if h >= 600 else 0), 1000), 100, 1000, grid=1), [])
 
 
+class Flows(unittest.TestCase):
+    """An indexer's transfer list is used only where it adds up to the balances read from the chain."""
+
+    def transfer(self, height, other, amount, n=0):
+        return {"block_height": str(height), "receipt_id": "R%d" % n, "log_index": 0, "transfer_index": n,
+                "other_account_id": other, "amount": str(amount)}
+
+    def setUp(self):
+        from pipeline import flows
+        self.flows = flows
+        self.unit = 10**24
+        self.blocks = {"2026-09-01": 100, "2026-09-02": 200, "2026-09-03": 300}
+        self.rows = [self.transfer(100, "early", 5 * self.unit, 1),               # at the first reading's block: before the window
+                     self.transfer(150, "solver.near", 4000 * self.unit, 2),
+                     self.transfer(160, "solver.near", -1500 * self.unit, 3),
+                     self.transfer(170, "small", 20 * self.unit, 4),
+                     self.transfer(200, "whale", 9000 * self.unit, 5),            # at the reading's own block: inside the window
+                     self.transfer(250, "whale", -9000 * self.unit, 6)]
+
+    def test_a_day_that_adds_up_to_the_chain_is_kept_and_split_by_account(self):
+        balances = {"2026-09-01": 0, "2026-09-02": 11520 * self.unit, "2026-09-03": 2520 * self.unit}
+        got = self.flows.summarise(self.rows, self.blocks, balances, ["2026-09-02", "2026-09-03"])
+        day = got["2026-09-02"]
+        self.assertTrue(day["adds_up"])
+        self.assertEqual((int(day["in"]) // self.unit, int(day["out"]) // self.unit, day["transfers"], day["accounts"]), (13020, 1500, 4, 3))
+        self.assertEqual(list(day["by_account"]), ["whale", "solver.near"])          # largest first; under 1,000 NEAR goes to the rest
+        self.assertEqual(day["rest"], [str(20 * self.unit), "0", 1, 1])
+        self.assertEqual((day["largest_in"]["account"], day["largest_in"]["height"]), ("whale", 200))
+        self.assertTrue(got["2026-09-03"]["adds_up"])
+
+    def test_a_day_that_does_not_add_up_is_marked_and_left_out_of_every_total(self):
+        balances = {"2026-09-01": 0, "2026-09-02": 11520 * self.unit, "2026-09-03": 0}   # the chain says more left than the list shows
+        got = {"days": self.flows.summarise(self.rows, self.blocks, balances, ["2026-09-02", "2026-09-03"])}
+        self.assertFalse(got["days"]["2026-09-03"]["adds_up"])
+        total = self.flows.span(got, "2026-09-02", "2026-09-03")
+        self.assertEqual((total["days"], total["skipped"]), (["2026-09-02"], ["2026-09-03"]))
+        self.assertEqual(total["in"] // self.unit, 13020)
+        self.assertEqual(total["accounts"]["solver.near"], [4000 * self.unit, 1500 * self.unit, 2])
+
+    def test_a_row_listed_twice_is_counted_once_and_an_unread_balance_drops_the_day(self):
+        balances = {"2026-09-01": 0, "2026-09-02": 11520 * self.unit, "2026-09-03": None}
+        got = self.flows.summarise(self.rows + self.rows, self.blocks, balances, ["2026-09-02", "2026-09-03"])
+        self.assertTrue(got["2026-09-02"]["adds_up"])
+        self.assertNotIn("2026-09-03", got)   # unknown is not zero
+
+
 class CommittedData(unittest.TestCase):
     """Sanity checks on whatever raw data is in the repository."""
 
