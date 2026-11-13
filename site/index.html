@@ -63,6 +63,11 @@
   <div class="chart" id="chart-waterline" role="img" aria-label="Mirrored area chart of the 20 largest tokens. Above the line: value NEAR Intents holds on its public side, roughly level since February. Below the line: value held by the private-chain treasury, which grows from zero to more than the part above. The table below the chart has every value."></div>
   <div class="wl-foot"><div class="wrap">
     <p class="note">The 20 largest tokens by total held, <span data-claim="C18">89%</span> of everything NEAR Intents holds. Each token's own contract says how much NEAR Intents holds; the treasury's balance says how much of that is private. Dollars at the prices of the pinned day. One reading a week before 23 October, one a day after. The headline above counts every token with a price on the pinned day.</p>
+    <details class="query"><summary>The query behind this chart</summary><pre># at the day's block in data/blocks.json, on a NEAR archival node
+intents.near.mt_batch_balance_of(account_id=TREASURY, token_ids=[the 20 tracked tokens])   -> below the line
+&lt;token&gt;.ft_balance_of(account_id="intents.near")  minus the line above               -> above the line
+# TREASURY = 51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe
+# drawn from data/derived/series.json: days[].public_usd, days[].private_usd</pre></details>
     <details class="table-view"><summary>Show these numbers as a table</summary><div class="scroll"><table id="table-waterline"></table></div></details>
   </div></div>
 </section>
@@ -81,6 +86,10 @@
         <li><i class="key accent"></i>What the private chain was credited</li>
       </ul>
       <div class="chart small" id="chart-short" role="img" aria-label="Two lines from 24 September to 8 October 2026 for one token. The amount credited to the private chain stays level. The amount NEAR Intents held falls to almost nothing on 2 October and returns on 3 October. The figures are in the text above."></div>
+      <details class="query"><summary>The query behind this chart</summary><pre># one token, one block a day, 24 September to 8 October 2026
+v2_1.omni.hot.tg.mt_balance_of(account_id="intents.near", token_id="56_2CMMyVTGZkeyNZTSvS5sarzfir6g")   -> held
+intents.near.mt_batch_balance_of(account_id=TREASURY, token_ids=["nep245:v2_1.omni.hot.tg:56_2CMM..."])  -> credited
+# drawn from data/derived/series.json: shortfall_case.days[]</pre></details>
       <p class="note">The old BNB Chain USDT id, one reading a day at 00:00 UTC. When the backing broke on the public ledger, anyone could see it by asking two contracts one question each. Nothing like that question can be asked of the private chain.</p>
     </article>
 
@@ -94,6 +103,10 @@
         <li><i class="key accent"></i>NEAR's own token in the float</li>
       </ul>
       <div class="chart" id="chart-reward" role="img" aria-label="Two lines from February to November 2026. The float without NEAR's own token rises steadily. NEAR's own token in the float more than doubles in the ten days after 17 September and then falls back most of the way."></div>
+      <details class="query"><summary>The query behind this chart</summary><pre># every token the treasury holds, at the day's block
+intents.near.mt_tokens_for_owner(account_id=TREASURY)  then  mt_batch_balance_of(...)
+# valued at the pinned prices in data/tokens.json; NEAR's own token is wNEAR
+# drawn from data/derived/series.json: days[].ex_near_usd and days[].groups[NEAR]</pre></details>
       <p class="note">Without NEAR's own token the float is <span data-claim="P4">$92.9M</span>, up from <span data-claim="P5">$46.1M</span> at the snapshot, and its worst day ever is a fall of <span data-claim="P6">$2.7M</span>. Of the NEAR that arrived in the days after the snapshot was announced, <span data-claim="P7">69%</span> has left.</p>
     </article>
 
@@ -104,6 +117,10 @@
       </header>
       <ul class="legend" id="legend-stack" aria-label="Asset groups"></ul>
       <div class="chart" id="chart-stack" role="img" aria-label="Stacked area chart of the private float by asset group, daily since February 2026. The figures are in the text above and in the tooltip."></div>
+      <details class="query"><summary>The query behind this chart</summary><pre># every token the treasury holds, at the day's block
+intents.near.mt_tokens_for_owner(account_id=TREASURY)  then  mt_batch_balance_of(...)
+# valued at the pinned prices in data/tokens.json and grouped by symbol (pipeline/build.py, group_of)
+# drawn from data/derived/series.json: days[].groups</pre></details>
       <p class="note">Every token the treasury holds that has a price, daily, at the prices of the pinned day. <span data-claim="C2" data-part="unpriced">30</span> token types have no price and are left out.</p>
     </article>
 
@@ -114,6 +131,9 @@
           <p>The ten best days add up to <span data-claim="C8">$75.5M</span>, which is <span data-claim="C17">55%</span> of the float. <span data-claim="C14">12.6M NEAR</span> entered in two weeks of September. <span data-claim="C15">3.9M NEAR</span> left in one day.</p>
         </header>
         <div class="chart small" id="chart-lumps" role="img" aria-label="Bar chart of the float's change each day. Ten tall bars, most of them in late September, stand out from hundreds of small ones."></div>
+      <details class="query"><summary>The query behind this chart</summary><pre># the same daily reading as above; this chart is its day-to-day difference
+float(day) - float(day before), at the pinned prices
+# drawn from data/derived/series.json: days[].float_usd</pre></details>
         <p class="note">Change in the float from one reading to the next. The ten largest rises are highlighted.</p>
       </article>
 
@@ -123,6 +143,9 @@
           <p>Across 27 October the float changed by <span data-claim="C10">2.8%</span>. Swaps pass through the private chain and leave. The float measures money at rest, not activity. In the 17 days since, it has added <span data-claim="C11">$20.7M</span>.</p>
         </header>
         <div class="chart small" id="chart-switch" role="img" aria-label="Line chart of the float from mid October to mid November. It stays level across 27 October and then rises slowly."></div>
+      <details class="query"><summary>The query behind this chart</summary><pre># the same daily reading as above, from 13 October 2026
+intents.near.mt_batch_balance_of(account_id=TREASURY, token_ids=[every token it holds])
+# drawn from data/derived/series.json: days[].float_usd</pre></details>
         <p class="note">Daily float around the day 1Click swaps began to settle privately, on an axis that starts at zero.</p>
       </article>
     </div>
@@ -134,6 +157,10 @@
       </header>
       <div class="bars" id="bars-groups"></div>
       <div class="bars sub" id="bars-tokens"></div>
+      <details class="query"><summary>The query behind this chart</summary><pre># on the pinned day, for every token in NEAR Intents' token list
+&lt;token&gt;.ft_balance_of(account_id="intents.near")            -> held in total
+intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
+# drawn from data/derived/series.json: pin.groups[] and tokens[]</pre></details>
     </article>
   </div>
 </section>

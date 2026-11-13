@@ -219,6 +219,12 @@
    "what": "Float growth after the first reward's snapshot was triggered (2026-09-17 to 2026-11-13)"
   },
   {
+   "how": "float at the pinned prices",
+   "id": "P9",
+   "shown": "$76.0M",
+   "what": "The float on the 2026-09-17 reading, the day NEAR announced confidential balances had passed $70M (at that day's prices)"
+  },
+  {
    "how": "float minus the NEAR group, pinned prices",
    "id": "P4",
    "shown": "$92.9M",
@@ -369,6 +375,13 @@
    "what": "How many times revenue would have to grow for buybacks to match net new supply"
   },
   {
+   "grade": "chain, via an indexer",
+   "how": "supply times 1.6%, over a year, against 30-day revenue in NEAR",
+   "id": "H1",
+   "shown": "4.2x",
+   "what": "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes"
+  },
+  {
    "grade": "reported",
    "how": "annualised X1 times M2",
    "id": "M3",
@@ -386,6 +399,14 @@
    "id": "P8",
    "shown": "3.5x",
    "what": "Growth of the float without NEAR's own token since the B2B launch ($26.8M then)"
+  },
+  {
+   "grade": "chain",
+   "how": "view_access_key_list(treasury) at the pinned block",
+   "id": "K2",
+   "must_appear": false,
+   "shown": "1 of 1",
+   "what": "Access keys of the treasury account on NEAR itself that have never signed a transaction (the nonce is still the value set at creation)"
   },
   {
    "grade": "chain",

@@ -97,11 +97,17 @@ def custody():
     height = blocks[pin_day()]["height"]
     keys = rpc.view(height, rpc.LEDGER, "public_keys_of", {"account_id": rpc.TREASURY})
     account = rpc.call("query", {"request_type": "view_account", "block_id": height, "account_id": rpc.TREASURY})
+    access = rpc.call("query", {"request_type": "view_access_key_list", "block_id": height, "account_id": rpc.TREASURY})["keys"]
     save(os.path.join(DATA, "context", "custody.json"), {
         "height": height, "treasury": rpc.TREASURY,
         "keys_registered_in_intents_near": keys,
         "account_code_hash": account["code_hash"],
         "account_has_contract_code": account["code_hash"] != "1" * 32,
+        # A new access key's nonce is its creation block height times 1,000,000 and goes up by one with every
+        # transaction it signs. A nonce that is still a whole multiple of 1,000,000 has never signed one.
+        "account_access_keys": [{"public_key": k["public_key"], "nonce": k["access_key"]["nonce"],
+                                 "permission": k["access_key"]["permission"] if isinstance(k["access_key"]["permission"], str) else "FunctionCall"}
+                                for k in access],
         "what": "intents.near.public_keys_of(treasury) and view_account(treasury) at the pinned block. An implicit "
                 "account's id is its own public key in hex, so one key equal to the id is the default."})
     print("custody:", len(keys), "key(s); contract code:", account["code_hash"] != "1" * 32)

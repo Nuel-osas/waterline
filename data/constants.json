@@ -64,6 +64,14 @@
   {
    "value": "61.8%",
    "why": "the tracked share before the price list was completed; quoted in PREREG.md's amendment note"
+  },
+  {
+   "value": "1.6%",
+   "why": "HSP-029: proposed target for NEAR's maximum issuance (docs/SOURCES.md)"
+  },
+  {
+   "value": "2.5%",
+   "why": "HSP-029: NEAR's current maximum issuance, as stated in the proposal (docs/SOURCES.md)"
   }
  ]
 }
