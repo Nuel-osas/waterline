@@ -1,0 +1,12 @@
+{
+ "readings": [
+  {
+   "day": "2026-10-01",
+   "height": 217984992,
+   "held": "2517717115656224944261487",
+   "token": "nep245:v2_1.omni.hot.tg:56_2CMMyVTGZkeyNZTSvS5sarzfir6g",
+   "treasury": "3376990711522136457566777"
+  }
+ ],
+ "what": "Readings where the treasury's balance of a token is larger than the balance the token's own contract reports for intents.near at the same block. They are left out of the share, never forced to 100%."
+}
