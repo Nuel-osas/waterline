@@ -8,7 +8,7 @@ Every constant this project depends on, with where it came from and how it was c
 | Private-chain treasury | `51e8f94d77b5e90dc9852ca6113771e11e8382ce69473a75e313e41665de7cbe` | Same page: the example asset id `imt:51e8f94d...7cbe:nep141:wrap.near`, with "This account ID (`PRIVATE_TREASURY_ACCOUNT_ID` in solver configs) is a production constant shared by all participants." The solver example page lists the same id among "production constants shared by all solver operators" | The account was created on 2026-02-18 (NEAR Blocks, transaction `5BfpVdVufdZD3xim5JYWkBFa1e69DfqLLadk3HGZLdLX`); this project's first non-zero reading is 2026-02-19 |
 | What the treasury means | "Each IMT is backed 1:1 by the corresponding tokens locked in the Treasury smart-contract account on the public chain." | Same page, "Asset identifiers" | Quoted, not verified: nothing public proves the private ledger's total equals the treasury. That gap is one of the thesis's risks |
 | Private chain | "FAR is a permissioned instance of the NEAR protocol operated by a small validator set with no public networking. Balances and swap details on FAR are not visible to the public" | Same page, "How it works" | Quoted |
-| Switch date | 2026-10-27 | NEAR Intents changelog: "From October 27, 2026, 1Click swaps settle confidentially. The API is unchanged. As an integrator, you don't need to change anything. Swap data stays on the NEAR Intents Explorer, so this does not mean that 1Click is only Confidential Intents. The swap settles on the NEAR Private Shard, so `nearTxHashes` has no hash for the swap. It has the hashes for the shield and the unshield instead." | Quoted in full. The entry does not name the treasury account; that 1Click uses the same one is our inference |
+| Switch date | 2026-10-27 | NEAR Intents changelog: "From October 27, 2026, 1Click swaps settle confidentially. The API is unchanged. As an integrator, you don't need to change anything. Swap data stays on the NEAR Intents Explorer, so this does not mean that 1Click is only Confidential Intents. The swap settles on the NEAR Private Shard, so `nearTxHashes` has no hash for the swap. It has the hashes for the shield and the unshield instead." | Quoted in full. The entry does not name the treasury account. That 1Click uses this one is shown from 1Click's own status records for 9 swaps, each transfer read back from the chain (see "1Click's own records" below) |
 | B2B launch | 2026-07-13 | NEAR Intents changelog: "Confidential Intents B2B launch" | Quoted |
 | Token prices and decimals | `data/tokens.json` | `https://1click.chaindefuser.com/v0/tokens` (NEAR Intents' own token list), fetched once at the time recorded in the file | Pinned. Used for dollar figures. A single token's share needs no price; combined shares weight tokens by these prices. The list changed during the day: `pipeline.context tokens` adds ids that appear later and never changes a pinned price |
 | Reported volume, fees, revenue | `data/context/defillama.json` | DefiLlama API, `summary/dexs/near-intents` and `summary/fees/near-intents` | See "Where the reported numbers come from" below |
@@ -157,6 +157,51 @@ balances. Full account ids are in the file.
   again, in about an hour and a half.
 - `solver-priv-liq.near` is a named account with no contract code (checked with `view_account` at the pinned
   block). It is not named in NEAR Intents' documentation that we found. We describe it by what the list shows.
+
+## Revenue, read from the chain
+
+- What DefiLlama counts as NEAR Intents' revenue: NEAR and wNEAR received by `fefundsadmin.sputnik-dao.near`,
+  `1csfundsadmin.sputnik-dao.near` and `buybacks.multisignature.near` (see "Where the reported numbers come from").
+- What we read: each wallet's native NEAR balance (`view_account`) at every stored day's block, in
+  `data/context/revenue.json`, and the transfers in and out of each wallet from FastNEAR's transfers index for
+  the days from 2026-09-14 (`python3 -m pipeline.revenue --transfers 2026-09-14 2026-11-14`). A day's transfers are
+  the ones between the reading before it and its own, by block height.
+- How it is checked: for every wallet and window, native NEAR in minus native NEAR out must equal the change in
+  the balance read from the chain, to the last unit. wNEAR received is counted as DefiLlama counts it, as a
+  transfer between accounts; the minting and burning of wNEAR by wrapping is not income.
+- What is not counted: balances the wallets hold inside `intents.near`, and anything before 2026-09-14 except the
+  balances themselves.
+
+## 1Click's own records
+
+- `data/context/oneclick.json`, written by `pipeline/oneclick.py`. 1Click's status endpoint,
+  `https://1click.chaindefuser.com/v0/status?depositAddress=<address>`, answers without a key. For each account
+  that paid into the treasury in two hours from noon UTC on 2026-10-29, 11-02, 11-06, 11-09, 11-11 and 11-13
+  (188 accounts, from FastNEAR's transfers index), we asked it whether the account is a 1Click deposit address.
+  177 were not, 2 were unused quotes, and 9 were completed or refunded swaps.
+- For each of the 9, the swap's `nearTxHashes` includes the transaction that moved its tokens into the treasury.
+  Each such receipt was read with `EXPERIMENTAL_receipt`: an `execute_intents` call carrying a transfer intent
+  signed for the deposit address, of the stated amount, to the treasury. `make verify` reads them again.
+- All 9 quotes carry `"confidentiality": "public"`. NEAR's changelog of 27 October says 1Click swaps settle
+  confidentially from that date whatever the integrator asks for, and these records agree.
+
+## Network activity, for the lead-lag test
+
+- `data/context/activity.json`: NearBlocks' public charts, `https://api.nearblocks.io/v1/charts`, no key: daily
+  transactions, active accounts and NEAR's price since 2020-07-21, fetched with `python3 -m pipeline.context activity`.
+- The test (`pipeline/leadlag.py`) uses complete Monday-to-Sunday weeks that both this and DefiLlama's volume
+  series cover up to the pinned day.
+
+## HSP-029's status
+
+- The Block, "NEAR governance approves proposal to cut token issuance ceiling to 1.6%", 2026-11-03,
+  <https://www.theblock.co/news/defi/2026-11-03-near-governance-approves-token-issuance-432378>, and Bitcoin.com
+  News, 2026-11-03, <https://news.bitcoin.com/near-protocols-house-of-stake-votes-to-cut-token-issuance-36>, read on
+  2026-11-14. Both report that the House of Stake approved HSP-029 on 2 November 2026; that it lowers the maximum
+  annual issuance from 2.5% to 1.6% over 24 months; that it still needs the House of Stake Security Council to
+  ratify it, then a grace period of about 90 days and a protocol upgrade by validators; and, from the proposal's
+  own modelling, daily issuance falling from about 89,500 to 57,300 NEAR at full implementation.
+- We did not read the vote on chain.
 
 ## How a reading is taken
 

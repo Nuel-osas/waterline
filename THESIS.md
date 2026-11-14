@@ -3,35 +3,38 @@
 Pinned to NEAR mainnet block 224285109 (2026-11-13, 00:00 UTC). Every number in this file is either computed
 from the data (`data/derived/claims.json`) or a declared constant (`data/constants.json`). `make check` fails
 if a dollar amount, a percentage, a multiple, a NEAR amount, a clock time, a block height, a span of hours, days,
-months or years, or a count of tokens, checks or readings here is neither. It does not check dates, numbers
-written as words, or a valid number put in the wrong sentence.
+months or years, a correlation or p-value, or a count of tokens, checks or readings here is neither. It does not
+check dates, numbers written as words, or a valid number put in the wrong sentence. The tables marked as
+generated are written by the code and compared whole.
 
 The track's example prompt asks for four things in this file: the claim, the evidence for it, the evidence
-against it, and what result would change our mind. They are sections 1, 3, 4 and 6. Section 7 says what could
-not be computed.
+against it, and what result would change our mind. They are sections 1, 3, 4 and 6. Section 5 is the rating and
+the rule that moves it. Section 7 says what could not be computed. Appendix A keeps this project's first
+question, whether the money behind the private chain keeps growing, with its readings and tests as written.
 
 ## 1. The claim
 
-NEAR's buyback is funded by the revenue of one product, NEAR Intents: $1.8M reached NEAR's wallets in the last
-30 days. That product
-keeps its books on a public ledger, `intents.near`, and anyone can audit them with two questions asked at the
-same block: ask the ledger what it has credited for a token, and ask the token's own contract what the ledger
-holds. We asked both for 214 tokens worth $223.8M at the pinned block. None is short. We asked both across the
-history, and the books were short on three readings, for one token, during an exploit that was later
-published. Replayed block by block, that hole was in the public books 31 hours 40 minutes before the first
-payout.
+**Rating: Hold, small. Up to 1% of a liquid portfolio, to the end of 2029, checked every month by a rule
+(section 5) whose inputs this repository reads from the chain.**
 
-On 27 October 2026, 1Click swaps began to settle on a private chain. By NEAR's docs, what backs that chain is
-one account on the public ledger (that 1Click's settlement uses this same account is our inference; section 7). The audit sees that account's balance and nothing behind it, and it is now 61.0% of
-everything NEAR Intents holds.
+NEAR's buyback is funded by the revenue of one product, NEAR Intents. Read from the chain, 426,685 NEAR reached NEAR's
+three revenue wallets in the 30 days to the pinned reading, 14,223 NEAR a day. That product keeps its books on a public
+ledger, `intents.near`, and anyone can audit them with two questions asked at the same block: ask the ledger what
+it has credited for a token, and ask the token's own contract what the ledger holds. We asked both for 214 tokens
+worth $223.8M at the pinned block. None is short. Across the history the books were short on three readings, for
+one token, during an exploit that was later published. Replayed block by block, that hole was in the public
+books from ten dollars 31 hours 40 minutes before the first payout, and above $10,000 1 hour 9 minutes before it.
 
-**Our claim: NEAR Intents' public books can be proven whole by anyone, at any block, and that is worth
-something to a holder. The same proof does not reach the private chain, where most of the money now is. Until
-it does, NEAR is worth holding as a small position, not as a cash-flow asset.**
+On 27 October 2026, 1Click swaps began to settle on a private chain. What backs that chain is one account on the
+public ledger, and 1Click's own records show its swaps passing through it: for 9 of 9 completed swaps we found,
+the swap's status record lists the NEAR transaction that moved its tokens into that account. The audit sees that
+account's balance and nothing behind it, and it is now 61.0% of everything NEAR Intents holds.
 
-We hold it loosely, because NEAR pays a reward for keeping money on the private side, the largest inflow there
-has mostly left again, and the one time the backing broke, most of the broken credit belonged to the private
-chain.
+**Our claim: NEAR Intents' public books can be proven whole by anyone, at any block, and the one failure showed
+in them before the money left. The same proof does not reach the private chain, where the swaps now settle and
+most of the money now sits. So NEAR is worth holding on what can be checked, and only a little of it: for
+buybacks to match new supply by the end of 2029, the revenue that funds them has to grow about 84% a year in NEAR,
+and over the latest 30 days against the 30 before it was -17%.**
 
 ## 2. Why the usual numbers stopped being enough
 
@@ -58,13 +61,21 @@ before.
 | --- | --- | --- | --- |
 | Swap volume, 30 days | $3.73B | A table uploaded to Dune under the `near` name, read by DefiLlama; also NEAR's own Explorer | Not the swap leg. Shield and unshield flows yes, with an indexer; not done here |
 | Gross fees, 30 days | $6.0M | Tables uploaded to Dune under the `near` name | No |
-| Revenue reaching NEAR's wallets, 30 days | $1.8M | NEAR received by three public wallets | Yes, with an indexer; quoted here |
+| Revenue reaching NEAR's wallets, 30 days | 426,685 NEAR read here; $1.8M quoted | NEAR and wNEAR received by three public wallets | Yes, this repository. Over the same days the chain shows 100.9% of the NEAR DefiLlama counts |
 | Net new NEAR supply | 88,704 NEAR a day | Block headers | Yes, this repository |
 | Private float | $136.4M | Balances of one account in `intents.near` | Yes, this repository |
 | Backing of the public books | $223.8M, none short | The ledger's credited totals against each token's own contract | Yes, this repository, and a button on the dashboard |
 
 We are not saying the uploaded numbers are wrong. They are reported, not observed, and a thesis should say which
 of its inputs are which. Sources for every row: `docs/SOURCES.md`.
+
+**The usual activity numbers do not move with it either.** The track's example prompt starts from a hypothesis:
+NEAR Intents' volume leads network usage. We tested it over 98 weekly changes, with NearBlocks' public daily counts. A
+week's change in reported volume does not foretell the change in transactions (r = -0.11, p = 0.96, at its strongest lead of
+one to eight weeks), in active accounts (r = +0.09, p = 0.88) or in NEAR's price (r = -0.12, p = 0.74). p is the share of series shifted at
+random in time that do as well, so a real lead would show a small p, and none does. In this data, activity
+tables say little about NEAR Intents and NEAR Intents' volume says little about them. `python3 -m
+pipeline.leadlag` repeats the test.
 
 The float is every token held in `intents.near` by the treasury account that backs the private chain. We read it
 at one block a day since the account was created. Dollar figures use one fixed price list, so a change in the
@@ -74,15 +85,15 @@ series is a change in tokens, not in prices.
 
 **The public books can be audited, and they are whole.** `intents.near` answers `mt_batch_supply`: the total it
 has credited for each token, to all accounts together. Each token's own contract answers how much
-`intents.near` holds. At the pinned block we asked both for 214 tokens worth $223.8M: the listed tokens that
-have a balance to read, and the unlisted ones the treasury holds. Most are equal to the last unit. The rest hold slightly more than is credited,
-$6,321 in all. None is short. `python3 -m pipeline.audit --now` repeats it for the 20 largest tokens at the latest block, and so does a
-button on the dashboard, from the reader's own browser.
+`intents.near` holds. At the pinned block we asked both for 214 tokens worth $223.8M: the listed tokens that have a
+balance to read, and the unlisted ones the treasury holds. Most are equal to the last unit. The rest hold
+slightly more than is credited, $6,321 in all. None is short. `python3 -m pipeline.audit --now` repeats it for
+the 20 largest tokens at the latest block, and so does a button on the dashboard, from the reader's own browser.
 
 **Across the history they were short once.** The same audit on every stored reading since February, for the 20
-largest tokens, one reading a day: 4,806 checks, 3 of them short. All three are one token, a dollar token bridged from BNB Chain, on
-30 September, 1 October and 2 October. On the last of them `intents.near` held 67,669 of it against 3,869,502
-credited: a hole of $3.8M, 98% of everything credited in that token.
+largest tokens, one reading a day: 4,806 checks, 3 of them short. All three are one token, a dollar token bridged from BNB Chain,
+on 30 September, 1 October and 2 October. On the last of them `intents.near` held 67,669 of it against
+3,869,502 credited: a hole of $3.8M, 98% of everything credited in that token.
 
 A stricter test gives the same answer. Many tokens hold a little more than is credited, and a hole smaller than
 that surplus would not turn the sign. So we also ask whether held minus credited fell below every earlier
@@ -94,47 +105,78 @@ new lows, and when it did, something owed had left.
 217799506, stamped 16:14:22 UTC on 29 September, at ten dollars. CertiK dates the first exploit transaction to
 16:14:19 that day, three seconds earlier, and places the fault in NEAR Intents' own deposit handling: a refund
 that returned the tokens and left the credit. The first payout from the bridge's treasury on BNB Chain comes
-31 hours 40 minutes after the hole opens. For 28 hours of that the hole is under $3,000. It passes $10,000 about
-an hour before the first payout, $100,000 half an hour before, and $1.0M 13 minutes before. It peaks at $3.8M
-and the books stay short for 76 hours. They are whole again on the evening of 2 October, minutes before the
-contract upgrade CertiK records, and the credited total does not fall while the hole closes. That is consistent
-with the statement, which CertiK reports and does not verify, that the money was returned in full. What we see
-is the balance on NEAR being refilled, not the tokens on BNB Chain.
+31 hours 40 minutes after the hole opens. For 28 hours of that the hole is under $3,000. It passes $10,000 1 hour 9 minutes before the first
+payout and $1.0M 13 minutes before it. It peaks at $3.8M and the books stay short for 76 hours. They are whole again on
+the evening of 2 October, minutes before the contract upgrade CertiK records, and the credited total does not
+fall while the hole closes. That is consistent with the statement, which CertiK reports and does not verify,
+that the money was returned in full. What we see is the balance on NEAR being refilled, not the tokens on BNB
+Chain.
 
 This is a replay, run on 13 November, six weeks after the event. It is not live detection, and we do not say
 anyone would have acted. The start time is CertiK's finding too; what the replay adds is that the hole could be
-seen and sized from outside, with two calls to two contracts, at every step: small for a day, large for the
-last hour. It also shows the limit of a slow reader. At this project's own pace of one reading a day, the only
-reading before the first payout showed a hole of $30, and the next, minutes after that payout, showed $1.3M.
-Seeing it early takes someone reading every block.
+seen and sized from outside, with two calls to two contracts, at every step.
 
-The rest of this section is about the one account the audit cannot see into: what it holds, read from outside.
+**As an alarm.** How early an outside reader would have seen it depends on how often they read and how large a
+hole they wait for. Generated from the replay in `data/context/exploit.json`; the payout time is CertiK's:
 
-**It is large and it grew.** First reading with a balance: 2026-02-19. $49.3M at the B2B launch on 13 July.
-$136.4M on the pinned day, 2.8x in four months, across 205 token types. That is also the highest it has been.
+<!-- alarm:start -->
+| A reader who checks | First sees the hole at (UTC) | Hole then | Before the first payout |
+| --- | --- | --- | --- |
+| every block | 29 Sep 16:14:22 | $10 | 31h 40m |
+| every 10 minutes | 29 Sep 16:20:00 | $10 | 31h 34m |
+| every hour | 29 Sep 17:00:00 | $10 | 30h 54m |
+| once a day, at 00:00 UTC | 30 Sep 00:00:00 | $30 | 23h 54m |
+
+| An alarm set at a hole of | First reached at (UTC) | Before the first payout |
+| --- | --- | --- |
+| $10 | 29 Sep 16:14:22 | 31h 40m |
+| $1,000 | 30 Sep 00:32:34 | 23h 21m |
+| $10,000 | 30 Sep 22:45:09 | 1h 9m |
+| $100,000 | 30 Sep 23:22:01 | 0h 32m |
+| $1.0M | 30 Sep 23:41:28 | 0h 13m |
+<!-- alarm:end -->
+
+A reader once a day, as this project is, would have seen a hole of $30 at the reading of 30 September, the
+sign test firing almost a day before the first payout. Whether a test like that also fires when nothing is
+wrong is the other half of an alarm; section 7 says how far that has been measured.
+
+**The swaps now settle through the account the audit cannot see into.** NEAR's changelog says 1Click swaps settle
+on the private chain from 27 October and that a swap's `nearTxHashes` then lists the shield and the unshield.
+We took the accounts that paid into the treasury on six days after 27 October and asked 1Click's public status
+endpoint about each. Among 188 accounts, 9 were deposit addresses of completed or refunded swaps, dated
+2 to 11 November. For each of them (9 of 9), the swap's own record lists the transaction that moved its tokens
+into the treasury. We read each of those transfers back from the chain: a transfer signed for the deposit address, of
+that amount, to the treasury. Every one of the 9 was marked `public` by the integrator, and every one went
+through the private chain's treasury. `python3 -m pipeline.oneclick` lists them and `make verify` re-reads them.
+
+The rest of this section is about that account, the one the audit cannot see into: what it holds, read from
+outside.
+
+**It is large and it grew.** First reading with a balance: 2026-02-19. $49.3M at the B2B launch on 13 July. $136.4M on
+the pinned day, 2.8x in four months, across 205 token types. That is also the highest it has been.
 
 **Most of NEAR Intents is already behind it.** On the pinned day we asked the contract of every token in NEAR
-Intents' own token list how much `intents.near` holds: 180 tokens with a price, $223.8M in total. The private
-side is 61.0% of that. It is not even across assets: NEAR 69.9%, stablecoins 68.2%, ZEC 60.3%, ETH 57.5%, and
-bitcoin only 28.8%.
+Intents' own token list how much `intents.near` holds: 180 tokens with a price, $223.8M in total. The private side
+is 61.0% of that. It is not even across assets: NEAR 69.9%, stablecoins 68.2%, ZEC 60.3%, ETH
+57.5%, and bitcoin only 28.8%.
 
 Through time we follow the 20 largest tokens by total held, which cover 89% of that total. Their private share
-was 5% at the start of April, 36.0% at the July launch, 56.2% the day before the switch and 62.3% on the
-pinned day. Over the same months the public side did not grow: $86.0M in April, $75.0M now. The growth was on
-the private side.
+was 5% at the start of April, 36.0% at the July launch, 56.2% the day before the switch and 62.3% on the pinned
+day. Over the same months the public side did not grow: $86.0M in April, $75.0M now. The growth was on the private
+side.
 
-**It is not only NEAR's own token.** Stablecoins are the largest group (Stablecoins: $49.3M) ahead of NEAR's own
-token (NEAR: $43.5M). 68% of the float is not NEAR's own token. We do not know who the depositors are.
+**It is not only NEAR's own token.** Stablecoins are the largest group (Stablecoins: $49.3M) ahead of NEAR's own token
+(NEAR: $43.5M). 68% of the float is not NEAR's own token.
 
 **Without NEAR's own token it is steadier, and it kept growing after the first reward closed.** That part was
-$46.1M when the first reward's snapshot was announced and is $92.9M now, 3.5x since the July launch, and its
-worst day ever is a fall of $2.7M. The whole float grew by $7.9M per 30 days before the reward programme,
-$14.3M per 30 days while the first reward was open, and $31.8M per 30 days since.
+$46.1M when the first reward's snapshot was announced and is $92.9M now, 3.5x since the July launch, and its worst
+day ever is a fall of $2.7M. The whole float grew by $7.9M per 30 days before the reward programme, $14.3M per 30 days while the first reward
+was open, and $31.8M per 30 days since.
 
 **It is the account NEAR means.** NEAR announced on 17 September that confidential balances had passed $70M at
-that day's prices. Our reading of this account that day, at our fixed prices, is $76.0M. With NEAR's own token
-at each day's price it is $68.3M on the 17 September reading and $74.1M on the next: it crosses $70M on the day
-of the announcement.
+that day's prices. Our reading of this account that day, at our fixed prices, is $76.0M. With NEAR's own token at
+each day's price it is $68.3M on the 17 September reading and $74.1M on the next: it crosses $70M on the day of
+the announcement.
 
 ## 4. The evidence against the claim
 
@@ -142,7 +184,13 @@ of the announcement.
 private chain's treasury. The audit proves the tokens are there. It cannot say who they are owed to, or whether
 the private chain has promised more than the treasury holds, because no contract answers that question. And
 the October hole fell mostly on that side: 87% of the credit in the broken token belonged to the treasury.
-Nothing public says how such a loss would have been shared among the private chain's users.
+
+**Who would bear a loss there.** The users who hold balances on the private chain, first. A NEAR holder would
+bear it in two ways: through the revenue that funds the buyback, which depends on those users staying, and
+through any decision by NEAR Intents' operators to make users whole, as the bridge operator did after October
+by returning the backing, as CertiK reports. If a loss there were made good out of the revenue that funds the
+buyback, a loss of 16% of the float would use up a full year of it. Nothing published says how such a loss
+would be shared or who would pay it.
 
 **Part of the float is paid for.** On 11 June 2026 NEAR announced a reward for holding a confidential balance: a
 pool of locked tokens that convert to NEAR, shared among wallets that keep more than $100 there and make at
@@ -152,35 +200,37 @@ triggered. A second round is promised. With another round promised, nobody outsi
 reward-seeking, and we do not claim to. The reward is small against the float, though: the first pool is
 333,333 locked tokens, $1.1M at its conversion price, and no wallet can receive more than $22,200.
 
-**The NEAR in it came late and mostly left.** The ten best days add up to $75.5M, which is 55% of the float.
-The treasury held 8.5M NEAR on the day NEAR announced that the snapshot had been triggered. Between the readings
-of 15 and 28 September 12.6M NEAR entered, nearly all of it after that announcement, so it was not positioned
-for the first reward. In one day at the end of that month 3.9M NEAR
-left, the largest one-day fall in the series ($14.6M), and 69% of that inflow has now gone. That fall is between
-the readings of 29 and 30 September, the day the hole in the public books first opened. We note the coincidence
-and did not test for a link.
+**The NEAR in it came late and mostly left.** The ten best days add up to $75.5M, which is 55% of the float. The
+treasury held 8.5M NEAR on the day NEAR announced that the snapshot had been triggered. Between the readings of 15
+and 28 September 12.6M NEAR entered, nearly all of it after that announcement, so it was not positioned for the
+first reward. In one day at the end of that month 3.9M NEAR left, the largest one-day fall in the series ($14.6M),
+and 69% of that inflow has now gone. That fall lies between the readings of 29 and 30 September, the day the
+hole in the public books opened, so we put the two in order. The money left first: 4.1M NEAR net between the
+reading of 29 September and block 217799506, where the hole opened, including three transfers out of 2.1M NEAR
+between 06:06 and 06:09 UTC, 10 hours before it. After that block the treasury gained NEAR. The exit was not a
+reaction to the exploit.
 
-**Most of it came from one account.** A public index lists every transfer in and out of the treasury. We use
-it only where it agrees with the chain: on 20 of 20 days tested, its list adds up, to the last unit, to the
-change in the balance we read. Between the readings of 15 and 28 September 33.8M NEAR went in and 21.3M NEAR
-came out. One account, `solver-priv-liq.near`, is 94% of the net: 17.0M NEAR in, 5.2M NEAR out. Its name
-suggests a solver's own liquidity; nothing published says who runs it or why it moved. So the September lump
-was not a crowd of depositors arriving for a reward, and a reward of $1.1M could not be the reason one account
-moved that much. Over the same two weeks NEAR's price on CoinGecko went from $2.47 to $5.39, 2.2x; we do not
-know which moved which. And when 5.6M NEAR left before the 30 September reading,
-38% of it went to three accounts, each in a single transfer.
+**Most of it came from one account.** A public index lists every transfer in and out of the treasury. We use it
+only where it agrees with the chain: on 20 of 20 days tested, its list adds up, to the last unit, to the change in the
+balance we read. Between the readings of 15 and 28 September 33.8M NEAR went in and 21.3M NEAR came out. One account,
+`solver-priv-liq.near`, is 94% of the net: 17.0M NEAR in, 5.2M NEAR out. Its name suggests a solver's own
+liquidity; nothing published says who runs it or why it moved. So the September lump was not a crowd of
+depositors arriving for a reward, and a reward of $1.1M could not be the reason one account moved that much.
+Over the same two weeks NEAR's price on CoinGecko went from $2.47 to $5.39, 2.2x; we do not know which moved
+which. And when 5.6M NEAR left before the 30 September reading, 38% of it went to three accounts, each in a
+single transfer.
 
 **The best day in the series is half a round trip.** We followed the largest single transfer behind it, from
-the chain alone. The float's largest one-day rise is $12.0M, on the 2026-09-25 reading. $6.1M of it, 51%, is
-one transfer of 1.7M NEAR that reached the treasury at 08:52:40 UTC on 24 September. The treasury itself had
-paid out exactly that amount, to the last unit, at 23:35:58 UTC the evening before, 24 minutes before the daily
-reading. It sat in an account on the public ledger for nine hours, was withdrawn as plain NEAR to a deposit
-address, passed through the account that sweeps such addresses into NEAR Intents, and was back in the treasury
-31 blocks after the withdrawal. So a daily series can count the same money leaving on one day and arriving on
-the next. The ten-best-days figure above and reading R2 therefore overstate how much new money those days
-brought. We do not know why it was moved. The five steps, with block heights and receipt ids, are in
-`data/context/trace.json`; `make verify` re-reads four of them from the chain, and
-`make trace` finds the transfer again from nothing but balances.
+the chain alone. The float's largest one-day rise is $12.0M, on the 2026-09-25 reading. $6.1M of it, 51%, is one
+transfer of 1.7M NEAR that reached the treasury at 08:52:40 UTC on 24 September. The treasury itself had paid out
+exactly that amount, to the last unit, at 23:35:58 UTC the evening before, 24 minutes before the daily reading.
+It sat in an account on the public ledger for nine hours, was withdrawn as plain NEAR to a deposit address,
+passed through the account that sweeps such addresses into NEAR Intents, and was back in the treasury 31 blocks
+after the withdrawal. So a daily series can count the same money leaving on one day and arriving on the next.
+The ten-best-days figure above therefore overstates how much new money those days brought. We do not know why
+it was moved. The five steps, with block heights and receipt ids, are in `data/context/trace.json`; `make
+verify` re-reads four of them from the chain, and `make trace` finds the transfer again from nothing but
+balances.
 
 **The float is not activity.** Across 27 October, the day swaps moved to the private chain, the float changed by
 2.8%. Swaps pass through and leave. What stays is inventory and balances people choose to keep there. So the
@@ -188,156 +238,121 @@ float measures commitment, how much money is willing to rest behind a chain nobo
 nothing direct about volume or fees. In the 17 days since the switch it has added $20.7M.
 
 **The price needs growth, and the recent trend is down.** The value of NEAR's total supply is $4.48B. Net new
-supply runs at 88,704 NEAR a day, $110.7M a year, and is paid to those who stake, so it dilutes holders who do
-not. Counted NEAR against NEAR, the revenue that reaches NEAR's wallets covers 15% of it, and the supply is
-worth 265x that revenue. With both sides in dollars instead, the revenue at each day's price and the new supply
-at the pinned price, the same figures are 20% and 205x; they differ because NEAR's price averaged more over
-those 30 days than on the pinned day. We use NEAR against NEAR because the buyback is paid in NEAR bought on the
-day. Over the latest 30 days against the 30 before, reported volume is -22%, reported fees -26% and that
-revenue -20%.
+supply runs at 88,704 NEAR a day, $110.7M a year, and is paid to those who stake, so it dilutes holders who do not. Read from the
+chain, the revenue that reaches NEAR's wallets covered 16% of it in the 30 days to the pinned reading and 20%
+in the 30 days before. Counted NEAR against NEAR from DefiLlama's figure the share is 15%, and the supply is
+worth 265x that revenue; with both sides in dollars, the revenue at each day's price and the new supply at the
+pinned price, the same figures are 20% and 205x. They differ because NEAR's price averaged more over those
+30 days than on the pinned day. Over the latest 30 days against the 30 before, reported volume is -22%,
+reported fees -26% and that revenue -20%.
 
-**The backing has already failed once, and one public key signs for it.** $136.4M is described as "backed 1:1"
+**The public ledger broke once, and one public key signs for the treasury.** $136.4M is described as "backed 1:1"
 by the treasury. The treasury is public. What the private chain owes is not, and nothing published proves the
-two match. October showed the failure is not hypothetical, though that one was on the public side, where it
-could be seen and was closed within 76 hours. And the treasury is not a contract: it is an ordinary account with
-1 key registered for it inside `intents.near`. Its own access key on NEAR has never signed a transaction.
-The payout in the transfer we followed above was signed by that registered key: one signature moved $6.1M out
-of the treasury. NEAR's docs say that when tokens are unshielded "the PoA Bridge processes the burn request and
-releases the backing tokens from the Treasury on NEAR". They do not say how the key that signs those releases
-is held; one public key can stand for several parties signing together, and nothing published says whether
-this one does.
+two match. In October the public ledger itself broke, through a fault in its own deposit handling: one token's
+credit had nothing behind it for 76 hours, most of that credit was the private chain's, and it could be seen and
+was closed. And the treasury is not a contract: it is an ordinary account with 1 key registered for it inside
+`intents.near`. Its own access key on NEAR has never signed a transaction. The payout in the transfer we
+followed above was signed by that registered key: one signature moved $6.1M out of the treasury. NEAR's docs say
+that when tokens are unshielded "the PoA Bridge processes the burn request and releases the backing tokens from
+the Treasury on NEAR". They do not say how the key that signs those releases is held; one public key can stand
+for several parties signing together, and nothing published says whether this one does.
 
-## 5. What that means for a holder
+## 5. The rating
 
-**What the audit is worth.** A holder of NEAR is exposed to NEAR Intents whether they use it or not, because its
-revenue is what funds the buyback. On the public side that exposure can be checked by anyone, at any block, for
-two calls per token, and a hole shows in the block where it opens, to anyone reading that block. We have not surveyed other venues, so we do not say how rare that is. We say it is the one part of NEAR's
-investment case we could verify end to end without trusting the party being valued, and it held up: whole
-today, and short only when something was in fact wrong. The same check is missing for the side that now holds
-61.0%. Moving swaps to the private chain gave users confidentiality and took this check away, and nothing has
-replaced it.
+**Hold, small: up to 1% of a liquid portfolio, to the end of 2029.**
 
-**What that is in money.** The revenue that funds the buyback is the cash flow NEAR's own case points to, so it
-is the ruler we use. October's hole at its largest was 2.1 months of that revenue, and it was closed. The balance now
-beyond the audit is 6.2 years of it. A loss of 16% of that balance would equal a full year of the revenue. We
-do not say such a loss is likely. We say that the part nobody outside can check is large against the cash flow
-a holder is counting on, and the part that can be checked has already shown a failure of two months' worth.
-That gap, not a view on NEAR's technology, is why the position below is small.
+**The rule.** Each input is computed by this repository's code from the chain, and the rating is too; the
+dashboard shows the result.
 
-**A simple model of what is needed.** NEAR's wallets receive 4.8 basis points per dollar of reported volume.
-For buybacks to match net new supply, revenue has to grow 6.5x. At today's rate per dollar of volume that means
-about $297B a year of volume, against $3.73B in the last 30 days. A governance proposal, HSP-029, would lower
-the maximum issuance from 2.5% a year to 1.6%; if net new supply ran at 1.6%, the multiple would be 4.2x. On the dollar
-basis of section 4 the first multiple is 5.1x. A holder is buying that growth, or a higher take, or lower
-issuance.
+| Rating | When | Position |
+| --- | --- | --- |
+| Add | The public books are whole, and either coverage is at least 25% in each of the last two 30-day windows, or NEAR has published the private chain's totals per token against a block height | up to 3% of a liquid portfolio |
+| Hold | The public books are whole, and neither the Add nor the Exit condition on coverage holds | up to 1% |
+| Exit | A hole in the public books stays open beyond 3 readings, or the audit can no longer be run, or coverage is below 10% in each of the last two 30-day windows | none |
 
-**After 27 October, the float is an adoption measure that cannot be restated afterwards. It can be inflated
-while it is read.** A table can be restated by whoever keeps it. A token balance at a past block cannot. But a
-reward, or an interested party, can put balances there for a while. So we read two things: the float without
-NEAR's own token, and what remains once rewards have been paid.
+Coverage is the NEAR and wNEAR that reach the three revenue wallets over 30 days, read from the chain, set
+against the growth of NEAR's total supply over the same 30 days, read from two block headers: 16% in the
+latest window and 20% in the one before. The public books are whole on the latest reading. So the rule gives
+Hold.
 
-**Our position, with numbers.** We size NEAR by what can be checked. The rule below is a judgment, not a result
-of the data, and it is the part of this file most open to argument.
+Where the numbers come from: 25% and 10% are reading R4's thresholds, written on 13 November; 3 readings is the
+October precedent, short on three readings and whole on the fourth; two windows in a row, because a rule that
+one ordinary day can trip is not a rule. An earlier version of the rule also said to sell if the float without
+NEAR's own token fell below its pinned level, and the next reading tripped it after one ordinary day; that
+trigger is withdrawn (README, errata). The 1% and the 3% are judgments, and the part of this file most open to
+argument.
 
-- Hold no more than 1% of a liquid portfolio in NEAR while most of what NEAR Intents holds is beyond the audit.
-- Hold up to 3% if NEAR publishes the private chain's totals per token against a block height (test D1). With
-  those, the two-call audit covers everything.
-- Hold none if a hole in the public books stays open beyond 3 readings (test G3), or if the audit stops being
-  possible (test G4). These two are read every day.
-- Review on 2027-03-31, when the long-dated tests resolve.
+**What has to be true by 2029.** The rule says when to move. This says what a holder is betting on: the share of
+net new supply that revenue would cover if revenue, counted in NEAR, grew at a steady rate from the latest 30
+days. Generated by `pipeline/claims.py`:
 
-The readings about the float do not move the position in either direction. Growth there is use of the product
-and money moving beyond the audit at once, and a fall is the reverse. An earlier version of this rule said to
-hold none if the float without NEAR's own token fell below its pinned level. On the 2026-11-14 reading it is
-$91.1M, below the pinned $92.9M, after a single day. A rule that one ordinary day can trip is not a rule, so we
-took it out and say so here.
+<!-- scenarios:start -->
+| Revenue in NEAR grows, a year | Covered at end-2029, issuance as now | At end-2031 | Years to cover it all | Covered at end-2029, issuance at 1.6% | At end-2031 | Years to cover it all |
+| --- | --- | --- | --- | --- | --- | --- |
+| -20% | 7% | 5% | never | 12% | 7% | never |
+| +0% | 15% | 14% | never | 24% | 23% | never |
+| +25% | 30% | 44% | 9.2 | 47% | 72% | 6.7 |
+| +50% | 53% | over 100% | 4.8 | 84% | over 100% | 3.6 |
+| +100% | over 100% | over 100% | 2.7 | over 100% | over 100% | 2.1 |
+| needed to cover it all | 84% a year by end-2029 | 46% a year by end-2031 | | 59% a year by end-2029 | 33% a year by end-2031 | |
+<!-- scenarios:end -->
 
-**Why 1% and not none.** The evidence above argues for holding little, and a reader could fairly take it to
-none. We do not, for three reasons we can point to. The part we could check held up: whole today, and short
-only when something was in fact wrong. The growth a holder needs is large but measured: 6.5x in revenue for
-buybacks to match new supply, 5.1x on a dollar basis, 4.2x if issuance is lowered as proposed, against a float
-that grew 2.8x in four months. And the thing that would let us hold more is one disclosure that NEAR can make
-by itself. We do not give a price target, an expected return or a horizon beyond the review date: nothing we
-can check supports one. The case against holding much is unchanged: revenue is 15% of net new supply and
-falling, a reward is still in force, the largest inflow came from one account and half of the best day was a
-round trip, the backing has already failed once, and one public key signs for the treasury.
+With issuance as it is, revenue counted in NEAR has to grow 84% a year to cover new supply by the end of 2029, or
+46% a year by the end of 2031. If HSP-029 takes effect, 59% a year or 33% a year. If revenue stays where it is, it covers 15%
+at the end of 2029, or 24% at 1.6%. Read from the chain, the latest 30 days against the 30 before were -17%.
+This is what the 265x multiple in section 4 prices in: a revenue line that grows by a third to a half every year
+until 2031, or faster to get there by 2029.
+
+HSP-029 was approved by NEAR's House of Stake on 2 November 2026. As reported by The Block and Bitcoin.com, it
+still needs the House of Stake's Security Council to ratify it, then a 90-day grace period and a validator
+upgrade, after which it lowers the issuance cap from 2.5% to 1.6% over 24 months, taking daily issuance from
+about 89,500 NEAR to 57,300 NEAR. The 1.6% columns assume all of that has happened by the horizon. Counting in
+NEAR matters: revenue earned in dollars buys fewer NEAR when NEAR's price rises, so the same business needs
+faster growth in dollars when the price goes up.
+
+**A simple model of what is needed today.** NEAR's wallets receive 4.8 basis points per dollar of reported volume. For
+buybacks to match net new supply now, revenue would have to be 6.5x what it is. At today's rate per dollar of
+volume that means about $297B a year of volume, against $3.73B in the last 30 days. If net new supply ran at 1.6%, the
+multiple would be 4.2x; on the dollar basis of section 4 the first multiple is 5.1x. A holder is buying that
+growth, or a higher take, or lower issuance.
+
+**What the audit is worth, in money.** A holder of NEAR is exposed to NEAR Intents whether they use it or not,
+because its revenue is what funds the buyback. On the public side that exposure can be checked by anyone, at any
+block, for two calls per token, and a hole shows in the block where it opens, to anyone reading that block. It
+is the one part of NEAR's investment case we could verify end to end without trusting the party being valued,
+and it held up: whole today, and short only when something was in fact wrong. Measured against the revenue
+that funds the buyback, October's hole at its largest was 2.1 months of it, and it was closed. The balance now beyond
+the audit is 6.2 years of it.
+
+**Why 1% and not none.** The evidence argues for holding little, and a reader could fairly take it to none. We
+do not, for three reasons we can point to. The part we could check held up. The growth a holder needs is large
+but stated: 46% a year a year in NEAR to cover new supply by 2031, or 33% a year if HSP-029 takes effect, against a float
+that grew 2.8x in four months. And the one thing that would let us hold more, a disclosure, is something NEAR can
+do by itself. We give a horizon and the growth it needs; we do not give a price target or an expected return,
+because nothing we can check supports one.
 
 ## 6. What would change our mind
 
-Written on 2026-11-13. R1, R2, R3 and R5 are produced by this repository's pipeline at the pinned prices and
-scored by `python3 -m pipeline.score` once their reading exists.
+The rating moves on four things, and only these. Each is read by code, and the first three are written down
+with dates in [`PREREG-AUDIT.md`](PREREG-AUDIT.md), hashed on 13 November before the next reading existed:
 
-| # | Reading | Now | The private side is growing if, on 2027-03-31 | It is not if |
-| --- | --- | --- | --- | --- |
-| R1 | Private float | $136.4M | at least $200M | below the pinned day's level |
-| R2 | Ten best days as a share of the float | 55% | below 45%: new money arrives on many days | still above 55% |
-| R3 | Private share, the 20 tracked tokens | 62.3% | at least 50% | below 40%: money is moving back to the public side |
-| R4 | Revenue reaching NEAR's wallets as a share of net new supply, NEAR against NEAR | 15% | at least 25% | below 10% |
-| R5 | Float without NEAR's own token | $92.9M | at least $130M | below the pinned day's level |
-
-Between the two a reading is undecided. The scoring code is stricter than this table: it prints FAIL for
-anything short of the first column. These five readings answer one question, whether the private side keeps
-growing. They do not decide the position in section 5. R2 depends on R1: if the float does not grow, R2 can only improve when lumps
-leave. R4 is the last 30 complete days of DefiLlama's revenue, each day turned back into NEAR at that day's
-price, over 30 days of net new supply from block headers. It uses a quoted figure, so it is scored by hand. R5
-was added on the same day as the others, after we learned of the reward programme; `PREREG.md` records the
-amendment.
-
-**First results, 14 November.** Four of the dated tests were scored on the 2026-11-14 reading, the first one
-taken after they were written. G1 passed: none of the tracked tokens was short. E2 and E3 passed: no single day
-added a lump, and the tracked share was 61.9%. E1 failed: the float had to be at least $136.4M and it was
-$135.2M. The part without NEAR's own token was $91.1M, down $1.8M in a day; 5 of that series' 268 earlier daily
-changes were falls at least that large. The whole float fell on 37% of the days up to the pinned one, so one
-fall is ordinary and settles nothing about March. It is reported here because we said a fail would be. Under
-the rule in section 5 it changes nothing: the test that passed is the one about the claim.
-
-**Two sets of tests, and what each covers.** R1 to R5 above, and the E and F tests below, were written for this
-project's first question: is the money behind the private chain growing. They are hashed and stay as written.
-Read with the audit, R3 changes meaning: money moving back to the public side would be bad for the private
-product and good for what can be checked, so we no longer treat a fall in R3 as breaking the thesis, and we say
-so here instead of editing a hashed file. The claim the thesis now leads with has its own dated tests, written
-on 13 November before the next reading existed, in [`PREREG-AUDIT.md`](PREREG-AUDIT.md):
-
-| # | Test | Scored on |
-| --- | --- | --- |
-| G1, G2 | No tracked token is short on the 2026-11-14 reading, and none on the 2026-11-17 reading | those readings |
-| G3 | Any tracked token found short on a reading is whole again within 3 readings | to 2027-03-31; fails on the day it is broken |
-| G4 | Both questions can still be asked for every tracked token | 2027-03-31 |
-| D1 | NEAR has published what the private chain owes, per token, against a block height | 2027-03-31, by hand |
-
-G1 and G2 are likely to pass, and are written down because a fail would be the most important thing this
-project could report.
-
-Shorter tests on the float were written for the 2026-11-14 and 2026-11-17 readings: the float does not fall, no
-single day adds another lump, and the tracked share stays at 60% or more. They are in [`PREREG.md`](PREREG.md)
-with their thresholds and base rates. The first set is scored above, and a fail is reported as a fail.
-
-**How likely are they? A base rate from the float's own history.** `make model` replays the float's past daily
-changes forward to 2027-03-31: 10,000 paths from one seed, each built from runs of 7 consecutive past days drawn at
-random, each scored with the thresholds above. The readings were fixed and hashed before this model was
-written, so it did not shape them.
-
-| Days the paths are drawn from | R1 holds | R5 holds | Median float on the day |
+| What | Moves the rating to | Read how | Dated test |
 | --- | --- | --- | --- |
-| Every day since the first deposit | 53% | 72% | $202.6M |
-| Only days before the reward programme was announced | under 1% | under 1% | $170.0M |
-| Only days since the first reward's snapshot was triggered | 82% | over 99% | $258.7M |
+| A hole in the public books stays open beyond 3 readings | Exit | Credited against held for the tracked tokens, every reading | G3, to 2027-03-31 |
+| The audit can no longer be run: either question stops answering | Exit | The same two calls | G4, on 2027-03-31 |
+| NEAR publishes the private chain's totals per token against a block height | Add | By hand | D1, on 2027-03-31 |
+| Coverage below 10%, or at least 25%, in two 30-day windows in a row | Exit, or Add | `pipeline/revenue.py` and two block headers | R4's thresholds, written on 13 November |
 
-On the whole history R1 is close to a coin flip, and R2 holds on 67% of paths. At the pace before the reward
-neither R1 nor R5 holds: both need the pace of the last two months to continue, and that pace has a reward and
-a promised second round behind it. So these readings do test the claim; they are not set where the float
-already was heading without help. The result also moves with the length of the runs. From single days to runs
-of 30 days, R1 on the whole history holds on 51% to 60% of paths, and on the last window on 38% to 96%, because
-that window is short and contains the September exit. This is a base rate, not a forecast: changes are in
-dollars, nothing compounds, and the model knows nothing about why money moved. R3 and R4 are not modelled.
-`python3 -m pipeline.model --help` lists the settings.
+G1, that no tracked token is short on the 2026-11-14 reading, has passed; G2 is due on the 2026-11-17 reading.
+The README's results table, written by the scoring code, shows each as it is scored, and a fail is reported as a
+fail.
 
-Two more items have no threshold. If NEAR publishes what the private chain owes, per token, in a form that can
-be set against the treasury at a block height, the largest risk in section 4 mostly goes away and we would hold
-more. That disclosure does not have to reveal anyone's balance: committing to each balance and proving the
-sums, a proof of liabilities, is a known technique that publishes totals and nothing else. And if the audit of
-the public books, which the dashboard repeats every day, shows a hole that is not closed within days, we would
-sell: the one thing we can check would have failed.
+The disclosure does not have to reveal anyone's balance: committing to each balance and proving the sums, a
+proof of liabilities, is a known technique that publishes totals and nothing else. With it, the two calls cover
+everything, and the largest risk in section 4 mostly goes away.
+
+The readings about the float, in Appendix A, do not move the rating in either direction. Growth there is use of
+the product and money moving beyond the audit at once.
 
 ## 7. What could not be computed, and other limits
 
@@ -345,6 +360,9 @@ sell: the one thing we can check would have failed.
   those tokens are themselves issued on NEAR by a bridge for tokens that live on another chain. Whether the
   bridge holds those is a further question that this audit does not ask. The audit takes `mt_batch_supply` as
   the sum of all credits and does not rebuild it from every account.
+- **Whether the alarm cries wolf.** Whether a hole of any size, or a new low, also appears at times when nothing
+  is wrong is measured by auditing blocks drawn at random between the first reading and the pinned one
+  (`python3 -m pipeline.audit --sample 200`). The result was not in when this was written, and will be stated here when it is.
 - **A standing surplus and a small hole.** Whether credited is above held would miss a hole smaller than the
   surplus a token already carries, as USDC on NEAR does. The second test, a new low of held minus credited,
   covers that case on the stored readings, and `make audit` and the dashboard's button compare a live reading
@@ -355,19 +373,23 @@ sell: the one thing we can check would have failed.
   has a balance, so the earliest checks of some tokens compare nothing with nothing.
 - **Which tokens.** On the pinned day: the tokens in NEAR Intents' list as first fetched that have a balance to
   read, and the unlisted ones the treasury holds. 15 tokens joined the list later that day and are left out of
-  every pinned figure. Read once at the pinned block, they hold $291,069 in all. None is short and none is
-  in the treasury. With them the private share would print as 60.9%.
+  every pinned figure. Read once at the pinned block, they hold $291,069 in all. None is short and none is in the
+  treasury. With them the private share would print as 60.9%.
 - **A replay, not detection.** The block-by-block record of the October hole was made on 13 November. Its steps
   were found by halving the days between daily readings; two changes that cancel between two blocks that were
   read are not seen. Payout and upgrade times are CertiK's and are quoted.
 - **How often.** One block a day since 18 February, for the 20 tracked tokens only; every listed token on the
-  pinned day alone. A hole that opened and closed between two readings is not in it. The button on the dashboard reads the latest
-  block only when someone presses it.
+  pinned day alone. A hole that opened and closed between two readings is not in it. The button on the
+  dashboard reads the latest block only when someone presses it.
+- **Revenue read from the chain for two windows only.** The wallets' balances are read at every stored day, but
+  the transfers behind them only from mid-September; earlier revenue figures are DefiLlama's. Revenue is NEAR
+  and wNEAR received, as DefiLlama counts it; NEAR the wallets hold inside `intents.near` is not counted.
 - **Swap volume and fees.** Not computable from the chain since 27 October for the swap leg. They are quoted
   from DefiLlama and labelled. The NEAR Intents Explorer API needs a partner key and returns the operator's own
   figures, so it would not change that.
-- **Activity tables.** Daily active accounts and transaction counts from the BigQuery public dataset are not
-  used: they say nothing about what sits behind the private chain, and querying them needs a billing account.
+- **Activity tables.** NEAR's BigQuery public dataset is not used: querying it needs a Google Cloud account (the
+  free sandbox needs no card), which would break this repository's rule of no key and no account. NearBlocks'
+  public daily counts give the same series without one, and the lead-lag test in section 2 uses them.
 - **What the private chain owes.** Not computable by anyone outside it. The treasury shows assets, not
   liabilities. If the private chain is also backed somewhere other than this one account, we do not see it.
 - **Who deposited.** A public index names the account on the other side of each NEAR transfer from 12 September
@@ -383,30 +405,78 @@ sell: the one thing we can check would have failed.
 - **Coverage of the share.** The 61.0% counts every token in NEAR Intents' token list that has a price and a
   balance inside `intents.near`. 27 listed ids are of another kind (`1cs_v1:`), are not balances inside
   `intents.near`, and are not counted. A token that `intents.near` holds but NEAR Intents does not list would
-  not be counted at all. The history follows 20 tokens chosen by their size on the pinned day, read once a day. DefiLlama shows a smaller total for NEAR Intents than ours; we did not
-  reconcile the two.
-- **The treasury account.** The docs name this account for the confidential flow used by market makers. That
-  1Click's private settlement since 27 October uses the same account is our inference from the docs, from the
-  account's daily movements and from NEAR's September announcement. We did not trace a 1Click swap's shield
-  transaction to it.
+  not be counted at all. DefiLlama shows a smaller total for NEAR Intents than ours; we did not reconcile the two.
+- **The treasury account and 1Click.** The docs name this account for the confidential flow. That 1Click's swaps
+  go through it is shown for the 9 swaps we found, on six days after 27 October, not for every swap.
 - **The exploit is matched by token, size and time, not by transaction.** We did not trace the attacker's
   transactions or follow the tokens on BNB Chain.
 - **The reward programme.** Its rules are taken from NEAR's blog post and press release (`docs/SOURCES.md`). We
   did not measure how many wallets qualified.
-- **HSP-029.** Its terms are taken from the proposal's text. We did not check its status on chain.
-- **One reading a day.** Money that enters and leaves between two midnights is not seen. That is why this is a
-  float series and not a volume series.
-- **Quoted figures.** Volume, fees and revenue come from DefiLlama, and one NEAR price a day from CoinGecko
-  through DefiLlama. Two NEAR prices are therefore in use: the float is valued at NEAR Intents' own list, and
-  the supply at CoinGecko's price at the pinned block. We did not recompute the quoted figures. The last day
-  before the pin is left out because its fee figure was incomplete. The valuation figures and R4 depend on them.
+- **HSP-029.** Its status is as reported by The Block and Bitcoin.com on 3 November 2026. We did not read the
+  vote on chain.
+- **The scenarios are arithmetic, not a forecast.** Revenue and supply compound at constant rates, the lower
+  issuance is taken as fully in force at the horizon, and nothing is said about how likely any rate is.
+- **Quoted figures.** Volume and fees come from DefiLlama, and one NEAR price a day from CoinGecko through
+  DefiLlama. Two NEAR prices are therefore in use: the float is valued at NEAR Intents' own list, and the supply
+  at CoinGecko's price at the pinned block. The last day before the pin is left out of the quoted windows
+  because its fee figure was incomplete.
 - **One provider.** Readings come from one public archival node. One historical read was repeated on a second
   node and matched (`data/context/cross_check.json`). Set `ARCHIVAL_RPC` to repeat the whole check elsewhere.
-- **The model's runs do not wrap.** A run of 7 days cannot start in the last 6 days of a window, so those days
-  and the first ones are drawn less often. When runs may wrap, R1 on the window since the snapshot holds on 89%
-  of paths, not 82%. We kept the stricter version in the table.
-- **Readings written the same day.** R1 to R5 were written on the day the data was first assembled, not before.
-  Only the tests in `PREREG.md` and `PREREG-AUDIT.md` are scored on readings taken after they were written.
 - **Not covered.** Competitors, regulation of private settlement, and who the private chain's validators are.
 
 This is research, not investment advice.
+
+## Appendix A. The private side's growth: this project's first question
+
+This project began by asking whether the money behind the private chain keeps growing. Its readings and dated
+tests stay as written on 13 November, and hashed where they are in `PREREG.md`. They do not move the rating.
+
+After 27 October the float is an adoption measure that cannot be restated afterwards, and it can be inflated
+while it is read: a table can be restated by whoever keeps it, a token balance at a past block cannot, but a
+reward or an interested party can put balances there for a while. So these readings also look at the float
+without NEAR's own token, and at how much of it arrived on a few days.
+
+R1, R2, R3 and R5 are produced by this repository's pipeline at the pinned prices and scored by `python3 -m
+pipeline.score` once their reading exists.
+
+| # | Reading | Now | The private side is growing if, on 2027-03-31 | It is not if |
+| --- | --- | --- | --- | --- |
+| R1 | Private float | $136.4M | at least $200M | below the pinned day's level |
+| R2 | Ten best days as a share of the float | 55% | below 45%: new money arrives on many days | still above 55% |
+| R3 | Private share, the 20 tracked tokens | 62.3% | at least 50% | below 40%: money is moving back to the public side, where it can be audited |
+| R4 | Revenue reaching NEAR's wallets as a share of net new supply | 16% read from the chain | at least 25% | below 10% |
+| R5 | Float without NEAR's own token | $92.9M | at least $130M | below the pinned day's level |
+
+Between the two a reading is undecided. The scoring code is stricter than this table: it prints FAIL for
+anything short of the first column. R2 depends on R1: if the float does not grow, R2 can only improve when lumps
+leave, and the round trip in section 4 shows it overstates new money. R4 was written as DefiLlama's revenue,
+each day turned into NEAR at that day's price (15%); from 14 November it is read from the chain, and it is the
+one reading the rating uses. R5 was added on the same day as the others, after we learned of the reward
+programme; `PREREG.md` records the amendment.
+
+**First results, 14 November.** The shorter tests on the float were scored on the 2026-11-14 reading, the first
+one taken after they were written. E2 and E3 passed: no single day added a lump, and the tracked share was
+61.9%. E1 failed: the float had to be at least $136.4M and it was $135.2M. The part without NEAR's own token was $91.1M,
+down $1.8M in a day; 5 of that series' 268 earlier daily changes were falls at least that large. The whole float
+fell on 37% of the days up to the pinned one, so one fall is ordinary and settles nothing about March. It is
+reported because we said a fail would be.
+
+**How likely are R1 and R5? A base rate from the float's own history.** `make model` replays the float's past
+daily changes forward to 2027-03-31: 10,000 paths from one seed, each built from runs of 7 consecutive past days
+drawn at random, each scored with the thresholds above. The readings were fixed and hashed before this model
+was written, so it did not shape them.
+
+| Days the paths are drawn from | R1 holds | R5 holds | Median float on the day |
+| --- | --- | --- | --- |
+| Every day since the first deposit | 53% | 72% | $202.6M |
+| Only days before the reward programme was announced | under 1% | under 1% | $170.0M |
+| Only days since the first reward's snapshot was triggered | 82% | over 99% | $258.7M |
+
+On the whole history R1 is close to a coin flip, and R2 holds on 67% of paths. At the pace before the reward
+neither R1 nor R5 holds: both need the pace of the last two months to continue, and that pace has a reward and
+a promised second round behind it. The result also moves with the length of the runs. From single days to runs
+of 30 days, R1 on the whole history holds on 51% to 60% of paths, and on the last window on 38% to 96%, because that
+window is short and contains the September exit. A run of 7 days cannot start in the last 6 days of a window,
+so those days and the first ones are drawn less often; when runs may wrap, R1 on the last window holds on 89%
+of paths, not 82%. This is a base rate, not a forecast: changes are in dollars, nothing compounds, and the
+model knows nothing about why money moved. `python3 -m pipeline.model --help` lists the settings.

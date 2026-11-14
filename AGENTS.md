@@ -43,9 +43,10 @@ default and takes three to fifteen minutes, depending on how hard the node is ra
 | `data/derived/claims.json` | Every number the text quotes, with how it is computed |
 | `data/constants.json` | The only other numbers allowed in the prose: thresholds and facts quoted from others |
 | `data/blocks.json`, `data/float/`, `data/held/`, `data/credited/` | Raw readings: one block per day; the treasury's balances, what `intents.near` holds, what it has credited |
+| `data/context/revenue.json`, `data/context/oneclick.json`, `data/context/activity.json` | The revenue wallets' balances and transfers; 1Click swaps traced into the treasury; NearBlocks' daily activity for the lead-lag test |
 | `data/context/flows.json` | Who moved NEAR in and out of the treasury, 12 September to 1 October, from a public index; `make check` re-tests that each day adds up to the chain balances |
 | `data/context/exploit.json`, `data/context/trace.json` | The October 2026 hole block by block, and one transfer followed hop by hop; `make verify` re-reads the blocks their claims rest on |
-| `pipeline/` | `rpc.py` (reads), `pull.py` (collect), `build.py` (series), `claims.py` (numbers), `score.py` (forward tests), `audit.py` (credited against held, `make audit`), `trace.py` (the receipt behind a move, `make trace`), `flows.py` (an index's list of transfers, kept where it adds up to the chain), `model.py` (base rates for the long-dated readings, `make model`), `verify.py` (checks) |
+| `pipeline/` | `rpc.py` (reads), `pull.py` (collect), `build.py` (series), `claims.py` (numbers), `score.py` (forward tests), `audit.py` (credited against held, `make audit`), `trace.py` (the receipt behind a move, `make trace`), `flows.py` (an index's list of transfers, kept where it adds up to the chain), `revenue.py` (the revenue wallets, read from the chain), `oneclick.py` (1Click swaps through the treasury), `leadlag.py` (the track's hypothesis, tested), `model.py` (base rates for the long-dated readings, `make model`), `verify.py` (checks) |
 | `site/` | The dashboard: static files, `make serve` |
 | `docs/SOURCES.md` | Every constant, where it came from, how it was checked |
 
