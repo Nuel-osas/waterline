@@ -14,7 +14,7 @@ question, whether the money behind the private chain keeps growing, with its rea
 
 ## 1. The claim
 
-**Rating: Hold, small. Up to 1% of a liquid portfolio, to the end of 2029, checked every month by a rule
+**Rating: Hold, small and staked. Up to 1% of a liquid portfolio, to the end of 2029, checked every month by a rule
 (section 5) whose inputs this repository reads from the chain.**
 
 NEAR's buyback is funded by the revenue of one product, NEAR Intents. Read from the chain, 426,685 NEAR reached NEAR's
@@ -262,7 +262,7 @@ for several parties signing together, and nothing published says whether this on
 
 ## 5. The rating
 
-**Hold, small: up to 1% of a liquid portfolio, to the end of 2029.**
+**Hold, small and staked: up to 1% of a liquid portfolio, to the end of 2029.**
 
 **The rule.** Each input is computed by this repository's code from the chain, and the rating is too; the
 dashboard shows the result.
@@ -286,6 +286,15 @@ it, on an ordinary day. A reader who holds us to that version would rate NEAR Ex
 float moves in lumps that say nothing about value (section 4), and we report the dated test it rested on as
 failed (`make score`, E1) rather than drop it (errata). The 1% and the 3% are judgments, and the part of this
 file most open to argument.
+
+**Held staked, because new supply is paid to stake.** At the pinned block 44.4% of NEAR's supply was staked, and
+the protocol kept none of the new supply for itself, so all of it is paid to stake: 5.6% a year before the
+validator's fee, counted as net new supply over the total stake. A staker's share of the supply changes by +3.0% a
+year and the share of a holder who does not stake by -2.4% a year; to the end of 2029, +9.8% against -7.4%, with
+issuance and stake as they are now. If HSP-029 takes effect the reward falls with issuance, to 3.6% a year at the
+same stake. So the dilution section 4 counts against NEAR is paid by holders who do not stake, and the rating
+says to stake. A validator keeps a fee that varies by validator, and staked NEAR takes four epochs to withdraw.
+`python3 -m pipeline.context staking` reads the stake again.
 
 **What has to be true by 2029.** The rule says when to move. This says what a holder is betting on: the share of
 net new supply that revenue would cover if revenue, counted in NEAR, grew at a steady rate from the latest 30
@@ -433,6 +442,8 @@ the product and money moving beyond the audit at once.
 - **No growth rate.** The weekly revenue since the buyback began gives a fitted rate anywhere from -91% to
   +1,160% a year depending on the start week, so none is used. The series is DefiLlama's, checked against the
   chain for two months only.
+- **Staking.** The reward is net new supply over the stake of one epoch, before any validator's fee. It moves with
+  the stake and with issuance, and it is a share of supply, not a return in dollars.
 - **The scenarios are arithmetic, not a forecast.** Revenue and supply compound at constant rates, the lower
   issuance is taken as fully in force at the horizon, and nothing is said about how likely any rate is.
 - **Quoted figures.** Volume and fees come from DefiLlama, and one NEAR price a day from CoinGecko through

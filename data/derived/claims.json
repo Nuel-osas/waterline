@@ -571,6 +571,48 @@
    "what": "Reported volume that would take at today's rate of revenue per dollar of volume"
   },
   {
+   "grade": "chain",
+   "how": "validators RPC by epoch, over the pinned block's total supply",
+   "id": "ST1",
+   "shown": "44.4%",
+   "what": "Share of NEAR's total supply staked with the 342 validators of the epoch of the pinned block (582,369,883 NEAR)"
+  },
+  {
+   "grade": "chain",
+   "how": "V2 times 365, over the stake in ST1",
+   "id": "ST2",
+   "shown": "5.6% a year",
+   "what": "What stake earns before the validator's fee: net new supply over a year, over the total stake. The protocol keeps none of the new supply (protocol_reward_rate 0 at the pinned block), so all of it is paid to stake; net new supply is what is minted less the fees burned, so this slightly understates it"
+  },
+  {
+   "grade": "chain",
+   "how": "(1 + ST2) / (1 + issuance) - 1",
+   "id": "ST3",
+   "shown": "+3.0% a year",
+   "what": "Change in a staker's share of NEAR's total supply over a year, before the validator's fee"
+  },
+  {
+   "grade": "chain",
+   "how": "1 / (1 + issuance) - 1",
+   "id": "ST4",
+   "shown": "-2.4% a year",
+   "what": "Change in the share of a holder who does not stake: new supply goes to stakers"
+  },
+  {
+   "grade": "model",
+   "how": "ST3 and ST4 compounded to 2030-01-01",
+   "id": "ST5",
+   "shown": "+9.8% against -7.4%",
+   "what": "Change in a holder's share of total supply from the pinned day to the end of 2029, staked (before the validator's fee) against not staked, with issuance and stake as they are now"
+  },
+  {
+   "grade": "model",
+   "how": "1.6% of supply over the stake in ST1",
+   "id": "ST6",
+   "shown": "3.6% a year",
+   "what": "What stake would earn before the validator's fee if new supply ran at 1.6% of supply, as HSP-029 would bring about, with the stake as it is"
+  },
+  {
    "how": "largest daily value, pinned prices",
    "id": "T4",
    "shown": "$136.4M",

@@ -1,7 +1,7 @@
 # Waterline
 
 **NEAR Intents can be audited from outside, to the last unit, at any block. Its private chain cannot.**
-Waterline is that audit, and an investment thesis for NEAR built on it: **Hold, small, to the end of 2029**. Two
+Waterline is that audit, and an investment thesis for NEAR built on it: **Hold, small and staked, to the end of 2029**. Two
 questions to two contracts show whether NEAR Intents holds what it has credited. Asked at the pinned block: 214
 tokens, $223.8M, none short. Asked over past blocks: the October 2026 exploit is in the public books from ten
 dollars, 31 hours 40 minutes before the first payout. The audit stops at one account, the private chain's treasury:
@@ -25,8 +25,10 @@ Scored by code and still pending: 4 on the 2026-11-17 reading, 6 on the 2027-03-
 
 ## The thesis in short
 
-**Rating: Hold, small, to the end of 2029.** Up to 1% of a liquid portfolio, moved by a rule whose inputs this
-repository reads from the chain ([`THESIS.md`](THESIS.md), section 5).
+**Rating: Hold, small and staked, to the end of 2029.** Up to 1% of a liquid portfolio, moved by a rule whose
+inputs this repository reads from the chain ([`THESIS.md`](THESIS.md), section 5). Staked, because all new supply
+is paid to stake, 5.6% a year before the validator's fee: a staker's share of supply changes by +3.0% a year and
+an idle holder's by -2.4% a year.
 
 1. NEAR Intents' public books can be proven whole by anyone, at any block, in two calls per token. Today they
    are: 214 tokens, $223.8M, none short.
