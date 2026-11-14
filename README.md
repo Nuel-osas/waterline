@@ -9,21 +9,19 @@ treasury, which now holds 61.0% of everything.
 
 ![The audit run on the latest block from a browser: 20 of 20 tokens whole](docs/audit.png)
 
-**Dated tests, first results (the 2026-11-14 reading, taken after the tests were written):**
+**Dated tests, results so far.** Every test was written and hashed before its reading existed. This table is
+written by the scoring code, not typed:
 
-| Test | Result |
-| --- | --- |
-| G1: no tracked token is short | **PASS** |
-| E1: the float is at least what it was on 13 November ($136.4M) | **FAIL**: it was $135.2M |
-| E2: no single day adds another lump | **PASS** |
-| E3: the private share of the tracked tokens is at least 60.0% | **PASS**: 61.9% |
+<!-- results:start -->
+| Test | Reading | Result |
+| --- | --- | --- |
+| G1: no tracked token is short | 2026-11-14 | **PASS** |
+| E1: the float is at least what it was on 2026-11-13 ($136.4M) | 2026-11-14 | **FAIL**: it was $135.2M |
+| E2: no single day adds another lump | 2026-11-14 | **PASS** |
+| E3: the private share of the tracked tokens is at least 60.0% | 2026-11-14 | **PASS**: 61.9% |
 
-Ten more tests are pending: three resolve on 17 November, the rest on 2027-03-31. `make score` prints them all.
-
-Built at NEAR HACKATHON 2026. Track: Investment Thesis (`thesis`).
-
-Live dashboard, with a button that runs the audit on the latest block in your browser:
-<https://nuel-osas.github.io/waterline/>
+Scored by code and still pending: 4 on the 2026-11-17 reading, 6 on the 2027-03-31 reading. Two more, R4 and D1, are scored by hand on 2027-03-31. `make score` prints every test.
+<!-- results:end -->
 
 ## The thesis in short
 
@@ -31,9 +29,11 @@ Live dashboard, with a button that runs the audit on the latest block in your br
    are: 214 tokens, $223.8M, none short. That is a reason to hold.
 2. The one time they were not, it showed. The October hole was in the public books 31 hours 40 minutes before
    the first payout: under $3,000 for the first 28 hours, $1.3M by the last change before the payout, $3.8M at
-   its peak. This is a replay run in November, not live detection, and the start time is also CertiK's.
+   its peak. Seeing that takes a reader on every block; at this project's one reading a day, the only reading
+   before the payout showed $30. This is a replay run in November, not live detection, and the start time is
+   also CertiK's.
 3. The same proof does not reach the private chain, where 61.0% of the money now is and where swaps have
-   settled since 27 October. That balance is 6.3 years of the revenue that funds NEAR's buyback; October's hole
+   settled since 27 October. That balance is 6.2 years of the revenue that funds NEAR's buyback; October's hole
    at its largest was 2.1 months of it, and 87% of the credit in the token that broke belonged to that side.
 4. What sits behind the private chain is partly paid for and partly recycled. NEAR pays a reward for
    confidential balances, 69% of the NEAR that arrived in the days after the reward's snapshot was announced has
@@ -71,13 +71,14 @@ counts by address. The code waits and retries, so a busy node makes a command sl
 `make audit` and `make verify` back to back, or from a shared address, is what makes them slow; `RPC_RATE=0.3`
 is gentler. `make test`, `make check` and `make model` use no network.
 
-What `make verify` prints, shortened:
+What `make verify` prints, shortened (from the CI run on 14 November):
 
 ```
 re-reading 8 days from https://archival-rpc.mainnet.fastnear.com
-ok   2026-02-18  block 186012275  0 balances, 0 totals and 0 credited totals match the chain
-ok   2026-10-02  block 218126936  172 balances, 1 totals and 1 credited totals match the chain
+ok   2026-02-18  block 186012275  0 balances, 5 totals and 17 credited totals match the chain
+ok   2026-10-02  block 218126936  172 balances, 5 totals and 20 credited totals match the chain
 ok   2026-11-13  block 224285109  205 balances, 20 totals and 214 credited totals match the chain
+ok   2026-11-14  block 224435951  205 balances, 5 totals and 20 credited totals match the chain
 ...
 ok   total supply in 5 block headers matches data/context/supply.json
 ok   1 key registered for the treasury in intents.near, as in data/context/custody.json
@@ -142,7 +143,8 @@ sit in one account on that ledger. Waterline reads all three at one block per da
   the thesis's long-dated readings hold: `make model`;
 - a dashboard that shows all of it: `make serve`.
 
-No key, no account, no package to install. Python 3.9 or newer.
+No key, no account, no package to install. Python 3.9 or newer: the tests and the offline check were run under
+3.9.6 and 3.15 locally, and CI uses 3.12.
 
 ## Findings
 
@@ -196,6 +198,8 @@ the wrong sentence. A reviewer changed 27 numbers one at a time before this list
 | P3 | **$31.8M per 30 days** | Float growth after the first reward's snapshot was triggered (2026-09-17 to 2026-11-13) |
 | P9 | **$76.0M** | The float on the 2026-09-17 reading, the day NEAR announced confidential balances had passed $70M (at that day's prices) |
 | P10 | **$68.3M** | The float on the 2026-09-17 reading with wNEAR at that day's CoinGecko price and every other token at the pinned price ($74.1M on the next reading): it crosses the $70M of NEAR's announcement between the two |
+| P11 | **$1.1M** | The first reward pool at its conversion price: 333,333 locked tokens that convert 1:1 to NEAR at $3.33 (NEAR's blog post, quoted). No wallet receives more than 2% of it: $22,200 |
+| P12 | **2.2x** | NEAR's price on CoinGecko over the days of the September inflow: $2.47 on 2026-09-15, $5.39 on 2026-09-28 |
 | P4 | **$92.9M** | Float without NEAR's own token on 2026-11-13 ($46.1M on 2026-09-17) |
 | P5 | **$46.1M** | Float without NEAR's own token on 2026-09-17 |
 | P6 | **$2.7M** | Largest one-day fall in the float without NEAR's own token |
@@ -223,7 +227,7 @@ the wrong sentence. A reviewer changed 27 numbers one at a time before this list
 | M1 | **4.8 basis points** | Revenue reaching NEAR's wallets per dollar of reported volume, 30 days to 2026-11-11 |
 | M2 | **6.5x** | How many times revenue would have to grow for buybacks to match net new supply |
 | H1 | **4.2x** | How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes |
-| Q1 | **6.3 years** | The float on 2026-11-13 as years of the revenue that reaches NEAR's wallets, at the rate of the 30 days to 2026-11-11 |
+| Q1 | **6.2 years** | The float on 2026-11-13 as years of the revenue that reaches NEAR's wallets, at the rate of the 30 days to 2026-11-11 |
 | Q2 | **16%** | Part of the float whose loss would equal a full year of that revenue |
 | Q3 | **2.1 months** | The October hole at its largest as months of that revenue |
 | M3 | **$297B a year** | Reported volume that would take at today's rate of revenue per dollar of volume |
@@ -249,6 +253,8 @@ the wrong sentence. A reviewer changed 27 numbers one at a time before this list
 | E1 | **$135.2M** | FAIL. Test E1: the float on the 2026-11-14 reading had to be at least what it was on 2026-11-13 ($136.4M). It fell by $1.2M |
 | E2 | **$1.2M** | PASS. Test E2: the largest one-day change between the two readings (a fall). To pass it had to stay under the tenth-largest rise so far, $4.7M |
 | E3 | **61.9%** | PASS. Test E3: the private share of the tracked tokens on the 2026-11-14 reading had to be at least 60.0% |
+| Y1 | **$91.1M** | The float without NEAR's own token on the 2026-11-14 reading, down $1.8M from the pinned day. 5 of that series' 268 earlier one-day changes were falls at least as large. NEAR's own part of the float rose by $568,746 over the same day |
+| Y2 | **37%** | Days up to the pinned one on which the float fell, out of 268: a single fall is ordinary |
 | G1 | **none short** | PASS. Test G1 of PREREG-AUDIT.md: no tracked token short on the 2026-11-14 reading |
 | W1 | **1.7M NEAR** | The largest single transfer of NEAR into the treasury in September, at 2026-09-24 08:52:40 UTC. The treasury had paid out the same amount, to the last unit, at 2026-09-23 23:35:58 UTC: 9 hours 16 minutes earlier, and 24 minutes before the 2026-09-24 reading. It was back 31 blocks after it was withdrawn from the public ledger |
 | W2 | **$6.1M** | That transfer at the pinned price |
@@ -350,8 +356,8 @@ and revenue are quoted from DefiLlama, not recomputed here.
 
 ## What was built for this hackathon
 
-Everything in this repository was written during the hackathon window: all of it on 13 November 2026, which is
-why the history is short. No earlier code. Libraries: none beyond the Python standard library; the dashboard is
+Everything in this repository was written during the hackathon window, on 13 and 14 November 2026, which is why
+the history is short. No earlier code. Libraries: none beyond the Python standard library; the dashboard is
 plain HTML, CSS and JavaScript with no framework. GitHub Actions used: `actions/checkout`,
 `actions/setup-python`, `actions/cache`, `actions/configure-pages`, `actions/upload-pages-artifact`,
 `actions/deploy-pages`. Fonts: Geist and Geist Mono (SIL Open Font License), in `site/fonts/`. Data sources:
@@ -360,8 +366,8 @@ published incident report (three quoted times), and FastNEAR's transfers index f
 transfers and one hop of the transfer that was followed. The dashboard's audit button asks three public NEAR nodes from the visitor's browser. The code
 and text were written with an AI coding assistant (Claude Code) under the author's direction. Before
 submission the repository was reviewed several times by independent AI reviewers. Their findings were fixed in
-pull requests 2, 4 and 5, and one review's proposal, to audit the whole ledger and not one account, is pull
-request 8.
+pull requests 2, 4, 5, 10, 11, 13, 14 and 16, and one review's proposal, to audit the whole ledger and not one
+account, is pull request 8.
 
 ## Errata
 
@@ -370,7 +376,7 @@ request 8.
   (`data/tokens.json`). The file is left byte for byte as it was, because its hash is recorded and timestamped:
   `data/derived/prereg.sha256.ots` is an OpenTimestamps proof that is now confirmed in a Bitcoin block.
 - The first version of this README said the October shortfall was found "before its author knew there had been
-  a hack" and matched "to the hour". Both overstated it. Every reading was taken on 13 November, five weeks
+  a hack" and matched "to the hour". Both overstated it. Every reading was taken on 13 November, six weeks
   after the event; the first data commit flagged the 1 October reading as unexplained, and the match to the
   published incident was made afterwards, by token, size and day.
 
@@ -386,6 +392,13 @@ request 8.
   itself: the tracked share is 5% on 1 April (was 6%, from 2 April) and 36.0% on 13 July (was 36.2%, from
   16 July), and the public side on 1 April is $86.0M (was $83.5M). The audit's count rose from 1,090 checks on
   70 readings to 4,806 on 269, with the same three short.
+
+- `make score` prints the result of E2 as "largest one-day rise $-1.2M". The largest change that day was a fall of
+  $1.2M, so the test passed. The wording comes from `pipeline/score.py`, which is hashed and is not edited; the
+  README's results table and the dashboard say it plainly.
+- The position rule in `THESIS.md` first said to hold none if the float without NEAR's own token fell below its
+  pinned level. One day later it had ($91.1M against $92.9M). A reviewer pointed out that the rule did not say
+  when it was read. The trigger was removed in pull request 16, with the reason given in section 5.
 
 ## Licence
 

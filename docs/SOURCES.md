@@ -74,7 +74,7 @@ Docs pages: <https://docs.near-intents.org/integration/market-makers/confidentia
   on 1 October, and closes in seven steps between 19:26:35 and 20:22:09 on 2 October while the credited total
   stays at 3,869,502. So the chain record supports "returned in full". We matched by token, size and time; we
   did not trace the attacker's transactions or follow the tokens on BNB Chain.
-- All of it was read on 2026-11-13, five weeks after the event. The first data commit of this repository lists
+- All of it was read on 2026-11-13, six weeks after the event. The first data commit of this repository lists
   the 2026-10-01 reading as an unexplained anomaly, measured then only against the private chain's own credit
   (the S rows); the match to CertiK's report and the audit against every holder's credit came afterwards.
 
