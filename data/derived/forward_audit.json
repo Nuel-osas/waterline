@@ -3,9 +3,9 @@
   {
    "due": "2026-11-14",
    "id": "G1",
-   "status": "PENDING",
+   "status": "PASS",
    "text": "On the 2026-11-14 reading none of the 20 tracked tokens is short: intents.near holds at least what it has credited.",
-   "value": null
+   "value": "none short"
   },
   {
    "due": "2026-11-17",
@@ -19,7 +19,7 @@
    "id": "G3",
    "status": "PENDING",
    "text": "From 2026-11-14 to 2027-03-31, any tracked token found short on a reading is whole again within 3 readings.",
-   "value": null
+   "value": "0 holes so far"
   },
   {
    "due": "2027-03-31",

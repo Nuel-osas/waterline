@@ -100,6 +100,26 @@
   {
    "value": "8 days",
    "why": "how many days make verify re-reads by default (pipeline/verify.py)"
+  },
+  {
+   "value": "6%",
+   "why": "a figure this repository quoted before pull request 15, when the tracked tokens had weekly readings; kept only in the README's errata"
+  },
+  {
+   "value": "36.2%",
+   "why": "a figure this repository quoted before pull request 15, when the tracked tokens had weekly readings; kept only in the README's errata"
+  },
+  {
+   "value": "$83.5M",
+   "why": "a figure this repository quoted before pull request 15, when the tracked tokens had weekly readings; kept only in the README's errata"
+  },
+  {
+   "value": "1,090 checks",
+   "why": "a figure this repository quoted before pull request 15, when the tracked tokens had weekly readings; kept only in the README's errata"
+  },
+  {
+   "value": "70 readings",
+   "why": "a figure this repository quoted before pull request 15, when the tracked tokens had weekly readings; kept only in the README's errata"
   }
  ]
 }

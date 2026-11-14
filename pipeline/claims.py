@@ -34,6 +34,7 @@ def write_claims(write=True):
     from .build import load_days
     days_raw = load_days()
     pin = load(os.path.join(DATA, "pin.json"), None)["pin_day"]
+    rows_all = rows   # every stored day, for the results of tests that are about days after the pinned one
     rows = [r for r in rows if r["day"] <= pin]
     last = rows[-1]
     if last["day"] != pin:
@@ -411,6 +412,33 @@ def write_claims(write=True):
             f"pinned block: {money(extra)} held, " + ("none short" if whole_late else "not all whole") + f", {money(extra_private)} of it in the treasury. "
             "They are left out of every pinned figure", "data/context/late_tokens.json added to both sides of C4", grade="chain")
 
+    # --- results of the dated tests whose reading exists. They are about days after the pinned one, and never change again
+    from .score import FIRST_CHECK, tests as float_tests
+    from .score_audit import tests as audit_tests
+    from . import audit as _audit2
+    all_rows = rows_all
+    after = next((r for r in all_rows if r["day"] == FIRST_CHECK), None)
+    if after:
+        got = {t["id"]: t for t in float_tests(all_rows)}
+        got.update({t["id"]: t for t in audit_tests(_audit2.stored_days(), [t for t in tracked if t in meta])})
+        word = {"PASS": "PASS", "FAIL": "FAIL", "UNKNOWN": "UNKNOWN"}
+        change = after["float_usd"] - last["float_usd"]
+        add("E1", money(after["float_usd"]),
+            f"{word[got['E1']['status']]}. Test E1: the float on the {FIRST_CHECK} reading had to be at least what it was on {pin} "
+            f"({money(last['float_usd'])}). It " + (f"fell by {money(-change)}" if change < 0 else f"rose by {money(change)}"),
+            "pipeline/score.py on the reading of that day", grade="chain, a reading taken after the test was written")
+        add("E2", money(abs(change)),
+            f"{word[got['E2']['status']]}. Test E2: the largest one-day change between the two readings ("
+            + ("a fall" if change < 0 else "a rise") + f"). To pass it had to stay under the tenth-largest rise so far, {shown_tenth(got['E2']['text'])}",
+            "as E1", grade="chain, a reading taken after the test was written", must_appear=False)
+        if after["share_usd"] is not None:
+            add("E3", pct(after["share_usd"]),
+                f"{word[got['E3']['status']]}. Test E3: the private share of the tracked tokens on the {FIRST_CHECK} reading had to be at least 60.0%",
+                "as E1", grade="chain, a reading taken after the test was written")
+        add("G1", got["G1"]["value"] or got["G1"]["status"],
+            f"{word[got['G1']['status']]}. Test G1 of PREREG-AUDIT.md: no tracked token short on the {FIRST_CHECK} reading",
+            "pipeline/score_audit.py on the reading of that day", grade="chain, a reading taken after the test was written", must_appear=False)
+
     # --- one traced case: the largest single transfer of NEAR into the treasury in September
     blocks = load(os.path.join(DATA, "blocks.json"), {})
     traced = load(os.path.join(DATA, "context", "trace.json"), None)
@@ -526,6 +554,13 @@ def write_claims(write=True):
         if index:
             open(index_path, "w").write(index)
     return out
+
+
+def shown_tenth(text):
+    """The tenth-largest rise as score.py printed it in a test's text."""
+    import re
+    m = re.search(r"\((\$[\d.]+M)\)", text)
+    return m.group(1) if m else "the stated limit"
 
 
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
