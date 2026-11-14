@@ -274,12 +274,8 @@ def write_claims(write=True):
         add("V8", f"{float(1 / usd_share):.1f}x", "M2 on the same dollar basis", "one over V6", grade="chain, via an indexer")
         need = (per_day * 30) / rev_near
         add("M1", f"{float(rev / vol * 10000):.1f} basis points", f"Revenue reaching NEAR's wallets per dollar of reported volume, {span}", "X3 over X1", grade="reported")
-        add("M2", f"{float(need):.1f}x", "How many times revenue would have to grow for buybacks to match net new supply", "one over V4", grade="chain, via an indexer")
-        # the proposal to lower issuance (HSP-029): the same sum if net new supply ran at the proposed target
+        # HSP-029's issuance target; M2 and H1 are added below, on the basis the rating uses
         target = Fraction(16, 1000)
-        need_target = (Fraction(s1, 10**24) * target * Fraction(30, 365)) / rev_near
-        add("H1", f"{float(need_target):.1f}x", "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes",
-            "supply times 1.6%, over a year, against 30-day revenue in NEAR", grade="chain, via an indexer")
         # scale: the money beyond the audit, and the one hole that was measured, against the revenue that funds the buyback
         month = rev  # 30 days of revenue reaching NEAR's wallets, in dollars at each day's price
         year = month * Fraction(365, 30)
@@ -300,6 +296,7 @@ def write_claims(write=True):
         rv = load(os.path.join(DATA, "context", "revenue.json"), None)
         shift = lambda d, n=1: (_dt.date.fromisoformat(d) + _dt.timedelta(days=n)).isoformat()   # noqa: E731
         coverage, coverage_label = rev_near / (per_day * 30), "V4"
+        rev30 = rev_near                                         # 30 days of revenue in NEAR: DefiLlama's, until the chain's is read
         sday = lambda d: int(sup["days"][d]["total_supply"])   # noqa: E731
         win_b = (shift(pin, -29), pin)                            # the 30 readings to the pinned one
         win_a = (shift(pin, -59), shift(pin, -30))                # the 30 before
@@ -315,7 +312,7 @@ def write_claims(write=True):
                 + ("equal, to the last unit, to the change in its balance read at each day's block" if rb["adds_up"] else "NOT equal to the change in its balance"),
                 "pipeline/revenue.py; data/context/revenue.json", grade="chain")
             add("U2", f"{float(got_b / 30):,.0f} NEAR a day", "The same, a day", "U1 over 30", grade="chain")
-            coverage, coverage_label = got_b / new_b, "U4"
+            coverage, coverage_label, rev30 = got_b / new_b, "U4", got_b
             add("U4", pct(coverage, 0), f"Revenue reaching NEAR's wallets as a share of net new supply, both read from the chain, in the 30 days to the reading of {pin}: "
                 "U1 over the change in total supply between two block headers 30 days apart. The rating in THESIS.md section 5 uses it", "U1 over 30 days of supply growth", grade="chain")
             if ra and shift(pin, -60) in sup["days"]:
@@ -335,6 +332,14 @@ def write_claims(write=True):
                 f"NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR "
                 f"at each day's price ({float(got_x):,.0f} NEAR against {float(rev_near):,.0f} NEAR): how far the quoted figure agrees with the chain",
                 "pipeline/revenue.py against data/context/defillama.json", grade="chain")
+        # the multiples on the same basis as the rating: the chain's revenue when it was read (U4), DefiLlama's otherwise (V4)
+        need = 1 / coverage
+        need_target = (Fraction(s1, 10**24) * target * Fraction(30, 365)) / rev30
+        on_chain = coverage_label == "U4"
+        add("M2", f"{float(need):.1f}x", "How many times revenue would have to grow for buybacks to match net new supply", f"one over {coverage_label}",
+            grade="chain" if on_chain else "chain, via an indexer")
+        add("H1", f"{float(need_target):.1f}x", "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about",
+            f"supply times 1.6%, over a year, against 30 days of revenue in NEAR ({'U1' if on_chain else 'DefiLlama'})", grade="chain" if on_chain else "chain, via an indexer")
         # --- the rating, from the rule in THESIS.md section 5: computed, not typed
         last_audit = (build.last.get("audit") or {}).get("history") or []
         audited = [d for d in last_audit if d["day"] <= pin]
@@ -663,6 +668,10 @@ def write_claims(write=True):
                 "python3 -m pipeline.leadlag", grade="model, on quoted volume and NearBlocks activity")
         add("L4", f"{ll['changes']} weekly changes", f"Weeks in the lead-lag test, from the week of {ll['first_week']} to the week of {ll['last_week']}",
             "complete Monday-to-Sunday weeks both sources cover", grade="model")
+        add("L5", f"r = {ll['tests']['transactions']['same_week']:+.2f}",
+            "Weekly change in NEAR Intents' reported volume against the change in NEAR's transactions in the same week, with no lead: they move "
+            "a little together, which a chart of the two would show. No p-value is given for it; the test is for a lead",
+            "python3 -m pipeline.leadlag", grade="model, on quoted volume and NearBlocks activity")
     # --- 1Click's own records: its swaps settle through the private chain's treasury (pipeline/oneclick.py)
     oc = load(os.path.join(DATA, "context", "oneclick.json"), None)
     if oc and oc.get("swaps"):
