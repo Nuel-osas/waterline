@@ -120,6 +120,14 @@
   {
    "value": "70 readings",
    "why": "a figure this repository quoted before pull request 15, when the tracked tokens had weekly readings; kept only in the README's errata"
+  },
+  {
+   "value": "89,500 NEAR",
+   "why": "HSP-029: daily issuance before the cut, as reported by The Block on 2026-11-03 from the proposal's own modelling (docs/SOURCES.md)"
+  },
+  {
+   "value": "57,300 NEAR",
+   "why": "HSP-029: daily issuance at full implementation, same source"
   }
  ]
 }

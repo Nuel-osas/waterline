@@ -543,6 +543,82 @@ class AuditForward(unittest.TestCase):
         self.assertEqual(self.run_tests(stuck)["G2"], "FAIL")
 
 
+class Revenue(unittest.TestCase):
+    """Revenue read from the chain: NEAR and wNEAR received, reconciled against balances, never guessed."""
+
+    def t(self, height, asset, amount, kind="NativeTransfer", other="intents.near", n=0):
+        return {"block_height": str(height), "receipt_id": f"R{n}", "action_index": 0, "transfer_index": n, "log_index": None,
+                "asset_id": asset, "amount": str(amount), "transfer_type": kind, "other_account_id": other}
+
+    def test_a_day_counts_near_and_wnear_received_and_skips_wrapping(self):
+        from pipeline import revenue
+        rows = {"w": [self.t(150, "native:near", 5, n=1), self.t(160, "native:near", -2, other="x", n=2),
+                      self.t(170, "nep141:wrap.near", 3, kind="FtTransfer", other="y", n=3),
+                      self.t(175, "nep141:wrap.near", 4, kind="WrappedNear", other=None, n=4),     # wrapping is not income
+                      self.t(180, "nep141:usdc", 9, kind="FtTransfer", n=5),                        # not NEAR
+                      self.t(100, "native:near", 7, n=6)]}                                          # at the earlier reading: not in the day
+        got = revenue.summarise_transfers(rows, {"2026-01-01": 100, "2026-01-02": 200}, ["2026-01-02"])["2026-01-02"]["w"]
+        self.assertEqual((got["received"], got["native_in"], got["native_out"], got["transfers_in"]), ("8", "5", "2", 2))
+
+    def test_a_window_reconciles_or_is_flagged_and_an_unknown_balance_gives_nothing(self):
+        from pipeline import revenue
+        day = {"received": "8", "native_in": "5", "native_out": "2", "transfers_in": 2, "from": {}}
+        rec = {"wallets": ["w"], "balances": {"2026-01-01": {"w": "100"}, "2026-01-02": {"w": "103"}}, "transfers": {"2026-01-02": {"w": day}}}
+        got = revenue.window(rec, "2026-01-02", "2026-01-02")
+        self.assertEqual((got["received"], got["adds_up"]), (8, True))
+        rec["balances"]["2026-01-02"]["w"] = "104"
+        self.assertFalse(revenue.window(rec, "2026-01-02", "2026-01-02")["adds_up"])
+        rec["balances"]["2026-01-02"]["w"] = None
+        self.assertIsNone(revenue.window(rec, "2026-01-02", "2026-01-02"))   # unknown is not zero
+
+
+class LeadLag(unittest.TestCase):
+    def test_a_real_lead_is_found_and_noise_is_not(self):
+        import random
+        from pipeline import leadlag
+        rng = random.Random(1)
+        x = [rng.gauss(0, 1) for _ in range(120)]
+        y = [0.0, 0.0] + [x[k] * 0.9 + rng.gauss(0, 0.3) for k in range(118)]      # y follows x two steps later
+        got = leadlag.test(x, y, shifts=500, seed=3)
+        self.assertEqual(got["lead_weeks"], 2)
+        self.assertLess(got["p"], 0.01)
+        z = [rng.gauss(0, 1) for _ in range(120)]
+        self.assertGreater(leadlag.test(x, z, shifts=500, seed=3)["p"], 0.05)
+
+    def test_weeks_are_monday_to_sunday_and_incomplete_weeks_are_dropped(self):
+        from pipeline import leadlag
+        days = {f"2026-11-{d:02d}": 1.0 for d in range(2, 13)}     # Monday 2 to Thursday 12 November
+        weeks = leadlag.weekly(days, "sum")
+        import datetime as dt
+        self.assertEqual(weeks, {dt.date(2026, 11, 2): 7.0})
+
+
+class Scenarios(unittest.TestCase):
+    def test_coverage_compounds_and_the_needed_growth_reaches_full_coverage(self):
+        from pipeline import claims
+        sc = claims.scenarios(Fraction(1, 4), Fraction(1, 40), "2026-12-31", growth=(0.0, 1.0))
+        flat = sc["rows"][0]
+        years = sc["horizons"]["2029"]
+        self.assertAlmostEqual(flat[("as now", "2029")], 0.25 / 1.025 ** years, places=9)
+        self.assertIsNone(flat[("as now", "years")])                          # flat revenue never catches growing supply
+        g = sc["need"][("as now", "2029")]
+        self.assertAlmostEqual(0.25 * ((1 + g) / 1.025) ** years, 1.0, places=9)
+        self.assertAlmostEqual(sc["rows"][1][("at 1.6%", "2029")], 0.25 * 0.025 / 0.016 * (2 / 1.016) ** years, places=9)
+
+
+class ExitOrder(unittest.TestCase):
+    def test_transfers_are_split_at_the_block_and_the_largest_outflows_kept(self):
+        from pipeline import flows
+
+        def t(h, amount, n):
+            return {"block_height": str(h), "block_timestamp": str(h * 10**9), "receipt_id": f"R{n}", "log_index": 0, "transfer_index": n,
+                    "other_account_id": f"a{n}", "amount": str(amount)}
+        rows = [t(110, -50, 1), t(120, 10, 2), t(130, -5, 3), t(140, 7, 4), t(150, -9, 5), t(90, -99, 6)]
+        got = flows.exit_order(rows, 100, 160, 130, top=2)
+        self.assertEqual((got["before"], got["after"]), ({"in": "10", "out": "50"}, {"in": "7", "out": "14"}))
+        self.assertEqual([x["amount"] for x in got["largest_out"]], ["50", "9"])
+
+
 class CommittedData(unittest.TestCase):
     """Sanity checks on whatever raw data is in the repository."""
 

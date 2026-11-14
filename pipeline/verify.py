@@ -33,9 +33,9 @@ PROSE = ("README.md", "THESIS.md", "PREREG.md", "PREREG-AUDIT.md")
 # a number may contain commas but does not end in one: "$30," is $30 followed by a comma
 NUMBER = re.compile(r"[+-]?\$\d(?:[\d,]*\d)?(?:\.\d+)?[MBK]?|[+-]?\d(?:[\d,]*\d)?(?:\.\d+)?%|\b\d(?:[\d,]*\d)?(?:\.\d+)?x\b|\b\d(?:[\d,]*\d)?(?:\.\d+)?M NEAR\b|\b\d{1,3}(?:,\d{3})+ NEAR\b"
                     r"|(?<![-\d,.])\b\d[\d,]* (?:checks|tokens|readings|paths|transfers|accounts|days|blocks|steps|new lows)\b"
-                    r"|(?<![-\d,.:])\b\d+ hours(?: \d+ minutes)?\b|(?<![-\d,.:])\b\d+ minutes\b|(?<![-\d,:])\b\d+\.\d+ (?:years|months)\b"
+                    r"|(?<![-\d,.:])\b\d+ hours?(?: \d+ minutes?)?\b|(?<![-\d,.:])\b\d+ minutes?\b|(?<![-\d,:])\b\d+\.\d+ (?:years|months)\b"
                     r"|\b\d+(?:\.\d+)? basis points\b|\b\d+ of them short\b|\b\d+ of \d+ days\b"
-                    r"|\b\d{2}:\d{2}:\d{2}\b|(?<![\d.])\b\d{9}\b(?![\d.])")
+                    r"|\b\d{2}:\d{2}:\d{2}\b|(?<![\d.])\b\d{9}\b(?![\d.])|\bp = \d\.\d+|\br = [+-]\d\.\d+")
 
 
 def read(path):
@@ -143,6 +143,50 @@ def check_chain(days, blocks):
                 print("ok   the treasury account's access keys and their nonces match data/context/custody.json")
     bad += check_trace_chain()
     bad += check_exploit_chain()
+    bad += check_revenue_chain(days, blocks)
+    bad += check_oneclick_chain()
+    return bad
+
+
+def check_revenue_chain(days, blocks):
+    """Re-read the revenue wallets' NEAR balances at the sampled days and compare with data/context/revenue.json."""
+    from . import revenue
+    rec = load(revenue.PATH, None)
+    if not rec:
+        return 0
+    bad = n = 0
+    for day in days:
+        stored = rec["balances"].get(day)
+        if not stored:
+            continue
+        for w in rec["wallets"]:
+            got = revenue.balance(w, blocks[day]["height"])
+            n += 1
+            if got != stored.get(w):
+                print(f"FAIL revenue: {w} holds {got} at the {day} reading, data/context/revenue.json says {stored.get(w)}")
+                bad += 1
+    if not bad:
+        print(f"ok   revenue wallets: {n} balances at the sampled days match the chain")
+    return bad
+
+
+def check_oneclick_chain():
+    """Re-read every recorded 1Click treasury receipt: a transfer signed for the deposit address, of that amount, to the treasury."""
+    from . import oneclick, trace
+    rec = load(oneclick.PATH, None)
+    if not rec:
+        return 0
+    bad = n = 0
+    for swap in rec["swaps"]:
+        for t in swap["treasury_transfers"]:
+            receipt = rpc.call("EXPERIMENTAL_receipt", {"receipt_id": t["receipt_id"]})
+            want = {"from": swap["deposit_address"], "to": rpc.TREASURY, "amount": int(t["amount"]), "how": "transfer intent"}
+            n += 1
+            if want not in trace.legs(receipt, t["asset"]):
+                print(f"FAIL 1Click: receipt {t['receipt_id']} does not carry the recorded transfer into the treasury")
+                bad += 1
+    if not bad:
+        print(f"ok   1Click: {n} recorded swap transfers into the treasury read back from the chain as stated")
     return bad
 
 
@@ -228,9 +272,54 @@ def check_flows():
                 bad += 1
             else:
                 good += d["adds_up"]
+        eo = rec.get("exit_order")
+        if eo:
+            d = rec["days"].get("2026-09-30")
+            split_in = int(eo["before"]["in"]) + int(eo["after"]["in"])
+            split_out = int(eo["before"]["out"]) + int(eo["after"]["out"])
+            if not d or split_in != int(d["in"]) or split_out != int(d["out"]):
+                print("FAIL flows: the 29-30 September split before and after the hole opened does not add up to that day's totals")
+                bad += 1
         if not bad:
-            print(f"ok   data/context/flows.json: on {good} of {len(days)} days the listed transfers add up exactly to the change in the chain balance")
+            print(f"ok   data/context/flows.json: on {good} of {len(days)} days the listed transfers add up exactly to the change in the chain balance"
+                  + ("; the September exit's split around the hole adds up to the day" if eo else ""))
     return bad
+
+
+def check_revenue_stored():
+    """The revenue windows the claims use must reconcile: native NEAR in minus out equals the change in each balance."""
+    from . import revenue
+    rec = load(revenue.PATH, None)
+    if not rec:
+        return 0
+    pin = load(os.path.join(DATA, "pin.json"), {}).get("pin_day")
+    shift = lambda d, n: (dt.date.fromisoformat(d) + dt.timedelta(days=n)).isoformat()   # noqa: E731
+    bad = 0
+    for first, last in ((shift(pin, -29), pin), (shift(pin, -59), shift(pin, -30))):
+        w = revenue.window(rec, first, last)
+        if w is None:
+            print(f"FAIL revenue: the window {first} to {last} has a balance or a day of transfers missing")
+            bad += 1
+        elif not w["adds_up"]:
+            off = [k for k, v in w["by_wallet"].items() if not v["adds_up"]]
+            print(f"FAIL revenue: in {first} to {last} the listed transfers do not add up to the balance change of {', '.join(off)}")
+            bad += 1
+    if not bad:
+        print("ok   data/context/revenue.json: in both 30-day windows every wallet's native NEAR in minus out equals the change in its balance")
+    return bad
+
+
+def check_oneclick_stored():
+    from . import oneclick
+    rec = load(oneclick.PATH, None)
+    if not rec:
+        return 0
+    off = [x["deposit_address"] for x in rec["swaps"] for t in x["treasury_transfers"] if t["tx"] not in x["near_tx_hashes"] or not t.get("on_chain")]
+    if off:
+        print(f"FAIL data/context/oneclick.json: {len(off)} recorded transfers are not in their swap's own list, or were not read back from the chain")
+        return 1
+    print(f"ok   data/context/oneclick.json: every recorded transfer is in its swap's own list of NEAR transactions")
+    return 0
 
 
 def check_exploit_stored():
@@ -290,7 +379,7 @@ def same(name, want, path, as_json=False):
 
 def prose_only(text):
     """The hand-written part of a markdown file: no code blocks, no inline code, no generated findings table, no links."""
-    text = re.sub(r"<!-- claims:start -->.*?<!-- claims:end -->", "", text, flags=re.S)
+    text = re.sub(r"<!-- (claims|results|scenarios|alarm):start -->.*?<!-- \1:end -->", "", text, flags=re.S)
     text = re.sub(r"```.*?```", "", text, flags=re.S)
     text = re.sub(r"`[^`\n]*`", "", text)
     return re.sub(r"\]\([^)]*\)|<https?://[^>]*>", "]", text)
@@ -386,8 +475,11 @@ def check_derived():
     bad += same("dashboard claims", c["claims_js"], os.path.join(ROOT, "site", "claims.js"))
     bad += same("dashboard forward tests", f["forward_js"], os.path.join(ROOT, "site", "forward.js"))
     bad += same("findings table", c["readme"], os.path.join(ROOT, "README.md"))
+    bad += same("generated tables in THESIS.md", c["thesis"], os.path.join(ROOT, "THESIS.md"))
     bad += same("numbers in the page", c["index"], os.path.join(ROOT, "site", "index.html"))
     bad += check_flows()
+    bad += check_revenue_stored()
+    bad += check_oneclick_stored()
     bad += check_exploit_stored()
     bad += check_trace_stored()
     bad += check_prose(c["claims"])

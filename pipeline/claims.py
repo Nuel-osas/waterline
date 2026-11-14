@@ -294,6 +294,76 @@ def write_claims(write=True):
             peak_usd = max(Fraction(int(st["credited"]) - int(st["held"]), 10 ** m0["decimals"]) for st in ex0["steps"]) * m0["price"]
             add("Q3", f"{float(peak_usd / month):.1f} months",
                 "The October hole at its largest as months of that revenue", "A10 over X3", grade="chain, via an indexer")
+        # --- revenue measured on chain: NEAR and wNEAR received by the three wallets (pipeline/revenue.py). Our day D is the
+        # 24 hours before the reading at 00:00 on D; DefiLlama's day D is the calendar day, so its window is one day earlier.
+        from .revenue import window as rev_window
+        rv = load(os.path.join(DATA, "context", "revenue.json"), None)
+        shift = lambda d, n=1: (_dt.date.fromisoformat(d) + _dt.timedelta(days=n)).isoformat()   # noqa: E731
+        coverage, coverage_label = rev_near / (per_day * 30), "V4"
+        sday = lambda d: int(sup["days"][d]["total_supply"])   # noqa: E731
+        win_b = (shift(pin, -29), pin)                            # the 30 readings to the pinned one
+        win_a = (shift(pin, -59), shift(pin, -30))                # the 30 before
+        rb = rev_window(rv, *win_b) if rv else None
+        ra = rev_window(rv, *win_a) if rv else None
+        rx = rev_window(rv, shift(win[0]), shift(win[-1])) if rv else None
+        if rb and shift(pin, -30) in sup["days"] and shift(pin, -60) in sup["days"]:
+            got_b = Fraction(rb["received"], 10**24)
+            new_b = Fraction(sday(pin) - sday(shift(pin, -30)), 10**24)
+            add("U1", f"{float(got_b):,.0f} NEAR",
+                f"NEAR and wNEAR received by the three revenue wallets in the 30 days to the reading of {pin}, counted from the chain: "
+                f"transfers listed by a public index, and every wallet's native NEAR in minus out "
+                + ("equal, to the last unit, to the change in its balance read at each day's block" if rb["adds_up"] else "NOT equal to the change in its balance"),
+                "pipeline/revenue.py; data/context/revenue.json", grade="chain")
+            add("U2", f"{float(got_b / 30):,.0f} NEAR a day", "The same, a day", "U1 over 30", grade="chain")
+            coverage, coverage_label = got_b / new_b, "U4"
+            add("U4", pct(coverage, 0), f"Revenue reaching NEAR's wallets as a share of net new supply, both read from the chain, in the 30 days to the reading of {pin}: "
+                "U1 over the change in total supply between two block headers 30 days apart. The rating in THESIS.md section 5 uses it", "U1 over 30 days of supply growth", grade="chain")
+            if ra and shift(pin, -60) in sup["days"]:
+                got_a = Fraction(ra["received"], 10**24)
+                new_a = Fraction(sday(shift(pin, -30)) - sday(shift(pin, -60)), 10**24)
+                add("U5", pct(got_a / new_a, 0), f"The same coverage in the 30 days before, to the reading of {shift(pin, -30)} ({float(got_a):,.0f} NEAR received)",
+                    "as U4, one window earlier", grade="chain")
+                ch = got_b / got_a - 1
+                add("U6", ("+" if ch >= 0 else "") + pct(ch, 0), "Change in the NEAR reaching the revenue wallets, the latest 30 days against the 30 before, read from the chain",
+                    "U1 over the window before, minus one", grade="chain")
+                cov_a = got_a / new_a
+            else:
+                cov_a = None
+        if rx:
+            got_x = Fraction(rx["received"], 10**24)
+            add("U3", pct(got_x / rev_near, 1),
+                f"NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR "
+                f"at each day's price ({float(got_x):,.0f} NEAR against {float(rev_near):,.0f} NEAR): how far the quoted figure agrees with the chain",
+                "pipeline/revenue.py against data/context/defillama.json", grade="chain")
+        # --- the rating, from the rule in THESIS.md section 5: computed, not typed
+        last_audit = (build.last.get("audit") or {}).get("history") or []
+        audited = [d for d in last_audit if d["day"] <= pin]
+        books_whole = bool(audited) and audited[-1]["counts"]["short"] == 0
+        if "U4" in [c["id"] for c in C] and "U5" in [c["id"] for c in C]:
+            lo, hi = Fraction(10, 100), Fraction(25, 100)
+            if not books_whole or (coverage < lo and cov_a < lo):
+                rating = "Exit"
+            elif (coverage >= hi and cov_a >= hi) or D1_MET:
+                rating = "Add"
+            else:
+                rating = "Hold"
+            add("RT", rating, f"The rating the rule in THESIS.md section 5 gives on {pin}: the public books are "
+                + ("whole" if books_whole else "short") + f" on the latest reading; coverage is {pct(coverage, 0)} and {pct(cov_a, 0)} in the last two 30-day windows; "
+                "NEAR has " + ("" if D1_MET else "not ") + "published the private chain's totals", "the rule, applied by pipeline/claims.py", grade="rule")
+        # --- what has to be true by 2029 and 2031: coverage of net new supply if revenue, counted in NEAR, grows at g a year
+        i_now = per_day * 365 / Fraction(s1, 10**24)
+        sc = scenarios(coverage, i_now, pin)
+        scenario_block = sc["table"]
+        add("Z1", pct(sc["need"][("as now", "2029")], 0) + " a year",
+            "How fast the revenue reaching NEAR's wallets, counted in NEAR, must grow for buybacks to match net new supply by the end of 2029, "
+            f"with issuance as it is ({pct(i_now, 2)} of supply a year)", f"(1 + issuance) times (1 / {coverage_label}) to the power 1/years, minus 1", grade="model")
+        add("Z2", pct(sc["need"][("at 1.6%", "2029")], 0) + " a year",
+            "The same, if net new supply runs at 1.6% of supply by then, as HSP-029 would bring about", "as Z1", grade="model")
+        add("Z3", pct(sc["need"][("as now", "2031")], 0) + " a year", "The same by the end of 2031, issuance as it is", "as Z1", grade="model")
+        add("Z4", pct(sc["need"][("at 1.6%", "2031")], 0) + " a year", "The same by the end of 2031, at 1.6%", "as Z1", grade="model")
+        flat = next(r for r in sc["rows"] if r["g"] == 0)
+        add("Z5", pct(flat[("as now", "2029")], 0), "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance does too", "as Z1", grade="model")
+        add("Z6", pct(flat[("at 1.6%", "2029")], 0), "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance falls to 1.6%", "as Z1", grade="model")
         add("M3", f"${float(vol * Fraction(365, 30) * need) / 1e9:.0f}B a year", "Reported volume that would take at today's rate of revenue per dollar of volume",
             "annualised X1 times M2", grade="reported")
 
@@ -412,6 +482,9 @@ def write_claims(write=True):
                 "How long before the first payout each size was first reached: " + ", ".join(f"{money(level)} at {ago(t)}" for level, t in rungs),
                 "first step at or above each size, against the quoted payout time", grade="chain, one quoted time")
             add("A13", ago(rungs[-1][1]), f"How long before the first payout the hole first passed {money(rungs[-1][0])}", "as A12", grade="chain, one quoted time")
+            ten_k = next((t for level, t in rungs if level == 10_000), None)
+            if ten_k is not None:
+                add("A16", ago(ten_k), "How long before the first payout the hole first passed $10,000", "as A12", grade="chain, one quoted time")
     late = load(os.path.join(DATA, "context", "late_tokens.json"), None)
     if late and last["all"]["share"] is not None:
         extra = sum((usd(int(v["held"]), meta[t]) or 0) for t, v in late["tokens"].items() if v["held"] is not None and t in meta)
@@ -516,6 +589,79 @@ def write_claims(write=True):
                 f"to {ex_day['accounts']:,} accounts) that went to the three largest receivers, each in a single transfer",
                 "three largest outgoing totals over all out", grade="index, checked against the chain")
 
+    # --- does the alarm cry wolf? Blocks drawn at random, audited (pipeline/audit.py --sample)
+    rs = load(os.path.join(DATA, "context", "random_audit.json"), None)
+    ex3 = load(os.path.join(DATA, "context", "exploit.json"), None)
+    if rs and ex3 and rs.get("blocks") and rs.get("complete"):     # a sample still being read says nothing yet
+        hole = lambda st: int(st["credited"]) - int(st["held"])   # noqa: E731
+        steps3 = sorted(ex3["steps"], key=lambda st: st["height"])
+        h_open = next(st["height"] for st in steps3 if hole(st) > 0)
+        h_peak = max(steps3, key=hole)["height"]
+        h_shut = next(st["height"] for st in steps3 if st["height"] > h_peak and hole(st) <= 0)
+        done = [r for r in rs["blocks"].values() if r]
+        inside = [r for r in done if h_open <= r["height"] < h_shut]
+        outside = [r for r in done if not h_open <= r["height"] < h_shut]
+        out_short = sum(1 for r in outside if r["short"])
+        out_low = sum(1 for r in outside if r["low"])
+        in_short = sum(1 for r in inside if r["short"])
+        unread = sum(r["unread"] for r in done)
+        add("J1", f"{len(done)} random blocks",
+            f"Blocks drawn at random (seed {rs['seed']}) between the first reading and the pinned one and audited for the 20 tracked tokens: "
+            f"{len(inside)} fell inside the {(h_shut - h_open)} blocks the October hole was open and {in_short} of those showed it; "
+            f"{unread} token checks could not be read, mostly tokens that did not exist yet, and count as unknown",
+            "python3 -m pipeline.audit --sample 200; data/context/random_audit.json", grade="chain")
+        add("J2", f"{out_short} of {len(outside)}",
+            "Random blocks outside the October hole on which any tracked token was short: how often the sign test would cry wolf", "count", grade="chain")
+        add("J3", f"{out_low} of {len(outside)}",
+            "Random blocks outside the October hole on which a tracked token held less over its credit than on every earlier daily reading", "count", grade="chain")
+        if outside and out_short == 0:
+            add("J4", pct(Fraction(3, len(outside)), 1), "With no false alarm in the sample, the highest false-alarm rate per block that the sample "
+                "does not rule out, at about 95% confidence: three over the number of blocks (the rule of three)", "3 over J2's denominator", grade="model")
+
+    # --- the track's working hypothesis: does NEAR Intents' volume lead network usage or NEAR's price? (pipeline/leadlag.py)
+    if os.path.exists(os.path.join(DATA, "context", "activity.json")):
+        from .leadlag import run as leadlag_run
+        ll = leadlag_run(pin)
+        for cid, target in (("L1", "transactions"), ("L2", "active accounts"), ("L3", "price")):
+            t = ll["tests"][target]
+            add(cid, f"r = {t['r']:+.2f}, p = {t['p']:.2f}",
+                f"Weekly change in NEAR Intents' reported volume against the change in NEAR's {target if target != 'price' else 'price'} "
+                f"{t['lead_weeks']} week{'s' if t['lead_weeks'] != 1 else ''} later, the strongest of leads of 1 to 8 weeks. p is the share of "
+                f"{ll['shifts']:,} circularly shifted series that do as well at their best lead (seed {ll['seed']})",
+                "python3 -m pipeline.leadlag", grade="model, on quoted volume and NearBlocks activity")
+        add("L4", f"{ll['changes']} weekly changes", f"Weeks in the lead-lag test, from the week of {ll['first_week']} to the week of {ll['last_week']}",
+            "complete Monday-to-Sunday weeks both sources cover", grade="model")
+    # --- 1Click's own records: its swaps settle through the private chain's treasury (pipeline/oneclick.py)
+    oc = load(os.path.join(DATA, "context", "oneclick.json"), None)
+    if oc and oc.get("swaps"):
+        listed = [x for x in oc["swaps"] if x["treasury_transfers"]]
+        onchain = sum(1 for x in listed for t in x["treasury_transfers"] if t.get("on_chain"))
+        dates = sorted({x["updated_at"][:10] for x in oc["swaps"]})
+        add("W5", f"{len(listed)} of {len(oc['swaps'])}",
+            f"Completed or refunded 1Click swaps, found among {oc['senders']} accounts that paid into the treasury on six days after "
+            f"2026-10-27, whose own status record lists the NEAR transaction that moved their tokens into the treasury "
+            f"(swaps dated {dates[0]} to {dates[-1]}; {onchain} of those transfers read back from the chain as stated)",
+            "pipeline/oneclick.py; data/context/oneclick.json", grade="chain, found through 1Click's public status records")
+    # --- the September exit, ordered against the block where the hole in the public books opened
+    fl2 = load(os.path.join(DATA, "context", "flows.json"), None)
+    eo = (fl2 or {}).get("exit_order")
+    if eo:
+        before_net = (int(eo["before"]["in"]) - int(eo["before"]["out"])) / 10**24
+        after_net = (int(eo["after"]["in"]) - int(eo["after"]["out"])) / 10**24
+        big = eo["largest_out"]
+        hole_ts = next(int(st["timestamp"]) for st in load(os.path.join(DATA, "context", "exploit.json"), {"steps": []})["steps"]
+                       if int(st["height"]) == eo["mark_height"])
+        lead_h = (hole_ts - max(int(b["timestamp"]) for b in big)) // (3600 * 10**9)
+        add("N6", f"{-before_net / 1e6:.1f}M NEAR",
+            f"Net NEAR that left the treasury between the reading of 2026-09-29 and block {eo['mark_height']}, where the hole in the public books opened. "
+            f"From that block to the next reading the treasury gained {after_net / 1e6:.1f}M NEAR",
+            "data/context/flows.json, exit_order", grade="index, checked against the chain")
+        add("N7", f"{sum(int(b['amount']) for b in big) / 10**24 / 1e6:.1f}M NEAR",
+            f"The three largest transfers out of the treasury that day, all between "
+            + _dt2_fmt(min(int(b['timestamp']) for b in big)) + " and " + _dt2_fmt(max(int(b['timestamp']) for b in big)) + " UTC on 29 September",
+            "as N6", grade="index, checked against the chain")
+        add("N8", f"{lead_h} hours", "How long before the hole opened the last of those three transfers left", "block times", grade="index, checked against the chain")
+
     # --- the base-rate model: how often the float's own past, replayed, meets the long-dated readings
     from .model import BLOCK, PATHS, SEED, share, simulate, windows
     cut = {key: (label, since, until) for key, label, since, until in windows(rows, pin)}
@@ -567,8 +713,20 @@ def write_claims(write=True):
     ra, rb = "<!-- results:start -->", "<!-- results:end -->"
     if ra in readme and rb in readme:
         readme = readme[:readme.index(ra) + len(ra)] + "\n" + "\n".join(results_table(rows_all, last, pin, tracked, meta)) + "\n" + readme[readme.index(rb):]
+    thesis_path = os.path.join(ROOT, "THESIS.md")
+    thesis = open(thesis_path).read() if os.path.exists(thesis_path) else ""
+    gen = {}
+    if "scenario_block" in dir() or True:
+        try:
+            gen["scenarios"] = scenario_block
+        except NameError:
+            pass
+    ex_rec = load(os.path.join(DATA, "context", "exploit.json"), None)
+    if ex_rec:
+        gen["alarm"] = alarm_table(ex_rec, meta)
+    thesis = fill_blocks(thesis, gen)
     index = fill_page(open(index_path).read(), site) if os.path.exists(index_path) else ""
-    write_claims.last = {"claims": out, "claims_js": site_js("WATERLINE_CLAIMS", site), "readme": readme, "index": index}
+    write_claims.last = {"claims": out, "claims_js": site_js("WATERLINE_CLAIMS", site), "readme": readme, "index": index, "thesis": thesis}
     if write:
         save(os.path.join(DATA, "derived", "claims.json"), out)
         with open(os.path.join(ROOT, "site", "claims.js"), "w") as f:
@@ -577,7 +735,111 @@ def write_claims(write=True):
             open(readme_path, "w").write(readme)
         if index:
             open(index_path, "w").write(index)
+        if thesis:
+            open(thesis_path, "w").write(thesis)
     return out
+
+
+# D1 in PREREG-AUDIT.md: has NEAR published the private chain's totals per token against a block height? Scored by hand.
+D1_MET = False
+
+
+def _dt2_fmt(ns):
+    import datetime as _d
+    return _d.datetime.fromtimestamp(ns / 1e9, _d.timezone.utc).strftime("%H:%M")
+
+
+def scenarios(coverage, issuance, pin, low=Fraction(16, 1000), growth=(-0.2, 0.0, 0.25, 0.5, 1.0)):
+    """Share of net new supply that revenue would cover at the end of 2029 and 2031, and the years to cover all of it,
+    for revenue counted in NEAR growing at g a year; with issuance as now, or at `low` (HSP-029's target). A model:
+    revenue and supply both compound at constant rates, and the lower issuance is taken as fully in force by the
+    horizon. Returns rows, the growth needed for each case and horizon, and the markdown table."""
+    import datetime as _d
+    import math
+    t0 = _d.date.fromisoformat(pin)
+    horizons = {"2029": (_d.date(2029, 12, 31) - t0).days / 365.25, "2031": (_d.date(2031, 12, 31) - t0).days / 365.25}
+    cases = {"as now": (float(coverage), float(issuance)), "at 1.6%": (float(coverage * issuance / low), float(low))}
+    rows = []
+    for g in growth:
+        row = {"g": g}
+        for name, (c, i) in cases.items():
+            for h, years in horizons.items():
+                row[(name, h)] = c * ((1 + g) / (1 + i)) ** years
+            ratio = (1 + g) / (1 + i)
+            row[(name, "years")] = math.log(1 / c) / math.log(ratio) if ratio > 1 and c < 1 else None
+        rows.append(row)
+    need = {(name, h): (1 + i) * (1 / c) ** (1 / years) - 1 for name, (c, i) in cases.items() for h, years in horizons.items()}
+
+    def cell(x):
+        return "over 100%" if x >= 1 else f"{x * 100:.0f}%"
+
+    def yrs(x):
+        return "never" if x is None else f"{x:.1f}"
+    lines = ["| Revenue in NEAR grows, a year | Covered at end-2029, issuance as now | At end-2031 | Years to cover it all "
+             "| Covered at end-2029, issuance at 1.6% | At end-2031 | Years to cover it all |",
+             "| --- | --- | --- | --- | --- | --- | --- |"]
+    for r in rows:
+        lines.append(f"| {r['g'] * 100:+.0f}% | {cell(r[('as now', '2029')])} | {cell(r[('as now', '2031')])} | {yrs(r[('as now', 'years')])} "
+                     f"| {cell(r[('at 1.6%', '2029')])} | {cell(r[('at 1.6%', '2031')])} | {yrs(r[('at 1.6%', 'years')])} |")
+    lines.append(f"| needed to cover it all | {need[('as now', '2029')] * 100:.0f}% a year by end-2029 | {need[('as now', '2031')] * 100:.0f}% a year by end-2031 | "
+                 f"| {need[('at 1.6%', '2029')] * 100:.0f}% a year by end-2029 | {need[('at 1.6%', '2031')] * 100:.0f}% a year by end-2031 | |")
+    return {"rows": rows, "need": need, "table": lines, "horizons": horizons}
+
+
+def alarm_table(ex, meta):
+    """From the replay of the October hole: when a reader at each interval, or an alarm at each size, first sees it,
+    and how long that is before the first payout CertiK reports."""
+    import datetime as _d
+    m = meta[ex["token"]]
+    unit = 10 ** m["decimals"]
+    steps = sorted(ex["steps"], key=lambda st: st["timestamp"])
+    paid = int(_d.datetime.strptime(ex["quoted"]["first_payout_utc"] + " +0000", "%Y-%m-%d %H:%M:%S %z").timestamp())
+
+    def hole_at(t):
+        h = None
+        for st in steps:
+            if st["timestamp"] // 10**9 <= t:
+                h = int(st["credited"]) - int(st["held"])
+            else:
+                break
+        if h is None:
+            h = int(steps[0]["credited_before"]) - int(steps[0]["held_before"])
+        return h
+
+    def span(seconds):
+        h, mm = seconds // 3600, seconds % 3600 // 60
+        return f"{h}h {mm}m"
+
+    def usd_of(units):
+        return money(Fraction(units, unit) * m["price"])
+    first = next(st for st in steps if int(st["credited"]) > int(st["held"]))
+    t_open = first["timestamp"] // 10**9
+    rows = ["| A reader who checks | First sees the hole at (UTC) | Hole then | Before the first payout |", "| --- | --- | --- | --- |"]
+    for label, every in (("every block", 1), ("every 10 minutes", 600), ("every hour", 3600), ("once a day, at 00:00 UTC", 86400)):
+        t = t_open if every == 1 else ((t_open + every - 1) // every) * every
+        while t < paid and hole_at(t) <= 0:
+            t += every
+        if t >= paid:
+            rows.append(f"| {label} | not before the payout | | |")
+            continue
+        when = _d.datetime.fromtimestamp(t, _d.timezone.utc).strftime("%d %b %H:%M:%S")
+        rows.append(f"| {label} | {when} | {usd_of(hole_at(t))} | {span(paid - t)} |")
+    rows += ["", "| An alarm set at a hole of | First reached at (UTC) | Before the first payout |", "| --- | --- | --- |"]
+    for level in (10, 1_000, 10_000, 100_000, 1_000_000):
+        hit = next((st for st in steps if int(st["credited"]) - int(st["held"]) >= level * unit and st["timestamp"] // 10**9 < paid), None)
+        if hit:
+            when = _d.datetime.fromtimestamp(hit["timestamp"] // 10**9, _d.timezone.utc).strftime("%d %b %H:%M:%S")
+            rows.append(f"| {money(level)} | {when} | {span(paid - hit['timestamp'] // 10**9)} |")
+    return rows
+
+
+def fill_blocks(text, blocks):
+    """Replace each <!-- name:start --> ... <!-- name:end --> block with generated lines."""
+    for name, lines in blocks.items():
+        a, b = f"<!-- {name}:start -->", f"<!-- {name}:end -->"
+        if a in text and b in text:
+            text = text[:text.index(a) + len(a)] + "\n" + "\n".join(lines) + "\n" + text[text.index(b):]
+    return text
 
 
 def results_table(rows_all, last, pin, tracked, meta):
@@ -639,8 +901,10 @@ def shown_for(claim, part=None, fmt=None):
         text = m.group(1) if m else text
     if fmt == "date":
         text = long_day(text)
+    if fmt == "lead":
+        text = text.split(" ")[0]
     if fmt == "hm":
-        m = re.fullmatch(r"(\d+) hours (\d+) minutes", text)
+        m = re.fullmatch(r"(\d+) hours? (\d+) minutes?", text)
         text = f"{m.group(1)}h {m.group(2)}m" if m else text
     return text
 
