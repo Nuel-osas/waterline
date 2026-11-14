@@ -466,6 +466,48 @@
    "what": "Change in the NEAR reaching the revenue wallets, the latest 30 days against the 30 before, read from the chain"
   },
   {
+   "grade": "index, sampled against the chain",
+   "how": "pipeline/revenue_source.py; data/context/revenue_source.json",
+   "id": "U7",
+   "shown": "74%",
+   "what": "Share of U1 that arrived through the private chain's treasury. Each payment into the three wallets from intents.near is a withdrawal signed by an account on its ledger; that account's wNEAR inflows in the ten minutes (or, failing that, six hours) before it paid fund its payments oldest first, each inflow used once and never beyond its amount, and the part funded by transfers from the treasury counts here. 1,116 payments by 835 accounts, each looked up; the payments add up exactly to the transfers from intents.near that U1 counts. This is the route the money took, not where it was earned. The 30 days before are not traced"
+  },
+  {
+   "grade": "index",
+   "how": "as U7",
+   "id": "U10",
+   "shown": "18%",
+   "what": "Share of U1 that the payers' inflows before each payment do not explain: paid from balances the payers already held, whose source the windows read do not show (284 payments, mostly by accounts that pay many times)"
+  },
+  {
+   "grade": "index",
+   "how": "as U7, for payments from that day",
+   "id": "U11",
+   "shown": "75%",
+   "what": "Share of the payments from intents.near made on or after 27 October 2026, the day 1Click swaps began to settle privately, that arrived through the treasury"
+  },
+  {
+   "grade": "index",
+   "how": "as U7, for payments before that day",
+   "id": "U12",
+   "shown": "72%",
+   "what": "The same for the payments in the window made before 27 October 2026"
+  },
+  {
+   "grade": "index",
+   "how": "as U7, for one wallet",
+   "id": "U13",
+   "shown": "99%",
+   "what": "Share of the payments to fefundsadmin.sputnik-dao.near that arrived through the treasury, in the same window"
+  },
+  {
+   "grade": "index",
+   "how": "payments from intents.near over U1",
+   "id": "U9",
+   "shown": "99.9%",
+   "what": "Share of U1 that came from intents.near at all, by any payer; the rest was sent to the wallets from outside it"
+  },
+  {
    "grade": "chain",
    "how": "pipeline/revenue.py against data/context/defillama.json",
    "id": "U3",

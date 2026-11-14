@@ -640,6 +640,72 @@ class Growth(unittest.TestCase):
         self.assertGreater(max(f[2] for f in fits), 0)  # and some earlier start still shows growth
 
 
+class RevenueSource(unittest.TestCase):
+    """Who paid the revenue wallets, one step back on intents.near's ledger (pipeline/revenue_source.py)."""
+
+    @staticmethod
+    def _tx(*signed):
+        import base64
+        import json
+        args = {"signed": [{"payload": {"message": json.dumps({"signer_id": s, "intents": its})}} for s, its in signed]}
+        return {"actions": [{"FunctionCall": {"method_name": "execute_intents", "args": base64.b64encode(json.dumps(args).encode()).decode()}}]}
+
+    def test_each_payment_is_matched_to_the_intent_with_its_wallet_and_amount_once(self):
+        from pipeline import revenue_source as rs
+        tx = self._tx(("alice", [{"intent": "native_withdraw", "receiver_id": "w1", "amount": "5"}]),
+                      ("bob", [{"intent": "native_withdraw", "receiver_id": "w1", "amount": "5"},
+                               {"intent": "ft_withdraw", "token": "wrap.near", "receiver_id": "w2", "amount": "7"}]),
+                      ("carol", [{"intent": "transfer", "receiver_id": "w1", "amount": "5"}]))
+        pays = [{"tx": "T", "wallet": "w1", "asset": "native:near", "amount": "5"},
+                {"tx": "T", "wallet": "w1", "asset": "native:near", "amount": "5"},
+                {"tx": "T", "wallet": "w1", "asset": "native:near", "amount": "5"},
+                {"tx": "T", "wallet": "w2", "asset": "nep141:wrap.near", "amount": "7"},
+                {"tx": "U", "wallet": "w2", "asset": "native:near", "amount": "1"}]
+        rs.match_payers(pays, {"T": tx})
+        self.assertEqual([p["payer"] for p in pays], ["alice", "bob", None, "bob", None])   # a transfer intent is not a withdrawal
+        self.assertEqual(pays[3]["intent"], "ft_withdraw")
+
+    def test_a_payload_given_as_json_text_is_read_like_one_given_as_an_object(self):
+        import base64
+        import json
+        from pipeline import revenue_source as rs
+        inner = {"signer_id": "dave", "intents": [{"intent": "native_withdraw", "receiver_id": "w1", "amount": "3"}]}
+        args = {"signed": [{"payload": json.dumps(inner)}, {"payload": json.dumps(json.dumps(inner))}, {"payload": {"type": "text", "text": json.dumps(inner)}},
+                           {"payload": "not json"}, {"payload": 7}]}
+        tx = {"actions": [{"FunctionCall": {"method_name": "execute_intents", "args": base64.b64encode(json.dumps(args).encode()).decode()}}]}
+        self.assertEqual([w[0] for w in rs.withdrawals(tx)], ["dave", "dave", "dave"])
+
+    def test_inflows_fund_payments_oldest_first_once_each_and_never_beyond_what_was_sent(self):
+        from pipeline import revenue_source as rs
+        T = "treasury"
+        one_time = {"payer": "x", "amount": "5", "height": 20, "tx": "a", "in": [{"tx": "i1", "height": 19, "from": T, "amount": "5"}]}
+        short = {"payer": "y", "amount": "2", "height": 20, "tx": "b", "in": [{"tx": "i2", "height": 19, "from": T, "amount": "1"}]}
+        shared_in = [{"tx": "i3", "height": 10, "from": T, "amount": "4"}, {"tx": "i4", "height": 12, "from": "solver", "amount": "3"}]
+        r1 = {"payer": "z", "amount": "5", "height": 15, "tx": "c", "in": shared_in}
+        r2 = {"payer": "z", "amount": "5", "height": 16, "tx": "d", "in": shared_in}          # the same inflows, seen again
+        none = {"payer": None, "amount": "9", "height": 20, "tx": "e"}
+        got = rs.allocate([one_time, short, r1, r2, none], T)
+        self.assertEqual(got[id(one_time)], (5, 0, 0))
+        self.assertEqual(got[id(short)], (1, 0, 1))      # one unit from the treasury cannot pay for two
+        self.assertEqual(got[id(r1)], (4, 1, 0))         # oldest first: the treasury's 4, then 1 of the solver's 3
+        self.assertEqual(got[id(r2)], (0, 2, 3))         # what is left: 2 from the solver; 3 not explained
+        self.assertEqual(got[id(none)], (0, 0, 9))
+
+    def test_the_window_uses_the_same_readings_as_the_revenue_count_and_fails_closed_without_them(self):
+        from pipeline import revenue_source as rs
+        blocks = {"2026-01-01": {"height": 100}, "2026-01-02": {"height": 200}, "2026-01-03": {"height": 300}}
+        pay = lambda h, amt, payer, ins=None: {"height": h, "tx": f"p{h}", "wallet": "w", "ts_ms": h, "amount": amt, "payer": payer,   # noqa: E731
+                                               **({"in": ins} if ins is not None else {})}
+        rec = {"treasury": "t", "payments": [
+            pay(100, "1", "a", [{"tx": "i90", "height": 90, "from": "t", "amount": "1"}]),     # at the reading before: out
+            pay(150, "2", "c", [{"tx": "i140", "height": 140, "from": "t", "amount": "1"}]),
+            pay(300, "4", "b", [{"tx": "i290", "height": 290, "from": "s", "amount": "1"}]),
+            pay(250, "8", None)]}
+        s = rs.summarise(rec, blocks, "2026-01-02", "2026-01-03")
+        self.assertEqual((s["payments"], s["paid"], s["treasury"], s["other"], s["untraced"]), (3, 14, 1, 1, 12))
+        self.assertIsNone(rs.summarise(rec, blocks, "2026-01-01", "2026-01-03"))   # no reading before the first day
+
+
 class RpcErrors(unittest.TestCase):
     def test_an_unknown_block_sent_as_http_422_is_a_skipped_height_not_a_failure(self):
         import io

@@ -41,6 +41,7 @@ an idle holder's by -2.4% a year.
    They show the route, not what share of swaps take it. That account holds 61.0% of everything NEAR Intents
    holds.
 4. NEAR's buyback is funded by revenue we read from the chain: 426,685 NEAR in the last 30 days, 16% of net new supply.
+   Traced one step back, 74% of it arrived through the private chain's treasury.
    For buybacks to match new supply by the end of 2029 that revenue, counted in NEAR, has to grow 84% a year, or 59% a year
    if HSP-029 takes effect. No growth rate can be read from the record yet: fitted from different start weeks since
    February, it runs from -91% to +1,160% a year. Over the latest 30 days against the 30 before it was -17%.

@@ -97,6 +97,12 @@ rows are results of dated tests on readings taken after the tests were written.
 | U4 | **16%** | Revenue reaching NEAR's wallets as a share of net new supply, both read from the chain, in the 30 days to the reading of 2026-11-13: U1 over the change in total supply between two block headers 30 days apart. The rating in THESIS.md section 5 uses it |
 | U5 | **20%** | The same coverage in the 30 days before, to the reading of 2026-10-14 (517,163 NEAR received) |
 | U6 | **-17%** | Change in the NEAR reaching the revenue wallets, the latest 30 days against the 30 before, read from the chain |
+| U7 | **74%** | Share of U1 that arrived through the private chain's treasury. Each payment into the three wallets from intents.near is a withdrawal signed by an account on its ledger; that account's wNEAR inflows in the ten minutes (or, failing that, six hours) before it paid fund its payments oldest first, each inflow used once and never beyond its amount, and the part funded by transfers from the treasury counts here. 1,116 payments by 835 accounts, each looked up; the payments add up exactly to the transfers from intents.near that U1 counts. This is the route the money took, not where it was earned. The 30 days before are not traced |
+| U10 | **18%** | Share of U1 that the payers' inflows before each payment do not explain: paid from balances the payers already held, whose source the windows read do not show (284 payments, mostly by accounts that pay many times) |
+| U11 | **75%** | Share of the payments from intents.near made on or after 27 October 2026, the day 1Click swaps began to settle privately, that arrived through the treasury |
+| U12 | **72%** | The same for the payments in the window made before 27 October 2026 |
+| U13 | **99%** | Share of the payments to fefundsadmin.sputnik-dao.near that arrived through the treasury, in the same window |
+| U9 | **99.9%** | Share of U1 that came from intents.near at all, by any payer; the rest was sent to the wallets from outside it |
 | U3 | **100.9%** | NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR at each day's price (409,897 NEAR against 406,427 NEAR): how far the quoted figure agrees with the chain |
 | M2 | **6.2x** | How many times revenue would have to grow for buybacks to match net new supply |
 | H1 | **4.0x** | How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about |

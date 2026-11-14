@@ -145,6 +145,7 @@ def check_chain(days, blocks):
     bad += check_exploit_chain()
     bad += check_revenue_chain(days, blocks)
     bad += check_oneclick_chain()
+    bad += check_revenue_source_chain()
     bad += check_staking_chain()
     return bad
 
@@ -168,6 +169,31 @@ def check_revenue_chain(days, blocks):
                 bad += 1
     if not bad:
         print(f"ok   revenue wallets: {n} balances at the sampled days match the chain")
+    return bad
+
+
+def check_revenue_source_chain(k=3):
+    """Re-read a seeded sample of traced payments from the archival node: the payment's transaction holds the withdrawal
+    signed by the recorded payer, and the transfer into that payer logs the treasury as its sender."""
+    from . import revenue_source as rs
+    rec = load(rs.OUT, None)
+    if not rec or not rec.get("complete"):
+        return 0
+    bad = n = 0
+    for p in rs.sample(rec, k):
+        tx = rpc.call("EXPERIMENTAL_tx_status", {"tx_hash": p["tx"], "sender_account_id": rpc.LEDGER, "wait_until": "NONE"})
+        intent, token = rs.WITHDRAW[p["asset"]]
+        if not any(w[:4] == (p["payer"], intent, p["wallet"], p["amount"]) for w in rs.withdrawals(tx["transaction"])):
+            print(f"FAIL revenue source: transaction {p['tx']} does not hold the recorded withdrawal by {p['payer']}")
+            bad += 1
+        for r in p["in"]:
+            st = rpc.call("EXPERIMENTAL_tx_status", {"tx_hash": r["tx"], "sender_account_id": rpc.LEDGER, "wait_until": "NONE"})
+            n += 1
+            if not rs.logged_transfer(st, rec["treasury"], p["payer"], "nep141:wrap.near", r["amount"]):
+                print(f"FAIL revenue source: transaction {r['tx']} does not log the recorded transfer from the treasury to {p['payer']}")
+                bad += 1
+    if not bad:
+        print(f"ok   revenue source: {k} sampled payments and the {n} transfers into their payers read back from the chain as recorded")
     return bad
 
 
@@ -322,6 +348,33 @@ def check_revenue_stored():
             bad += 1
     if not bad:
         print("ok   data/context/revenue.json: in both 30-day windows every wallet's native NEAR in minus out equals the change in its balance")
+    return bad
+
+
+def check_revenue_source_stored():
+    """The trace of who paid the revenue wallets: complete, and its payments add up to the transfers from intents.near
+    that data/context/revenue.json counts, over the latest 30-day window, the one it covers."""
+    from . import revenue_source as rs
+    rec = load(rs.OUT, None)
+    if not rec:
+        return 0
+    if not rec.get("complete"):
+        print("FAIL data/context/revenue_source.json: the trace is not complete")
+        return 1
+    rv = load(os.path.join(DATA, "context", "revenue.json"), None)
+    blocks = load(os.path.join(DATA, "blocks.json"), {})
+    pin = load(os.path.join(DATA, "pin.json"), {})["pin_day"]
+    shift = lambda n: (dt.date.fromisoformat(pin) + dt.timedelta(days=n)).isoformat()   # noqa: E731
+    bad = 0
+    for first, last in ((shift(-29), pin),):
+        sm = rs.summarise(rec, blocks, first, last)
+        theirs = rs.counted_by_revenue(rv, first, last) if rv else None
+        if sm is None or theirs != sm["paid"]:
+            print(f"FAIL data/context/revenue_source.json: {first} to {last}: the traced payments do not add up to what revenue.json counts from intents.near")
+            bad += 1
+            continue
+        print(f"ok   data/context/revenue_source.json: {first} to {last}: {sm['payments']:,} payments add up to the {theirs / 10**24:,.0f} NEAR "
+              f"revenue.json counts from intents.near; {float(sm['treasury'] / sm['paid']) * 100:.1f}% paid out of the treasury")
     return bad
 
 
@@ -497,6 +550,7 @@ def check_derived():
     bad += check_flows()
     bad += check_revenue_stored()
     bad += check_oneclick_stored()
+    bad += check_revenue_source_stored()
     bad += check_exploit_stored()
     bad += check_trace_stored()
     bad += check_prose(c["claims"])
