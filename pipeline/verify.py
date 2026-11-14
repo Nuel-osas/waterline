@@ -146,6 +146,7 @@ def check_chain(days, blocks):
     bad += check_revenue_chain(days, blocks)
     bad += check_oneclick_chain()
     bad += check_revenue_source_chain()
+    bad += check_staking_chain()
     return bad
 
 
@@ -194,6 +195,21 @@ def check_revenue_source_chain(k=3):
     if not bad:
         print(f"ok   revenue source: {k} sampled payments and the {n} transfers into their payers read back from the chain as recorded")
     return bad
+
+
+def check_staking_chain():
+    """Re-read the stake of the pinned block's epoch and the protocol's reward settings at the pinned block."""
+    stk = load(os.path.join(DATA, "context", "staking.json"), None)
+    if not stk:
+        return 0
+    v = rpc.call("validators", {"epoch_id": stk["epoch_id"]})
+    got = sum(int(x["stake"]) for x in v["current_validators"])
+    cfg = rpc.call("EXPERIMENTAL_protocol_config", {"block_id": stk["height"]})
+    if str(got) != stk["total_stake"] or cfg["protocol_reward_rate"] != stk["protocol_reward_rate"] or cfg["max_inflation_rate"] != stk["max_inflation_rate"]:
+        print("FAIL staking: the stake or the reward settings read from the chain differ from data/context/staking.json")
+        return 1
+    print(f"ok   staking: the stake of the pinned block's epoch ({got / 10**24:,.0f} NEAR) and the protocol's reward settings read back from the chain")
+    return 0
 
 
 def check_oneclick_chain():

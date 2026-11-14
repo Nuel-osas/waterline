@@ -410,6 +410,30 @@ def write_claims(write=True):
                 f"because the start chosen decides it", "as GR1", grade="model, withdrawn")
         add("M3", f"${float(vol * Fraction(365, 30) * need) / 1e9:.0f}B a year", "Reported volume that would take at today's rate of revenue per dollar of volume",
             "annualised X1 times M2", grade="reported")
+        # --- a holder's view: what staking pays against what new supply takes (data/context/staking.json, read at the pinned block)
+        stk = load(os.path.join(DATA, "context", "staking.json"), None)
+        if stk and stk.get("day") == pin and stk["protocol_reward_rate"][0] == 0:
+            stake = Fraction(int(stk["total_stake"]), 10**24)
+            supply_now = Fraction(s1, 10**24)
+            y = per_day * 365 / stake                                   # every new NEAR is paid to stake when the protocol keeps none
+            y_low = target * supply_now / stake                         # the same at HSP-029's 1.6%, with the stake unchanged
+            yrs = Fraction((_dt.date(2030, 1, 1) - _dt.date.fromisoformat(pin)).days * 100, 36525)
+            signed = lambda x: ("+" if x >= 0 else "") + pct(x, 1)     # noqa: E731
+            staker, idle = (1 + y) / (1 + i_now) - 1, 1 / (1 + i_now) - 1
+            add("ST1", pct(stake / supply_now, 1), f"Share of NEAR's total supply staked with the {stk['validators']} validators of the epoch of the pinned "
+                f"block ({float(stake):,.0f} NEAR)", "validators RPC by epoch, over the pinned block's total supply", grade="chain")
+            add("ST2", pct(y, 1) + " a year", "What stake earns before the validator's fee: net new supply over a year, over the total stake. The protocol "
+                "keeps none of the new supply (protocol_reward_rate 0 at the pinned block), so all of it is paid to stake; net new supply is what is "
+                "minted less the fees burned, so this slightly understates it", "V2 times 365, over the stake in ST1", grade="chain")
+            add("ST3", signed(staker) + " a year", "Change in a staker's share of NEAR's total supply over a year, before the validator's fee",
+                "(1 + ST2) / (1 + issuance) - 1", grade="chain")
+            add("ST4", signed(idle) + " a year", "Change in the share of a holder who does not stake: new supply goes to stakers", "1 / (1 + issuance) - 1", grade="chain")
+            to_2030 = lambda r: (1 + float(r)) ** float(yrs) - 1   # noqa: E731
+            add("ST5", f"{signed(to_2030(staker))} against {signed(to_2030(idle))}",
+                "Change in a holder's share of total supply from the pinned day to the end of 2029, staked (before the validator's fee) against not "
+                "staked, with issuance and stake as they are now", "ST3 and ST4 compounded to 2030-01-01", grade="model")
+            add("ST6", pct(y_low, 1) + " a year", "What stake would earn before the validator's fee if new supply ran at 1.6% of supply, as HSP-029 would "
+                "bring about, with the stake as it is", "1.6% of supply over the stake in ST1", grade="model")
 
     peak = max(rows, key=lambda r: r["float_usd"])
     add("T4", money(peak["float_usd"]), f"Highest the float has been, on the {peak['day']} reading", "largest daily value, pinned prices")

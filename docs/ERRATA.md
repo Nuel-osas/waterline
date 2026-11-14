@@ -49,3 +49,5 @@ place; nothing is removed silently.
   gives the chain's, -17% (pull request 24).
 - `THESIS.md` section 2 said volume "says little" about activity without giving the same-week correlation with
   transactions, r = +0.27. It is now stated (pull request 24).
+- The README's list of what was built still said "(9 of 9)" for the 1Click swaps after pull request 24; it now says
+  8 completed and 1 refunded (pull request 27).

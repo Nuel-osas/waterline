@@ -112,6 +112,12 @@ rows are results of dated tests on readings taken after the tests were written.
 | GR3 | **12,969 NEAR a day** | The same for the latest complete week (week of 2026-11-02) |
 | GR4 | **107% a year** | The same line fitted from the first week only, over 37 weeks: the figure pull request 22 reported, withdrawn because the start chosen decides it |
 | M3 | **$283B a year** | Reported volume that would take at today's rate of revenue per dollar of volume |
+| ST1 | **44.4%** | Share of NEAR's total supply staked with the 342 validators of the epoch of the pinned block (582,369,883 NEAR) |
+| ST2 | **5.6% a year** | What stake earns before the validator's fee: net new supply over a year, over the total stake. The protocol keeps none of the new supply (protocol_reward_rate 0 at the pinned block), so all of it is paid to stake; net new supply is what is minted less the fees burned, so this slightly understates it |
+| ST3 | **+3.0% a year** | Change in a staker's share of NEAR's total supply over a year, before the validator's fee |
+| ST4 | **-2.4% a year** | Change in the share of a holder who does not stake: new supply goes to stakers |
+| ST5 | **+9.8% against -7.4%** | Change in a holder's share of total supply from the pinned day to the end of 2029, staked (before the validator's fee) against not staked, with issuance and stake as they are now |
+| ST6 | **3.6% a year** | What stake would earn before the validator's fee if new supply ran at 1.6% of supply, as HSP-029 would bring about, with the stake as it is |
 | T4 | **$136.4M** | Highest the float has been, on the 2026-11-13 reading |
 | P8 | **3.5x** | Growth of the float without NEAR's own token since the B2B launch ($26.8M then) |
 | K2 | **1 of 1** | Access keys of the treasury account on NEAR itself that have never signed a transaction (the nonce is still the value set at creation) |

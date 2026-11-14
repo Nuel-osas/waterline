@@ -1,7 +1,7 @@
 # Waterline
 
 **NEAR Intents can be audited from outside, to the last unit, at any block. Its private chain cannot.**
-Waterline is that audit, and an investment thesis for NEAR built on it: **Hold, small, to the end of 2029**. Two
+Waterline is that audit, and an investment thesis for NEAR built on it: **Hold, small and staked, to the end of 2029**. Two
 questions to two contracts show whether NEAR Intents holds what it has credited. Asked at the pinned block: 214
 tokens, $223.8M, none short. Asked over past blocks: the October 2026 exploit is in the public books from ten
 dollars, 31 hours 40 minutes before the first payout. The audit stops at one account, the private chain's treasury:
@@ -25,8 +25,10 @@ Scored by code and still pending: 4 on the 2026-11-17 reading, 6 on the 2027-03-
 
 ## The thesis in short
 
-**Rating: Hold, small, to the end of 2029.** Up to 1% of a liquid portfolio, moved by a rule whose inputs this
-repository reads from the chain ([`THESIS.md`](THESIS.md), section 5).
+**Rating: Hold, small and staked, to the end of 2029.** Up to 1% of a liquid portfolio, moved by a rule whose
+inputs this repository reads from the chain ([`THESIS.md`](THESIS.md), section 5). Staked, because all new supply
+is paid to stake, 5.6% a year before the validator's fee: a staker's share of supply changes by +3.0% a year and
+an idle holder's by -2.4% a year.
 
 1. NEAR Intents' public books can be proven whole by anyone, at any block, in two calls per token. Today they
    are: 214 tokens, $223.8M, none short.
@@ -133,7 +135,7 @@ sit in one account on that ledger. Waterline reads all three at one block per da
 - the revenue that funds NEAR's buyback, read from the chain: 426,685 NEAR in the last 30 days, every wallet reconciled
   against its balance, and a rating computed from it by a stated rule;
 - a record, from 1Click's own status records and the chain, that its swaps settle through the private chain's
-  treasury (9 of 9);
+  treasury (9 swaps found: 8 completed, 1 refunded);
 - a test of the track's hypothesis that Intents volume leads network usage: it does not, in this data;
 - an audit of the public books: credited against held, token by token, at the pinned block, on every stored
   reading, and at the latest block on demand (`make audit`, or the button on the dashboard);

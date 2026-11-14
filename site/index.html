@@ -28,10 +28,10 @@
   </a>
   <nav aria-label="Sections">
     <a href="#audit">Audit</a>
-    <a href="#findings">Findings</a>
-    <a href="#ledger">Observed or reported</a>
     <a href="#thesis">Rating</a>
     <a href="#readings">What changes it</a>
+    <a href="#findings">Findings</a>
+    <a href="#ledger">Observed or reported</a>
     <a href="#check">Check it</a>
   </nav>
   <span class="pin" title="Every quoted number is computed at this NEAR mainnet block"><i></i>block <b data-pin="height">224,285,109</b></span>
@@ -43,7 +43,7 @@
   <div class="wrap">
     <p class="labels"><span class="label">NEAR Hackathon 2026</span><span class="label">Investment thesis</span><span class="label">Pinned <b data-pin="day">13 Nov 2026</b></span></p>
     <h1>NEAR Intents can be audited from outside. <span class="num">Its private chain cannot.</span></h1>
-    <p class="lede">Ask NEAR Intents what it has credited for a token. Ask the token's own contract what NEAR Intents holds. Two calls, any block, no key. We did it for <span data-claim="A1">214 tokens</span> worth <span data-claim="A2">$223.8M</span>, and none is short. Run over past blocks, the same audit shows the October exploit in the public books <span data-claim="A8">31 hours 40 minutes</span> before the first payout: ten dollars at first, <span data-claim="A9">$1.3M</span> by the end. It stops at one account, the private chain's treasury, which now holds <span data-claim="C4">61.0%</span> of everything, and through which 1Click's swaps now settle. Our rating: <span data-claim="RT">Hold</span>, small, to 2029.</p>
+    <p class="lede">Ask NEAR Intents what it has credited for a token. Ask the token's own contract what NEAR Intents holds. Two calls, any block, no key. We did it for <span data-claim="A1">214 tokens</span> worth <span data-claim="A2">$223.8M</span>, and none is short. Run over past blocks, the same audit shows the October exploit in the public books <span data-claim="A8">31 hours 40 minutes</span> before the first payout: ten dollars at first, <span data-claim="A9">$1.3M</span> by the end. It stops at one account, the private chain's treasury, which now holds <span data-claim="C4">61.0%</span> of everything, and through which 1Click's swaps now settle. Our rating: <span data-claim="RT">Hold</span>, small and staked, to 2029.</p>
     <dl class="stats">
       <div><dt>Audited, none short</dt><dd data-claim="A2">$223.8M</dd></div>
       <div><dt>Before the payout: first sign / above $10,000</dt><dd><span data-claim="A8" data-fmt="hm">31h 40m</span> <small>/ <span data-claim="A16" data-fmt="hm">1h 9m</span></small></dd></div>
@@ -111,7 +111,7 @@ v2_1.omni.hot.tg.mt_balance_of(account_id="intents.near", token_id="56_2CMM...")
     </article>
 
     <p class="stop">This is where the audit stops. The largest account on these books is the private chain's treasury. What that chain owes its own users cannot be asked of any contract, and <span data-claim="C4">61.0%</span> of everything NEAR Intents holds is now behind it.</p>
-    <p class="note">In money: that balance is <span data-claim="Q1">6.2 years</span> of the revenue that reaches NEAR's wallets, the cash flow that funds the buyback. October's hole at its largest was <span data-claim="Q3">2.1 months</span> of it.</p>
+    <p class="note">In money: that balance is <span data-claim="Q1">6.2 years</span> of the revenue that reaches NEAR's wallets, the cash flow that funds the buyback. October's hole at its largest was <span data-claim="Q3">2.1 months</span> of it. These are scales for what the audit cannot see, not estimates of a loss: nothing public says that balance is short.</p>
   </div>
 </section>
 
@@ -135,9 +135,81 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, token_ids=[the 20 tracked 
   </div></div>
 </section>
 
+<section class="deep" id="thesis">
+  <div class="wrap">
+    <p class="labels"><span class="label">02</span><span class="label">The rating</span></p>
+    <h2>Rating: <span data-claim="RT">Hold</span>, small and staked. Up to 1% of a liquid portfolio, to the end of 2029.</h2>
+    <p class="note">The rule is a judgment. Its inputs are read from the chain by this repository's code, except one disclosure, and so is the rating it gives today.</p>
+    <p class="note">Held staked, because all new supply is paid to stake: <span data-claim="ST2">5.6% a year</span> before the validator's fee at the pinned block. A staker's share of the supply changes by <span data-claim="ST3">+3.0% a year</span>, and the share of a holder who does not stake by <span data-claim="ST4">-2.4% a year</span>: to the end of 2029, <span data-claim="ST5">+9.8% against -7.4%</span>.</p>
+    <div class="scroll"><table class="ledger plain rule">
+      <thead><tr><th>Rating</th><th>When</th><th>Position</th></tr></thead>
+      <tbody>
+        <tr data-rating="Add"><td>Add</td><td>The public books are whole, and either coverage is at least 25% in each of the last two 30-day windows, or NEAR has published the private chain's totals per token against a block height</td><td>up to 3%</td></tr>
+        <tr data-rating="Hold"><td>Hold</td><td>The public books are whole, and neither the Add nor the Exit condition on coverage holds</td><td>up to 1%</td></tr>
+        <tr data-rating="Exit"><td>Exit</td><td>A hole in the public books stays open beyond 3 readings, or the audit can no longer be run, or coverage is below 10% in each of the last two 30-day windows</td><td>none</td></tr>
+      </tbody>
+    </table></div>
+    <div class="cards">
+      <article>
+        <p class="big" data-claim="U4">16%</p>
+        <h3>Coverage, read from the chain.</h3>
+        <p>The NEAR reaching NEAR's three revenue wallets over the last 30 days, against the growth of total supply over the same days: <span data-claim="U4">16%</span>, and <span data-claim="U5">20%</span> in the 30 days before. That is between 10% and 25%, so the rule says hold.</p>
+      </article>
+      <article>
+        <p class="big" data-claim="Z1" data-fmt="lead">84%</p>
+        <p class="note big-note">a year, counted in NEAR</p>
+        <h3>What has to be true by 2029.</h3>
+        <p>For buybacks to match new supply by the end of 2029, the revenue that funds them, counted in NEAR, must grow <span data-claim="Z1">84% a year</span>, or <span data-claim="Z2">59% a year</span> if HSP-029 takes effect. By 2031: <span data-claim="Z3">46% a year</span> or <span data-claim="Z4">33% a year</span>. No growth rate can be read from the record yet: fitted from different start weeks since February, it runs from <span data-claim="GR1">-91% to +1,160% a year</span>. The latest 30 days against the 30 before were <span data-claim="U6">-17%</span>.</p>
+      </article>
+      <article>
+        <p class="big" data-claim="Q1">6.2 years</p>
+        <h3>The part nobody outside can check is large.</h3>
+        <p>The balance behind the private chain is <span data-claim="Q1">6.2 years</span> of the revenue that funds the buyback: a scale, not a loss, since nothing public says it is short. October's hole at its largest was <span data-claim="Q3">2.1 months</span> of it, and it was closed. NEAR's supply is worth <span data-claim="V5">265x</span> that revenue.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="paper" id="readings">
+  <div class="wrap">
+    <p class="labels"><span class="label">03</span><span class="label">What would change our mind</span></p>
+    <h2>Four things move the rating, and only these.</h2>
+    <div class="scroll"><table class="ledger plain triggers">
+      <thead><tr><th>What</th><th>Moves it to</th><th>Dated test</th></tr></thead>
+      <tbody>
+        <tr><td>A hole in the public books stays open beyond 3 readings</td><td>Exit</td><td>G3, to 31 March 2027</td></tr>
+        <tr><td>The audit can no longer be run: either question stops answering</td><td>Exit</td><td>G4, on 31 March 2027</td></tr>
+        <tr><td>NEAR publishes the private chain's totals per token against a block height</td><td>Add</td><td>D1, on 31 March 2027, by hand</td></tr>
+        <tr><td>Coverage below 10%, or at least 25%, in two 30-day windows in a row</td><td>Exit, or Add</td><td>R4's thresholds, written on 13 November</td></tr>
+      </tbody>
+    </table></div>
+    <div class="meters one" id="rule-meters"></div>
+    <p class="note">The first three are written down with dates in PREREG-AUDIT.md, hashed on 13 November before the next reading existed. The disclosure need not reveal anyone's balance: a proof of liabilities publishes totals and nothing else.</p>
+    <h3 class="fwd-title">Dated tests, scored by the same code as their readings arrive: the audit's first (G), then the float's (E, F)</h3>
+    <p class="note">First results, from the reading of 14 November, the first taken after the tests were written: the audit's test passed, two of the float's three passed, and one failed. The float had to be at least <span data-claim="C1">$136.4M</span> and was <span data-claim="E1">$135.2M</span>. One day settles nothing about March; a fail is shown because we said it would be.</p>
+    <div class="fwd" id="forward"></div>
+    <h3 class="fwd-title appendix">Appendix: the private side's growth, this project's first question. Written on the pinned day and kept as written; these readings do not move the rating.</h3>
+    <div class="meters" id="meters"></div>
+    <h3 class="fwd-title">How often the float's own past, replayed, meets them</h3>
+    <div class="scroll">
+    <table class="ledger odds">
+      <thead><tr><th>Paths drawn from</th><th>R1 holds</th><th>R5 holds</th><th>Median float, 31 Mar 2027</th></tr></thead>
+      <tbody>
+        <tr><td>Every day since the first deposit</td><td data-claim="O1">53%</td><td data-claim="O4">72%</td><td data-claim="O8">$202.6M</td></tr>
+        <tr><td>Only days before the reward programme was announced</td><td data-claim="O2">under 1%</td><td data-claim="O5">under 1%</td><td data-claim="O9">$170.0M</td></tr>
+        <tr><td>Only days since the first reward's snapshot was triggered</td><td data-claim="O3">82%</td><td data-claim="O6">over 99%</td><td data-claim="O10">$258.7M</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">A base rate, not a forecast. <code>make model</code> replays the float's past daily changes forward to 31 March 2027: 10,000 paths from one seed, each built from runs of 7 consecutive past days and scored with the thresholds above. At the pace before the reward neither reading holds. Both need the pace since September to continue, and a reward is still in force. The result moves with the length of the runs: from single days to runs of 30, R1 on the whole history holds on <span data-claim="O11">51% to 60%</span> of paths, and on the last window on <span data-claim="O12">38% to 96%</span>. The readings were fixed and hashed before this model was written.</p>
+    <details class="query"><summary>The command behind this table</summary><pre>make model
+# other windows and settings: python3 -m pipeline.model --help</pre></details>
+  </div>
+</section>
+
 <section class="deep" id="findings">
   <div class="wrap">
-    <p class="labels"><span class="label">02</span><span class="label">Behind the wall: what the treasury shows</span></p>
+    <p class="labels"><span class="label">04</span><span class="label">Behind the wall: what the treasury shows</span></p>
 
     <article class="finding">
       <header>
@@ -213,7 +285,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
 
 <section class="paper" id="ledger">
   <div class="wrap">
-    <p class="labels"><span class="label">03</span><span class="label">Observed or reported</span></p>
+    <p class="labels"><span class="label">05</span><span class="label">Observed or reported</span></p>
     <h2>Since 27 October, the numbers investors quote are not all the same kind of number.</h2>
     <div class="scroll">
     <table class="ledger">
@@ -229,77 +301,6 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
     </table>
     </div>
     <p class="note">We are not saying the uploaded numbers are wrong. Before the switch an outsider could in principle check them against public transactions; we did not. Since the switch the swap itself is private. NEAR's docs describe a swap on the private chain as "invisible to public indexers".</p>
-  </div>
-</section>
-
-<section class="deep" id="thesis">
-  <div class="wrap">
-    <p class="labels"><span class="label">04</span><span class="label">The rating</span></p>
-    <h2>Rating: <span data-claim="RT">Hold</span>, small. Up to 1% of a liquid portfolio, to the end of 2029.</h2>
-    <p class="note">The rule is a judgment. Its inputs are read from the chain by this repository's code, except one disclosure, and so is the rating it gives today.</p>
-    <div class="scroll"><table class="ledger plain rule">
-      <thead><tr><th>Rating</th><th>When</th><th>Position</th></tr></thead>
-      <tbody>
-        <tr data-rating="Add"><td>Add</td><td>The public books are whole, and either coverage is at least 25% in each of the last two 30-day windows, or NEAR has published the private chain's totals per token against a block height</td><td>up to 3%</td></tr>
-        <tr data-rating="Hold"><td>Hold</td><td>The public books are whole, and neither the Add nor the Exit condition on coverage holds</td><td>up to 1%</td></tr>
-        <tr data-rating="Exit"><td>Exit</td><td>A hole in the public books stays open beyond 3 readings, or the audit can no longer be run, or coverage is below 10% in each of the last two 30-day windows</td><td>none</td></tr>
-      </tbody>
-    </table></div>
-    <div class="cards">
-      <article>
-        <p class="big" data-claim="U4">16%</p>
-        <h3>Coverage, read from the chain.</h3>
-        <p>The NEAR reaching NEAR's three revenue wallets over the last 30 days, against the growth of total supply over the same days: <span data-claim="U4">16%</span>, and <span data-claim="U5">20%</span> in the 30 days before. That is between 10% and 25%, so the rule says hold.</p>
-      </article>
-      <article>
-        <p class="big" data-claim="Z1" data-fmt="lead">84%</p>
-        <p class="note big-note">a year, counted in NEAR</p>
-        <h3>What has to be true by 2029.</h3>
-        <p>For buybacks to match new supply by the end of 2029, the revenue that funds them, counted in NEAR, must grow <span data-claim="Z1">84% a year</span>, or <span data-claim="Z2">59% a year</span> if HSP-029 takes effect. By 2031: <span data-claim="Z3">46% a year</span> or <span data-claim="Z4">33% a year</span>. No growth rate can be read from the record yet: fitted from different start weeks since February, it runs from <span data-claim="GR1">-91% to +1,160% a year</span>. The latest 30 days against the 30 before were <span data-claim="U6">-17%</span>.</p>
-      </article>
-      <article>
-        <p class="big" data-claim="Q1">6.2 years</p>
-        <h3>The part nobody outside can check is large.</h3>
-        <p>The balance behind the private chain is <span data-claim="Q1">6.2 years</span> of the revenue that funds the buyback. October's hole at its largest was <span data-claim="Q3">2.1 months</span> of it, and it was closed. NEAR's supply is worth <span data-claim="V5">265x</span> that revenue.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="paper" id="readings">
-  <div class="wrap">
-    <p class="labels"><span class="label">05</span><span class="label">What would change our mind</span></p>
-    <h2>Four things move the rating, and only these.</h2>
-    <div class="scroll"><table class="ledger plain triggers">
-      <thead><tr><th>What</th><th>Moves it to</th><th>Dated test</th></tr></thead>
-      <tbody>
-        <tr><td>A hole in the public books stays open beyond 3 readings</td><td>Exit</td><td>G3, to 31 March 2027</td></tr>
-        <tr><td>The audit can no longer be run: either question stops answering</td><td>Exit</td><td>G4, on 31 March 2027</td></tr>
-        <tr><td>NEAR publishes the private chain's totals per token against a block height</td><td>Add</td><td>D1, on 31 March 2027, by hand</td></tr>
-        <tr><td>Coverage below 10%, or at least 25%, in two 30-day windows in a row</td><td>Exit, or Add</td><td>R4's thresholds, written on 13 November</td></tr>
-      </tbody>
-    </table></div>
-    <div class="meters one" id="rule-meters"></div>
-    <p class="note">The first three are written down with dates in PREREG-AUDIT.md, hashed on 13 November before the next reading existed. The disclosure need not reveal anyone's balance: a proof of liabilities publishes totals and nothing else.</p>
-    <h3 class="fwd-title">Dated tests, scored by the same code as their readings arrive: the audit's first (G), then the float's (E, F)</h3>
-    <p class="note">First results, from the reading of 14 November, the first taken after the tests were written: the audit's test passed, two of the float's three passed, and one failed. The float had to be at least <span data-claim="C1">$136.4M</span> and was <span data-claim="E1">$135.2M</span>. One day settles nothing about March; a fail is shown because we said it would be.</p>
-    <div class="fwd" id="forward"></div>
-    <h3 class="fwd-title appendix">Appendix: the private side's growth, this project's first question. Written on the pinned day and kept as written; these readings do not move the rating.</h3>
-    <div class="meters" id="meters"></div>
-    <h3 class="fwd-title">How often the float's own past, replayed, meets them</h3>
-    <div class="scroll">
-    <table class="ledger odds">
-      <thead><tr><th>Paths drawn from</th><th>R1 holds</th><th>R5 holds</th><th>Median float, 31 Mar 2027</th></tr></thead>
-      <tbody>
-        <tr><td>Every day since the first deposit</td><td data-claim="O1">53%</td><td data-claim="O4">72%</td><td data-claim="O8">$202.6M</td></tr>
-        <tr><td>Only days before the reward programme was announced</td><td data-claim="O2">under 1%</td><td data-claim="O5">under 1%</td><td data-claim="O9">$170.0M</td></tr>
-        <tr><td>Only days since the first reward's snapshot was triggered</td><td data-claim="O3">82%</td><td data-claim="O6">over 99%</td><td data-claim="O10">$258.7M</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <p class="note">A base rate, not a forecast. <code>make model</code> replays the float's past daily changes forward to 31 March 2027: 10,000 paths from one seed, each built from runs of 7 consecutive past days and scored with the thresholds above. At the pace before the reward neither reading holds. Both need the pace since September to continue, and a reward is still in force. The result moves with the length of the runs: from single days to runs of 30, R1 on the whole history holds on <span data-claim="O11">51% to 60%</span> of paths, and on the last window on <span data-claim="O12">38% to 96%</span>. The readings were fixed and hashed before this model was written.</p>
-    <details class="query"><summary>The command behind this table</summary><pre>make model
-# other windows and settings: python3 -m pipeline.model --help</pre></details>
   </div>
 </section>
 
