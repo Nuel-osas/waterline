@@ -1,0 +1,44 @@
+{
+ "daos": {
+  "1csfundsadmin.sputnik-dao.near": [
+   {
+    "members": 4,
+    "members_list": [
+     "745def2beee571628e35743e564687bb11ae1cf312efd3c1e079d679e46e011b",
+     "96c39c068d823af7d8aea81237eae07bc6f5f05fc19a0b34f170d700a6601850",
+     "c7b5000cd52a65f02e3e5d5c071f7cf96492b31fc19e60163fe225f66c92a483",
+     "f7e23b5d988c35bd9a598671dcdb231e9763b47ac5105eb5d0c9e1427040d6c6"
+    ],
+    "role": "Approver",
+    "transfer_threshold": "2",
+    "weight_kind": "RoleWeight"
+   }
+  ],
+  "fefundsadmin.sputnik-dao.near": [
+   {
+    "members": 5,
+    "members_list": [
+     "auroracfo.near",
+     "aurorafinance1.near",
+     "paperclip-maximizer.near",
+     "aurorafinance3.near",
+     "aurorafinance2.near"
+    ],
+    "role": "Approver",
+    "transfer_threshold": "2",
+    "weight_kind": "RoleWeight"
+   }
+  ]
+ },
+ "day": "2026-11-13",
+ "fetched_at": "2026-11-14T14:58:09Z",
+ "height": 224285109,
+ "multisig": {
+  "account": "buybacks.multisignature.near",
+  "confirmations": 2,
+  "full_access_keys": 0,
+  "keys_that_confirm": 4,
+  "requests_ever": 4
+ },
+ "source": "NEAR RPC at the pinned block: view calls and view_access_key_list"
+}

@@ -1,7 +1,7 @@
 """Fetch the inputs that do not come from the daily chain readings, and write them under data/.
 
   python3 -m pipeline.context            # everything below
-  python3 -m pipeline.context tokens     # one part: tokens | quoted | supply | custody | tracked | activity | staking
+  python3 -m pipeline.context tokens     # one part: tokens | quoted | supply | custody | tracked | activity | staking | wallets
 
 What each part is, and how far it can be re-checked:
   tokens   NEAR Intents' own token list (ids, decimals, prices). The list changes during a day, so new ids are
@@ -14,6 +14,8 @@ What each part is, and how far it can be re-checked:
   tracked  The tokens followed through time: the 20 largest by total held on the pinned day.
   staking  The stake of the pinned block's epoch and the protocol's reward settings at that block, for what a
            holder who stakes is paid. `make verify` re-reads them.
+  wallets  Who can move the NEAR the revenue wallets hold: the multisig's confirmations and keys, the DAOs'
+           approvers and thresholds, at the pinned block. `make verify` re-reads them.
 """
 import datetime as dt
 import json
@@ -161,7 +163,34 @@ def staking():
           f"cap {cfg['max_inflation_rate']}, protocol share {cfg['protocol_reward_rate']}")
 
 
-PARTS = {"tokens": tokens, "quoted": quoted, "supply": supply, "custody": custody, "tracked": tracked, "activity": activity, "staking": staking}
+def wallets():
+    """Who can move the NEAR the revenue wallets hold, read at the pinned block: the multisig's required confirmations
+    and the keys that can confirm, and each DAO's approvers and how many of them a transfer needs. `make verify`
+    re-reads them."""
+    pin = load(os.path.join(DATA, "pin.json"), {})["pin_day"]
+    height = load(os.path.join(DATA, "blocks.json"), {})[pin]["height"]
+    ms = "buybacks.multisignature.near"
+    keys = rpc.call("query", {"request_type": "view_access_key_list", "block_id": height, "account_id": ms})["keys"]
+    confirmers = [k["public_key"] for k in keys if isinstance(k["access_key"]["permission"], dict)
+                  and "confirm" in k["access_key"]["permission"]["FunctionCall"].get("method_names", [])]
+    out = {"source": "NEAR RPC at the pinned block: view calls and view_access_key_list", "fetched_at": now(), "day": pin, "height": height,
+           "multisig": {"account": ms, "confirmations": rpc.view(height, ms, "get_num_confirmations", {}),
+                        "requests_ever": rpc.view(height, ms, "get_request_nonce", {}), "keys_that_confirm": len(confirmers),
+                        "full_access_keys": sum(1 for k in keys if k["access_key"]["permission"] == "FullAccess")},
+           "daos": {}}
+    for dao in ("fefundsadmin.sputnik-dao.near", "1csfundsadmin.sputnik-dao.near"):
+        pol = rpc.view(height, dao, "get_policy", {})
+        movers = [r for r in pol["roles"] if any(p in ("transfer:VoteApprove", "transfer:*", "*:VoteApprove", "*:*") for p in r["permissions"])]
+        out["daos"][dao] = [{"role": r["name"], "members": len(r["kind"].get("Group", [])), "members_list": r["kind"].get("Group", []),
+                             "transfer_threshold": (r["vote_policy"].get("transfer") or pol["default_vote_policy"]).get("threshold"),
+                             "weight_kind": (r["vote_policy"].get("transfer") or pol["default_vote_policy"]).get("weight_kind")} for r in movers]
+    save(os.path.join(DATA, "context", "wallets.json"), out)
+    print(f"wallets: multisig {out['multisig']['confirmations']} of {len(confirmers)} keys; "
+          + "; ".join(f"{d}: " + ", ".join(f"{r['role']} {r['transfer_threshold']} of {r['members']}" for r in rs) for d, rs in out["daos"].items()))
+
+
+PARTS = {"tokens": tokens, "quoted": quoted, "supply": supply, "custody": custody, "tracked": tracked, "activity": activity, "staking": staking,
+         "wallets": wallets}
 
 
 if __name__ == "__main__":
