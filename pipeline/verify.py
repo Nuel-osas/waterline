@@ -29,7 +29,7 @@ from .pull import DATA, FIRST_BLOCK_FROM, ROOT, header_at, load, read_float, rea
 from .score import score
 from .score_audit import score as score_audit
 
-PROSE = ("README.md", "THESIS.md", "PREREG.md", "PREREG-AUDIT.md")
+PROSE = ("README.md", "THESIS.md", "PREREG.md", "PREREG-AUDIT.md", "docs/FINDINGS.md", "docs/ERRATA.md")
 # a number may contain commas but does not end in one: "$30," is $30 followed by a comma
 NUMBER = re.compile(r"[+-]?\$\d(?:[\d,]*\d)?(?:\.\d+)?[MBK]?|[+-]?\d(?:[\d,]*\d)?(?:\.\d+)?%|\b\d(?:[\d,]*\d)?(?:\.\d+)?x\b|\b\d(?:[\d,]*\d)?(?:\.\d+)?M NEAR\b|\b\d{1,3}(?:,\d{3})+ NEAR\b"
                     r"|(?<![-\d,.])\b\d[\d,]* (?:checks|tokens|readings|paths|transfers|accounts|days|blocks|steps|new lows)\b"
@@ -474,8 +474,9 @@ def check_derived():
     bad += same("dashboard data", site_js("WATERLINE", b["series"]), os.path.join(ROOT, "site", "data.js"))
     bad += same("dashboard claims", c["claims_js"], os.path.join(ROOT, "site", "claims.js"))
     bad += same("dashboard forward tests", f["forward_js"], os.path.join(ROOT, "site", "forward.js"))
-    bad += same("findings table", c["readme"], os.path.join(ROOT, "README.md"))
+    bad += same("results table", c["readme"], os.path.join(ROOT, "README.md"))
     bad += same("generated tables in THESIS.md", c["thesis"], os.path.join(ROOT, "THESIS.md"))
+    bad += same("findings table", c["findings"], os.path.join(ROOT, "docs", "FINDINGS.md"))
     bad += same("numbers in the page", c["index"], os.path.join(ROOT, "site", "index.html"))
     bad += check_flows()
     bad += check_revenue_stored()
