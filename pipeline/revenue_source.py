@@ -41,7 +41,16 @@ LOOKBACK_MS = (10 * 60 * 1000, 6 * 3600 * 1000)          # ten minutes before th
 WITHDRAW = {"native:near": ("native_withdraw", None), "nep141:wrap.near": ("ft_withdraw", "wrap.near")}
 
 
+INDEX_GAP = 2.2      # seconds between calls to the transfers index: it refuses about half of its calls at one a second
+_last_call = [0.0]
+
+
 def _post(url, body, tries=10):
+    if url == INDEX:                                        # pace the transfers index; the transactions index is not limited this way
+        wait = _last_call[0] + INDEX_GAP - time.time()
+        if wait > 0:
+            time.sleep(wait)
+        _last_call[0] = time.time()
     req = urllib.request.Request(url, data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "User-Agent": "waterline/1"})
     for attempt in range(tries):
         try:
@@ -217,7 +226,7 @@ def sample(rec, k=3, seed=20261114):
     return random.Random(seed).sample(pool, min(k, len(pool)))
 
 
-def pull(first_utc, last_utc, workers=2):
+def pull(first_utc, last_utc, workers=1):
     """Trace every payment on the UTC days first..last. Saves as it goes and resumes a trace of the same days; the
     record is marked complete only when every payment has been looked at."""
     old = load(OUT, None)
@@ -236,12 +245,12 @@ def pull(first_utc, last_utc, workers=2):
         rec = {"source": "FastNEAR's transactions index (tx.main.fastnear.com) and transfers index (transfers.main.fastnear.com); no key",
                "treasury": rpc.TREASURY, "utc_days": [first_utc, last_utc], "complete": False, "payments": pays}
         save(OUT, rec)
-    todo = [p for p in rec["payments"] if p.get("payer") and "in" not in p]
+    todo = sorted((p for p in rec["payments"] if p.get("payer") and "in" not in p), key=lambda p: -p["height"])   # latest first
     print(f"  payer found for {sum(1 for p in rec['payments'] if p.get('payer'))}; {len(todo)} still to read...", flush=True)
     with ThreadPoolExecutor(max_workers=workers) as pool:
         for k, (p, (back, rows)) in enumerate(zip(todo, pool.map(inflows, todo)), 1):
             p["lookback_ms"], p["in"] = back, rows
-            if k % 100 == 0:
+            if k % 50 == 0:
                 save(OUT, rec)
                 print(f"  {k} of {len(todo)}", flush=True)
     rec["complete"] = all("in" in p for p in rec["payments"] if p.get("payer"))
