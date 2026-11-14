@@ -1,0 +1,254 @@
+{
+ "asked": 188,
+ "checked_on_chain": 9,
+ "days": [
+  "2026-10-29",
+  "2026-11-02",
+  "2026-11-06",
+  "2026-11-09",
+  "2026-11-11",
+  "2026-11-13"
+ ],
+ "senders": 188,
+ "source": "1Click status endpoint (https://1click.chaindefuser.com/v0/status?depositAddress=<address>, public) to find swaps; EXPERIMENTAL_receipt on an archival node for each transfer",
+ "swaps": [
+  {
+   "amount_in_usd": "9691.756654608020",
+   "confidentiality": "public",
+   "deposit_address": "919db4d9d23aa89b5f2878427a2132bf87e334e5b7047387783d5a872e857410",
+   "deposit_type": "INTENTS",
+   "destination_asset": "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+   "near_tx_hashes": [
+    "6yDNQyMxxgJEgv4conPPuaW19GUcc9AVz4tvtBEqtVZH",
+    "75pBauVkJXTyQaViTUMm8ncgdmyDxFigygCKoMXPvAEG",
+    "9K1Kp6sFiNtanjEXbf17R9huWFZxuYBaq3YGCDqD5KqH",
+    "GNHDbxhTyC9hDVC6B1tzYe4Hau69eDLYhQYLS69S32rF",
+    "HE1NNigh3MTpdDsV5jivvcBRG7brqqtP9JSLGvRfZeim"
+   ],
+   "origin_asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+   "status": "SUCCESS",
+   "treasury_transfers": [
+    {
+     "amount": "9701399544",
+     "asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+     "height": 222716057,
+     "on_chain": true,
+     "receipt_id": "7ZdNGBmVM9FYZ6kprhkzcF9XK3XUzKj7vDx9ujzQLNdx",
+     "tx": "HE1NNigh3MTpdDsV5jivvcBRG7brqqtP9JSLGvRfZeim"
+    }
+   ],
+   "updated_at": "2026-11-02T17:22:56.000Z"
+  },
+  {
+   "amount_in_usd": "9691.766270079270",
+   "confidentiality": "public",
+   "deposit_address": "107337f6b89b2214ea0b621e8f96d2e06b1ed94a202a7349b95c2f573c7c7d5d",
+   "deposit_type": "INTENTS",
+   "destination_asset": "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+   "near_tx_hashes": [
+    "2rijFH2Fn24Qm6LebGeEJcbe278aRf3KuhpDbp12Z6sT",
+    "5xgXsDCr2LpAYPmTYkjjuHPNMsh7XKirAWsDzARYZ4ZK",
+    "8iSLZrAYBu3WuopZ5XJiq4TJ9NoZtH3D9XKT4CgbmRH8",
+    "gNRsSqoskBDoWgaXzfabwUfwWviSsYW4DGg56UPf1CD",
+    "tcwZB4pnmxk1G4C8sLH9w22FLWpAJPwKZNDvnBAK9Y2"
+   ],
+   "origin_asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+   "status": "SUCCESS",
+   "treasury_transfers": [
+    {
+     "amount": "9701419280",
+     "asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+     "height": 222716142,
+     "on_chain": true,
+     "receipt_id": "38c9MfZsovqtLzvA8e3qXY7Ekt2us5BgXKpjaJ7cabLA",
+     "tx": "8iSLZrAYBu3WuopZ5XJiq4TJ9NoZtH3D9XKT4CgbmRH8"
+    }
+   ],
+   "updated_at": "2026-11-02T17:23:00.000Z"
+  },
+  {
+   "amount_in_usd": "9691.707964952120",
+   "confidentiality": "public",
+   "deposit_address": "d875e7b614224e1d26ec996b197a4973e522749f0eac9999ab638d7e95ee1d57",
+   "deposit_type": "INTENTS",
+   "destination_asset": "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+   "near_tx_hashes": [
+    "4NQ8ubiQjB7cY6xZDFCKtiGWZRSqfoLfRU7xHDEkWpdt",
+    "8BTtC58eyt9TjaxD3c1tUQWQ2xLjkfpbVkWSS1seAhvh",
+    "9Aiuda355hAPyngHJPqTdvyYnf7CxPMPrizt49SK9Ak",
+    "AciLfkjBW46yzph6QPUgd3vapQK9eAMeZG78s7ud3eeS",
+    "CTsdJmxs8HZhaH26ujt9jX1JKsFtX8ccmKiEKw7FTxX1"
+   ],
+   "origin_asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+   "status": "SUCCESS",
+   "treasury_transfers": [
+    {
+     "amount": "9701418989",
+     "asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+     "height": 222716145,
+     "on_chain": true,
+     "receipt_id": "G5qNSEE4dh2CsYiVYHTAdeNjG4C2oidUPHpfX16opynu",
+     "tx": "8BTtC58eyt9TjaxD3c1tUQWQ2xLjkfpbVkWSS1seAhvh"
+    }
+   ],
+   "updated_at": "2026-11-02T17:23:01.000Z"
+  },
+  {
+   "amount_in_usd": "9691.707964952120",
+   "confidentiality": "public",
+   "deposit_address": "deb0b47dbeedd07b144291cbf3daf51f172b2c3feb742a6d13f830f5bdcd9bd5",
+   "deposit_type": "INTENTS",
+   "destination_asset": "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+   "near_tx_hashes": [
+    "3Bsqtkejf7jL85DhKbGWWXvGzu8cxDmiBvEAXviwN9Hs",
+    "5FgVDoZugKEZe13r2sHWKw3V5PoS3zjdH4n7tGZt3tbq",
+    "6nokhgQiPhAApcoCrkorfvjrKkiKdFwMZEvFN6Cxu6AB",
+    "D1aU1HZ2AwpibW8QsWaCTYnknYKYgq6vJo3d7FZ5FCQJ",
+    "HHjivGptUUDkL7VJqBQCCTJxhskhDS2X4T3tNhMUiXSb"
+   ],
+   "origin_asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+   "status": "SUCCESS",
+   "treasury_transfers": [
+    {
+     "amount": "9701418989",
+     "asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+     "height": 222716146,
+     "on_chain": true,
+     "receipt_id": "GkSWjpfuLUUNzrHtn4H3hdpXnbTMQFbnSNFDRVmc7R1B",
+     "tx": "5FgVDoZugKEZe13r2sHWKw3V5PoS3zjdH4n7tGZt3tbq"
+    }
+   ],
+   "updated_at": "2026-11-02T17:23:00.000Z"
+  },
+  {
+   "amount_in_usd": "3.328181820000",
+   "confidentiality": "public",
+   "deposit_address": "4468310d125bb1550f05dd0f7c97c86f8b54225efeb6e4d3cfcacdc31558b3f5",
+   "deposit_type": "INTENTS",
+   "destination_asset": "nep141:wrap.near",
+   "near_tx_hashes": [
+    "7YP2roXnBqV8mJrrvi4XPfruic8WaQZNpL4JvcXmjyD2",
+    "BLkyX2tQzxxKCaXxRitaLL5n9KWEGXQAKpW7rnFpZjtq",
+    "CPvzzMQoUG6pL56QJASQDfS99Nkgk6h5gDX7UjCeecza",
+    "DGbmCw4PHT7GJvJEq2tWVXRbtXeM7sDw9oJpEj6y4ret"
+   ],
+   "origin_asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+   "status": "SUCCESS",
+   "treasury_transfers": [
+    {
+     "amount": "3330000",
+     "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+     "height": 223312987,
+     "on_chain": true,
+     "receipt_id": "HAd7w3hvzY8vxeEfUdBmBceFYhMjceRwiYLMxpZLYRAb",
+     "tx": "BLkyX2tQzxxKCaXxRitaLL5n9KWEGXQAKpW7rnFpZjtq"
+    }
+   ],
+   "updated_at": "2026-11-06T12:01:25.000Z"
+  },
+  {
+   "amount_in_usd": null,
+   "confidentiality": "public",
+   "deposit_address": "1bb3c65c3556967821f422a691e9f643b7302c47ca1bcc2937110edff582d47c",
+   "deposit_type": "INTENTS",
+   "destination_asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+   "near_tx_hashes": [
+    "6LrcFzojx6B8AG8rvm9AhHwCCwC4BMHGitfHurMNoudd",
+    "DQwBpLXzEJSSxYXZLnFMGF9kezzxqqGsDLHTUbVzycsU",
+    "EUrEteVQznaaDvKZAgeauCGDbqdec6hGLfRrdfEK29wh"
+   ],
+   "origin_asset": "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+   "status": "REFUNDED",
+   "treasury_transfers": [
+    {
+     "amount": "970187314",
+     "asset": "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+     "height": 223764230,
+     "on_chain": true,
+     "receipt_id": "7BkYs5B96hYsJx2ppUKvy8MB7AKMHyifyCD3rJuKF134",
+     "tx": "DQwBpLXzEJSSxYXZLnFMGF9kezzxqqGsDLHTUbVzycsU"
+    }
+   ],
+   "updated_at": "2026-11-09T12:01:04.000Z"
+  },
+  {
+   "amount_in_usd": "3.328225110000",
+   "confidentiality": "public",
+   "deposit_address": "fae41635898300b85c0c6c810dbda82d4677f37bbd1c6bdd764bede8ac84436f",
+   "deposit_type": "INTENTS",
+   "destination_asset": "nep141:wrap.near",
+   "near_tx_hashes": [
+    "27Vt3hLRRuDpCzvYKJjToqW63ySi3DqyWkQivWYZ39vM",
+    "4ScraaFDyBWHrx4i9CTKEMie8wWY73LYnA6m5E6ctvTh",
+    "FPQZgunVJo3ayZgWAPGHEX7a4SiU6bLKQ3XX8pcMjBUF",
+    "HomFLQXFiLydCfJmr83kkyDFhpWa635yqDUvKkCLX3Pj"
+   ],
+   "origin_asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+   "status": "SUCCESS",
+   "treasury_transfers": [
+    {
+     "amount": "3330000",
+     "asset": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+     "height": 223764328,
+     "on_chain": true,
+     "receipt_id": "AQc3nvqb5EC9mkwAtXjY25aeYoV8iizfNmsndcouMZRG",
+     "tx": "FPQZgunVJo3ayZgWAPGHEX7a4SiU6bLKQ3XX8pcMjBUF"
+    }
+   ],
+   "updated_at": "2026-11-09T12:01:27.000Z"
+  },
+  {
+   "amount_in_usd": "0.819322560175",
+   "confidentiality": "public",
+   "deposit_address": "ec190875e6583ce7fcdfc0f8cc2b45fd66f715c2b2c2b32949f2e9d6dfa4e3c8",
+   "deposit_type": "INTENTS",
+   "destination_asset": "nep141:wrap.near",
+   "near_tx_hashes": [
+    "36cKEu2f4mhXASQs2G2GTBccvv9DPrBX4c9ccrhm4wu5",
+    "4jTD3J6Vz9MHrVFhuED8sjKJnjehxFQEr6v1m5pp1TVs",
+    "AZt79UJq6jnbj47hyqi5td1jzPSX5VZucihHmtLVzTUS",
+    "BXn2rZofDZVBGZFRQK4GNa3bczDWthPWa56eoiSceoJG",
+    "DivEQLJ3KCB9JdCvtSKPtADdhMmEDjhfT6SjVGKWd7bG"
+   ],
+   "origin_asset": "nep141:usdt.tether-token.near",
+   "status": "SUCCESS",
+   "treasury_transfers": [
+    {
+     "amount": "822476",
+     "asset": "nep141:usdt.tether-token.near",
+     "height": 224062456,
+     "on_chain": true,
+     "receipt_id": "H5MH9MQw1BDDrz6kz4mRHBTjtL8krpHhpGhVQ3XDtxNG",
+     "tx": "4jTD3J6Vz9MHrVFhuED8sjKJnjehxFQEr6v1m5pp1TVs"
+    }
+   ],
+   "updated_at": "2026-11-11T12:01:02.000Z"
+  },
+  {
+   "amount_in_usd": "3765.636764567008",
+   "confidentiality": "public",
+   "deposit_address": "30fcc4cedde99d321d15e2e325fa31817caf4516f8c658f219bd40f470c011d3",
+   "deposit_type": "INTENTS",
+   "destination_asset": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+   "near_tx_hashes": [
+    "8Uo8g8PoVrWz9gXwo51DVYqFL1qqJHFeMHesNeKqPPt1",
+    "ExpMMoAbZyk5SGKJb57z9VWWskhiRhrEzu9vYPZBxWKf",
+    "FjBiaxxmpmCK3V4qT97bBW5oGB1Z6fQzUd1q5dP39PHA",
+    "GNDdUQ83vvVE6WZJRb8fDiBgvFtBxAMPmyvz6dkni1mT"
+   ],
+   "origin_asset": "nep141:bnb-0x55d398326f99059ff775485246999027b3197955.omdep.near",
+   "status": "SUCCESS",
+   "treasury_transfers": [
+    {
+     "amount": "3768368831970186564139",
+     "asset": "nep141:bnb-0x55d398326f99059ff775485246999027b3197955.omdep.near",
+     "height": 224062466,
+     "on_chain": true,
+     "receipt_id": "FF1aYmdGbFrFy5iUe6ax65tBCh3DyYj4grb2QydBuw9e",
+     "tx": "FjBiaxxmpmCK3V4qT97bBW5oGB1Z6fQzUd1q5dP39PHA"
+    }
+   ],
+   "updated_at": "2026-11-11T12:00:44.000Z"
+  }
+ ]
+}
