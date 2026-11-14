@@ -762,7 +762,8 @@ def write_claims(write=True):
         listed = [x for x in oc["swaps"] if x["treasury_transfers"]]
         onchain = sum(1 for x in listed for t in x["treasury_transfers"] if t.get("on_chain"))
         dates = sorted({x["updated_at"][:10] for x in oc["swaps"]})
-        add("W5", f"{len(listed)} of {len(oc['swaps'])}",
+        done_ = sum(1 for x in oc["swaps"] if x.get("status") == "SUCCESS")
+        add("W5", f"{len(listed)} of {len(oc['swaps'])} ({done_} completed, {len(oc['swaps']) - done_} refunded)",
             f"Completed or refunded 1Click swaps, found among {oc['senders']} accounts that paid into the treasury on six days after "
             f"2026-10-27, whose own status record lists the NEAR transaction that moved their tokens into the treasury "
             f"(swaps dated {dates[0]} to {dates[-1]}; {onchain} of those transfers read back from the chain as stated)",

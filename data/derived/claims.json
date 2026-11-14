@@ -1014,7 +1014,7 @@
    "grade": "chain, found through 1Click's public status records",
    "how": "pipeline/oneclick.py; data/context/oneclick.json",
    "id": "W5",
-   "shown": "9 of 9",
+   "shown": "9 of 9 (8 completed, 1 refunded)",
    "what": "Completed or refunded 1Click swaps, found among 188 accounts that paid into the treasury on six days after 2026-10-27, whose own status record lists the NEAR transaction that moved their tokens into the treasury (swaps dated 2026-11-02 to 2026-11-11; 9 of those transfers read back from the chain as stated)"
   },
   {
