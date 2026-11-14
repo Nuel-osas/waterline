@@ -209,7 +209,7 @@ the October hole fell mostly on that side: 87% of the credit in the broken token
 bear it in two ways: through the revenue that funds the buyback, which depends on those users staying, and
 through any decision by NEAR Intents' operators to make users whole, as the bridge operator did after October
 by returning the backing, as CertiK reports. If a loss there were made good out of the revenue that funds the
-buyback, a loss of 16% of the float would use up a full year of it. Nothing published says how such a loss
+buyback, a loss of 13% of the float would use up a full year of it. Nothing published says how such a loss
 would be shared or who would pay it.
 
 **Part of the float is paid for.** On 11 June 2026 NEAR announced a reward for holding a confidential balance: a
@@ -385,8 +385,8 @@ because its revenue is what funds the buyback. On the public side that exposure 
 block, for two calls per token, and a hole shows in the block where it opens, to anyone reading that block. It
 is the one part of NEAR's investment case we could verify end to end without trusting the party being valued,
 and it held up: whole today, and short only when something was in fact wrong. Measured against the revenue
-that funds the buyback, October's hole at its largest was 2.1 months of it, and it was closed. The balance now beyond
-the audit is 6.2 years of it. That is a scale for what the audit cannot see, not an estimate of a loss: nothing
+that funds the buyback, October's hole at its largest was 2.6 months of it, and it was closed. The balance now beyond
+the audit is 7.7 years of it. That is a scale for what the audit cannot see, not an estimate of a loss: nothing
 public says that balance is short, and nothing public can show that it is whole.
 
 **Why 1% and not none.** The evidence argues for holding little, and a reader could fairly take it to none. We

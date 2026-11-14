@@ -89,9 +89,6 @@ rows are results of dated tests on readings taken after the tests were written.
 | V7 | **205x** | V5 on the same dollar basis |
 | V8 | **5.1x** | M2 on the same dollar basis |
 | M1 | **4.8 basis points** | Revenue reaching NEAR's wallets per dollar of reported volume, 30 days to 2026-11-11 |
-| Q1 | **6.2 years** | The float on 2026-11-13 as years of the revenue that reaches NEAR's wallets, at the rate of the 30 days to 2026-11-11 |
-| Q2 | **16%** | Part of the float whose loss would equal a full year of that revenue |
-| Q3 | **2.1 months** | The October hole at its largest as months of that revenue |
 | U1 | **426,685 NEAR** | NEAR and wNEAR received by the three revenue wallets in the 30 days to the reading of 2026-11-13, counted from the chain: transfers listed by a public index, and every wallet's native NEAR in minus out equal, to the last unit, to the change in its balance read at each day's block |
 | U2 | **14,223 NEAR a day** | The same, a day |
 | U4 | **16%** | Revenue reaching NEAR's wallets as a share of net new supply, both read from the chain, in the 30 days to the reading of 2026-11-13: U1 over the change in total supply between two block headers 30 days apart. The rating in THESIS.md section 5 uses it |
@@ -104,6 +101,9 @@ rows are results of dated tests on readings taken after the tests were written.
 | U13 | **99%** | Share of the payments to fefundsadmin.sputnik-dao.near that arrived through the treasury, in the same window |
 | U9 | **99.9%** | Share of U1 that came from intents.near at all, by any payer; the rest was sent to the wallets from outside it |
 | U3 | **100.9%** | NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR at each day's price (409,897 NEAR against 406,427 NEAR): how far the quoted figure agrees with the chain |
+| Q1 | **7.7 years** | The float on 2026-11-13 as years of the revenue that reaches NEAR's wallets: C1 over a year of U1 at the pinned NEAR price, both at pinned prices |
+| Q2 | **13%** | Part of the float whose loss would equal a full year of that revenue |
+| Q3 | **2.6 months** | The October hole at its largest as months of that revenue |
 | M2 | **6.2x** | How many times revenue would have to grow for buybacks to match net new supply |
 | H1 | **4.0x** | How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about |
 | F1 | **4,282,006 NEAR** | NEAR held by the three revenue wallets together at the reading of 2026-11-13, read from the chain |
