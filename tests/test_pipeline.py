@@ -171,6 +171,7 @@ class Prose(unittest.TestCase):
                               "17 days, 3 of them short, 20 of 20 days, 31 hours 40 minutes, 214 tokens, $3.8M, 61.0%, 2.8x")
         self.assertEqual(seen, ["16:14:22", "217799506", "24 minutes", "4.8 basis points", "10,000 paths", "17 days",
                                 "3 of them short", "20 of 20 days", "31 hours 40 minutes", "214 tokens", "$3.8M", "61.0%", "2.8x"])
+        self.assertEqual(NUMBER.findall("a hole of $30, and then $1,299,979, and 98%, too"), ["$30", "$1,299,979", "98%"])
         # a date is not a count, and words are not numbers: both are stated limits of the check
         self.assertEqual(NUMBER.findall("the 2026-11-17 readings, on 29 September, ten dollars, four months"), [])
 

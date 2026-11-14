@@ -5,7 +5,7 @@ PY ?= python3
 
 all: test check
 
-## Re-read a sample of days from public NEAR mainnet, rebuild every number, compare. One to three minutes.
+## Re-read a sample of days from public NEAR mainnet, rebuild every number, compare. Three to fifteen minutes.
 verify:
 	$(PY) -m pipeline.verify
 
