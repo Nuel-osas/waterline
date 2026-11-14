@@ -26,8 +26,9 @@ one token, during an exploit that was later published. Replayed block by block, 
 books from ten dollars 31 hours 40 minutes before the first payout, and above $10,000 1 hour 9 minutes before it.
 
 On 27 October 2026, 1Click swaps began to settle on a private chain. What backs that chain is one account on the
-public ledger, and 1Click's own records show its swaps passing through it: for 9 of 9 completed swaps we found,
-the swap's status record lists the NEAR transaction that moved its tokens into that account. The audit sees that
+public ledger, and 1Click's own records show its swaps passing through it: for each of the 9 swaps we found
+(8 completed, 1 refunded), the swap's status record lists the NEAR transaction that moved its tokens into that
+account. They show the route a swap takes, not what share of swaps take it. The audit sees that
 account's balance and nothing behind it, and it is now 61.0% of everything NEAR Intents holds.
 
 **Our claim: NEAR Intents' public books can be proven whole by anyone, at any block, and the one failure showed
@@ -73,9 +74,9 @@ of its inputs are which. Sources for every row: `docs/SOURCES.md`.
 NEAR Intents' volume leads network usage. We tested it over 98 weekly changes, with NearBlocks' public daily counts. A
 week's change in reported volume does not foretell the change in transactions (r = -0.11, p = 0.96, at its strongest lead of
 one to eight weeks), in active accounts (r = +0.09, p = 0.88) or in NEAR's price (r = -0.12, p = 0.74). p is the share of series shifted at
-random in time that do as well, so a real lead would show a small p, and none does. In this data, activity
-tables say little about NEAR Intents and NEAR Intents' volume says little about them. `python3 -m
-pipeline.leadlag` repeats the test.
+random in time that do as well, so a real lead would show a small p, and none does. Volume and transactions
+do move a little together within the same week (r = +0.27), so a chart of the two shows some likeness; what the
+data does not show is volume moving first. `python3 -m pipeline.leadlag` repeats the test.
 
 The float is every token held in `intents.near` by the treasury account that backs the private chain. We read it
 at one block a day since the account was created. Dollar figures use one fixed price list, so a change in the
@@ -144,10 +145,12 @@ wrong is the other half of an alarm; section 7 says how far that has been measur
 on the private chain from 27 October and that a swap's `nearTxHashes` then lists the shield and the unshield.
 We took the accounts that paid into the treasury on six days after 27 October and asked 1Click's public status
 endpoint about each. Among 188 accounts, 9 were deposit addresses of completed or refunded swaps, dated
-2 to 11 November. For each of them (9 of 9), the swap's own record lists the transaction that moved its tokens
-into the treasury. We read each of those transfers back from the chain: a transfer signed for the deposit address, of
+2 to 11 November: 8 completed and 1 refunded. For each of them, the swap's own record lists the transaction
+that moved its tokens into the treasury. We read each of those transfers back from the chain: a transfer signed for the deposit address, of
 that amount, to the treasury. Every one of the 9 was marked `public` by the integrator, and every one went
-through the private chain's treasury. `python3 -m pipeline.oneclick` lists them and `make verify` re-reads them.
+through the private chain's treasury. Because they were found among accounts that paid into the treasury, they
+show that the route exists and how it is recorded, not what share of 1Click's swaps take it; nothing public
+lists all swaps without a key. `python3 -m pipeline.oneclick` lists them and `make verify` re-reads them.
 
 The rest of this section is about that account, the one the audit cannot see into: what it holds, read from
 outside.
@@ -243,8 +246,8 @@ chain, the revenue that reaches NEAR's wallets covered 16% of it in the 30 days 
 in the 30 days before. Counted NEAR against NEAR from DefiLlama's figure the share is 15%, and the supply is
 worth 265x that revenue; with both sides in dollars, the revenue at each day's price and the new supply at the
 pinned price, the same figures are 20% and 205x. They differ because NEAR's price averaged more over those
-30 days than on the pinned day. Over the latest 30 days against the 30 before, reported volume is -22%,
-reported fees -26% and that revenue -20%.
+30 days than on the pinned day. Over the latest 30 days against the 30 before, reported volume is -22% and
+reported fees -26%; the revenue the chain shows reaching NEAR's wallets is -17%.
 
 **The public ledger broke once, and one public key signs for the treasury.** $136.4M is described as "backed 1:1"
 by the treasury. The treasury is public. What the private chain owes is not, and nothing published proves the
@@ -277,10 +280,12 @@ Hold.
 
 Where the numbers come from: 25% and 10% are reading R4's thresholds, written on 13 November; 3 readings is the
 October precedent, short on three readings and whole on the fourth; two windows in a row, because a rule that
-one ordinary day can trip is not a rule. An earlier version of the rule also said to sell if the float without
-NEAR's own token fell below its pinned level, and the next reading tripped it after one ordinary day; that
-trigger is withdrawn (README, errata). The 1% and the 3% are judgments, and the part of this file most open to
-argument.
+one ordinary day can trip is not a rule. That last point was learned the hard way. An earlier version also
+said to sell if the float without NEAR's own token fell below its pinned level; the very next reading tripped
+it, on an ordinary day. A reader who holds us to that version would rate NEAR Exit. We withdrew it because the
+float moves in lumps that say nothing about value (section 4), and we report the dated test it rested on as
+failed (`make score`, E1) rather than drop it (errata). The 1% and the 3% are judgments, and the part of this
+file most open to argument.
 
 **What has to be true by 2029.** The rule says when to move. This says what a holder is betting on: the share of
 net new supply that revenue would cover if revenue, counted in NEAR, grew at a steady rate from the latest 30
@@ -321,9 +326,10 @@ NEAR matters: revenue earned in dollars buys fewer NEAR when NEAR's price rises,
 faster growth in dollars when the price goes up.
 
 **A simple model of what is needed today.** NEAR's wallets receive 4.8 basis points per dollar of reported volume. For
-buybacks to match net new supply now, revenue would have to be 6.5x what it is. At today's rate per dollar of
-volume that means about $297B a year of volume, against $3.73B in the last 30 days. If net new supply ran at 1.6%, the
-multiple would be 4.2x; on the dollar basis of section 4 the first multiple is 5.1x. A holder is buying that
+buybacks to match net new supply now, revenue read from the chain would have to be 6.2x what it is. At today's
+rate per dollar of volume that means about $283B a year of volume, against $3.73B in the last 30 days. If net new
+supply ran at 1.6%, the multiple would be 4.0x; with DefiLlama's revenue in dollars, as in section 4, the first
+multiple is 5.1x. A holder is buying that
 growth, or a higher take, or lower issuance.
 
 **What the audit is worth, in money.** A holder of NEAR is exposed to NEAR Intents whether they use it or not,

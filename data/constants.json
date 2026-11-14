@@ -128,6 +128,10 @@
   {
    "value": "57,300 NEAR",
    "why": "HSP-029: daily issuance at full implementation, same source"
+  },
+  {
+   "value": "6.5x",
+   "why": "the multiple THESIS.md section 5 gave on DefiLlama's revenue before pull request 24 moved it to the chain's basis; kept only in docs/ERRATA.md"
   }
  ]
 }
