@@ -276,20 +276,6 @@ def write_claims(write=True):
         add("M1", f"{float(rev / vol * 10000):.1f} basis points", f"Revenue reaching NEAR's wallets per dollar of reported volume, {span}", "X3 over X1", grade="reported")
         # HSP-029's issuance target; M2 and H1 are added below, on the basis the rating uses
         target = Fraction(16, 1000)
-        # scale: the money beyond the audit, and the one hole that was measured, against the revenue that funds the buyback
-        month = rev  # 30 days of revenue reaching NEAR's wallets, in dollars at each day's price
-        year = month * Fraction(365, 30)
-        add("Q1", f"{float(last['float_usd'] / year):.1f} years",
-            f"The float on {pin} as years of the revenue that reaches NEAR's wallets, at the rate of the {span}",
-            "C1 over (X3 times 365/30)", grade="chain, via an indexer")
-        add("Q2", pct(year / last["float_usd"], 0),
-            "Part of the float whose loss would equal a full year of that revenue", "X3 times 365/30, over C1", grade="chain, via an indexer")
-        ex0 = (build.last.get("audit") or {}).get("exploit")
-        if ex0:
-            m0 = meta[ex0["token"]]
-            peak_usd = max(Fraction(int(st["credited"]) - int(st["held"]), 10 ** m0["decimals"]) for st in ex0["steps"]) * m0["price"]
-            add("Q3", f"{float(peak_usd / month):.1f} months",
-                "The October hole at its largest as months of that revenue", "A10 over X3", grade="chain, via an indexer")
         # --- revenue measured on chain: NEAR and wNEAR received by the three wallets (pipeline/revenue.py). Our day D is the
         # 24 hours before the reading at 00:00 on D; DefiLlama's day D is the calendar day, so its window is one day earlier.
         from .revenue import window as rev_window
@@ -366,6 +352,23 @@ def write_claims(write=True):
                 f"NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR "
                 f"at each day's price ({float(got_x):,.0f} NEAR against {float(rev_near):,.0f} NEAR): how far the quoted figure agrees with the chain",
                 "pipeline/revenue.py against data/context/defillama.json", grade="chain")
+        # scale: the money beyond the audit, and the one hole that was measured, against the revenue that funds the buyback, on the
+        # rating's basis: the chain's 30 days of revenue (U1) at the pinned NEAR price, beside a float and a hole priced at pinned prices
+        on_chain_rev = coverage_label == "U4"
+        month = rev30 * near_usd if on_chain_rev else rev
+        basis_note = "U1 at the pinned NEAR price" if on_chain_rev else "X3"
+        year = month * Fraction(365, 30)
+        add("Q1", f"{float(last['float_usd'] / year):.1f} years",
+            f"The float on {pin} as years of the revenue that reaches NEAR's wallets: C1 over a year of {basis_note}, both at pinned prices",
+            f"C1 over ({basis_note} times 365/30)", grade="chain")
+        add("Q2", pct(year / last["float_usd"], 0),
+            "Part of the float whose loss would equal a full year of that revenue", f"{basis_note} times 365/30, over C1", grade="chain")
+        ex0 = (build.last.get("audit") or {}).get("exploit")
+        if ex0:
+            m0 = meta[ex0["token"]]
+            peak_usd = max(Fraction(int(st["credited"]) - int(st["held"]), 10 ** m0["decimals"]) for st in ex0["steps"]) * m0["price"]
+            add("Q3", f"{float(peak_usd / month):.1f} months",
+                "The October hole at its largest as months of that revenue", f"A10 over {basis_note}", grade="chain")
         # the multiples on the same basis as the rating: the chain's revenue when it was read (U4), DefiLlama's otherwise (V4)
         need = 1 / coverage
         need_target = (Fraction(s1, 10**24) * target * Fraction(30, 365)) / rev30
