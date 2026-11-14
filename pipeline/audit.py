@@ -203,6 +203,60 @@ def steps(read, lo, hi, grid=12, limit=1500):
     return sorted(set(found))
 
 
+SAMPLE = os.path.join(DATA, "context", "random_audit.json")
+
+
+def sample_blocks(n, seed, tokens):
+    """Audit `n` blocks drawn at random between the first and the pinned reading: how often does a block chosen without
+    looking show a hole, or a new low against the daily readings before it? This is the false-alarm rate of the two
+    tests. Heights are drawn from a seeded generator, so anyone draws the same blocks. Saves as it goes."""
+    import random
+    blocks = load(os.path.join(DATA, "blocks.json"), {})
+    pin = load(os.path.join(DATA, "pin.json"), {}).get("pin_day") or max(blocks)
+    days = sorted(d for d in blocks if d <= pin)
+    lo, hi = blocks[days[1]]["height"], blocks[pin]["height"]
+    rng = random.Random(seed)
+    heights = sorted({lo + int(rng.random() * (hi - lo)) for _ in range(n)})
+    rec = load(SAMPLE, None) or {"seed": seed, "n": n, "from_height": lo, "to_height": hi, "tokens": tokens, "blocks": {}}
+    stored = stored_days()
+    by_height = [(blocks[d]["height"], d) for d, _, _ in stored]
+    for h in heights:
+        if str(h) in rec["blocks"]:
+            continue
+        real = None
+        for k in range(h, h + 5):                      # some heights are skipped
+            try:
+                credited = read_credited(k, tokens)
+                real = k
+                break
+            except rpc.UnknownBlock:
+                continue
+        if real is None:
+            rec["blocks"][str(h)] = None
+            continue
+        earlier = [d for hh, d in by_height if hh <= real]
+        floor = recent_floor([x for x in stored if x[0] in set(earlier)], tokens, n=10**6)   # the lowest of every earlier daily reading
+        row = {"height": real, "short": [], "low": [], "unread": 0}
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=3) as pool:     # the throttle in rpc.py still caps the rate for all threads
+            helds = dict(zip(tokens, pool.map(lambda t: read_held(real, t), tokens)))
+        for t in tokens:
+            held = helds[t]
+            status, hole = compare(credited.get(t), held)
+            if status == "unknown":
+                row["unread"] += 1
+            elif status == "short":
+                row["short"].append({"token": t, "hole": str(hole)})
+            elif t in floor and -hole < floor[t]:
+                row["low"].append({"token": t, "by": str(floor[t] + hole)})
+        rec["blocks"][str(h)] = row
+        save(SAMPLE, rec)
+        print(f"block {real}  short {len(row['short'])}  new low {len(row['low'])}  unread {row['unread']}", flush=True)
+    rec["complete"] = all(str(h) in rec["blocks"] for h in heights)
+    save(SAMPLE, rec)
+    return rec
+
+
 def token_meta():
     from .build import token_meta as build_meta
     return build_meta()[0]
@@ -214,10 +268,15 @@ def main():
     ap.add_argument("--pull", action="store_true", help="read the credited totals for every day that has held totals")
     ap.add_argument("--steps", nargs=2, metavar=("FROM", "TO"), help="list the blocks between two readings where the hole changed")
     ap.add_argument("--token", help="token id for --steps (default: the token of the recorded exploit)")
+    ap.add_argument("--sample", type=int, metavar="N", help="audit N blocks drawn at random between the first and the pinned reading (slow)")
+    ap.add_argument("--seed", type=int, default=20261114)
     args = ap.parse_args()
     meta = token_meta()
     if args.pull:
         pull()
+        return 0
+    if args.sample:
+        sample_blocks(args.sample, args.seed, [t for t in load(os.path.join(DATA, "tracked.json"), []) if t in meta])
         return 0
     if args.now:
         tracked = load(os.path.join(DATA, "tracked.json"), [])
