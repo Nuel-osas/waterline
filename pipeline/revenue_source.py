@@ -44,7 +44,7 @@ LOOKBACK_MS = (10 * 60 * 1000, 6 * 3600 * 1000)          # ten minutes before th
 WITHDRAW = {"native:near": ("native_withdraw", None), "nep141:wrap.near": ("ft_withdraw", "wrap.near")}
 
 
-INDEX_GAP = 2.2      # seconds between calls to the transfers index: it refuses about half of its calls at one a second
+INDEX_GAP = 5.0      # seconds between calls to the transfers index: at one a second it refuses half, at three a third, at five none
 _last_call = [0.0]
 
 
