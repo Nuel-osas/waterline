@@ -619,6 +619,18 @@ class ExitOrder(unittest.TestCase):
         self.assertEqual([x["amount"] for x in got["largest_out"]], ["50", "9"])
 
 
+class Growth(unittest.TestCase):
+    def test_a_steady_weekly_growth_is_annualised_and_the_share_test_counts_resamples(self):
+        import math
+        from pipeline import growth
+        weekly = math.log(2) / (365.25 / 7)            # doubling a year
+        xs = list(range(20))
+        a, b = growth.fit(xs, [5 + weekly * x for x in xs])
+        self.assertAlmostEqual(growth.annual(b), 1.0, places=9)
+        t = {"slopes": [weekly * f for f in (0.5, 1.0, 1.5, 2.0)]}
+        self.assertEqual(growth.share_at_least(t, 1.0), 0.75)   # three of four resampled slopes grow at least 100% a year
+
+
 class CommittedData(unittest.TestCase):
     """Sanity checks on whatever raw data is in the repository."""
 
