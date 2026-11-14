@@ -178,6 +178,15 @@ def write_claims(write=True):
                 f"The float on the {REWARD_TRIGGER} reading with wNEAR at that day's CoinGecko price and every other token at the pinned price "
                 f"({money(at_day_price(nxt))} on the next reading): it crosses the $70M of NEAR's announcement between the two",
                 "P9 with the wNEAR balance repriced at data/context/near_price.json", grade="chain, one quoted price")
+    pool = Fraction(333_333) * Fraction("3.33")
+    add("P11", money(pool),
+        "The first reward pool at its conversion price: 333,333 locked tokens that convert 1:1 to NEAR at $3.33 (NEAR's blog post, quoted). "
+        f"No wallet receives more than 2% of it: {money(pool * Fraction(2, 100))}", "333,333 times 3.33", grade="quoted")
+    if px_day and "2026-09-15" in px_day["daily"] and "2026-09-28" in px_day["daily"]:
+        p0, p1 = Fraction(str(px_day["daily"]["2026-09-15"])), Fraction(str(px_day["daily"]["2026-09-28"]))
+        add("P12", f"{float(p1 / p0):.1f}x",
+            f"NEAR's price on CoinGecko over the days of the September inflow: ${float(p0):.2f} on 2026-09-15, ${float(p1):.2f} on 2026-09-28",
+            "data/context/near_price.json", grade="quoted")
     add("P4", money(ex_near(last)), f"Float without NEAR's own token on {pin} ({money(ex_near(trig))} on {REWARD_TRIGGER})",
         "float minus the NEAR group, pinned prices")
     add("P5", money(ex_near(trig)), f"Float without NEAR's own token on {REWARD_TRIGGER}", "as P4")
@@ -273,11 +282,12 @@ def write_claims(write=True):
             "supply times 1.6%, over a year, against 30-day revenue in NEAR", grade="chain, via an indexer")
         # scale: the money beyond the audit, and the one hole that was measured, against the revenue that funds the buyback
         month = rev  # 30 days of revenue reaching NEAR's wallets, in dollars at each day's price
-        add("Q1", f"{float(last['float_usd'] / month / 12):.1f} years",
+        year = month * Fraction(365, 30)
+        add("Q1", f"{float(last['float_usd'] / year):.1f} years",
             f"The float on {pin} as years of the revenue that reaches NEAR's wallets, at the rate of the {span}",
-            "C1 over (X3 times 12)", grade="chain, via an indexer")
-        add("Q2", pct(month * 12 / last["float_usd"], 0),
-            "Part of the float whose loss would equal a full year of that revenue", "X3 times 12, over C1", grade="chain, via an indexer")
+            "C1 over (X3 times 365/30)", grade="chain, via an indexer")
+        add("Q2", pct(year / last["float_usd"], 0),
+            "Part of the float whose loss would equal a full year of that revenue", "X3 times 365/30, over C1", grade="chain, via an indexer")
         ex0 = (build.last.get("audit") or {}).get("exploit")
         if ex0:
             m0 = meta[ex0["token"]]
@@ -435,6 +445,17 @@ def write_claims(write=True):
             add("E3", pct(after["share_usd"]),
                 f"{word[got['E3']['status']]}. Test E3: the private share of the tracked tokens on the {FIRST_CHECK} reading had to be at least 60.0%",
                 "as E1", grade="chain, a reading taken after the test was written")
+        d_ex = ex_near(after) - ex_near(last)
+        earlier = [ex_near(rows[k]) - ex_near(rows[k - 1]) for k in range(1, len(rows))]
+        near_part = after["groups"]["NEAR"] - last["groups"]["NEAR"]
+        add("Y1", money(ex_near(after)),
+            f"The float without NEAR's own token on the {FIRST_CHECK} reading, " + (f"down {money(-d_ex)}" if d_ex < 0 else f"up {money(d_ex)}")
+            + f" from the pinned day. {sum(1 for x in earlier if x <= d_ex)} of that series' {len(earlier)} earlier one-day changes were falls at least as large. "
+            + f"NEAR's own part of the float {'rose' if near_part >= 0 else 'fell'} by {money(abs(near_part))} over the same day",
+            "as P4, on the later reading", grade="chain, a reading taken after the test was written")
+        whole_moves = [rows[k]["float_usd"] - rows[k - 1]["float_usd"] for k in range(1, len(rows))]
+        add("Y2", pct(Fraction(sum(1 for x in whole_moves if x < 0), len(whole_moves)), 0),
+            f"Days up to the pinned one on which the float fell, out of {len(whole_moves)}: a single fall is ordinary", "count of negative one-day changes")
         add("G1", got["G1"]["value"] or got["G1"]["status"],
             f"{word[got['G1']['status']]}. Test G1 of PREREG-AUDIT.md: no tracked token short on the {FIRST_CHECK} reading",
             "pipeline/score_audit.py on the reading of that day", grade="chain, a reading taken after the test was written", must_appear=False)
@@ -543,6 +564,9 @@ def write_claims(write=True):
     a, b = "<!-- claims:start -->", "<!-- claims:end -->"
     if a in readme and b in readme:
         readme = readme[:readme.index(a) + len(a)] + "\n" + "\n".join(lines) + "\n" + readme[readme.index(b):]
+    ra, rb = "<!-- results:start -->", "<!-- results:end -->"
+    if ra in readme and rb in readme:
+        readme = readme[:readme.index(ra) + len(ra)] + "\n" + "\n".join(results_table(rows_all, last, pin, tracked, meta)) + "\n" + readme[readme.index(rb):]
     index = fill_page(open(index_path).read(), site) if os.path.exists(index_path) else ""
     write_claims.last = {"claims": out, "claims_js": site_js("WATERLINE_CLAIMS", site), "readme": readme, "index": index}
     if write:
@@ -554,6 +578,39 @@ def write_claims(write=True):
         if index:
             open(index_path, "w").write(index)
     return out
+
+
+def results_table(rows_all, last, pin, tracked, meta):
+    """The table of dated tests that opens the README, written from the scorers' own output so a verdict cannot be mistyped."""
+    from . import audit as _audit
+    from .score import tests as float_tests
+    from .score_audit import tests as audit_tests
+    got = float_tests(rows_all) + audit_tests(_audit.stored_days(), [t for t in tracked if t in meta])
+    by_id = {t["id"]: t for t in got}
+    by_day = {r["day"]: r for r in rows_all}
+    said = {"G1": "no tracked token is short", "G2": "no tracked token is short",
+            "E1": f"the float is at least what it was on {pin} ({money(last['float_usd'])})", "F1": f"the float is at least what it was on {pin} ({money(last['float_usd'])})",
+            "E2": "no single day adds another lump", "F2": "no single day adds another lump",
+            "E3": "the private share of the tracked tokens is at least 60.0%", "F3": "the private share of the tracked tokens is at least 60.0%"}
+    done = [t for t in got if t["status"] != "PENDING" and t["id"] in said]
+    lines = []
+    if done:
+        lines += ["| Test | Reading | Result |", "| --- | --- | --- |"]
+        for t in sorted(done, key=lambda t: (t["due"], t["id"][0] != "G", t["id"])):
+            r = by_day.get(t["due"])
+            detail = ""
+            if t["id"][1] == "1" and t["id"][0] in "EF" and r:
+                detail = f": it was {money(r['float_usd'])}"
+            if t["id"][1] == "3" and r and r.get("share_usd") is not None:
+                detail = f": {pct(r['share_usd'])}"
+            lines.append(f"| {t['id']}: {said[t['id']]} | {t['due']} | **{t['status']}**{detail} |")
+        lines.append("")
+    pending = [t for t in got if t["status"] == "PENDING"]
+    dues = sorted({t["due"] for t in pending})
+    parts = [f"{sum(1 for t in pending if t['due'] == d)} on the {d} reading" for d in dues]
+    lines.append(f"Scored by code and still pending: {', '.join(parts)}. Two more, R4 and D1, are scored by hand on 2027-03-31. "
+                 "`make score` prints every test.")
+    return lines
 
 
 def shown_tenth(text):

@@ -232,6 +232,20 @@
    "what": "The float on the 2026-09-17 reading with wNEAR at that day's CoinGecko price and every other token at the pinned price ($74.1M on the next reading): it crosses the $70M of NEAR's announcement between the two"
   },
   {
+   "grade": "quoted",
+   "how": "333,333 times 3.33",
+   "id": "P11",
+   "shown": "$1.1M",
+   "what": "The first reward pool at its conversion price: 333,333 locked tokens that convert 1:1 to NEAR at $3.33 (NEAR's blog post, quoted). No wallet receives more than 2% of it: $22,200"
+  },
+  {
+   "grade": "quoted",
+   "how": "data/context/near_price.json",
+   "id": "P12",
+   "shown": "2.2x",
+   "what": "NEAR's price on CoinGecko over the days of the September inflow: $2.47 on 2026-09-15, $5.39 on 2026-09-28"
+  },
+  {
    "how": "float minus the NEAR group, pinned prices",
    "id": "P4",
    "shown": "$92.9M",
@@ -411,14 +425,14 @@
   },
   {
    "grade": "chain, via an indexer",
-   "how": "C1 over (X3 times 12)",
+   "how": "C1 over (X3 times 365/30)",
    "id": "Q1",
-   "shown": "6.3 years",
+   "shown": "6.2 years",
    "what": "The float on 2026-11-13 as years of the revenue that reaches NEAR's wallets, at the rate of the 30 days to 2026-11-11"
   },
   {
    "grade": "chain, via an indexer",
-   "how": "X3 times 12, over C1",
+   "how": "X3 times 365/30, over C1",
    "id": "Q2",
    "shown": "16%",
    "what": "Part of the float whose loss would equal a full year of that revenue"
@@ -590,6 +604,19 @@
    "id": "E3",
    "shown": "61.9%",
    "what": "PASS. Test E3: the private share of the tracked tokens on the 2026-11-14 reading had to be at least 60.0%"
+  },
+  {
+   "grade": "chain, a reading taken after the test was written",
+   "how": "as P4, on the later reading",
+   "id": "Y1",
+   "shown": "$91.1M",
+   "what": "The float without NEAR's own token on the 2026-11-14 reading, down $1.8M from the pinned day. 5 of that series' 268 earlier one-day changes were falls at least as large. NEAR's own part of the float rose by $568,746 over the same day"
+  },
+  {
+   "how": "count of negative one-day changes",
+   "id": "Y2",
+   "shown": "37%",
+   "what": "Days up to the pinned one on which the float fell, out of 268: a single fall is ordinary"
   },
   {
    "grade": "chain, a reading taken after the test was written",
