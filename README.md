@@ -9,6 +9,17 @@ treasury, which now holds 61.0% of everything.
 
 ![The audit run on the latest block from a browser: 20 of 20 tokens whole](docs/audit.png)
 
+**Dated tests, first results (the 2026-11-14 reading, taken after the tests were written):**
+
+| Test | Result |
+| --- | --- |
+| G1: no tracked token is short | **PASS** |
+| E1: the float is at least what it was on 13 November ($136.4M) | **FAIL**: it was $135.2M |
+| E2: no single day adds another lump | **PASS** |
+| E3: the private share of the tracked tokens is at least 60.0% | **PASS**: 61.9% |
+
+Ten more tests are pending: three resolve on 17 November, the rest on 2027-03-31. `make score` prints them all.
+
 Built at NEAR HACKATHON 2026. Track: Investment Thesis (`thesis`).
 
 Live dashboard, with a button that runs the audit on the latest block in your browser:
@@ -158,10 +169,10 @@ the wrong sentence. A reviewer changed 27 numbers one at a time before this list
 | C6-BTC | **28.8%** | The same share for bitcoin alone on 2026-11-13 ($27.5M held in total) |
 | C23 | **62.3%** | The same share on 2026-11-13 for the 20 tokens tracked through time (the largest by total held) |
 | C18 | **89%** | Part of everything intents.near holds that the tracked tokens cover |
-| C19 | **6%** | Tracked-token share on 2026-04-02, the first reading of April |
-| C20 | **$83.5M** | Public side of intents.near on 2026-04-02, tracked tokens ($75.0M on 2026-11-13) |
+| C19 | **5%** | Tracked-token share on 2026-04-01, the first reading of April |
+| C20 | **$86.0M** | Public side of intents.near on 2026-04-01, tracked tokens ($75.0M on 2026-11-13) |
 | C24 | **$75.0M** | Public side of intents.near on 2026-11-13, tracked tokens |
-| C5 | **36.2%** | Tracked-token share on 2026-07-16, the first reading after the B2B launch of 2026-07-13 |
+| C5 | **36.0%** | Tracked-token share on 2026-07-13, the first reading after the B2B launch of 2026-07-13 |
 | C21 | **56.2%** | Tracked-token share on 2026-10-26, the day before the switch |
 | C7 | **2.8x** | Growth of the private float since the B2B launch on 2026-07-13 ($49.3M then) |
 | C8 | **$75.5M** | Added on the 10 best days out of 268 (the float on 2026-11-13 is $136.4M) |
@@ -222,9 +233,9 @@ the wrong sentence. A reviewer changed 27 numbers one at a time before this list
 | K1 | **1 key** | Keys registered inside intents.near for the treasury account at the pinned block (the account itself has no contract code) |
 | A1 | **214 tokens** | Tokens audited on 2026-11-13: every token with a balance to read that was in NEAR Intents' list when the day's totals were taken, and 27 unlisted ones the treasury holds. For each, the credited total (intents.near.mt_batch_supply) is set against what the token's own contract says intents.near holds. 184 are equal to the last unit, 30 hold more than is credited ($6,321 in all), 0 are short |
 | A2 | **$223.8M** | Value of the tokens audited on 2026-11-13, at pinned prices |
-| A3 | **1,090 checks** | Token-by-token checks of the 20 tracked tokens on 70 stored readings from 2026-02-19 to 2026-11-13. 58 readings cover every tracked token that had a balance; 12 readings around the October exploit cover only the token involved |
+| A3 | **4,806 checks** | Token-by-token checks of the 20 tracked tokens on 269 stored readings from 2026-02-18 to 2026-11-13. Every reading covers every tracked token that had a balance that day |
 | A4 | **3 of them short** | Checks in which more was credited than held: 2026-09-30 ($30), 2026-10-01 ($1.3M), 2026-10-02 ($3.8M), all one token: USDT(DEPRECATED) on bsc |
-| A15 | **3 new lows** | Checks, out of those 1,090, on which a token's held-minus-credited fell below every earlier reading of that token: the same readings as A4 and no others. This test also sees a hole smaller than the surplus a token already carries |
+| A15 | **3 new lows** | Checks, out of those 4,806, on which a token's held-minus-credited fell below every earlier reading of that token: the same readings as A4 and no others. This test also sees a hole smaller than the surplus a token already carries |
 | A5 | **$3.8M** | Largest hole on a daily reading, 2026-10-02: 67,669 held against 3,869,502 credited to everyone |
 | A6 | **98%** | Part of everything credited in that token that had nothing behind it on that reading |
 | A7 | **87%** | Part of that token's credit that belonged to the private chain's treasury on that reading |
@@ -235,6 +246,10 @@ the wrong sentence. A reviewer changed 27 numbers one at a time before this list
 | A12 | **28 hours** | Of those 31 hours 40 minutes, the time the hole stayed under $3,000 (28 hours 1 minute). How long before the first payout each size was first reached: $100 at 23 hours 43 minutes, $1,000 at 23 hours 21 minutes, $10,000 at 1 hour 9 minutes, $100,000 at 32 minutes, $1.0M at 13 minutes |
 | A13 | **13 minutes** | How long before the first payout the hole first passed $1.0M |
 | A14 | **60.9%** | What C4 would be with the 15 tokens that joined NEAR Intents' list later on the pinned day. They were read once, at the pinned block: $291,069 held, none short, $0 of it in the treasury. They are left out of every pinned figure |
+| E1 | **$135.2M** | FAIL. Test E1: the float on the 2026-11-14 reading had to be at least what it was on 2026-11-13 ($136.4M). It fell by $1.2M |
+| E2 | **$1.2M** | PASS. Test E2: the largest one-day change between the two readings (a fall). To pass it had to stay under the tenth-largest rise so far, $4.7M |
+| E3 | **61.9%** | PASS. Test E3: the private share of the tracked tokens on the 2026-11-14 reading had to be at least 60.0% |
+| G1 | **none short** | PASS. Test G1 of PREREG-AUDIT.md: no tracked token short on the 2026-11-14 reading |
 | W1 | **1.7M NEAR** | The largest single transfer of NEAR into the treasury in September, at 2026-09-24 08:52:40 UTC. The treasury had paid out the same amount, to the last unit, at 2026-09-23 23:35:58 UTC: 9 hours 16 minutes earlier, and 24 minutes before the 2026-09-24 reading. It was back 31 blocks after it was withdrawn from the public ledger |
 | W2 | **$6.1M** | That transfer at the pinned price |
 | W3 | **$12.0M** | The float's rise on the 2026-09-25 reading, which includes that transfer. It is the largest one-day rise in the series |
@@ -328,7 +343,7 @@ permission.
 
 The full list is in [`THESIS.md`](THESIS.md#7-what-could-not-be-computed-and-other-limits). The main ones: dollar figures use one fixed price list;
 30 token types have no price and are left out; the 61.0% counts every listed token with a price on the pinned
-day, while the history follows the 20 largest and is weekly before 23 October; one reading a day cannot see
+day, while the history follows the 20 largest, one reading a day; one reading a day cannot see
 money that enters and leaves within the day; the treasury shows assets, not what the private chain owes; the
 October shortfall is matched to the published exploit by token, size and time, not by transaction; volume, fees
 and revenue are quoted from DefiLlama, not recomputed here.
@@ -365,6 +380,12 @@ request 8.
   S rows and the A rows); the text now uses the second. The project was also first published as a reading of
   the private chain's balance. A review pointed out that NEAR already publishes that balance as a metric; the
   audit of the whole ledger was added on the same day and the thesis rebuilt around it.
+
+- Until pull request 15 the history of the 20 tracked tokens had one reading a week before 23 October, and three
+  figures were taken from the nearest weekly reading. With a reading for every day they are read on the day
+  itself: the tracked share is 5% on 1 April (was 6%, from 2 April) and 36.0% on 13 July (was 36.2%, from
+  16 July), and the public side on 1 April is $86.0M (was $83.5M). The audit's count rose from 1,090 checks on
+  70 readings to 4,806 on 269, with the same three short.
 
 ## Licence
 

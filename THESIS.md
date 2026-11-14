@@ -78,7 +78,7 @@ $6,321 in all. None is short. `python3 -m pipeline.audit --now` repeats this at 
 button on the dashboard, from the reader's own browser.
 
 **Across the history they were short once.** The same audit on every stored reading since February, for the 20
-largest tokens: 1,090 checks, 3 of them short. All three are one token, a dollar token bridged from BNB Chain, on
+largest tokens, one reading a day: 4,806 checks, 3 of them short. All three are one token, a dollar token bridged from BNB Chain, on
 30 September, 1 October and 2 October. On the last of them `intents.near` held 67,669 of it against 3,869,502
 credited: a hole of $3.8M, 98% of everything credited in that token.
 
@@ -115,8 +115,8 @@ side is 61.0% of that. It is not even across assets: NEAR 69.9%, stablecoins 68.
 bitcoin only 28.8%.
 
 Through time we follow the 20 largest tokens by total held, which cover 89% of that total. Their private share
-was 6% at the start of April, 36.2% just after the July launch, 56.2% the day before the switch and 62.3% on the
-pinned day. Over the same months the public side did not grow: $83.5M in April, $75.0M now. The growth was on
+was 5% at the start of April, 36.0% at the July launch, 56.2% the day before the switch and 62.3% on the
+pinned day. Over the same months the public side did not grow: $86.0M in April, $75.0M now. The growth was on
 the private side.
 
 **It is not only NEAR's own token.** Stablecoins are the largest group (Stablecoins: $49.3M) ahead of NEAR's own
@@ -265,6 +265,12 @@ price, over 30 days of net new supply from block headers. It uses a quoted figur
 was added on the same day as the others, after we learned of the reward programme; `PREREG.md` records the
 amendment.
 
+**First results, 14 November.** Four of the dated tests were scored on the 2026-11-14 reading, the first one
+taken after they were written. E1 failed: the float had to be at least $136.4M and it was $135.2M. E2 and E3
+passed: no single day added a lump, and the tracked share was 61.9%. G1 passed: none of the tracked tokens was
+short. One day settles nothing about the long-dated readings; a fail is reported here because we said it would
+be.
+
 **Two sets of tests, and what each covers.** R1 to R5 above, and the E and F tests below, were written for this
 project's first question: is the money behind the private chain growing. They are hashed and stay as written.
 Read with the audit, R3 changes meaning: money moving back to the public side would be bad for the private
@@ -331,9 +337,8 @@ sell: the one thing we can check would have failed.
 - **A replay, not detection.** The block-by-block record of the October hole was made on 13 November. Its steps
   were found by halving the days between daily readings; two changes that cancel between two blocks that were
   read are not seen. Payout and upgrade times are CertiK's and are quoted.
-- **How often.** At most one block a day, and for the 20 tracked tokens only: one reading a week before
-  23 October and one a day after, plus twelve readings around the exploit that cover the one token involved. A
-  hole that opened and closed between two readings is not in it. The button on the dashboard reads the latest
+- **How often.** One block a day since 18 February, for the 20 tracked tokens only; every listed token on the
+  pinned day alone. A hole that opened and closed between two readings is not in it. The button on the dashboard reads the latest
   block only when someone presses it.
 - **Swap volume and fees.** Not computable from the chain since 27 October for the swap leg. They are quoted
   from DefiLlama and labelled. The NEAR Intents Explorer API needs a partner key and returns the operator's own
@@ -355,8 +360,7 @@ sell: the one thing we can check would have failed.
 - **Coverage of the share.** The 61.0% counts every token in NEAR Intents' token list that has a price and a
   balance inside `intents.near`. 27 listed ids are of another kind (`1cs_v1:`), are not balances inside
   `intents.near`, and are not counted. A token that `intents.near` holds but NEAR Intents does not list would
-  not be counted at all. The history follows 20 tokens chosen by their size on the pinned day, read once a week
-  before 23 October and daily after. DefiLlama shows a smaller total for NEAR Intents than ours; we did not
+  not be counted at all. The history follows 20 tokens chosen by their size on the pinned day, read once a day. DefiLlama shows a smaller total for NEAR Intents than ours; we did not
   reconcile the two.
 - **The treasury account.** The docs name this account for the confidential flow used by market makers. That
   1Click's private settlement since 27 October uses the same account is our inference from the docs, from the
