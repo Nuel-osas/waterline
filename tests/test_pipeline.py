@@ -683,6 +683,18 @@ class RevenueSource(unittest.TestCase):
         self.assertEqual(rs.split({"payer": "x", "amount": "100", "in": []}, T), (None, None))
         self.assertEqual(rs.split({"payer": None, "amount": "100"}, T), (None, None))
 
+    def test_an_account_that_pays_often_is_credited_with_what_arrived_since_its_last_payment(self):
+        from pipeline import revenue_source as rs
+        W = rs.WNEAR
+        row = lambda h, src, amt, asset=W: {"block_height": str(h), "block_timestamp": str(h * 10**9), "transaction_id": f"t{h}",   # noqa: E731
+                                            "other_account_id": src, "amount": str(amt), "asset_id": asset}
+        rows = [row(10, "tre", 5), row(15, "solver", 3), row(20, None, -8), row(25, "tre", 4), row(26, "x", 9, "nep245:intents.near:nep141:usdc"), row(30, None, -4)]
+        pays = [{"height": 30, "tx": "b", "ts_ms": 30_000, "amount": "4"}, {"height": 20, "tx": "a", "ts_ms": 20_000, "amount": "8"}]
+        rs.since_last(pays, rows)
+        first, second = sorted(pays, key=lambda p: p["height"])
+        self.assertEqual([(x["from"], x["amount"]) for x in first["in"]], [("tre", "5"), ("solver", "3")])
+        self.assertEqual([(x["from"], x["amount"]) for x in second["in"]], [("tre", "4")])   # not USDC, not what came before the first payment
+
     def test_the_window_uses_the_same_readings_as_the_revenue_count_and_fails_closed_without_them(self):
         from pipeline import revenue_source as rs
         blocks = {"2026-01-01": {"height": 100}, "2026-01-02": {"height": 200}, "2026-01-03": {"height": 300}}

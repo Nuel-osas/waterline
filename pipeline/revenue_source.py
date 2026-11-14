@@ -155,6 +155,44 @@ def inflows(p):
     return LOOKBACK_MS[-1], []
 
 
+REUSED = 5           # a payer with this many payments or more accumulates: read its whole history once
+
+
+def history(account, first_ms, last_ms):
+    """Every ledger transfer of one account over a span, from the index, paged; cached under .flows."""
+    path = os.path.join(RAW, "accounts", f"{account}-{first_ms}-{last_ms}.json")
+    rows = load(path, None)
+    if rows is not None:
+        return rows
+    rows, token = [], None
+    while True:
+        body = {"account_id": account, "from_timestamp_ms": first_ms, "to_timestamp_ms": last_ms, "limit": 100}
+        if token:
+            body["resume_token"] = token
+        got = _post(INDEX, body)
+        rows += got.get("transfers", [])
+        token = got.get("resume_token")
+        if not token or not got.get("transfers"):
+            break
+    save(path, rows)
+    return rows
+
+
+def since_last(pays, rows):
+    """For an account that pays many times: each payment's wNEAR inflows are those that arrived after its previous
+    payment and up to this one (first payment: in the six hours before it)."""
+    ins = sorted(((int(r["block_height"]), r) for r in rows if r["asset_id"] == WNEAR and int(r["amount"]) > 0), key=lambda x: x[0])
+    prev = None
+    for p in sorted(pays, key=lambda p: (p["height"], p["tx"])):
+        lo = prev if prev is not None else -1
+        got = [{"tx": r["transaction_id"], "height": h, "from": r["other_account_id"], "amount": r["amount"]}
+               for h, r in ins if lo < h <= p["height"]]
+        if prev is None:
+            got = [g for g in got if int(next(r["block_timestamp"] for hh, r in ins if r["transaction_id"] == g["tx"])) // 10**6 >= p["ts_ms"] - LOOKBACK_MS[-1]]
+        p["lookback_ms"], p["in"] = "since its previous payment", got
+        prev = p["height"]
+
+
 def split(p, treasury=rpc.TREASURY):
     """(treasury part, other part) of a payment, in yoctoNEAR as exact fractions; (None, None) when untraced."""
     if not p.get("payer") or not p.get("in"):
@@ -245,6 +283,17 @@ def pull(first_utc, last_utc, workers=1):
         rec = {"source": "FastNEAR's transactions index (tx.main.fastnear.com) and transfers index (transfers.main.fastnear.com); no key",
                "treasury": rpc.TREASURY, "utc_days": [first_utc, last_utc], "complete": False, "payments": pays}
         save(OUT, rec)
+    by_payer = {}
+    for p in rec["payments"]:
+        if p.get("payer"):
+            by_payer.setdefault(p["payer"], []).append(p)
+    lo_ms = min(p["ts_ms"] for p in rec["payments"]) - LOOKBACK_MS[-1]
+    hi_ms = max(p["ts_ms"] for p in rec["payments"]) + 1000
+    for payer, pays in sorted(by_payer.items(), key=lambda kv: -len(kv[1])):
+        if len(pays) >= REUSED and any("in" not in p for p in pays):
+            print(f"  {payer[:12]}: {len(pays)} payments; reading its whole history...", flush=True)
+            since_last(pays, history(payer, lo_ms, hi_ms))
+            save(OUT, rec)
     todo = sorted((p for p in rec["payments"] if p.get("payer") and "in" not in p), key=lambda p: -p["height"])   # latest first
     print(f"  payer found for {sum(1 for p in rec['payments'] if p.get('payer'))}; {len(todo)} still to read...", flush=True)
     with ThreadPoolExecutor(max_workers=workers) as pool:
