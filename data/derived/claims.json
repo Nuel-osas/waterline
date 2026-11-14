@@ -529,6 +529,55 @@
    "what": "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about"
   },
   {
+   "grade": "chain",
+   "how": "sum of the three balances at the pinned block",
+   "id": "F1",
+   "shown": "4,282,006 NEAR",
+   "what": "NEAR held by the three revenue wallets together at the reading of 2026-11-13, read from the chain"
+  },
+  {
+   "grade": "chain",
+   "how": "as F1",
+   "id": "F2",
+   "shown": "1,040,604 NEAR",
+   "what": "The same at the first reading, 2026-02-18"
+  },
+  {
+   "grade": "chain",
+   "how": "falls from one daily reading to the next in F1's series",
+   "id": "F3",
+   "shown": "2 of 268 days",
+   "what": "Days on which the three wallets together held less than at the reading before, 2026-02-18 to 2026-11-13: 2026-04-23 (45,010 NEAR), 2026-07-11 (4,567 NEAR)"
+  },
+  {
+   "grade": "chain",
+   "how": "sum of native NEAR out, each day reconciled with the balances",
+   "id": "F4",
+   "shown": "0 NEAR",
+   "what": "NEAR the three wallets sent out from 2026-09-14 to 2026-11-13, the days whose transfers this repository reads"
+  },
+  {
+   "grade": "chain",
+   "how": "view calls and access keys at the pinned block",
+   "id": "F5",
+   "shown": "2 of 4",
+   "what": "Keys of buybacks.multisignature.near that must confirm a transfer, of those that can; it has 0 full-access keys and has made 4 requests in all"
+  },
+  {
+   "grade": "chain",
+   "how": "the DAO's policy at the pinned block",
+   "id": "F6",
+   "shown": "2 of 5",
+   "what": "Approvers of fefundsadmin.sputnik-dao.near who must vote for a transfer, of those who can"
+  },
+  {
+   "grade": "chain",
+   "how": "the DAO's policy at the pinned block",
+   "id": "F7",
+   "shown": "2 of 4",
+   "what": "Approvers of 1csfundsadmin.sputnik-dao.near who must vote for a transfer, of those who can"
+  },
+  {
    "grade": "rule",
    "how": "the rule, applied by pipeline/claims.py",
    "id": "RT",

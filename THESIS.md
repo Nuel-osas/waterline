@@ -307,6 +307,14 @@ float moves in lumps that say nothing about value (section 4), and we report the
 failed (`make score`, E1) rather than drop it (errata). The 1% and the 3% are judgments, and the part of this
 file most open to argument.
 
+**The NEAR the revenue buys is held, not burned.** Coverage counts the NEAR that reaches the three wallets as if
+it offset new supply. It does only while they keep it. Read from the chain, the three held 4,282,006 NEAR together
+at the pinned reading, up from 1,040,604 NEAR on 18 February, and held less than at the reading before on only
+2 of 268 days; since 14 September, when this repository starts reading their transfers, they have sent out 0 NEAR. None
+of it is burned. The buyback wallet is a multisig that moves NEAR when 2 of 4 of its keys confirm, and the two DAOs
+need 2 of 5 and 2 of 4 approvers. So coverage measures NEAR bought against NEAR issued: an upper bound on what
+offsets new supply, which holds only while those signers keep what the revenue buys.
+
 **Held staked, because new supply is paid to stake.** At the pinned block 44.4% of NEAR's supply was staked, and
 the protocol kept none of the new supply for itself, so all of it is paid to stake: 5.6% a year before the
 validator's fee, counted as net new supply over the total stake. A staker's share of the supply changes by +3.0% a
@@ -471,6 +479,8 @@ the product and money moving beyond the audit at once.
   chain. Only the latest 30 days are traced; the index refuses about half its calls at one a second. Payments made
   from balances a payer already held are not explained and count as neither, so the share is a floor for money
   that came through the treasury. It says which way the money came, not what it was for.
+- **The buyback NEAR.** The wallets' balances are read at each day's block, their transfers only from 14
+  September. What their signers will do with the NEAR cannot be read from the chain.
 - **Staking.** The reward is net new supply over the stake of one epoch, before any validator's fee. It moves with
   the stake and with issuance, and it is a share of supply, not a return in dollars.
 - **The scenarios are arithmetic, not a forecast.** Revenue and supply compound at constant rates, the lower

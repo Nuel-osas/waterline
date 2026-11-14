@@ -374,6 +374,32 @@ def write_claims(write=True):
             grade="chain" if on_chain else "chain, via an indexer")
         add("H1", f"{float(need_target):.1f}x", "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about",
             f"supply times 1.6%, over a year, against 30 days of revenue in NEAR ({'U1' if on_chain else 'DefiLlama'})", grade="chain" if on_chain else "chain, via an indexer")
+        # --- the NEAR the revenue buys is held, not burned: the wallets' balances and who can move them (revenue.json, wallets.json)
+        if rv and rv.get("balances"):
+            bal = rv["balances"]
+            bdays = sorted(d for d in bal if d <= pin and all(bal[d].get(w) is not None for w in rv["wallets"]))
+            if bdays and bdays[-1] == pin:
+                tot = {d: sum(int(bal[d][w]) for w in rv["wallets"]) for d in bdays}
+                falls = [(d1, tot[d0] - tot[d1]) for d0, d1 in zip(bdays, bdays[1:]) if tot[d1] < tot[d0]]
+                add("F1", f"{tot[pin] / 10**24:,.0f} NEAR", f"NEAR held by the three revenue wallets together at the reading of {pin}, read from the chain",
+                    "sum of the three balances at the pinned block", grade="chain")
+                add("F2", f"{tot[bdays[0]] / 10**24:,.0f} NEAR", f"The same at the first reading, {bdays[0]}", "as F1", grade="chain")
+                add("F3", f"{len(falls)} of {len(bdays) - 1} days", f"Days on which the three wallets together held less than at the reading before, {bdays[0]} to {pin}: "
+                    + ", ".join(f"{d} ({v / 10**24:,.0f} NEAR)" for d, v in falls), "falls from one daily reading to the next in F1's series", grade="chain")
+                tdays = sorted(d for d in rv["transfers"] if d <= pin)
+                sent = sum(int(rv["transfers"][d][w]["native_out"]) for d in tdays for w in rv["transfers"][d])
+                add("F4", f"{sent / 10**24:,.0f} NEAR", f"NEAR the three wallets sent out from {tdays[0]} to {pin}, the days whose transfers this repository reads",
+                    "sum of native NEAR out, each day reconciled with the balances", grade="chain")
+        wl = load(os.path.join(DATA, "context", "wallets.json"), None)
+        if wl and wl.get("day") == pin:
+            ms = wl["multisig"]
+            add("F5", f"{ms['confirmations']} of {ms['keys_that_confirm']}", f"Keys of buybacks.multisignature.near that must confirm a transfer, of those that can; "
+                f"it has {ms['full_access_keys']} full-access keys and has made {ms['requests_ever']} requests in all", "view calls and access keys at the pinned block", grade="chain")
+            for cid, dao in (("F6", "fefundsadmin.sputnik-dao.near"), ("F7", "1csfundsadmin.sputnik-dao.near")):
+                roles = wl["daos"].get(dao) or []
+                if len(roles) == 1:
+                    add(cid, f"{roles[0]['transfer_threshold']} of {roles[0]['members']}", f"Approvers of {dao} who must vote for a transfer, of those who can",
+                        "the DAO's policy at the pinned block", grade="chain")
         # --- the rating, from the rule in THESIS.md section 5: computed, not typed
         last_audit = (build.last.get("audit") or {}).get("history") or []
         audited = [d for d in last_audit if d["day"] <= pin]

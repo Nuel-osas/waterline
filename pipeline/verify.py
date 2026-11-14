@@ -147,6 +147,7 @@ def check_chain(days, blocks):
     bad += check_oneclick_chain()
     bad += check_revenue_source_chain()
     bad += check_staking_chain()
+    bad += check_wallets_chain()
     return bad
 
 
@@ -210,6 +211,28 @@ def check_staking_chain():
         return 1
     print(f"ok   staking: the stake of the pinned block's epoch ({got / 10**24:,.0f} NEAR) and the protocol's reward settings read back from the chain")
     return 0
+
+
+def check_wallets_chain():
+    """Re-read who can move the revenue wallets' NEAR at the pinned block: the multisig's confirmations and keys, each DAO's approvers."""
+    wl = load(os.path.join(DATA, "context", "wallets.json"), None)
+    if not wl:
+        return 0
+    h, ms = wl["height"], wl["multisig"]
+    keys = rpc.call("query", {"request_type": "view_access_key_list", "block_id": h, "account_id": ms["account"]})["keys"]
+    confirmers = sum(1 for k in keys if isinstance(k["access_key"]["permission"], dict) and "confirm" in k["access_key"]["permission"]["FunctionCall"].get("method_names", []))
+    full = sum(1 for k in keys if k["access_key"]["permission"] == "FullAccess")
+    bad = int(rpc.view(h, ms["account"], "get_num_confirmations", {}) != ms["confirmations"] or confirmers != ms["keys_that_confirm"] or full != ms["full_access_keys"])
+    for dao, roles in wl["daos"].items():
+        pol = rpc.view(h, dao, "get_policy", {})
+        for r in roles:
+            got = next((x for x in pol["roles"] if x["name"] == r["role"]), None)
+            th = got and (got["vote_policy"].get("transfer") or pol["default_vote_policy"]).get("threshold")
+            if not got or len(got["kind"].get("Group", [])) != r["members"] or th != r["transfer_threshold"]:
+                bad += 1
+    print(("FAIL wallets: the signing rules read from the chain differ from data/context/wallets.json" if bad else
+           f"ok   wallets: the multisig's {ms['confirmations']} of {ms['keys_that_confirm']} keys and the DAOs' approvers read back from the chain"))
+    return bad
 
 
 def check_oneclick_chain():
