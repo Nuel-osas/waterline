@@ -355,7 +355,7 @@ def write_claims(write=True):
                         if fe and fe["paid"]:
                             add("U13", pct(Fraction(fe["treasury"], fe["paid"]), 0), "Share of the payments to fefundsadmin.sputnik-dao.near that arrived "
                                 "through the treasury, in the same window", "as U7, for one wallet", grade="index")
-                        add("U9", pct(Fraction(sb["paid"], rb["received"]), 0),
+                        add("U9", pct(Fraction(sb["paid"], rb["received"]), 1),
                             "Share of U1 that came from intents.near at all, by any payer; the rest was sent to the wallets from outside it",
                             "payments from intents.near over U1", grade="index")
             else:
