@@ -74,7 +74,7 @@
       </div>
       <noscript><p class="note">The live check needs JavaScript. The same audit from a terminal: <code>python3 -m pipeline.audit --now</code>.</p></noscript>
     </div>
-    <p class="note">At the pinned block the same audit covers <span data-claim="A1">214 tokens</span> and <span data-claim="A2">$223.8M</span>: every token in NEAR Intents' own list that has a balance to read. Most are equal to the last unit. The rest hold a little more than is credited. None is short. From a terminal: <code>python3 -m pipeline.audit --now</code>.</p>
+    <p class="note">At the pinned block the same audit covers <span data-claim="A1">214 tokens</span> and <span data-claim="A2">$223.8M</span>: the listed tokens that have a balance to read, and the unlisted ones the treasury holds. Most are equal to the last unit. The rest hold a little more than is credited. None is short. From a terminal: <code>python3 -m pipeline.audit --now</code>.</p>
 
     <article class="finding">
       <header>
@@ -96,7 +96,7 @@ intents.near.mt_batch_supply(token_ids=[the 20 tracked tokens])   -> credited, d
     <article class="finding">
       <header>
         <h3>The one hole showed <span data-claim="A8">31 hours 40 minutes</span> before the money left.</h3>
-        <p>It opens at ten dollars on 29 September, at the second CertiK gives for the first exploit transaction, and stays under $3,000 for <span data-claim="A12">28 hours</span>. Then it doubles. It passes $1.0M <span data-claim="A13">13 minutes</span> before the first payout, peaks at <span data-claim="A10">$3.8M</span> and stays open <span data-claim="A11">76 hours</span>. This is a replay run in November, not live detection. What it adds to the published timeline is that the hole could be seen and sized from outside at every step.</p>
+        <p>It opens at ten dollars on 29 September, three seconds after the time CertiK gives for the first exploit transaction, and stays under $3,000 for <span data-claim="A12">28 hours</span>. Then it doubles. It passes $1.0M <span data-claim="A13">13 minutes</span> before the first payout, peaks at <span data-claim="A10">$3.8M</span> and stays open <span data-claim="A11">76 hours</span>. This is a replay run in November, not live detection. What it adds to the published timeline is that the hole could be seen and sized from outside at every step.</p>
       </header>
       <ul class="legend" aria-label="Series">
         <li><i class="key warnkey"></i>Hole in the public books: credited minus held, one bridged dollar token</li>
@@ -111,7 +111,7 @@ v2_1.omni.hot.tg.mt_balance_of(account_id="intents.near", token_id="56_2CMM...")
     </article>
 
     <p class="stop">This is where the audit stops. The largest account on these books is the private chain's treasury. What that chain owes its own users cannot be asked of any contract, and <span data-claim="C4">61.0%</span> of everything NEAR Intents holds is now behind it.</p>
-    <p class="note">In money: that balance is <span data-claim="Q1">6.3 years</span> of the revenue that reaches NEAR's wallets, the cash flow that funds the buyback. October's hole at its largest was <span data-claim="Q3">2.1 months</span> of it.</p>
+    <p class="note">In money: that balance is <span data-claim="Q1">6.2 years</span> of the revenue that reaches NEAR's wallets, the cash flow that funds the buyback. October's hole at its largest was <span data-claim="Q3">2.1 months</span> of it.</p>
   </div>
 </section>
 
@@ -235,7 +235,8 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
 <section class="deep" id="thesis">
   <div class="wrap">
     <p class="labels"><span class="label">04</span><span class="label">The thesis</span></p>
-    <h2>A small position: an option on private settlement. Conditional on what the chain keeps showing.</h2>
+    <h2>Hold what you can check. Size the rest small.</h2>
+    <p class="note">Our rule, which is a judgment and not a result: at most 1% of a liquid portfolio in NEAR while most of what NEAR Intents holds is beyond the audit; up to 3% if NEAR publishes what the private chain owes, per token, against a block height; none if a hole in the public books stays open beyond 3 readings, or if the audit stops being possible. The readings about the float, below, do not move it either way.</p>
     <div class="cards">
       <article>
         <p class="big" data-claim="V5">265x</p>
@@ -261,7 +262,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
     <p class="labels"><span class="label">05</span><span class="label">What would change our mind</span></p>
     <h2>Five readings about the money behind the private chain, written down on the pinned day, checked again on 31 March 2027.</h2>
     <div class="meters" id="meters"></div>
-    <p class="note">One more item has no threshold: if NEAR publishes what the private chain owes, per token, against a block height, the audit at the top of this page covers everything and we would hold more. These five readings were written for the project's first question, whether the private side is growing. The audit has its own dated tests, listed first below.</p>
+    <p class="note">These five readings answer one question, whether the private side keeps growing, and are scored on 31 March 2027. They do not decide the position above. Two more items have no threshold: NEAR publishing what the private chain owes would let us hold more, and a hole in the public books that stays open would make us sell. The audit has its own dated tests, listed first below.</p>
     <h3 class="fwd-title">How often the float's own past, replayed, meets them</h3>
     <div class="scroll">
     <table class="ledger odds">
@@ -275,7 +276,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
     </div>
     <p class="note">A base rate, not a forecast. <code>make model</code> replays the float's past daily changes forward to 31 March 2027: 10,000 paths from one seed, each built from runs of 7 consecutive past days and scored with the thresholds above. At the pace before the reward neither reading holds. Both need the pace since September to continue, and a reward is still in force. The result moves with the length of the runs: from single days to runs of 30, R1 on the whole history holds on <span data-claim="O11">51% to 60%</span> of paths, and on the last window on <span data-claim="O12">38% to 96%</span>. The readings were fixed and hashed before this model was written.</p>
     <details class="query"><summary>The command behind this table</summary><pre>make model
-python3 -m pipeline.model --since 2026-10-01 --block 14 --seed 7</pre></details>
+# other windows and settings: python3 -m pipeline.model --help</pre></details>
     <h3 class="fwd-title">Dated tests, scored by the same code as their readings arrive: the audit's first (G), then the float's (E, F)</h3>
     <p class="note">First results, from the reading of 14 November, the first taken after the tests were written: the audit's test passed, two of the float's three passed, and one failed. The float had to be at least <span data-claim="C1">$136.4M</span> and was <span data-claim="E1">$135.2M</span>. One day settles nothing about March; a fail is shown because we said it would be.</p>
     <div class="fwd" id="forward"></div>
@@ -289,7 +290,7 @@ python3 -m pipeline.model --since 2026-10-01 --block 14 --seed 7</pre></details>
     <div class="steps">
       <div><code>make test</code><p>Unit tests. No network. About a second.</p></div>
       <div><code>make check</code><p>Rebuilds every number on this page from the raw readings in memory and compares. No network, writes nothing.</p></div>
-      <div><code>make verify</code><p>Re-reads a sample of days from NEAR mainnet first, then does the same. One to three minutes.</p></div>
+      <div><code>make verify</code><p>Re-reads a sample of days from NEAR mainnet first, then does the same. Three to fifteen minutes on a public node.</p></div>
     </div>
     <p class="note">Each reading is tied to a block height, so it never changes: anyone who reads the recorded heights gets the same bytes. A read that fails is stored as unknown and left out. It is never counted as zero. The checks write nothing. They fail if a dollar amount, a percentage, a multiple, a count, a clock time or a block height on this page or in the thesis is not what the data produces. They do not check dates or numbers written as words.</p>
     <noscript><p class="note">The charts need JavaScript. Every number in the text is in the page itself, and every value behind the charts is in the repository under <code>data/derived/</code>.</p></noscript>
