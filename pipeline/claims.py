@@ -707,9 +707,11 @@ def write_claims(write=True):
     lines += [f"| {c['id']} | **{c['shown']}** | {c['what']} |" for c in C]
     readme_path, index_path = os.path.join(ROOT, "README.md"), os.path.join(ROOT, "site", "index.html")
     readme = open(readme_path).read() if os.path.exists(readme_path) else ""
+    findings_path = os.path.join(ROOT, "docs", "FINDINGS.md")
+    findings = open(findings_path).read() if os.path.exists(findings_path) else ""
     a, b = "<!-- claims:start -->", "<!-- claims:end -->"
-    if a in readme and b in readme:
-        readme = readme[:readme.index(a) + len(a)] + "\n" + "\n".join(lines) + "\n" + readme[readme.index(b):]
+    if a in findings and b in findings:
+        findings = findings[:findings.index(a) + len(a)] + "\n" + "\n".join(lines) + "\n" + findings[findings.index(b):]
     ra, rb = "<!-- results:start -->", "<!-- results:end -->"
     if ra in readme and rb in readme:
         readme = readme[:readme.index(ra) + len(ra)] + "\n" + "\n".join(results_table(rows_all, last, pin, tracked, meta)) + "\n" + readme[readme.index(rb):]
@@ -726,7 +728,8 @@ def write_claims(write=True):
         gen["alarm"] = alarm_table(ex_rec, meta)
     thesis = fill_blocks(thesis, gen)
     index = fill_page(open(index_path).read(), site) if os.path.exists(index_path) else ""
-    write_claims.last = {"claims": out, "claims_js": site_js("WATERLINE_CLAIMS", site), "readme": readme, "index": index, "thesis": thesis}
+    write_claims.last = {"claims": out, "claims_js": site_js("WATERLINE_CLAIMS", site), "readme": readme, "index": index, "thesis": thesis,
+                         "findings": findings}
     if write:
         save(os.path.join(DATA, "derived", "claims.json"), out)
         with open(os.path.join(ROOT, "site", "claims.js"), "w") as f:
@@ -737,6 +740,8 @@ def write_claims(write=True):
             open(index_path, "w").write(index)
         if thesis:
             open(thesis_path, "w").write(thesis)
+        if findings:
+            open(findings_path, "w").write(findings)
     return out
 
 

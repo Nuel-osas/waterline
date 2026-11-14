@@ -208,7 +208,7 @@ class Claims(unittest.TestCase):
         if not os.path.exists(path):
             self.skipTest("no claims built yet")
         text = ""
-        for name in ("README.md", "THESIS.md"):
+        for name in ("README.md", "THESIS.md", os.path.join("docs", "FINDINGS.md")):
             with open(os.path.join(pull.ROOT, name)) as f:
                 text += f.read()
         with open(path) as f:
