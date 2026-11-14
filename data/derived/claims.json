@@ -536,6 +536,34 @@
    "what": "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance falls to 1.6%"
   },
   {
+   "grade": "model, on quoted revenue",
+   "how": "python3 -m pipeline.growth; DefiLlama's daily revenue over NearBlocks' daily price",
+   "id": "GR1",
+   "shown": "107% a year",
+   "what": "Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, since the buyback began on 2026-02-23: a straight line through the logarithm of 37 weekly totals (weeks of 2026-02-23 to 2026-11-02), annualised"
+  },
+  {
+   "grade": "model",
+   "how": "moving-block bootstrap",
+   "id": "GR2",
+   "shown": "0% to 321%",
+   "what": "90% range of that growth, from 4,000 resamples of the weekly residuals in runs of 4 weeks (seed 20261114)"
+  },
+  {
+   "grade": "model",
+   "how": "as GR2",
+   "id": "GR3",
+   "shown": "59%",
+   "what": "Share of those resamples growing at least as fast as Z1, the pace that covers new supply by the end of 2029"
+  },
+  {
+   "grade": "model",
+   "how": "as GR2",
+   "id": "GR4",
+   "shown": "77%",
+   "what": "The same for Z3, the pace that covers new supply by the end of 2031"
+  },
+  {
    "grade": "reported",
    "how": "annualised X1 times M2",
    "id": "M3",

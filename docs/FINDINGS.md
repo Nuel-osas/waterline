@@ -107,6 +107,10 @@ rows are results of dated tests on readings taken after the tests were written.
 | Z4 | **33% a year** | The same by the end of 2031, at 1.6% |
 | Z5 | **15%** | Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance does too |
 | Z6 | **24%** | Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance falls to 1.6% |
+| GR1 | **107% a year** | Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, since the buyback began on 2026-02-23: a straight line through the logarithm of 37 weekly totals (weeks of 2026-02-23 to 2026-11-02), annualised |
+| GR2 | **0% to 321%** | 90% range of that growth, from 4,000 resamples of the weekly residuals in runs of 4 weeks (seed 20261114) |
+| GR3 | **59%** | Share of those resamples growing at least as fast as Z1, the pace that covers new supply by the end of 2029 |
+| GR4 | **77%** | The same for Z3, the pace that covers new supply by the end of 2031 |
 | M3 | **$297B a year** | Reported volume that would take at today's rate of revenue per dollar of volume |
 | T4 | **$136.4M** | Highest the float has been, on the 2026-11-13 reading |
 | P8 | **3.5x** | Growth of the float without NEAR's own token since the B2B launch ($26.8M then) |

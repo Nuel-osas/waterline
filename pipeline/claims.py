@@ -364,6 +364,22 @@ def write_claims(write=True):
         flat = next(r for r in sc["rows"] if r["g"] == 0)
         add("Z5", pct(flat[("as now", "2029")], 0), "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance does too", "as Z1", grade="model")
         add("Z6", pct(flat[("at 1.6%", "2029")], 0), "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance falls to 1.6%", "as Z1", grade="model")
+        # --- the upside case: the revenue's growth in NEAR since the buyback began, and how sure that is (pipeline/growth.py)
+        if os.path.exists(os.path.join(DATA, "context", "activity.json")):
+            from .growth import share_at_least, trend
+            gt = trend(pin)
+            whole_pct = lambda x: f"{round(x * 100):.0f}%"   # noqa: E731  (no "-0%")
+            add("GR1", whole_pct(gt["growth"]) + " a year",
+                f"Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, since the buyback began on 2026-02-23: "
+                f"a straight line through the logarithm of {gt['weeks']} weekly totals (weeks of {gt['first_week']} to {gt['last_week']}), annualised",
+                "python3 -m pipeline.growth; DefiLlama's daily revenue over NearBlocks' daily price", grade="model, on quoted revenue")
+            add("GR2", f"{whole_pct(gt['low'])} to {whole_pct(gt['high'])}",
+                f"90% range of that growth, from {gt['resamples']:,} resamples of the weekly residuals in runs of {gt['run']} weeks (seed {gt['seed']})",
+                "moving-block bootstrap", grade="model")
+            add("GR3", whole_pct(share_at_least(gt, sc["need"][("as now", "2029")])),
+                "Share of those resamples growing at least as fast as Z1, the pace that covers new supply by the end of 2029", "as GR2", grade="model")
+            add("GR4", whole_pct(share_at_least(gt, sc["need"][("as now", "2031")])),
+                "The same for Z3, the pace that covers new supply by the end of 2031", "as GR2", grade="model")
         add("M3", f"${float(vol * Fraction(365, 30) * need) / 1e9:.0f}B a year", "Reported volume that would take at today's rate of revenue per dollar of volume",
             "annualised X1 times M2", grade="reported")
 
