@@ -29,7 +29,9 @@ On 27 October 2026, 1Click swaps began to settle on a private chain. What backs 
 public ledger, and 1Click's own records show its swaps passing through it: for each of the 9 swaps we found
 (8 completed, 1 refunded), the swap's status record lists the NEAR transaction that moved its tokens into that
 account. They show the route a swap takes, not what share of swaps take it. The audit sees that
-account's balance and nothing behind it, and it is now 61.0% of everything NEAR Intents holds.
+account's balance and nothing behind it, and it is now 61.0% of everything NEAR Intents holds. The revenue that
+funds NEAR's buyback takes the same route: in the latest 30 days, 74% of it arrived through the treasury, paid by
+accounts that had received that NEAR from the treasury minutes before.
 
 **Our claim: NEAR Intents' public books can be proven whole by anyone, at any block, and the one failure showed
 in them before the money left. The same proof does not reach the private chain, where the swaps now settle and
@@ -282,6 +284,20 @@ against the growth of NEAR's total supply over the same 30 days, read from two b
 latest window and 20% in the one before. The public books are whole on the latest reading. So the rule gives
 Hold.
 
+**Where that revenue comes from.** One step back, the rating's only live input passes through the account the
+audit cannot see into. Every payment from `intents.near` into the three wallets is a withdrawal signed by an
+account on the ledger. We read each payment's transaction to find that account, then the account's ledger
+transfers in the minutes before it paid, and let those inflows fund its payments oldest first, each used once:
+1,116 payments by 835 accounts in the latest 30 days. 74% of the revenue arrived through the private chain's
+treasury; 18% was paid from balances the payers already held, whose source the windows do not show; 99.9% of it
+came from `intents.near` at all. The share was 72% before 27 October and 75% from that day, so the route is
+older than 1Click's switch, and the foundation's wallet is paid almost entirely this way (99%). This is the route
+the money took, not where it was earned: fees collected on the private chain reach NEAR's wallets by leaving
+through the treasury. It does not change the rule. It means the revenue is measured on the chain as it arrives,
+but whether the private chain earned it is not something anyone outside can check, which is a second reason the
+Add rule accepts a disclosure of the private chain's totals. `python3 -m pipeline.revenue_source` prints the
+trace, and `make verify` re-reads a sample from the chain.
+
 Where the numbers come from: 25% and 10% are reading R4's thresholds, written on 13 November; 3 readings is the
 October precedent, short on three readings and whole on the fourth; two windows in a row, because a rule that
 one ordinary day can trip is not a rule. That last point was learned the hard way. An earlier version also
@@ -459,6 +475,10 @@ the product and money moving beyond the audit at once.
 - **No growth rate.** The weekly revenue since the buyback began gives a fitted rate anywhere from -91% to
   +1,160% a year depending on the start week, so none is used. The series is DefiLlama's, checked against the
   chain for two months only.
+- **Where the revenue comes from.** Traced one step back, from two public indexes, with a sample re-read from the
+  chain. Only the latest 30 days are traced; the index refuses about half its calls at one a second. Payments made
+  from balances a payer already held are not explained and count as neither, so the share is a floor for money
+  that came through the treasury. It says which way the money came, not what it was for.
 - **The buyback NEAR.** The wallets' balances are read at each day's block, their transfers only from 14
   September. What their signers will do with the NEAR cannot be read from the chain.
 - **Staking.** The reward is net new supply over the stake of one epoch, before any validator's fee. It moves with
