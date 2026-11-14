@@ -38,8 +38,8 @@ repository reads from the chain ([`THESIS.md`](THESIS.md), section 5).
    everything NEAR Intents holds.
 4. NEAR's buyback is funded by revenue we read from the chain: 426,685 NEAR in the last 30 days, 16% of net new supply.
    For buybacks to match new supply by the end of 2029 that revenue, counted in NEAR, has to grow 84% a year, or 59% a year
-   if HSP-029 takes effect. Since the buyback began in February it has grown about 107% a year in NEAR, but the
-   range is wide: 59% of resamples clear the 2029 pace. Over the latest 30 days against the 30 before it was -17%.
+   if HSP-029 takes effect. No growth rate can be read from the record yet: fitted from different start weeks since
+   February, it runs from -91% to +1,160% a year. Over the latest 30 days against the 30 before it was -17%.
 5. What sits behind the private chain is partly paid for and moves in lumps: NEAR pays a reward for confidential
    balances, 94% of the net NEAR that arrived in late September came from one account, and half of the float's
    best day was money the treasury had paid out the evening before.
@@ -62,7 +62,7 @@ repository reads from the chain ([`THESIS.md`](THESIS.md), section 5).
 | `make trace` | Halves the day before the 25 September reading down to the one block where the treasury's NEAR balance jumped, then prints the receipt behind it: who signed it, for how much. About 25 requests to a public archival node, about a minute. `python3 -m pipeline.trace --help` lists the settings (`--account`, `--token`, `--top`). |
 | `python3 -m pipeline.revenue` | The three revenue wallets' NEAR balances at the first and last stored day. `--balances` and `--transfers FIRST LAST` read them again from the chain and a public index. No network without a flag. |
 | `python3 -m pipeline.oneclick` | The 1Click swaps found whose own records list the transaction into the private chain's treasury. `--scan` looks again (slow). No network without a flag. |
-| `python3 -m pipeline.growth` | The upside case: how fast the revenue that funds the buyback has grown since February, counted in NEAR, its 90% range, and the share of resamples that clear the paces needed by 2029 and 2031. Seeded, no network, under a second. |
+| `python3 -m pipeline.growth` | Whether a growth rate can be read from the revenue that funds the buyback, counted in NEAR: the weekly totals since February and the trend fitted from every start week. It cannot: the rate depends on the start week. No network, a second. |
 | `python3 -m pipeline.leadlag` | The test of the track's hypothesis that Intents volume leads network usage: the strongest lead for transactions, active accounts and price, with its p-value. Seeded, no network, a few seconds. |
 | `make model` | How often the long-dated readings R1, R2 and R5 hold when the float's past daily changes are replayed forward to 2027-03-31, for three windows of past days. Seeded: the same numbers on any machine. `python3 -m pipeline.model --help` lists the settings (`--since`, `--until`, `--block`, `--paths`, `--seed`). |
 | `make pull` then `make build` | Adds the days since the last committed reading (about 30 requests a day added) and rebuilds, so `make score` can resolve tests whose day has come. |
@@ -196,7 +196,7 @@ pipeline/flows.py    an index's transfer list, kept where it adds up -> data/con
 pipeline/revenue.py  the revenue wallets: balances and transfers   -> data/context/revenue.json, the U rows and the rating
 pipeline/oneclick.py 1Click swaps that settle through the treasury -> data/context/oneclick.json, W5
 pipeline/leadlag.py  does Intents volume lead usage or price?      -> the L rows; prints, writes nothing
-pipeline/growth.py   the revenue's trend in NEAR since February   -> the GR rows; prints, writes nothing
+pipeline/growth.py   can a growth rate be read from the revenue?  -> the GR rows; prints, writes nothing
 pipeline/model.py    replays past daily changes forward     -> the O rows of the findings table; prints, writes nothing
 pipeline/trace.py    halves a day to the block of a move, reads its receipts -> data/context/trace.json (one case, re-read by make verify)
 pipeline/verify.py   re-read from the chain, rebuild in memory, compare; writes nothing

@@ -35,3 +35,8 @@ place; nothing is removed silently.
 - The position rule in `THESIS.md` first said to hold none if the float without NEAR's own token fell below its
   pinned level. One day later it had ($91.1M against $92.9M). A reviewer pointed out that the rule did not say
   when it was read. The trigger was removed in pull request 16, with the reason given in section 5.
+- Pull request 22 said that the revenue funding the buyback had grown about 107% a year in NEAR since February,
+  with a resampled range and odds of clearing the pace 2029 needs, and called that the reason to hold rather than
+  exit. The rate depends on the week the fit starts from: from -91% to +1,160% a year over the starts that leave
+  at least twelve weeks. The first complete week paid 25,228 NEAR a day and the latest 12,969 NEAR a day. The
+  figure, its range and the odds are withdrawn (pull request 23). The rule that sets the rating never used them.
