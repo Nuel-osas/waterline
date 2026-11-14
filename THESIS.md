@@ -347,7 +347,8 @@ block, for two calls per token, and a hole shows in the block where it opens, to
 is the one part of NEAR's investment case we could verify end to end without trusting the party being valued,
 and it held up: whole today, and short only when something was in fact wrong. Measured against the revenue
 that funds the buyback, October's hole at its largest was 2.1 months of it, and it was closed. The balance now beyond
-the audit is 6.2 years of it.
+the audit is 6.2 years of it. That is a scale for what the audit cannot see, not an estimate of a loss: nothing
+public says that balance is short, and nothing public can show that it is whole.
 
 **Why 1% and not none.** The evidence argues for holding little, and a reader could fairly take it to none. We
 do not, for three reasons we can point to. The part we could check held up. The growth a holder needs is large
