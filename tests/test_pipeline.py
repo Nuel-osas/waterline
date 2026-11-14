@@ -670,9 +670,10 @@ class RevenueSource(unittest.TestCase):
         import json
         from pipeline import revenue_source as rs
         inner = {"signer_id": "dave", "intents": [{"intent": "native_withdraw", "receiver_id": "w1", "amount": "3"}]}
-        args = {"signed": [{"payload": json.dumps(inner)}, {"payload": json.dumps(json.dumps(inner))}, {"payload": "not json"}, {"payload": 7}]}
+        args = {"signed": [{"payload": json.dumps(inner)}, {"payload": json.dumps(json.dumps(inner))}, {"payload": {"type": "text", "text": json.dumps(inner)}},
+                           {"payload": "not json"}, {"payload": 7}]}
         tx = {"actions": [{"FunctionCall": {"method_name": "execute_intents", "args": base64.b64encode(json.dumps(args).encode()).decode()}}]}
-        self.assertEqual([w[0] for w in rs.withdrawals(tx)], ["dave", "dave"])
+        self.assertEqual([w[0] for w in rs.withdrawals(tx)], ["dave", "dave", "dave"])
 
     def test_a_payment_is_split_by_where_the_payers_wnear_came_from_and_untraced_counts_as_neither(self):
         from pipeline import revenue_source as rs

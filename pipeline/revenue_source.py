@@ -84,8 +84,8 @@ def withdrawals(tx):
             continue
         for signed in json.loads(base64.b64decode(call["args"])).get("signed", []):
             msg = signed.get("payload")
-            if isinstance(msg, dict) and "message" in msg:      # NEP-413 wraps the intent in a message
-                msg = msg["message"]
+            if isinstance(msg, dict) and ("message" in msg or "text" in msg):   # NEP-413 and TON Connect wrap the intent
+                msg = msg.get("message") or msg.get("text")
             for _ in range(2):                                    # other standards carry it as JSON text, sometimes twice
                 if isinstance(msg, str):
                     try:
