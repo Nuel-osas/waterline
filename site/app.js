@@ -489,6 +489,29 @@
     var v = Number(whole) + frac;
     return v.toLocaleString("en-US", { maximumFractionDigits: v !== 0 && v < 1 ? 8 : 2 });
   }
+  // ---------- keep watching: the same audit every minute, with a running tally and an alarm in the tab title ----------
+  var watch = { timer: null, checks: 0, short: 0, lower: 0, title: document.title };
+  function watched(short, lower, unknown, height) {
+    if (!watch.timer) return;
+    watch.checks += 1; watch.short += short ? 1 : 0; watch.lower += lower ? 1 : 0;
+    var box = document.getElementById("audit-watch-status");
+    box.hidden = false;
+    var alarm = short || lower;
+    box.className = "watch-status" + (alarm ? " alarm" : "");
+    box.textContent = (alarm ? "ALARM at block " + height.toLocaleString("en-US") + ": " + (short ? short + " token(s) short" : lower + " token(s) lower than their last 30 daily readings") + ". " : "")
+      + "Watching: " + watch.checks + " check" + (watch.checks === 1 ? "" : "s") + " since you started, " + watch.short + " with a token short, " + watch.lower + " with a new low"
+      + (unknown ? "; the last one could not read " + unknown + " token(s)" : "") + ". Next check in a minute.";
+    document.title = (alarm ? "ALARM: " + (short ? "hole in the books" : "new low") + " | " : "") + watch.title;
+  }
+  function setWatch(on) {
+    if (watch.timer) { clearInterval(watch.timer); watch.timer = null; }
+    var box = document.getElementById("audit-watch-status");
+    if (!on) { box.hidden = true; document.title = watch.title; return; }
+    watch.checks = 0; watch.short = 0; watch.lower = 0;
+    watch.timer = setInterval(function () { if (!document.getElementById("audit-run").disabled) auditNow(); }, 60000);
+    box.hidden = false; box.className = "watch-status"; box.textContent = "Watching: the first check runs now, then one a minute.";
+    auditNow();
+  }
   function auditNow() {
     var A = W.audit, btn = document.getElementById("audit-run"), status = document.getElementById("audit-status");
     if (!A || !btn) return;
@@ -537,6 +560,7 @@
       document.getElementById("audit-result").hidden = false;
       status.textContent = "Done. Run it again for a newer block.";
       btn.disabled = false; btn.textContent = "Audit the latest block again";
+      watched(short, lower, unknown, height);
     }).catch(function (e) {
       status.textContent = "The public node did not answer (" + String(e.message || e).slice(0, 80) + "). Try again, or run: python3 -m pipeline.audit --now";
       btn.disabled = false;
@@ -630,6 +654,8 @@
   function charts() { chartAudit(); chartExploit(); chartWaterline(); chartStack(); chartReward(); chartLumps(); chartSwitch(); }
   var runBtn = document.getElementById("audit-run");
   if (runBtn) runBtn.addEventListener("click", auditNow);
+  var watchBox = document.getElementById("audit-watch");
+  if (watchBox) watchBox.addEventListener("change", function () { setWatch(watchBox.checked); });
   function markRating() {
     var r = K.RT && K.RT.shown;
     document.querySelectorAll("tr[data-rating]").forEach(function (tr) { tr.classList.toggle("now", tr.getAttribute("data-rating") === r); });

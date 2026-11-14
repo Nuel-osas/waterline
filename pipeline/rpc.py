@@ -61,6 +61,13 @@ def call(method, params, tries=14):
                 out = json.load(res)
         except urllib.error.HTTPError as e:
             last = e
+            if e.code == 422:  # some nodes send "no block at this height" as HTTP 422 with UNKNOWN_BLOCK in the body
+                try:
+                    text = e.read().decode(errors="replace")
+                except OSError:
+                    text = ""
+                if "UNKNOWN_BLOCK" in text or "DB Not Found" in text:
+                    raise UnknownBlock(text[:200])
             if e.code == 429:  # told to slow down: back off for everyone, not just this thread
                 with _lock:
                     _next[0] = max(_next[0], time.monotonic() + min(20, 2 * (attempt + 1)))

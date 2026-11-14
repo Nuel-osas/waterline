@@ -640,6 +640,18 @@ class Growth(unittest.TestCase):
         self.assertGreater(max(f[2] for f in fits), 0)  # and some earlier start still shows growth
 
 
+class RpcErrors(unittest.TestCase):
+    def test_an_unknown_block_sent_as_http_422_is_a_skipped_height_not_a_failure(self):
+        import io
+        import urllib.error
+        from unittest import mock
+        body = b'{"jsonrpc":"2.0","error":{"cause":{"name":"UNKNOWN_BLOCK"},"data":"DB Not Found Error: BLOCK HEIGHT: 5"}}'
+        err = urllib.error.HTTPError("https://node", 422, "Unprocessable Entity", {}, io.BytesIO(body))
+        with mock.patch("urllib.request.urlopen", side_effect=err), mock.patch.object(rpc, "_wait_turn", lambda: None):
+            with self.assertRaises(rpc.UnknownBlock):
+                rpc.call("query", {"block_id": 5}, tries=3)
+
+
 class CommittedData(unittest.TestCase):
     """Sanity checks on whatever raw data is in the repository."""
 
