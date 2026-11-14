@@ -83,9 +83,18 @@ def withdrawals(tx):
         if not call or call["method_name"] != "execute_intents":
             continue
         for signed in json.loads(base64.b64decode(call["args"])).get("signed", []):
-            p = signed.get("payload")
-            msg = json.loads(p["message"]) if isinstance(p, dict) and "message" in p else p
-            for it in (msg or {}).get("intents", []):
+            msg = signed.get("payload")
+            if isinstance(msg, dict) and "message" in msg:      # NEP-413 wraps the intent in a message
+                msg = msg["message"]
+            for _ in range(2):                                    # other standards carry it as JSON text, sometimes twice
+                if isinstance(msg, str):
+                    try:
+                        msg = json.loads(msg)
+                    except ValueError:
+                        msg = None
+            if not isinstance(msg, dict):
+                continue
+            for it in msg.get("intents", []):
                 if it.get("intent") in ("native_withdraw", "ft_withdraw"):
                     out.append((msg.get("signer_id"), it["intent"], it.get("receiver_id"), str(it.get("amount")), it.get("token")))
     return out
@@ -111,12 +120,17 @@ def match_payers(pays, txs):
 
 
 def read_txs(hashes):
-    got = {}
-    hashes = sorted(set(hashes))
-    for i in range(0, len(hashes), 20):
-        for t in _post(TXS, {"tx_hashes": hashes[i:i + 20]}).get("transactions", []):
+    """Transactions by hash from the index, kept in a local cache so an interrupted trace does not read them twice."""
+    cache = os.path.join(RAW, "transactions.json")
+    got = load(cache, None) or {}
+    todo = sorted(set(hashes) - set(got))
+    for k, i in enumerate(range(0, len(todo), 20), 1):
+        for t in _post(TXS, {"tx_hashes": todo[i:i + 20]}).get("transactions", []):
             got[t["transaction"]["hash"]] = t["transaction"]
+        if k % 10 == 0:
+            save(cache, got)
         time.sleep(0.4)
+    save(cache, got)
     return got
 
 
