@@ -67,6 +67,8 @@
       <div class="live-head">
         <button type="button" id="audit-run">Audit the latest block</button>
         <p id="audit-status">Runs in your browser against a public NEAR node: about 25 requests, a few seconds. Nothing is sent anywhere else.</p>
+        <label class="watch"><input type="checkbox" id="audit-watch"> Keep watching: audit the latest block again every minute while this page is open</label>
+        <p class="watch-status" id="audit-watch-status" hidden></p>
       </div>
       <div id="audit-result" hidden>
         <p class="verdict" id="audit-verdict"></p>
