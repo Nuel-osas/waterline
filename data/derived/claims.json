@@ -539,29 +539,29 @@
    "grade": "model, on quoted revenue",
    "how": "python3 -m pipeline.growth; DefiLlama's daily revenue over NearBlocks' daily price",
    "id": "GR1",
-   "shown": "107% a year",
-   "what": "Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, since the buyback began on 2026-02-23: a straight line through the logarithm of 37 weekly totals (weeks of 2026-02-23 to 2026-11-02), annualised"
+   "shown": "-91% to +1,160% a year",
+   "what": "Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, from a straight line through the logarithm of the weekly totals, fitted from every start week from 2026-02-23 that leaves at least 12 weeks to the week of 2026-11-02: lowest from the week of 2026-08-17, highest from the week of 2026-06-15. A rate that moves this far with its start is not used"
   },
   {
-   "grade": "model",
-   "how": "moving-block bootstrap",
+   "grade": "quoted revenue, NearBlocks price",
+   "how": "weekly total over 7",
    "id": "GR2",
-   "shown": "0% to 321%",
-   "what": "90% range of that growth, from 4,000 resamples of the weekly residuals in runs of 4 weeks (seed 20261114)"
+   "shown": "25,228 NEAR a day",
+   "what": "Revenue reaching NEAR's wallets in the first complete week of the buyback (week of 2026-02-23), counted in NEAR at each day's price, per day"
   },
   {
-   "grade": "model",
+   "grade": "quoted revenue, NearBlocks price",
    "how": "as GR2",
    "id": "GR3",
-   "shown": "59%",
-   "what": "Share of those resamples growing at least as fast as Z1, the pace that covers new supply by the end of 2029"
+   "shown": "12,969 NEAR a day",
+   "what": "The same for the latest complete week (week of 2026-11-02)"
   },
   {
-   "grade": "model",
-   "how": "as GR2",
+   "grade": "model, withdrawn",
+   "how": "as GR1",
    "id": "GR4",
-   "shown": "77%",
-   "what": "The same for Z3, the pace that covers new supply by the end of 2031"
+   "shown": "107% a year",
+   "what": "The same line fitted from the first week only, over 37 weeks: the figure pull request 22 reported, withdrawn because the start chosen decides it"
   },
   {
    "grade": "reported",
