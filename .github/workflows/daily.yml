@@ -8,8 +8,14 @@ name: dashboard
 on:
   push:
     branches: [main]
+  # GitHub runs schedules on a best-effort basis and can drop one under load: the first night's 00:20 run never
+  # started. Four times a day, off the hour, so one missed run costs hours and not a day. A run that finds no new
+  # day reads a few block headers and republishes the same page.
   schedule:
     - cron: "20 0 * * *"
+    - cron: "47 2 * * *"
+    - cron: "13 7 * * *"
+    - cron: "37 13 * * *"
   workflow_dispatch:
 permissions:
   contents: read

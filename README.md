@@ -332,8 +332,11 @@ pipeline/verify.py   re-read from the chain, rebuild in memory, compare; writes 
   reading is left out of the share and listed in `data/derived/anomalies.json` with its size. It is never
   turned into a share above 100%. Two such readings exist, 2026-10-01 and 2026-10-02, for one token.
 - Constants and how each was checked: [`docs/SOURCES.md`](docs/SOURCES.md).
-- A scheduled workflow (`.github/workflows/daily.yml`) reads the new days every morning, scores the forward
-  tests and republishes the dashboard. It commits nothing: main changes only through pull requests, and the
+- A scheduled workflow (`.github/workflows/daily.yml`) reads the new days, audits them, scores the forward
+  tests and republishes the dashboard. GitHub's schedules are best effort: on the first night, 14 November, the
+  00:20 UTC run never started, and the job was started by hand at 00:44 and passed. It is now scheduled four
+  times a day, and anyone with write access can start it from the Actions tab ("dashboard", "Run workflow") or
+  with `gh workflow run dashboard`. It commits nothing: main changes only through pull requests, and the
   numbers quoted in the text stay pinned to the block above. Two limits: readings it takes are kept in a build
   cache, not in the repository, until someone merges them; and GitHub pauses scheduled workflows after 60 days
   without repository activity.
