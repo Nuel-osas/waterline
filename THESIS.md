@@ -17,6 +17,17 @@ question, whether the money behind the private chain keeps growing, with its rea
 **Rating: Hold, small and staked. Up to 1% of a liquid portfolio, to the end of 2029, checked every month by a rule
 (section 5) whose inputs this repository reads from the chain.**
 
+For a holder, in four lines:
+
+- Hold a little NEAR and stake it. All new supply is paid to stake, 5.6% a year before the validator's fee, so an
+  idle holder is the one diluted.
+- What can be checked holds up. NEAR Intents' public books are whole today (214 tokens, $223.8M), and the one
+  time they were not, the hole showed before the money left.
+- What cannot be checked is most of it: 61.0% of the money, and 74% of the revenue that funds the
+  buyback, now pass through the private chain's treasury.
+- Add if coverage, now 16%, reaches 25% in two windows in a row or NEAR publishes the private chain's
+  totals; exit if a hole stays open beyond 3 readings or coverage falls below 10% in two windows.
+
 NEAR's buyback is funded by the revenue of one product, NEAR Intents. Read from the chain, 426,685 NEAR reached NEAR's
 three revenue wallets in the 30 days to the pinned reading, 14,223 NEAR a day. That product keeps its books on a public
 ledger, `intents.near`, and anyone can audit them with two questions asked at the same block: ask the ledger what
@@ -261,7 +272,7 @@ two match. In October the public ledger itself broke, through a fault in its own
 credit had nothing behind it for 76 hours, most of that credit was the private chain's, and it could be seen and
 was closed. And the treasury is not a contract: it is an ordinary account with 1 key registered for it inside
 `intents.near`. Its own access key on NEAR has never signed a transaction. The payout in the transfer we
-followed above was signed by that registered key: one signature moved $6.1M out of the treasury. NEAR's docs say
+followed above, $6.1M, was authorized by that registered key. NEAR's docs say
 that when tokens are unshielded "the PoA Bridge processes the burn request and releases the backing tokens from
 the Treasury on NEAR". They do not say how the key that signs those releases is held; one public key can stand
 for several parties signing together, and nothing published says whether this one does.
@@ -302,7 +313,7 @@ Where the numbers come from: 25% and 10% are reading R4's thresholds, written on
 October precedent, short on three readings and whole on the fourth; two windows in a row, because a rule that
 one ordinary day can trip is not a rule. That last point was learned the hard way. An earlier version also
 said to sell if the float without NEAR's own token fell below its pinned level; the very next reading tripped
-it, on an ordinary day. A reader who holds us to that version would rate NEAR Exit. We withdrew it because the
+it, on an ordinary day. We withdrew it because the
 float moves in lumps that say nothing about value (section 4), and we report the dated test it rested on as
 failed (`make score`, E1) rather than drop it (errata). The 1% and the 3% are judgments, and the part of this
 file most open to argument.
@@ -379,10 +390,11 @@ the audit is 6.2 years of it. That is a scale for what the audit cannot see, not
 public says that balance is short, and nothing public can show that it is whole.
 
 **Why 1% and not none.** The evidence argues for holding little, and a reader could fairly take it to none. We
-do not, for three reasons we can point to. The part we could check held up. The growth a holder needs is large
-but stated: 46% a year in NEAR to cover new supply by 2031, or 33% a year if HSP-029 takes effect, against a float
-that grew 2.8x in four months. And the one thing that would let us hold more, a disclosure, is something NEAR can
-do by itself. We give a horizon and the growth it needs; we do not give a price target or an expected return,
+do not, for three reasons we can point to. A staked holder keeps and grows their share of NEAR: +3.0% a year before
+the validator's fee, while the dilution falls on those who do not stake. Lower issuance does part of the work even
+if revenue stands still: at flat revenue, coverage at the end of 2029 is 15% with issuance as it is and
+24% if HSP-029 takes effect. And the one thing that would let us hold more, a disclosure, is something NEAR
+can do by itself. We give a horizon and the growth it needs; we do not give a price target or an expected return,
 because nothing we can check supports one.
 
 ## 6. What would change our mind
