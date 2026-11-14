@@ -135,7 +135,7 @@ sit in one account on that ledger. Waterline reads all three at one block per da
 - the revenue that funds NEAR's buyback, read from the chain: 426,685 NEAR in the last 30 days, every wallet reconciled
   against its balance, and a rating computed from it by a stated rule;
 - a record, from 1Click's own status records and the chain, that its swaps settle through the private chain's
-  treasury (9 of 9);
+  treasury (9 swaps found: 8 completed, 1 refunded);
 - a test of the track's hypothesis that Intents volume leads network usage: it does not, in this data;
 - an audit of the public books: credited against held, token by token, at the pinned block, on every stored
   reading, and at the latest block on demand (`make audit`, or the button on the dashboard);
