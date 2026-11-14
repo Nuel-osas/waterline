@@ -364,22 +364,25 @@ def write_claims(write=True):
         flat = next(r for r in sc["rows"] if r["g"] == 0)
         add("Z5", pct(flat[("as now", "2029")], 0), "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance does too", "as Z1", grade="model")
         add("Z6", pct(flat[("at 1.6%", "2029")], 0), "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance falls to 1.6%", "as Z1", grade="model")
-        # --- the upside case: the revenue's growth in NEAR since the buyback began, and how sure that is (pipeline/growth.py)
+        # --- can a growth rate be read from the revenue in NEAR? How far the fitted rate moves with its start (pipeline/growth.py)
         if os.path.exists(os.path.join(DATA, "context", "activity.json")):
-            from .growth import share_at_least, trend
-            gt = trend(pin)
-            whole_pct = lambda x: f"{round(x * 100):.0f}%"   # noqa: E731  (no "-0%")
-            add("GR1", whole_pct(gt["growth"]) + " a year",
-                f"Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, since the buyback began on 2026-02-23: "
-                f"a straight line through the logarithm of {gt['weeks']} weekly totals (weeks of {gt['first_week']} to {gt['last_week']}), annualised",
+            from .growth import summary
+            gs = summary(pin)
+            spct = lambda x: f"{round(x * 100):+,d}%"   # noqa: E731
+            add("GR1", f"{spct(gs['lowest'][2])} to {spct(gs['highest'][2])} a year",
+                f"Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, from a straight line through the logarithm of "
+                f"the weekly totals, fitted from every start week from {gs['first_week']} that leaves at least {gs['min_weeks']} weeks to the week of "
+                f"{gs['last_week']}: lowest from the week of {gs['lowest'][0]}, highest from the week of {gs['highest'][0]}. "
+                f"A rate that moves this far with its start is not used",
                 "python3 -m pipeline.growth; DefiLlama's daily revenue over NearBlocks' daily price", grade="model, on quoted revenue")
-            add("GR2", f"{whole_pct(gt['low'])} to {whole_pct(gt['high'])}",
-                f"90% range of that growth, from {gt['resamples']:,} resamples of the weekly residuals in runs of {gt['run']} weeks (seed {gt['seed']})",
-                "moving-block bootstrap", grade="model")
-            add("GR3", whole_pct(share_at_least(gt, sc["need"][("as now", "2029")])),
-                "Share of those resamples growing at least as fast as Z1, the pace that covers new supply by the end of 2029", "as GR2", grade="model")
-            add("GR4", whole_pct(share_at_least(gt, sc["need"][("as now", "2031")])),
-                "The same for Z3, the pace that covers new supply by the end of 2031", "as GR2", grade="model")
+            add("GR2", f"{gs['first_per_day']:,.0f} NEAR a day",
+                f"Revenue reaching NEAR's wallets in the first complete week of the buyback (week of {gs['first_week']}), counted in NEAR at each "
+                f"day's price, per day", "weekly total over 7", grade="quoted revenue, NearBlocks price")
+            add("GR3", f"{gs['last_per_day']:,.0f} NEAR a day", f"The same for the latest complete week (week of {gs['last_week']})",
+                "as GR2", grade="quoted revenue, NearBlocks price")
+            add("GR4", f"{round(gs['from_first'][2] * 100)}% a year",
+                f"The same line fitted from the first week only, over {gs['from_first'][1]} weeks: the figure pull request 22 reported, withdrawn "
+                f"because the start chosen decides it", "as GR1", grade="model, withdrawn")
         add("M3", f"${float(vol * Fraction(365, 30) * need) / 1e9:.0f}B a year", "Reported volume that would take at today's rate of revenue per dollar of volume",
             "annualised X1 times M2", grade="reported")
 
@@ -621,10 +624,23 @@ def write_claims(write=True):
         out_low = sum(1 for r in outside if r["low"])
         in_short = sum(1 for r in inside if r["short"])
         unread = sum(r["unread"] for r in done)
+        # An unread check is accounted for when the daily reading before that block lacks the same number of tracked
+        # tokens: tokens not yet on the books then. Anything beyond that is a read that failed, and is said so.
+        from .audit import stored_days
+        bl = load(os.path.join(DATA, "blocks.json"), {})
+        tracked = rs["tokens"]
+        lacking = sorted((bl[d]["height"], sum(1 for t in tracked if held.get(t) is None or cred.get(t) is None))
+                         for d, held, cred in stored_days() if d in bl)
+        def absent(h):   # noqa: E306
+            before = [n for hh, n in lacking if hh <= h]
+            return before[-1] if before else len(tracked)
+        failed = sum(max(0, r["unread"] - absent(r["height"])) for r in done)
+        why = ("each one a token that the daily reading before that block also lacks, because it was not yet on the books"
+               if not failed else f"{unread - failed} of them tokens the daily reading before that block also lacks, and {failed} reads that failed")
         add("J1", f"{len(done)} random blocks",
-            f"Blocks drawn at random (seed {rs['seed']}) between the first reading and the pinned one and audited for the 20 tracked tokens: "
-            f"{len(inside)} fell inside the {(h_shut - h_open)} blocks the October hole was open and {in_short} of those showed it; "
-            f"{unread} token checks could not be read, mostly tokens that did not exist yet, and count as unknown",
+            f"Blocks drawn at random (seed {rs['seed']}) between the first reading and the pinned one and audited for the {len(tracked)} tracked tokens: "
+            f"{len(inside)} fell inside the {h_shut - h_open:,} blocks the October hole was open and {in_short} of those showed it; "
+            f"{unread} token checks returned nothing and count as unknown, {why}",
             "python3 -m pipeline.audit --sample 200; data/context/random_audit.json", grade="chain")
         add("J2", f"{out_short} of {len(outside)}",
             "Random blocks outside the October hole on which any tracked token was short: how often the sign test would cry wolf", "count", grade="chain")
