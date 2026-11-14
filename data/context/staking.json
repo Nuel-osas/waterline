@@ -1,0 +1,19 @@
+{
+ "day": "2026-11-13",
+ "epoch_id": "ACez11iYnkVnPH2yEssZPAsxZgFkQxxcQURTvFKz7g4f",
+ "epoch_start_height": 224265137,
+ "fetched_at": "2026-11-14T13:10:14Z",
+ "height": 224285109,
+ "max_inflation_rate": [
+  1,
+  40
+ ],
+ "protocol_reward_rate": [
+  0,
+  1
+ ],
+ "protocol_version": 88,
+ "source": "NEAR RPC at the pinned block: validators (current_validators[].stake) and EXPERIMENTAL_protocol_config",
+ "total_stake": "582369883455816388411861702201260",
+ "validators": 342
+}

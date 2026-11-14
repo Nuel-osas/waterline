@@ -1,7 +1,7 @@
 """Fetch the inputs that do not come from the daily chain readings, and write them under data/.
 
   python3 -m pipeline.context            # everything below
-  python3 -m pipeline.context tokens     # one part: tokens | quoted | supply | custody | tracked
+  python3 -m pipeline.context tokens     # one part: tokens | quoted | supply | custody | tracked | activity | staking
 
 What each part is, and how far it can be re-checked:
   tokens   NEAR Intents' own token list (ids, decimals, prices). The list changes during a day, so new ids are
@@ -12,6 +12,8 @@ What each part is, and how far it can be re-checked:
   custody  The keys registered for the treasury inside intents.near at the pinned block, and whether the
            account has contract code. `make verify` re-reads these too.
   tracked  The tokens followed through time: the 20 largest by total held on the pinned day.
+  staking  The stake of the pinned block's epoch and the protocol's reward settings at that block, for what a
+           holder who stakes is paid. `make verify` re-reads them.
 """
 import datetime as dt
 import json
@@ -139,7 +141,27 @@ def activity():
     print(f"activity: {len(days)} days, {min(days)} to {max(days)}")
 
 
-PARTS = {"tokens": tokens, "quoted": quoted, "supply": supply, "custody": custody, "tracked": tracked, "activity": activity}
+def staking():
+    """What a holder who stakes is paid, from the chain at the pinned block: the stake of the epoch's validators, the
+    protocol's cap on new supply, and the share of new supply the protocol keeps for itself (none goes elsewhere
+    when that share is zero, so every newly issued NEAR is paid to stake). `make verify` re-reads the stake."""
+    pin = load(os.path.join(DATA, "pin.json"), {})["pin_day"]
+    height = load(os.path.join(DATA, "blocks.json"), {})[pin]["height"]
+    epoch = rpc.header(height)["epoch_id"]                        # archival nodes answer by epoch, not by any block
+    v = rpc.call("validators", {"epoch_id": epoch})
+    cfg = rpc.call("EXPERIMENTAL_protocol_config", {"block_id": height})
+    stake = sum(int(x["stake"]) for x in v["current_validators"])
+    save(os.path.join(DATA, "context", "staking.json"), {
+        "source": "NEAR RPC at the pinned block: validators (current_validators[].stake) and EXPERIMENTAL_protocol_config",
+        "fetched_at": now(), "day": pin, "height": height, "epoch_id": epoch, "epoch_start_height": v.get("epoch_start_height"),
+        "validators": len(v["current_validators"]), "total_stake": str(stake),
+        "max_inflation_rate": cfg["max_inflation_rate"], "protocol_reward_rate": cfg["protocol_reward_rate"],
+        "protocol_version": cfg.get("protocol_version")})
+    print(f"staking: {len(v['current_validators'])} validators, {stake / 10**24:,.0f} NEAR staked at block {height}; "
+          f"cap {cfg['max_inflation_rate']}, protocol share {cfg['protocol_reward_rate']}")
+
+
+PARTS = {"tokens": tokens, "quoted": quoted, "supply": supply, "custody": custody, "tracked": tracked, "activity": activity, "staking": staking}
 
 
 if __name__ == "__main__":
