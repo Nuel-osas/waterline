@@ -89,8 +89,6 @@ rows are results of dated tests on readings taken after the tests were written.
 | V7 | **205x** | V5 on the same dollar basis |
 | V8 | **5.1x** | M2 on the same dollar basis |
 | M1 | **4.8 basis points** | Revenue reaching NEAR's wallets per dollar of reported volume, 30 days to 2026-11-11 |
-| M2 | **6.5x** | How many times revenue would have to grow for buybacks to match net new supply |
-| H1 | **4.2x** | How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes |
 | Q1 | **6.2 years** | The float on 2026-11-13 as years of the revenue that reaches NEAR's wallets, at the rate of the 30 days to 2026-11-11 |
 | Q2 | **16%** | Part of the float whose loss would equal a full year of that revenue |
 | Q3 | **2.1 months** | The October hole at its largest as months of that revenue |
@@ -100,6 +98,8 @@ rows are results of dated tests on readings taken after the tests were written.
 | U5 | **20%** | The same coverage in the 30 days before, to the reading of 2026-10-14 (517,163 NEAR received) |
 | U6 | **-17%** | Change in the NEAR reaching the revenue wallets, the latest 30 days against the 30 before, read from the chain |
 | U3 | **100.9%** | NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR at each day's price (409,897 NEAR against 406,427 NEAR): how far the quoted figure agrees with the chain |
+| M2 | **6.2x** | How many times revenue would have to grow for buybacks to match net new supply |
+| H1 | **4.0x** | How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about |
 | RT | **Hold** | The rating the rule in THESIS.md section 5 gives on 2026-11-13: the public books are whole on the latest reading; coverage is 16% and 20% in the last two 30-day windows; NEAR has not published the private chain's totals |
 | Z1 | **84% a year** | How fast the revenue reaching NEAR's wallets, counted in NEAR, must grow for buybacks to match net new supply by the end of 2029, with issuance as it is (2.47% of supply a year) |
 | Z2 | **59% a year** | The same, if net new supply runs at 1.6% of supply by then, as HSP-029 would bring about |
@@ -111,7 +111,7 @@ rows are results of dated tests on readings taken after the tests were written.
 | GR2 | **25,228 NEAR a day** | Revenue reaching NEAR's wallets in the first complete week of the buyback (week of 2026-02-23), counted in NEAR at each day's price, per day |
 | GR3 | **12,969 NEAR a day** | The same for the latest complete week (week of 2026-11-02) |
 | GR4 | **107% a year** | The same line fitted from the first week only, over 37 weeks: the figure pull request 22 reported, withdrawn because the start chosen decides it |
-| M3 | **$297B a year** | Reported volume that would take at today's rate of revenue per dollar of volume |
+| M3 | **$283B a year** | Reported volume that would take at today's rate of revenue per dollar of volume |
 | T4 | **$136.4M** | Highest the float has been, on the 2026-11-13 reading |
 | P8 | **3.5x** | Growth of the float without NEAR's own token since the B2B launch ($26.8M then) |
 | K2 | **1 of 1** | Access keys of the treasury account on NEAR itself that have never signed a transaction (the nonce is still the value set at creation) |
@@ -151,6 +151,7 @@ rows are results of dated tests on readings taken after the tests were written.
 | L2 | **r = +0.09, p = 0.88** | Weekly change in NEAR Intents' reported volume against the change in NEAR's active accounts 1 week later, the strongest of leads of 1 to 8 weeks. p is the share of 10,000 circularly shifted series that do as well at their best lead (seed 20261114) |
 | L3 | **r = -0.12, p = 0.74** | Weekly change in NEAR Intents' reported volume against the change in NEAR's price 2 weeks later, the strongest of leads of 1 to 8 weeks. p is the share of 10,000 circularly shifted series that do as well at their best lead (seed 20261114) |
 | L4 | **98 weekly changes** | Weeks in the lead-lag test, from the week of 2024-12-16 to the week of 2026-11-02 |
+| L5 | **r = +0.27** | Weekly change in NEAR Intents' reported volume against the change in NEAR's transactions in the same week, with no lead: they move a little together, which a chart of the two would show. No p-value is given for it; the test is for a lead |
 | W5 | **9 of 9** | Completed or refunded 1Click swaps, found among 188 accounts that paid into the treasury on six days after 2026-10-27, whose own status record lists the NEAR transaction that moved their tokens into the treasury (swaps dated 2026-11-02 to 2026-11-11; 9 of those transfers read back from the chain as stated) |
 | N6 | **4.1M NEAR** | Net NEAR that left the treasury between the reading of 2026-09-29 and block 217799506, where the hole in the public books opened. From that block to the next reading the treasury gained 0.2M NEAR |
 | N7 | **2.1M NEAR** | The three largest transfers out of the treasury that day, all between 06:06 and 06:09 UTC on 29 September |

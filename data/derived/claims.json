@@ -411,20 +411,6 @@
   },
   {
    "grade": "chain, via an indexer",
-   "how": "one over V4",
-   "id": "M2",
-   "shown": "6.5x",
-   "what": "How many times revenue would have to grow for buybacks to match net new supply"
-  },
-  {
-   "grade": "chain, via an indexer",
-   "how": "supply times 1.6%, over a year, against 30-day revenue in NEAR",
-   "id": "H1",
-   "shown": "4.2x",
-   "what": "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes"
-  },
-  {
-   "grade": "chain, via an indexer",
    "how": "C1 over (X3 times 365/30)",
    "id": "Q1",
    "shown": "6.2 years",
@@ -485,6 +471,20 @@
    "id": "U3",
    "shown": "100.9%",
    "what": "NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR at each day's price (409,897 NEAR against 406,427 NEAR): how far the quoted figure agrees with the chain"
+  },
+  {
+   "grade": "chain",
+   "how": "one over U4",
+   "id": "M2",
+   "shown": "6.2x",
+   "what": "How many times revenue would have to grow for buybacks to match net new supply"
+  },
+  {
+   "grade": "chain",
+   "how": "supply times 1.6%, over a year, against 30 days of revenue in NEAR (U1)",
+   "id": "H1",
+   "shown": "4.0x",
+   "what": "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about"
   },
   {
    "grade": "rule",
@@ -567,7 +567,7 @@
    "grade": "reported",
    "how": "annualised X1 times M2",
    "id": "M3",
-   "shown": "$297B a year",
+   "shown": "$283B a year",
    "what": "Reported volume that would take at today's rate of revenue per dollar of volume"
   },
   {
@@ -841,6 +841,13 @@
    "id": "L4",
    "shown": "98 weekly changes",
    "what": "Weeks in the lead-lag test, from the week of 2024-12-16 to the week of 2026-11-02"
+  },
+  {
+   "grade": "model, on quoted volume and NearBlocks activity",
+   "how": "python3 -m pipeline.leadlag",
+   "id": "L5",
+   "shown": "r = +0.27",
+   "what": "Weekly change in NEAR Intents' reported volume against the change in NEAR's transactions in the same week, with no lead: they move a little together, which a chart of the two would show. No p-value is given for it; the test is for a lead"
   },
   {
    "grade": "chain, found through 1Click's public status records",
