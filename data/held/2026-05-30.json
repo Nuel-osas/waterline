@@ -1,0 +1,26 @@
+{
+ "day": "2026-05-30",
+ "height": 200487194,
+ "held": {
+  "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1": "816298017567",
+  "nep141:arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near": "292897381692",
+  "nep141:base-0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.omft.near": "315678985523",
+  "nep141:btc.omft.near": "15996141187",
+  "nep141:cnear.assetize.near": null,
+  "nep141:eth-0x0f38f1ce62776d4a0038bc6cac66877a5687383b.omft.near": null,
+  "nep141:eth-0x2260fac5e5542a773aa44fbcfedf7c193bc2c599.omft.near": "5559686005",
+  "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near": "11167458647518",
+  "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near": "5351451682555",
+  "nep141:eth.omft.near": "1859163536495843260738",
+  "nep141:nbtc.bridge.near": "6471947932",
+  "nep141:qtc.omft.near": null,
+  "nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near": "946860245938",
+  "nep141:sol.omft.near": "13672188150458",
+  "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near": "1874275060904",
+  "nep141:wrap.near": "8347781913581010555158259119177",
+  "nep141:zec.omft.near": "1958131428787",
+  "nep245:v2_1.omni.hot.tg:1100_111bzQBB5v7AhLyPMDwS8uJgQV24KaAPXtwyVWu2KXbbfQU6NXRCz": "187068175510126",
+  "nep245:v2_1.omni.hot.tg:1100_111bzQBB65GxAPAVoxqmMcgYo5oS3txhqs1Uh1cgahKQUeTUq1TJu": "23373296064783",
+  "nep245:v2_1.omni.hot.tg:56_2CMMyVTGZkeyNZTSvS5sarzfir6g": "613271129078021569588296"
+ }
+}

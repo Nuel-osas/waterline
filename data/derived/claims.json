@@ -69,14 +69,14 @@
   {
    "how": "as C23",
    "id": "C19",
-   "shown": "6%",
-   "what": "Tracked-token share on 2026-04-02, the first reading of April"
+   "shown": "5%",
+   "what": "Tracked-token share on 2026-04-01, the first reading of April"
   },
   {
    "how": "held minus treasury, pinned prices",
    "id": "C20",
-   "shown": "$83.5M",
-   "what": "Public side of intents.near on 2026-04-02, tracked tokens ($75.0M on 2026-11-13)"
+   "shown": "$86.0M",
+   "what": "Public side of intents.near on 2026-04-01, tracked tokens ($75.0M on 2026-11-13)"
   },
   {
    "how": "as C20",
@@ -87,8 +87,8 @@
   {
    "how": "as C23",
    "id": "C5",
-   "shown": "36.2%",
-   "what": "Tracked-token share on 2026-07-16, the first reading after the B2B launch of 2026-07-13"
+   "shown": "36.0%",
+   "what": "Tracked-token share on 2026-07-13, the first reading after the B2B launch of 2026-07-13"
   },
   {
    "how": "as C23",
@@ -482,8 +482,8 @@
    "grade": "chain",
    "how": "one audit per stored day",
    "id": "A3",
-   "shown": "1,090 checks",
-   "what": "Token-by-token checks of the 20 tracked tokens on 70 stored readings from 2026-02-19 to 2026-11-13. 58 readings cover every tracked token that had a balance; 12 readings around the October exploit cover only the token involved"
+   "shown": "4,806 checks",
+   "what": "Token-by-token checks of the 20 tracked tokens on 269 stored readings from 2026-02-18 to 2026-11-13. Every reading covers every tracked token that had a balance that day"
   },
   {
    "grade": "chain",
@@ -497,7 +497,7 @@
    "how": "pipeline/audit.py, new_lows: the running minimum of held minus credited, per token",
    "id": "A15",
    "shown": "3 new lows",
-   "what": "Checks, out of those 1,090, on which a token's held-minus-credited fell below every earlier reading of that token: the same readings as A4 and no others. This test also sees a hole smaller than the surplus a token already carries"
+   "what": "Checks, out of those 4,806, on which a token's held-minus-credited fell below every earlier reading of that token: the same readings as A4 and no others. This test also sees a hole smaller than the surplus a token already carries"
   },
   {
    "grade": "chain",
@@ -568,6 +568,36 @@
    "id": "A14",
    "shown": "60.9%",
    "what": "What C4 would be with the 15 tokens that joined NEAR Intents' list later on the pinned day. They were read once, at the pinned block: $291,069 held, none short, $0 of it in the treasury. They are left out of every pinned figure"
+  },
+  {
+   "grade": "chain, a reading taken after the test was written",
+   "how": "pipeline/score.py on the reading of that day",
+   "id": "E1",
+   "shown": "$135.2M",
+   "what": "FAIL. Test E1: the float on the 2026-11-14 reading had to be at least what it was on 2026-11-13 ($136.4M). It fell by $1.2M"
+  },
+  {
+   "grade": "chain, a reading taken after the test was written",
+   "how": "as E1",
+   "id": "E2",
+   "must_appear": false,
+   "shown": "$1.2M",
+   "what": "PASS. Test E2: the largest one-day change between the two readings (a fall). To pass it had to stay under the tenth-largest rise so far, $4.7M"
+  },
+  {
+   "grade": "chain, a reading taken after the test was written",
+   "how": "as E1",
+   "id": "E3",
+   "shown": "61.9%",
+   "what": "PASS. Test E3: the private share of the tracked tokens on the 2026-11-14 reading had to be at least 60.0%"
+  },
+  {
+   "grade": "chain, a reading taken after the test was written",
+   "how": "pipeline/score_audit.py on the reading of that day",
+   "id": "G1",
+   "must_appear": false,
+   "shown": "none short",
+   "what": "PASS. Test G1 of PREREG-AUDIT.md: no tracked token short on the 2026-11-14 reading"
   },
   {
    "grade": "chain",

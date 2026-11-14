@@ -79,7 +79,7 @@
     <article class="finding">
       <header>
         <h3>Whole on every reading but three.</h3>
-        <p>The 20 largest tokens, audited on every stored reading since February: <span data-claim="A3">1,090 checks</span>, <span data-claim="A4">3 of them short</span>. All three are one token, a bridged dollar token, on 30 September, 1 October and 2 October. On the last of them <span data-claim="A6">98%</span> of everything credited in that token had nothing behind it, and <span data-claim="A7">87%</span> of that credit belonged to the private chain. A stricter test, whether a token's surplus fell below every earlier reading, finds <span data-claim="A15">3 new lows</span> in the same checks: the same three readings and no others.</p>
+        <p>The 20 largest tokens, audited on every stored reading since February: <span data-claim="A3">4,806 checks</span>, <span data-claim="A4">3 of them short</span>. All three are one token, a bridged dollar token, on 30 September, 1 October and 2 October. On the last of them <span data-claim="A6">98%</span> of everything credited in that token had nothing behind it, and <span data-claim="A7">87%</span> of that credit belonged to the private chain. A stricter test, whether a token's surplus fell below every earlier reading, finds <span data-claim="A15">3 new lows</span> in the same checks: the same three readings and no others.</p>
       </header>
       <ul class="legend" aria-label="Result of each reading">
         <li><i class="key accent"></i>Every token read was whole</li>
@@ -125,7 +125,7 @@ v2_1.omni.hot.tg.mt_balance_of(account_id="intents.near", token_id="56_2CMM...")
   </div>
   <div class="chart" id="chart-waterline" role="img" aria-label="Mirrored area chart of the 20 largest tokens. Above the line: value NEAR Intents holds on its public side, roughly level since February. Below the line: value held by the private-chain treasury, which grows from zero to more than the part above. The table below the chart has every value."></div>
   <div class="wl-foot"><div class="wrap">
-    <p class="note">The 20 largest tokens by total held, <span data-claim="C18">89%</span> of everything NEAR Intents holds. Each token's own contract says how much NEAR Intents holds; the treasury's balance says how much of that is private. Dollars at the prices of the pinned day. One reading a week before 23 October, one a day after. The headline above counts every token with a price on the pinned day.</p>
+    <p class="note">The 20 largest tokens by total held, <span data-claim="C18">89%</span> of everything NEAR Intents holds. Each token's own contract says how much NEAR Intents holds; the treasury's balance says how much of that is private. Dollars at the prices of the pinned day. One reading a day. The share at the top of the page counts every token with a price on the pinned day.</p>
     <details class="query"><summary>The query behind this chart</summary><pre># at the day's block in data/blocks.json, on a NEAR archival node
 intents.near.mt_batch_balance_of(account_id=TREASURY, token_ids=[the 20 tracked tokens])   -> below the line
 &lt;token&gt;.ft_balance_of(account_id="intents.near")  minus the line above               -> above the line
@@ -277,6 +277,7 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
     <details class="query"><summary>The command behind this table</summary><pre>make model
 python3 -m pipeline.model --since 2026-10-01 --block 14 --seed 7</pre></details>
     <h3 class="fwd-title">Dated tests, scored by the same code as their readings arrive: the audit's first (G), then the float's (E, F)</h3>
+    <p class="note">First results, from the reading of 14 November, the first taken after the tests were written: the audit's test passed, two of the float's three passed, and one failed. The float had to be at least <span data-claim="C1">$136.4M</span> and was <span data-claim="E1">$135.2M</span>. One day settles nothing about March; a fail is shown because we said it would be.</p>
     <div class="fwd" id="forward"></div>
   </div>
 </section>
