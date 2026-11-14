@@ -51,3 +51,8 @@ place; nothing is removed silently.
   transactions, r = +0.27. It is now stated (pull request 24).
 - The README's list of what was built still said "(9 of 9)" for the 1Click swaps after pull request 24; it now says
   8 completed and 1 refunded (pull request 27).
+- The scale figures (the float in years of revenue, the share of the float a year of revenue covers, and October's
+  hole in months of revenue) divided amounts at pinned prices by DefiLlama's revenue in dollars at each day's price.
+  They are now on the rating's basis, the chain's 30 days of revenue at the pinned NEAR price: 7.7 years, 13% and
+  2.6 months (pull request 33).
+
