@@ -1,7 +1,7 @@
 # Waterline
 
 **NEAR Intents can be audited from outside, to the last unit, at any block. Its private chain cannot.**
-Waterline is that audit, and an investment thesis for NEAR built on it: **Hold, small, to the end of 2029**. Two
+Waterline is that audit, and an investment thesis for NEAR built on it: **Hold, small and staked, to the end of 2029**. Two
 questions to two contracts show whether NEAR Intents holds what it has credited. Asked at the pinned block: 214
 tokens, $223.8M, none short. Asked over past blocks: the October 2026 exploit is in the public books from ten
 dollars, 31 hours 40 minutes before the first payout. The audit stops at one account, the private chain's treasury:
@@ -25,21 +25,24 @@ Scored by code and still pending: 4 on the 2026-11-17 reading, 6 on the 2027-03-
 
 ## The thesis in short
 
-**Rating: Hold, small, to the end of 2029.** Up to 1% of a liquid portfolio, moved by a rule whose inputs this
-repository reads from the chain ([`THESIS.md`](THESIS.md), section 5).
+**Rating: Hold, small and staked, to the end of 2029.** Up to 1% of a liquid portfolio, moved by a rule whose
+inputs this repository reads from the chain ([`THESIS.md`](THESIS.md), section 5). Staked, because all new supply
+is paid to stake, 5.6% a year before the validator's fee: a staker's share of supply changes by +3.0% a year and
+an idle holder's by -2.4% a year.
 
 1. NEAR Intents' public books can be proven whole by anyone, at any block, in two calls per token. Today they
    are: 214 tokens, $223.8M, none short.
 2. The one time they were not, it showed: the October hole was in the books from ten dollars 31 hours 40 minutes before the
    first payout, and above $10,000 1 hour 9 minutes before it. A replay run in November, not live detection; the start time
    is also CertiK's.
-3. The swaps now settle through the one account the audit cannot see into: for 9 of 9 completed 1Click swaps we
-   found, the swap's own record lists the transaction that moved its tokens into it. That account holds 61.0% of
-   everything NEAR Intents holds.
+3. The swaps now settle through the one account the audit cannot see into: for each of the 9 1Click swaps we
+   found (8 completed, 1 refunded), the swap's own record lists the transaction that moved its tokens into it.
+   They show the route, not what share of swaps take it. That account holds 61.0% of everything NEAR Intents
+   holds.
 4. NEAR's buyback is funded by revenue we read from the chain: 426,685 NEAR in the last 30 days, 16% of net new supply.
    For buybacks to match new supply by the end of 2029 that revenue, counted in NEAR, has to grow 84% a year, or 59% a year
-   if HSP-029 takes effect. Since the buyback began in February it has grown about 107% a year in NEAR, but the
-   range is wide: 59% of resamples clear the 2029 pace. Over the latest 30 days against the 30 before it was -17%.
+   if HSP-029 takes effect. No growth rate can be read from the record yet: fitted from different start weeks since
+   February, it runs from -91% to +1,160% a year. Over the latest 30 days against the 30 before it was -17%.
 5. What sits behind the private chain is partly paid for and moves in lumps: NEAR pays a reward for confidential
    balances, 94% of the net NEAR that arrived in late September came from one account, and half of the float's
    best day was money the treasury had paid out the evening before.
@@ -62,7 +65,7 @@ repository reads from the chain ([`THESIS.md`](THESIS.md), section 5).
 | `make trace` | Halves the day before the 25 September reading down to the one block where the treasury's NEAR balance jumped, then prints the receipt behind it: who signed it, for how much. About 25 requests to a public archival node, about a minute. `python3 -m pipeline.trace --help` lists the settings (`--account`, `--token`, `--top`). |
 | `python3 -m pipeline.revenue` | The three revenue wallets' NEAR balances at the first and last stored day. `--balances` and `--transfers FIRST LAST` read them again from the chain and a public index. No network without a flag. |
 | `python3 -m pipeline.oneclick` | The 1Click swaps found whose own records list the transaction into the private chain's treasury. `--scan` looks again (slow). No network without a flag. |
-| `python3 -m pipeline.growth` | The upside case: how fast the revenue that funds the buyback has grown since February, counted in NEAR, its 90% range, and the share of resamples that clear the paces needed by 2029 and 2031. Seeded, no network, under a second. |
+| `python3 -m pipeline.growth` | Whether a growth rate can be read from the revenue that funds the buyback, counted in NEAR: the weekly totals since February and the trend fitted from every start week. It cannot: the rate depends on the start week. No network, a second. |
 | `python3 -m pipeline.leadlag` | The test of the track's hypothesis that Intents volume leads network usage: the strongest lead for transactions, active accounts and price, with its p-value. Seeded, no network, a few seconds. |
 | `make model` | How often the long-dated readings R1, R2 and R5 hold when the float's past daily changes are replayed forward to 2027-03-31, for three windows of past days. Seeded: the same numbers on any machine. `python3 -m pipeline.model --help` lists the settings (`--since`, `--until`, `--block`, `--paths`, `--seed`). |
 | `make pull` then `make build` | Adds the days since the last committed reading (about 30 requests a day added) and rebuilds, so `make score` can resolve tests whose day has come. |
@@ -132,7 +135,7 @@ sit in one account on that ledger. Waterline reads all three at one block per da
 - the revenue that funds NEAR's buyback, read from the chain: 426,685 NEAR in the last 30 days, every wallet reconciled
   against its balance, and a rating computed from it by a stated rule;
 - a record, from 1Click's own status records and the chain, that its swaps settle through the private chain's
-  treasury (9 of 9);
+  treasury (9 swaps found: 8 completed, 1 refunded);
 - a test of the track's hypothesis that Intents volume leads network usage: it does not, in this data;
 - an audit of the public books: credited against held, token by token, at the pinned block, on every stored
   reading, and at the latest block on demand (`make audit`, or the button on the dashboard);
@@ -196,7 +199,7 @@ pipeline/flows.py    an index's transfer list, kept where it adds up -> data/con
 pipeline/revenue.py  the revenue wallets: balances and transfers   -> data/context/revenue.json, the U rows and the rating
 pipeline/oneclick.py 1Click swaps that settle through the treasury -> data/context/oneclick.json, W5
 pipeline/leadlag.py  does Intents volume lead usage or price?      -> the L rows; prints, writes nothing
-pipeline/growth.py   the revenue's trend in NEAR since February   -> the GR rows; prints, writes nothing
+pipeline/growth.py   can a growth rate be read from the revenue?  -> the GR rows; prints, writes nothing
 pipeline/model.py    replays past daily changes forward     -> the O rows of the findings table; prints, writes nothing
 pipeline/trace.py    halves a day to the block of a move, reads its receipts -> data/context/trace.json (one case, re-read by make verify)
 pipeline/verify.py   re-read from the chain, rebuild in memory, compare; writes nothing
@@ -247,10 +250,8 @@ plain HTML, CSS and JavaScript with no framework. GitHub Actions used: `actions/
 NEAR mainnet through a public archival node, NEAR Intents' public token list, DefiLlama's public API, CertiK's
 published incident report (three quoted times), and FastNEAR's transfers index for the list of September NEAR
 transfers and one hop of the transfer that was followed. The dashboard's audit button asks three public NEAR nodes from the visitor's browser. The code
-and text were written with an AI coding assistant (Claude Code) under the author's direction. Before
-submission the repository was reviewed several times by independent AI reviewers. Their findings were fixed in
-pull requests 2, 4, 5, 10, 11, 13, 14 and 16, and one review's proposal, to audit the whole ledger and not one
-account, is pull request 8.
+and text were written with an AI coding assistant (Claude Code) under the author's direction, and reviewed by
+independent AI reviewers before submission. Every correction is listed in [`docs/ERRATA.md`](docs/ERRATA.md).
 
 ## Errata
 

@@ -274,12 +274,8 @@ def write_claims(write=True):
         add("V8", f"{float(1 / usd_share):.1f}x", "M2 on the same dollar basis", "one over V6", grade="chain, via an indexer")
         need = (per_day * 30) / rev_near
         add("M1", f"{float(rev / vol * 10000):.1f} basis points", f"Revenue reaching NEAR's wallets per dollar of reported volume, {span}", "X3 over X1", grade="reported")
-        add("M2", f"{float(need):.1f}x", "How many times revenue would have to grow for buybacks to match net new supply", "one over V4", grade="chain, via an indexer")
-        # the proposal to lower issuance (HSP-029): the same sum if net new supply ran at the proposed target
+        # HSP-029's issuance target; M2 and H1 are added below, on the basis the rating uses
         target = Fraction(16, 1000)
-        need_target = (Fraction(s1, 10**24) * target * Fraction(30, 365)) / rev_near
-        add("H1", f"{float(need_target):.1f}x", "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes",
-            "supply times 1.6%, over a year, against 30-day revenue in NEAR", grade="chain, via an indexer")
         # scale: the money beyond the audit, and the one hole that was measured, against the revenue that funds the buyback
         month = rev  # 30 days of revenue reaching NEAR's wallets, in dollars at each day's price
         year = month * Fraction(365, 30)
@@ -300,6 +296,7 @@ def write_claims(write=True):
         rv = load(os.path.join(DATA, "context", "revenue.json"), None)
         shift = lambda d, n=1: (_dt.date.fromisoformat(d) + _dt.timedelta(days=n)).isoformat()   # noqa: E731
         coverage, coverage_label = rev_near / (per_day * 30), "V4"
+        rev30 = rev_near                                         # 30 days of revenue in NEAR: DefiLlama's, until the chain's is read
         sday = lambda d: int(sup["days"][d]["total_supply"])   # noqa: E731
         win_b = (shift(pin, -29), pin)                            # the 30 readings to the pinned one
         win_a = (shift(pin, -59), shift(pin, -30))                # the 30 before
@@ -315,7 +312,7 @@ def write_claims(write=True):
                 + ("equal, to the last unit, to the change in its balance read at each day's block" if rb["adds_up"] else "NOT equal to the change in its balance"),
                 "pipeline/revenue.py; data/context/revenue.json", grade="chain")
             add("U2", f"{float(got_b / 30):,.0f} NEAR a day", "The same, a day", "U1 over 30", grade="chain")
-            coverage, coverage_label = got_b / new_b, "U4"
+            coverage, coverage_label, rev30 = got_b / new_b, "U4", got_b
             add("U4", pct(coverage, 0), f"Revenue reaching NEAR's wallets as a share of net new supply, both read from the chain, in the 30 days to the reading of {pin}: "
                 "U1 over the change in total supply between two block headers 30 days apart. The rating in THESIS.md section 5 uses it", "U1 over 30 days of supply growth", grade="chain")
             if ra and shift(pin, -60) in sup["days"]:
@@ -335,6 +332,14 @@ def write_claims(write=True):
                 f"NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR "
                 f"at each day's price ({float(got_x):,.0f} NEAR against {float(rev_near):,.0f} NEAR): how far the quoted figure agrees with the chain",
                 "pipeline/revenue.py against data/context/defillama.json", grade="chain")
+        # the multiples on the same basis as the rating: the chain's revenue when it was read (U4), DefiLlama's otherwise (V4)
+        need = 1 / coverage
+        need_target = (Fraction(s1, 10**24) * target * Fraction(30, 365)) / rev30
+        on_chain = coverage_label == "U4"
+        add("M2", f"{float(need):.1f}x", "How many times revenue would have to grow for buybacks to match net new supply", f"one over {coverage_label}",
+            grade="chain" if on_chain else "chain, via an indexer")
+        add("H1", f"{float(need_target):.1f}x", "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about",
+            f"supply times 1.6%, over a year, against 30 days of revenue in NEAR ({'U1' if on_chain else 'DefiLlama'})", grade="chain" if on_chain else "chain, via an indexer")
         # --- the rating, from the rule in THESIS.md section 5: computed, not typed
         last_audit = (build.last.get("audit") or {}).get("history") or []
         audited = [d for d in last_audit if d["day"] <= pin]
@@ -364,24 +369,51 @@ def write_claims(write=True):
         flat = next(r for r in sc["rows"] if r["g"] == 0)
         add("Z5", pct(flat[("as now", "2029")], 0), "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance does too", "as Z1", grade="model")
         add("Z6", pct(flat[("at 1.6%", "2029")], 0), "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance falls to 1.6%", "as Z1", grade="model")
-        # --- the upside case: the revenue's growth in NEAR since the buyback began, and how sure that is (pipeline/growth.py)
+        # --- can a growth rate be read from the revenue in NEAR? How far the fitted rate moves with its start (pipeline/growth.py)
         if os.path.exists(os.path.join(DATA, "context", "activity.json")):
-            from .growth import share_at_least, trend
-            gt = trend(pin)
-            whole_pct = lambda x: f"{round(x * 100):.0f}%"   # noqa: E731  (no "-0%")
-            add("GR1", whole_pct(gt["growth"]) + " a year",
-                f"Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, since the buyback began on 2026-02-23: "
-                f"a straight line through the logarithm of {gt['weeks']} weekly totals (weeks of {gt['first_week']} to {gt['last_week']}), annualised",
+            from .growth import summary
+            gs = summary(pin)
+            spct = lambda x: f"{round(x * 100):+,d}%"   # noqa: E731
+            add("GR1", f"{spct(gs['lowest'][2])} to {spct(gs['highest'][2])} a year",
+                f"Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, from a straight line through the logarithm of "
+                f"the weekly totals, fitted from every start week from {gs['first_week']} that leaves at least {gs['min_weeks']} weeks to the week of "
+                f"{gs['last_week']}: lowest from the week of {gs['lowest'][0]}, highest from the week of {gs['highest'][0]}. "
+                f"A rate that moves this far with its start is not used",
                 "python3 -m pipeline.growth; DefiLlama's daily revenue over NearBlocks' daily price", grade="model, on quoted revenue")
-            add("GR2", f"{whole_pct(gt['low'])} to {whole_pct(gt['high'])}",
-                f"90% range of that growth, from {gt['resamples']:,} resamples of the weekly residuals in runs of {gt['run']} weeks (seed {gt['seed']})",
-                "moving-block bootstrap", grade="model")
-            add("GR3", whole_pct(share_at_least(gt, sc["need"][("as now", "2029")])),
-                "Share of those resamples growing at least as fast as Z1, the pace that covers new supply by the end of 2029", "as GR2", grade="model")
-            add("GR4", whole_pct(share_at_least(gt, sc["need"][("as now", "2031")])),
-                "The same for Z3, the pace that covers new supply by the end of 2031", "as GR2", grade="model")
+            add("GR2", f"{gs['first_per_day']:,.0f} NEAR a day",
+                f"Revenue reaching NEAR's wallets in the first complete week of the buyback (week of {gs['first_week']}), counted in NEAR at each "
+                f"day's price, per day", "weekly total over 7", grade="quoted revenue, NearBlocks price")
+            add("GR3", f"{gs['last_per_day']:,.0f} NEAR a day", f"The same for the latest complete week (week of {gs['last_week']})",
+                "as GR2", grade="quoted revenue, NearBlocks price")
+            add("GR4", f"{round(gs['from_first'][2] * 100)}% a year",
+                f"The same line fitted from the first week only, over {gs['from_first'][1]} weeks: the figure pull request 22 reported, withdrawn "
+                f"because the start chosen decides it", "as GR1", grade="model, withdrawn")
         add("M3", f"${float(vol * Fraction(365, 30) * need) / 1e9:.0f}B a year", "Reported volume that would take at today's rate of revenue per dollar of volume",
             "annualised X1 times M2", grade="reported")
+        # --- a holder's view: what staking pays against what new supply takes (data/context/staking.json, read at the pinned block)
+        stk = load(os.path.join(DATA, "context", "staking.json"), None)
+        if stk and stk.get("day") == pin and stk["protocol_reward_rate"][0] == 0:
+            stake = Fraction(int(stk["total_stake"]), 10**24)
+            supply_now = Fraction(s1, 10**24)
+            y = per_day * 365 / stake                                   # every new NEAR is paid to stake when the protocol keeps none
+            y_low = target * supply_now / stake                         # the same at HSP-029's 1.6%, with the stake unchanged
+            yrs = Fraction((_dt.date(2030, 1, 1) - _dt.date.fromisoformat(pin)).days * 100, 36525)
+            signed = lambda x: ("+" if x >= 0 else "") + pct(x, 1)     # noqa: E731
+            staker, idle = (1 + y) / (1 + i_now) - 1, 1 / (1 + i_now) - 1
+            add("ST1", pct(stake / supply_now, 1), f"Share of NEAR's total supply staked with the {stk['validators']} validators of the epoch of the pinned "
+                f"block ({float(stake):,.0f} NEAR)", "validators RPC by epoch, over the pinned block's total supply", grade="chain")
+            add("ST2", pct(y, 1) + " a year", "What stake earns before the validator's fee: net new supply over a year, over the total stake. The protocol "
+                "keeps none of the new supply (protocol_reward_rate 0 at the pinned block), so all of it is paid to stake; net new supply is what is "
+                "minted less the fees burned, so this slightly understates it", "V2 times 365, over the stake in ST1", grade="chain")
+            add("ST3", signed(staker) + " a year", "Change in a staker's share of NEAR's total supply over a year, before the validator's fee",
+                "(1 + ST2) / (1 + issuance) - 1", grade="chain")
+            add("ST4", signed(idle) + " a year", "Change in the share of a holder who does not stake: new supply goes to stakers", "1 / (1 + issuance) - 1", grade="chain")
+            to_2030 = lambda r: (1 + float(r)) ** float(yrs) - 1   # noqa: E731
+            add("ST5", f"{signed(to_2030(staker))} against {signed(to_2030(idle))}",
+                "Change in a holder's share of total supply from the pinned day to the end of 2029, staked (before the validator's fee) against not "
+                "staked, with issuance and stake as they are now", "ST3 and ST4 compounded to 2030-01-01", grade="model")
+            add("ST6", pct(y_low, 1) + " a year", "What stake would earn before the validator's fee if new supply ran at 1.6% of supply, as HSP-029 would "
+                "bring about, with the stake as it is", "1.6% of supply over the stake in ST1", grade="model")
 
     peak = max(rows, key=lambda r: r["float_usd"])
     add("T4", money(peak["float_usd"]), f"Highest the float has been, on the {peak['day']} reading", "largest daily value, pinned prices")
@@ -621,10 +653,23 @@ def write_claims(write=True):
         out_low = sum(1 for r in outside if r["low"])
         in_short = sum(1 for r in inside if r["short"])
         unread = sum(r["unread"] for r in done)
+        # An unread check is accounted for when the daily reading before that block lacks the same number of tracked
+        # tokens: tokens not yet on the books then. Anything beyond that is a read that failed, and is said so.
+        from .audit import stored_days
+        bl = load(os.path.join(DATA, "blocks.json"), {})
+        tracked = rs["tokens"]
+        lacking = sorted((bl[d]["height"], sum(1 for t in tracked if held.get(t) is None or cred.get(t) is None))
+                         for d, held, cred in stored_days() if d in bl)
+        def absent(h):   # noqa: E306
+            before = [n for hh, n in lacking if hh <= h]
+            return before[-1] if before else len(tracked)
+        failed = sum(max(0, r["unread"] - absent(r["height"])) for r in done)
+        why = ("each one a token that the daily reading before that block also lacks, because it was not yet on the books"
+               if not failed else f"{unread - failed} of them tokens the daily reading before that block also lacks, and {failed} reads that failed")
         add("J1", f"{len(done)} random blocks",
-            f"Blocks drawn at random (seed {rs['seed']}) between the first reading and the pinned one and audited for the 20 tracked tokens: "
-            f"{len(inside)} fell inside the {(h_shut - h_open)} blocks the October hole was open and {in_short} of those showed it; "
-            f"{unread} token checks could not be read, mostly tokens that did not exist yet, and count as unknown",
+            f"Blocks drawn at random (seed {rs['seed']}) between the first reading and the pinned one and audited for the {len(tracked)} tracked tokens: "
+            f"{len(inside)} fell inside the {h_shut - h_open:,} blocks the October hole was open and {in_short} of those showed it; "
+            f"{unread} token checks returned nothing and count as unknown, {why}",
             "python3 -m pipeline.audit --sample 200; data/context/random_audit.json", grade="chain")
         add("J2", f"{out_short} of {len(outside)}",
             "Random blocks outside the October hole on which any tracked token was short: how often the sign test would cry wolf", "count", grade="chain")
@@ -647,6 +692,10 @@ def write_claims(write=True):
                 "python3 -m pipeline.leadlag", grade="model, on quoted volume and NearBlocks activity")
         add("L4", f"{ll['changes']} weekly changes", f"Weeks in the lead-lag test, from the week of {ll['first_week']} to the week of {ll['last_week']}",
             "complete Monday-to-Sunday weeks both sources cover", grade="model")
+        add("L5", f"r = {ll['tests']['transactions']['same_week']:+.2f}",
+            "Weekly change in NEAR Intents' reported volume against the change in NEAR's transactions in the same week, with no lead: they move "
+            "a little together, which a chart of the two would show. No p-value is given for it; the test is for a lead",
+            "python3 -m pipeline.leadlag", grade="model, on quoted volume and NearBlocks activity")
     # --- 1Click's own records: its swaps settle through the private chain's treasury (pipeline/oneclick.py)
     oc = load(os.path.join(DATA, "context", "oneclick.json"), None)
     if oc and oc.get("swaps"):

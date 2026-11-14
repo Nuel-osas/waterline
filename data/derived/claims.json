@@ -411,20 +411,6 @@
   },
   {
    "grade": "chain, via an indexer",
-   "how": "one over V4",
-   "id": "M2",
-   "shown": "6.5x",
-   "what": "How many times revenue would have to grow for buybacks to match net new supply"
-  },
-  {
-   "grade": "chain, via an indexer",
-   "how": "supply times 1.6%, over a year, against 30-day revenue in NEAR",
-   "id": "H1",
-   "shown": "4.2x",
-   "what": "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 proposes"
-  },
-  {
-   "grade": "chain, via an indexer",
    "how": "C1 over (X3 times 365/30)",
    "id": "Q1",
    "shown": "6.2 years",
@@ -487,6 +473,20 @@
    "what": "NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR at each day's price (409,897 NEAR against 406,427 NEAR): how far the quoted figure agrees with the chain"
   },
   {
+   "grade": "chain",
+   "how": "one over U4",
+   "id": "M2",
+   "shown": "6.2x",
+   "what": "How many times revenue would have to grow for buybacks to match net new supply"
+  },
+  {
+   "grade": "chain",
+   "how": "supply times 1.6%, over a year, against 30 days of revenue in NEAR (U1)",
+   "id": "H1",
+   "shown": "4.0x",
+   "what": "How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about"
+  },
+  {
    "grade": "rule",
    "how": "the rule, applied by pipeline/claims.py",
    "id": "RT",
@@ -539,36 +539,78 @@
    "grade": "model, on quoted revenue",
    "how": "python3 -m pipeline.growth; DefiLlama's daily revenue over NearBlocks' daily price",
    "id": "GR1",
-   "shown": "107% a year",
-   "what": "Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, since the buyback began on 2026-02-23: a straight line through the logarithm of 37 weekly totals (weeks of 2026-02-23 to 2026-11-02), annualised"
+   "shown": "-91% to +1,160% a year",
+   "what": "Growth of the revenue reaching NEAR's wallets, counted in NEAR at each day's price, from a straight line through the logarithm of the weekly totals, fitted from every start week from 2026-02-23 that leaves at least 12 weeks to the week of 2026-11-02: lowest from the week of 2026-08-17, highest from the week of 2026-06-15. A rate that moves this far with its start is not used"
   },
   {
-   "grade": "model",
-   "how": "moving-block bootstrap",
+   "grade": "quoted revenue, NearBlocks price",
+   "how": "weekly total over 7",
    "id": "GR2",
-   "shown": "0% to 321%",
-   "what": "90% range of that growth, from 4,000 resamples of the weekly residuals in runs of 4 weeks (seed 20261114)"
+   "shown": "25,228 NEAR a day",
+   "what": "Revenue reaching NEAR's wallets in the first complete week of the buyback (week of 2026-02-23), counted in NEAR at each day's price, per day"
   },
   {
-   "grade": "model",
+   "grade": "quoted revenue, NearBlocks price",
    "how": "as GR2",
    "id": "GR3",
-   "shown": "59%",
-   "what": "Share of those resamples growing at least as fast as Z1, the pace that covers new supply by the end of 2029"
+   "shown": "12,969 NEAR a day",
+   "what": "The same for the latest complete week (week of 2026-11-02)"
   },
   {
-   "grade": "model",
-   "how": "as GR2",
+   "grade": "model, withdrawn",
+   "how": "as GR1",
    "id": "GR4",
-   "shown": "77%",
-   "what": "The same for Z3, the pace that covers new supply by the end of 2031"
+   "shown": "107% a year",
+   "what": "The same line fitted from the first week only, over 37 weeks: the figure pull request 22 reported, withdrawn because the start chosen decides it"
   },
   {
    "grade": "reported",
    "how": "annualised X1 times M2",
    "id": "M3",
-   "shown": "$297B a year",
+   "shown": "$283B a year",
    "what": "Reported volume that would take at today's rate of revenue per dollar of volume"
+  },
+  {
+   "grade": "chain",
+   "how": "validators RPC by epoch, over the pinned block's total supply",
+   "id": "ST1",
+   "shown": "44.4%",
+   "what": "Share of NEAR's total supply staked with the 342 validators of the epoch of the pinned block (582,369,883 NEAR)"
+  },
+  {
+   "grade": "chain",
+   "how": "V2 times 365, over the stake in ST1",
+   "id": "ST2",
+   "shown": "5.6% a year",
+   "what": "What stake earns before the validator's fee: net new supply over a year, over the total stake. The protocol keeps none of the new supply (protocol_reward_rate 0 at the pinned block), so all of it is paid to stake; net new supply is what is minted less the fees burned, so this slightly understates it"
+  },
+  {
+   "grade": "chain",
+   "how": "(1 + ST2) / (1 + issuance) - 1",
+   "id": "ST3",
+   "shown": "+3.0% a year",
+   "what": "Change in a staker's share of NEAR's total supply over a year, before the validator's fee"
+  },
+  {
+   "grade": "chain",
+   "how": "1 / (1 + issuance) - 1",
+   "id": "ST4",
+   "shown": "-2.4% a year",
+   "what": "Change in the share of a holder who does not stake: new supply goes to stakers"
+  },
+  {
+   "grade": "model",
+   "how": "ST3 and ST4 compounded to 2030-01-01",
+   "id": "ST5",
+   "shown": "+9.8% against -7.4%",
+   "what": "Change in a holder's share of total supply from the pinned day to the end of 2029, staked (before the validator's fee) against not staked, with issuance and stake as they are now"
+  },
+  {
+   "grade": "model",
+   "how": "1.6% of supply over the stake in ST1",
+   "id": "ST6",
+   "shown": "3.6% a year",
+   "what": "What stake would earn before the validator's fee if new supply ran at 1.6% of supply, as HSP-029 would bring about, with the stake as it is"
   },
   {
    "how": "largest daily value, pinned prices",
@@ -841,6 +883,13 @@
    "id": "L4",
    "shown": "98 weekly changes",
    "what": "Weeks in the lead-lag test, from the week of 2024-12-16 to the week of 2026-11-02"
+  },
+  {
+   "grade": "model, on quoted volume and NearBlocks activity",
+   "how": "python3 -m pipeline.leadlag",
+   "id": "L5",
+   "shown": "r = +0.27",
+   "what": "Weekly change in NEAR Intents' reported volume against the change in NEAR's transactions in the same week, with no lead: they move a little together, which a chart of the two would show. No p-value is given for it; the test is for a lead"
   },
   {
    "grade": "chain, found through 1Click's public status records",

@@ -620,15 +620,24 @@ class ExitOrder(unittest.TestCase):
 
 
 class Growth(unittest.TestCase):
-    def test_a_steady_weekly_growth_is_annualised_and_the_share_test_counts_resamples(self):
+    def test_a_steady_weekly_growth_is_annualised(self):
         import math
         from pipeline import growth
         weekly = math.log(2) / (365.25 / 7)            # doubling a year
         xs = list(range(20))
         a, b = growth.fit(xs, [5 + weekly * x for x in xs])
         self.assertAlmostEqual(growth.annual(b), 1.0, places=9)
-        t = {"slopes": [weekly * f for f in (0.5, 1.0, 1.5, 2.0)]}
-        self.assertEqual(growth.share_at_least(t, 1.0), 0.75)   # three of four resampled slopes grow at least 100% a year
+
+    def test_the_fit_is_made_from_every_start_that_leaves_enough_weeks_and_shows_a_turn(self):
+        import math
+        from pipeline import growth
+        up = [(f"w{k}", math.exp(0.1 * k)) for k in range(8)]               # rises for eight weeks
+        down = [(f"w{8 + k}", math.exp(0.6 - 0.1 * k)) for k in range(5)]   # then falls for five
+        fits = growth.by_start(up + down, min_weeks=4)
+        self.assertEqual([f[0] for f in fits], [f"w{k}" for k in range(10)])  # starts w0..w9 each leave at least 4 weeks
+        self.assertEqual([f[1] for f in fits], list(range(13, 3, -1)))
+        self.assertLess(fits[-1][2], 0)                 # fitted over the fall alone, the trend is down
+        self.assertGreater(max(f[2] for f in fits), 0)  # and some earlier start still shows growth
 
 
 class CommittedData(unittest.TestCase):

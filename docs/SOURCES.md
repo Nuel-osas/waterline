@@ -220,3 +220,16 @@ block. At that exact height:
    does not depend on which tokens were picked.
 
 A read that fails is stored as `null` and left out of every sum. It is never treated as zero.
+
+## Staking at the pinned block
+
+`data/context/staking.json`, written by `python3 -m pipeline.context staking` from a NEAR archival node:
+
+- The stake: the `validators` method asked by the pinned block's `epoch_id` (archival nodes do not answer it for an
+  arbitrary block height), summing `current_validators[].stake`. 342 validators, 582,369,883 NEAR.
+- The reward settings: `EXPERIMENTAL_protocol_config` at the pinned block: `max_inflation_rate` 1/40 and
+  `protocol_reward_rate` 0/1, so the protocol keeps none of the new supply and all of it is paid to stake.
+- Checked: `make verify` asks both again and compares them with the stored file.
+- Four epochs to withdraw staked NEAR is the staking pool contract's `NUM_EPOCHS_TO_UNLOCK` (near/core-contracts,
+  `staking-pool`), quoted, not read.
+

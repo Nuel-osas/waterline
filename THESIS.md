@@ -14,7 +14,7 @@ question, whether the money behind the private chain keeps growing, with its rea
 
 ## 1. The claim
 
-**Rating: Hold, small. Up to 1% of a liquid portfolio, to the end of 2029, checked every month by a rule
+**Rating: Hold, small and staked. Up to 1% of a liquid portfolio, to the end of 2029, checked every month by a rule
 (section 5) whose inputs this repository reads from the chain.**
 
 NEAR's buyback is funded by the revenue of one product, NEAR Intents. Read from the chain, 426,685 NEAR reached NEAR's
@@ -26,8 +26,9 @@ one token, during an exploit that was later published. Replayed block by block, 
 books from ten dollars 31 hours 40 minutes before the first payout, and above $10,000 1 hour 9 minutes before it.
 
 On 27 October 2026, 1Click swaps began to settle on a private chain. What backs that chain is one account on the
-public ledger, and 1Click's own records show its swaps passing through it: for 9 of 9 completed swaps we found,
-the swap's status record lists the NEAR transaction that moved its tokens into that account. The audit sees that
+public ledger, and 1Click's own records show its swaps passing through it: for each of the 9 swaps we found
+(8 completed, 1 refunded), the swap's status record lists the NEAR transaction that moved its tokens into that
+account. They show the route a swap takes, not what share of swaps take it. The audit sees that
 account's balance and nothing behind it, and it is now 61.0% of everything NEAR Intents holds.
 
 **Our claim: NEAR Intents' public books can be proven whole by anyone, at any block, and the one failure showed
@@ -73,9 +74,9 @@ of its inputs are which. Sources for every row: `docs/SOURCES.md`.
 NEAR Intents' volume leads network usage. We tested it over 98 weekly changes, with NearBlocks' public daily counts. A
 week's change in reported volume does not foretell the change in transactions (r = -0.11, p = 0.96, at its strongest lead of
 one to eight weeks), in active accounts (r = +0.09, p = 0.88) or in NEAR's price (r = -0.12, p = 0.74). p is the share of series shifted at
-random in time that do as well, so a real lead would show a small p, and none does. In this data, activity
-tables say little about NEAR Intents and NEAR Intents' volume says little about them. `python3 -m
-pipeline.leadlag` repeats the test.
+random in time that do as well, so a real lead would show a small p, and none does. Volume and transactions
+do move a little together within the same week (r = +0.27), so a chart of the two shows some likeness; what the
+data does not show is volume moving first. `python3 -m pipeline.leadlag` repeats the test.
 
 The float is every token held in `intents.near` by the treasury account that backs the private chain. We read it
 at one block a day since the account was created. Dollar figures use one fixed price list, so a change in the
@@ -144,10 +145,12 @@ wrong is the other half of an alarm; section 7 says how far that has been measur
 on the private chain from 27 October and that a swap's `nearTxHashes` then lists the shield and the unshield.
 We took the accounts that paid into the treasury on six days after 27 October and asked 1Click's public status
 endpoint about each. Among 188 accounts, 9 were deposit addresses of completed or refunded swaps, dated
-2 to 11 November. For each of them (9 of 9), the swap's own record lists the transaction that moved its tokens
-into the treasury. We read each of those transfers back from the chain: a transfer signed for the deposit address, of
+2 to 11 November: 8 completed and 1 refunded. For each of them, the swap's own record lists the transaction
+that moved its tokens into the treasury. We read each of those transfers back from the chain: a transfer signed for the deposit address, of
 that amount, to the treasury. Every one of the 9 was marked `public` by the integrator, and every one went
-through the private chain's treasury. `python3 -m pipeline.oneclick` lists them and `make verify` re-reads them.
+through the private chain's treasury. Because they were found among accounts that paid into the treasury, they
+show that the route exists and how it is recorded, not what share of 1Click's swaps take it; nothing public
+lists all swaps without a key. `python3 -m pipeline.oneclick` lists them and `make verify` re-reads them.
 
 The rest of this section is about that account, the one the audit cannot see into: what it holds, read from
 outside.
@@ -243,8 +246,8 @@ chain, the revenue that reaches NEAR's wallets covered 16% of it in the 30 days 
 in the 30 days before. Counted NEAR against NEAR from DefiLlama's figure the share is 15%, and the supply is
 worth 265x that revenue; with both sides in dollars, the revenue at each day's price and the new supply at the
 pinned price, the same figures are 20% and 205x. They differ because NEAR's price averaged more over those
-30 days than on the pinned day. Over the latest 30 days against the 30 before, reported volume is -22%,
-reported fees -26% and that revenue -20%.
+30 days than on the pinned day. Over the latest 30 days against the 30 before, reported volume is -22% and
+reported fees -26%; the revenue the chain shows reaching NEAR's wallets is -17%.
 
 **The public ledger broke once, and one public key signs for the treasury.** $136.4M is described as "backed 1:1"
 by the treasury. The treasury is public. What the private chain owes is not, and nothing published proves the
@@ -259,7 +262,7 @@ for several parties signing together, and nothing published says whether this on
 
 ## 5. The rating
 
-**Hold, small: up to 1% of a liquid portfolio, to the end of 2029.**
+**Hold, small and staked: up to 1% of a liquid portfolio, to the end of 2029.**
 
 **The rule.** Each input is computed by this repository's code from the chain, and the rating is too; the
 dashboard shows the result.
@@ -277,10 +280,21 @@ Hold.
 
 Where the numbers come from: 25% and 10% are reading R4's thresholds, written on 13 November; 3 readings is the
 October precedent, short on three readings and whole on the fourth; two windows in a row, because a rule that
-one ordinary day can trip is not a rule. An earlier version of the rule also said to sell if the float without
-NEAR's own token fell below its pinned level, and the next reading tripped it after one ordinary day; that
-trigger is withdrawn (README, errata). The 1% and the 3% are judgments, and the part of this file most open to
-argument.
+one ordinary day can trip is not a rule. That last point was learned the hard way. An earlier version also
+said to sell if the float without NEAR's own token fell below its pinned level; the very next reading tripped
+it, on an ordinary day. A reader who holds us to that version would rate NEAR Exit. We withdrew it because the
+float moves in lumps that say nothing about value (section 4), and we report the dated test it rested on as
+failed (`make score`, E1) rather than drop it (errata). The 1% and the 3% are judgments, and the part of this
+file most open to argument.
+
+**Held staked, because new supply is paid to stake.** At the pinned block 44.4% of NEAR's supply was staked, and
+the protocol kept none of the new supply for itself, so all of it is paid to stake: 5.6% a year before the
+validator's fee, counted as net new supply over the total stake. A staker's share of the supply changes by +3.0% a
+year and the share of a holder who does not stake by -2.4% a year; to the end of 2029, +9.8% against -7.4%, with
+issuance and stake as they are now. If HSP-029 takes effect the reward falls with issuance, to 3.6% a year at the
+same stake. So the dilution section 4 counts against NEAR is paid by holders who do not stake, and the rating
+says to stake. A validator keeps a fee that varies by validator, and staked NEAR takes four epochs to withdraw.
+`python3 -m pipeline.context staking` reads the stake again.
 
 **What has to be true by 2029.** The rule says when to move. This says what a holder is betting on: the share of
 net new supply that revenue would cover if revenue, counted in NEAR, grew at a steady rate from the latest 30
@@ -303,15 +317,15 @@ at the end of 2029, or 24% at 1.6%. Read from the chain, the latest 30 days agai
 This is what the 265x multiple in section 4 prices in: a revenue line that grows by a third to a half every year
 until 2031, or faster to get there by 2029.
 
-**The upside case, and how sure it is.** Since the buyback began on 23 February 2026, when the revenue started
-arriving every day, it has grown at about 107% a year counted in NEAR at each day's price, on a trend fitted to
-weekly totals: faster than the 84% a year that covers new supply by the end of 2029. The range is wide.
-Resampling the weeks in runs of four, the 90% range runs from 0% to 321%, and 59% of the resamples clear the 2029
-pace; 77% clear the 2031 pace of 46% a year. On the evidence so far, buybacks matching new supply by 2029 is close to
-a coin flip, and by 2031 more likely than not. That is the upside a holder buys with a small position, and the
-reason the rating is Hold and not Exit. Before February the revenue arrived in occasional lumps, with weeks of
-nothing between them, so the trend does not start earlier. The figures are DefiLlama's, which agree with the chain
-to 100.9% over the window this repository reads; `python3 -m pipeline.growth` repeats the fit, seeded.
+**No growth rate can be read from the record yet.** The revenue has arrived every day since the buyback began on
+23 February 2026. Counted in NEAR at each day's price, its first complete week paid 25,228 NEAR a day and its
+latest 12,969 NEAR a day. In between it dropped after the first week, rose from April to September and has fallen
+since. A straight line fitted to the weekly totals gives anything from -91% to +1,160% a year, depending on the
+week it starts from. A rate that moves that far with its starting point is not a measurement, so this thesis
+does not use one: the table above says what each rate would do, and the rule waits for coverage to move in two
+windows in a row. The weekly figures are DefiLlama's, which agree with the chain to 100.9% over the window this
+repository reads; `python3 -m pipeline.growth` prints every fit. (An earlier version of this section reported the
+fit from the first week alone, 107% a year, as an upside case; it is withdrawn, see the errata.)
 
 HSP-029 was approved by NEAR's House of Stake on 2 November 2026. As reported by The Block and Bitcoin.com, it
 still needs the House of Stake's Security Council to ratify it, then a 90-day grace period and a validator
@@ -321,9 +335,10 @@ NEAR matters: revenue earned in dollars buys fewer NEAR when NEAR's price rises,
 faster growth in dollars when the price goes up.
 
 **A simple model of what is needed today.** NEAR's wallets receive 4.8 basis points per dollar of reported volume. For
-buybacks to match net new supply now, revenue would have to be 6.5x what it is. At today's rate per dollar of
-volume that means about $297B a year of volume, against $3.73B in the last 30 days. If net new supply ran at 1.6%, the
-multiple would be 4.2x; on the dollar basis of section 4 the first multiple is 5.1x. A holder is buying that
+buybacks to match net new supply now, revenue read from the chain would have to be 6.2x what it is. At today's
+rate per dollar of volume that means about $283B a year of volume, against $3.73B in the last 30 days. If net new
+supply ran at 1.6%, the multiple would be 4.0x; with DefiLlama's revenue in dollars, as in section 4, the first
+multiple is 5.1x. A holder is buying that
 growth, or a higher take, or lower issuance.
 
 **What the audit is worth, in money.** A holder of NEAR is exposed to NEAR Intents whether they use it or not,
@@ -332,12 +347,12 @@ block, for two calls per token, and a hole shows in the block where it opens, to
 is the one part of NEAR's investment case we could verify end to end without trusting the party being valued,
 and it held up: whole today, and short only when something was in fact wrong. Measured against the revenue
 that funds the buyback, October's hole at its largest was 2.1 months of it, and it was closed. The balance now beyond
-the audit is 6.2 years of it.
+the audit is 6.2 years of it. That is a scale for what the audit cannot see, not an estimate of a loss: nothing
+public says that balance is short, and nothing public can show that it is whole.
 
 **Why 1% and not none.** The evidence argues for holding little, and a reader could fairly take it to none. We
-do not, for four reasons we can point to. The part we could check held up. The revenue that funds the buyback has
-grown at the pace that would matter, though on a short and uneven record. The growth a holder needs is large
-but stated: 46% a year a year in NEAR to cover new supply by 2031, or 33% a year if HSP-029 takes effect, against a float
+do not, for three reasons we can point to. The part we could check held up. The growth a holder needs is large
+but stated: 46% a year in NEAR to cover new supply by 2031, or 33% a year if HSP-029 takes effect, against a float
 that grew 2.8x in four months. And the one thing that would let us hold more, a disclosure, is something NEAR can
 do by itself. We give a horizon and the growth it needs; we do not give a price target or an expected return,
 because nothing we can check supports one.
@@ -425,9 +440,11 @@ the product and money moving beyond the audit at once.
   did not measure how many wallets qualified.
 - **HSP-029.** Its status is as reported by The Block and Bitcoin.com on 3 November 2026. We did not read the
   vote on chain.
-- **The growth trend is short.** 37 weeks of revenue, all since the buyback began, from a series DefiLlama
-  computes and we checked against the chain for two months only. The resampling keeps runs of weeks together but
-  cannot know about a change in fees or rewards that has not happened yet.
+- **No growth rate.** The weekly revenue since the buyback began gives a fitted rate anywhere from -91% to
+  +1,160% a year depending on the start week, so none is used. The series is DefiLlama's, checked against the
+  chain for two months only.
+- **Staking.** The reward is net new supply over the stake of one epoch, before any validator's fee. It moves with
+  the stake and with issuance, and it is a share of supply, not a return in dollars.
 - **The scenarios are arithmetic, not a forecast.** Revenue and supply compound at constant rates, the lower
   issuance is taken as fully in force at the horizon, and nothing is said about how likely any rate is.
 - **Quoted figures.** Volume and fees come from DefiLlama, and one NEAR price a day from CoinGecko through

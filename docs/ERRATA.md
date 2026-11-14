@@ -35,3 +35,19 @@ place; nothing is removed silently.
 - The position rule in `THESIS.md` first said to hold none if the float without NEAR's own token fell below its
   pinned level. One day later it had ($91.1M against $92.9M). A reviewer pointed out that the rule did not say
   when it was read. The trigger was removed in pull request 16, with the reason given in section 5.
+- Pull request 22 said that the revenue funding the buyback had grown about 107% a year in NEAR since February,
+  with a resampled range and odds of clearing the pace 2029 needs, and called that the reason to hold rather than
+  exit. The rate depends on the week the fit starts from: from -91% to +1,160% a year over the starts that leave
+  at least twelve weeks. The first complete week paid 25,228 NEAR a day and the latest 12,969 NEAR a day. The
+  figure, its range and the odds are withdrawn (pull request 23). The rule that sets the rating never used them.
+- `THESIS.md` and the README said "9 of 9 completed" 1Click swaps; 8 completed and 1 was refunded. They also did
+  not say that the nine were found among accounts paying into the treasury, so they show the route and not a
+  share of swaps. Corrected in pull request 24.
+- `THESIS.md` section 5 gave the multiple revenue must grow by (6.5x), the volume it implies and the 1.6% case on
+  DefiLlama's revenue, while the rating uses the chain's. They are now on the chain's basis: 6.2x, $283B a year
+  and 4.0x (pull request 24). Section 4 set DefiLlama's revenue change beside reported volume and fees; it now
+  gives the chain's, -17% (pull request 24).
+- `THESIS.md` section 2 said volume "says little" about activity without giving the same-week correlation with
+  transactions, r = +0.27. It is now stated (pull request 24).
+- The README's list of what was built still said "(9 of 9)" for the 1Click swaps after pull request 24; it now says
+  8 completed and 1 refunded (pull request 27).
