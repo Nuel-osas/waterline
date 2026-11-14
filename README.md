@@ -33,9 +33,10 @@ repository reads from the chain ([`THESIS.md`](THESIS.md), section 5).
 2. The one time they were not, it showed: the October hole was in the books from ten dollars 31 hours 40 minutes before the
    first payout, and above $10,000 1 hour 9 minutes before it. A replay run in November, not live detection; the start time
    is also CertiK's.
-3. The swaps now settle through the one account the audit cannot see into: for 9 of 9 completed 1Click swaps we
-   found, the swap's own record lists the transaction that moved its tokens into it. That account holds 61.0% of
-   everything NEAR Intents holds.
+3. The swaps now settle through the one account the audit cannot see into: for each of the 9 1Click swaps we
+   found (8 completed, 1 refunded), the swap's own record lists the transaction that moved its tokens into it.
+   They show the route, not what share of swaps take it. That account holds 61.0% of everything NEAR Intents
+   holds.
 4. NEAR's buyback is funded by revenue we read from the chain: 426,685 NEAR in the last 30 days, 16% of net new supply.
    For buybacks to match new supply by the end of 2029 that revenue, counted in NEAR, has to grow 84% a year, or 59% a year
    if HSP-029 takes effect. No growth rate can be read from the record yet: fitted from different start weeks since
@@ -247,10 +248,8 @@ plain HTML, CSS and JavaScript with no framework. GitHub Actions used: `actions/
 NEAR mainnet through a public archival node, NEAR Intents' public token list, DefiLlama's public API, CertiK's
 published incident report (three quoted times), and FastNEAR's transfers index for the list of September NEAR
 transfers and one hop of the transfer that was followed. The dashboard's audit button asks three public NEAR nodes from the visitor's browser. The code
-and text were written with an AI coding assistant (Claude Code) under the author's direction. Before
-submission the repository was reviewed several times by independent AI reviewers. Their findings were fixed in
-pull requests 2, 4, 5, 10, 11, 13, 14 and 16, and one review's proposal, to audit the whole ledger and not one
-account, is pull request 8.
+and text were written with an AI coding assistant (Claude Code) under the author's direction, and reviewed by
+independent AI reviewers before submission. Every correction is listed in [`docs/ERRATA.md`](docs/ERRATA.md).
 
 ## Errata
 
