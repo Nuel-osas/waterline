@@ -332,15 +332,30 @@ def write_claims(write=True):
                     sb = src_summary(rsrc, blk, *win_b)
                     if sb:
                         adds = sb["paid"] == counted_by_revenue(rv, sb["first"], sb["last"])
+                        wal = sb["by_wallet"]
+                        fe = wal.get("fefundsadmin.sputnik-dao.near")
                         add("U7", pct(sb["treasury"] / rb["received"], 0),
-                            f"Share of U1 paid out of the private chain's treasury: each payment into the three wallets from intents.near is a withdrawal "
-                            f"signed by an account on its ledger, and counts as paid from the treasury in the proportion of that account's wNEAR that "
-                            f"came from the treasury in the ten minutes (or, failing that, six hours) before it paid. {sb['payments']:,} payments by "
-                            f"{sb['payers']:,} accounts, each looked up; {pct(sb['untraced'] / rb['received'], 1)} of U1 untraced; the payments "
-                            + ("add up exactly to" if adds else "do NOT add up to") + " the transfers from intents.near that U1 counts. "
-                            "The 30 days before are not traced",
+                            f"Share of U1 that arrived through the private chain's treasury. Each payment into the three wallets from intents.near is a "
+                            f"withdrawal signed by an account on its ledger; that account's wNEAR inflows in the ten minutes (or, failing that, six hours) "
+                            f"before it paid fund its payments oldest first, each inflow used once and never beyond its amount, and the part funded by "
+                            f"transfers from the treasury counts here. {sb['payments']:,} payments by {sb['payers']:,} accounts, each looked up; the payments "
+                            + ("add up exactly to" if adds else "do NOT add up to") + " the transfers from intents.near that U1 counts. This is the route the "
+                            "money took, not where it was earned. The 30 days before are not traced",
                             "pipeline/revenue_source.py; data/context/revenue_source.json", grade="index, sampled against the chain")
-                        add("U9", pct((sb["treasury"] + sb["other"] + sb["untraced"]) / rb["received"], 0),
+                        add("U10", pct(sb["untraced"] / rb["received"], 0),
+                            f"Share of U1 that the payers' inflows before each payment do not explain: paid from balances the payers already held, whose "
+                            f"source the windows read do not show ({sb['untraced_payments']:,} payments, mostly by accounts that pay many times)",
+                            "as U7", grade="index")
+                        if sb["before_switch"]["paid"] and sb["from_switch"]["paid"]:
+                            add("U11", pct(Fraction(sb["from_switch"]["treasury"], sb["from_switch"]["paid"]), 0),
+                                "Share of the payments from intents.near made on or after 27 October 2026, the day 1Click swaps began to settle privately, "
+                                "that arrived through the treasury", "as U7, for payments from that day", grade="index")
+                            add("U12", pct(Fraction(sb["before_switch"]["treasury"], sb["before_switch"]["paid"]), 0),
+                                "The same for the payments in the window made before 27 October 2026", "as U7, for payments before that day", grade="index")
+                        if fe and fe["paid"]:
+                            add("U13", pct(Fraction(fe["treasury"], fe["paid"]), 0), "Share of the payments to fefundsadmin.sputnik-dao.near that arrived "
+                                "through the treasury, in the same window", "as U7, for one wallet", grade="index")
+                        add("U9", pct(Fraction(sb["paid"], rb["received"]), 0),
                             "Share of U1 that came from intents.near at all, by any payer; the rest was sent to the wallets from outside it",
                             "payments from intents.near over U1", grade="index")
             else:

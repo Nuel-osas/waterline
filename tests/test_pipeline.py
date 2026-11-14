@@ -675,24 +675,34 @@ class RevenueSource(unittest.TestCase):
         tx = {"actions": [{"FunctionCall": {"method_name": "execute_intents", "args": base64.b64encode(json.dumps(args).encode()).decode()}}]}
         self.assertEqual([w[0] for w in rs.withdrawals(tx)], ["dave", "dave", "dave"])
 
-    def test_a_payment_is_split_by_where_the_payers_wnear_came_from_and_untraced_counts_as_neither(self):
+    def test_inflows_fund_payments_oldest_first_once_each_and_never_beyond_what_was_sent(self):
         from pipeline import revenue_source as rs
         T = "treasury"
-        p = {"payer": "x", "amount": "100", "in": [{"from": T, "amount": "30"}, {"from": "solver", "amount": "10"}]}
-        self.assertEqual(rs.split(p, T), (Fraction(75), Fraction(25)))
-        self.assertEqual(rs.split({"payer": "x", "amount": "100", "in": []}, T), (None, None))
-        self.assertEqual(rs.split({"payer": None, "amount": "100"}, T), (None, None))
+        one_time = {"payer": "x", "amount": "5", "height": 20, "tx": "a", "in": [{"tx": "i1", "height": 19, "from": T, "amount": "5"}]}
+        short = {"payer": "y", "amount": "2", "height": 20, "tx": "b", "in": [{"tx": "i2", "height": 19, "from": T, "amount": "1"}]}
+        shared_in = [{"tx": "i3", "height": 10, "from": T, "amount": "4"}, {"tx": "i4", "height": 12, "from": "solver", "amount": "3"}]
+        r1 = {"payer": "z", "amount": "5", "height": 15, "tx": "c", "in": shared_in}
+        r2 = {"payer": "z", "amount": "5", "height": 16, "tx": "d", "in": shared_in}          # the same inflows, seen again
+        none = {"payer": None, "amount": "9", "height": 20, "tx": "e"}
+        got = rs.allocate([one_time, short, r1, r2, none], T)
+        self.assertEqual(got[id(one_time)], (5, 0, 0))
+        self.assertEqual(got[id(short)], (1, 0, 1))      # one unit from the treasury cannot pay for two
+        self.assertEqual(got[id(r1)], (4, 1, 0))         # oldest first: the treasury's 4, then 1 of the solver's 3
+        self.assertEqual(got[id(r2)], (0, 2, 3))         # what is left: 2 from the solver; 3 not explained
+        self.assertEqual(got[id(none)], (0, 0, 9))
 
     def test_the_window_uses_the_same_readings_as_the_revenue_count_and_fails_closed_without_them(self):
         from pipeline import revenue_source as rs
         blocks = {"2026-01-01": {"height": 100}, "2026-01-02": {"height": 200}, "2026-01-03": {"height": 300}}
+        pay = lambda h, amt, payer, ins=None: {"height": h, "tx": f"p{h}", "wallet": "w", "ts_ms": h, "amount": amt, "payer": payer,   # noqa: E731
+                                               **({"in": ins} if ins is not None else {})}
         rec = {"treasury": "t", "payments": [
-            {"height": 100, "amount": "1", "payer": "a", "in": [{"from": "t", "amount": "1"}]},     # at the reading before: out
-            {"height": 150, "amount": "2", "payer": "a", "in": [{"from": "t", "amount": "1"}]},
-            {"height": 300, "amount": "4", "payer": "b", "in": [{"from": "s", "amount": "1"}]},
-            {"height": 250, "amount": "8", "payer": None}]}
+            pay(100, "1", "a", [{"tx": "i90", "height": 90, "from": "t", "amount": "1"}]),     # at the reading before: out
+            pay(150, "2", "c", [{"tx": "i140", "height": 140, "from": "t", "amount": "1"}]),
+            pay(300, "4", "b", [{"tx": "i290", "height": 290, "from": "s", "amount": "1"}]),
+            pay(250, "8", None)]}
         s = rs.summarise(rec, blocks, "2026-01-02", "2026-01-03")
-        self.assertEqual((s["payments"], s["paid"], s["treasury"], s["other"], s["untraced"]), (3, 14, 2, 4, 8))
+        self.assertEqual((s["payments"], s["paid"], s["treasury"], s["other"], s["untraced"]), (3, 14, 1, 1, 12))
         self.assertIsNone(rs.summarise(rec, blocks, "2026-01-01", "2026-01-03"))   # no reading before the first day
 
 

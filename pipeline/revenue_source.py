@@ -29,7 +29,6 @@ import time
 import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
-from fractions import Fraction
 
 from . import rpc
 from .pull import DATA, load, save
@@ -158,14 +157,42 @@ def inflows(p):
     return LOOKBACK_MS[-1], []
 
 
-def split(p, treasury=rpc.TREASURY):
-    """(treasury part, other part) of a payment, in yoctoNEAR as exact fractions; (None, None) when untraced."""
-    if not p.get("payer") or not p.get("in"):
-        return None, None
-    t = sum(int(r["amount"]) for r in p["in"] if r["from"] == treasury)
-    o = sum(int(r["amount"]) for r in p["in"] if r["from"] != treasury)
-    amount = int(p["amount"])
-    return Fraction(amount * t, t + o), Fraction(amount * o, t + o)
+def allocate(pays, treasury=rpc.TREASURY):
+    """Each payer's wNEAR inflows fund its payments in time order, oldest first, each inflow used once and never beyond
+    its amount. Returns {id(payment): (through the treasury, from other accounts, not explained)} in yoctoNEAR. The
+    part of a payment that the inflows seen before it do not cover was paid from a balance the payer already held,
+    whose source the windows read here do not show; it is counted as neither."""
+    out, by_payer = {}, {}
+    for p in pays:
+        if p.get("payer") and "in" in p:
+            by_payer.setdefault(p["payer"], []).append(p)
+        else:
+            out[id(p)] = (0, 0, int(p["amount"]))
+    for ps in by_payer.values():
+        seen, pool = set(), []
+        for p in ps:
+            for r in p["in"]:
+                key = (r["tx"], r["height"], r["from"], r["amount"])
+                if key not in seen:
+                    seen.add(key)
+                    pool.append([r["height"], r["from"] == treasury, int(r["amount"])])
+        pool.sort(key=lambda x: x[0])
+        for p in sorted(ps, key=lambda p: (p["height"], p["tx"])):
+            need, t, o = int(p["amount"]), 0, 0
+            for item in pool:
+                if need == 0:
+                    break
+                if item[0] > p["height"] or item[2] == 0:
+                    continue
+                use = min(need, item[2])
+                item[2] -= use
+                need -= use
+                if item[1]:
+                    t += use
+                else:
+                    o += use
+            out[id(p)] = (t, o, need)
+    return out
 
 
 def in_window(rec, blocks, first, last):
@@ -178,20 +205,28 @@ def in_window(rec, blocks, first, last):
     return [p for p in rec["payments"] if lo < p["height"] <= hi]
 
 
+SWITCH_MS = int(dt.datetime(2026, 10, 27, tzinfo=dt.timezone.utc).timestamp() * 1000)   # 1Click settles privately from this day
+
+
 def summarise(rec, blocks, first, last):
+    """Totals for the readings window first..last: paid, and how much arrived through the treasury, came from other
+    accounts, or is not explained; also by wallet, and before and from 27 October 2026. None without the readings."""
     pays = in_window(rec, blocks, first, last)
     if pays is None:
         return None
-    t = o = u = Fraction(0)
-    for p in pays:
-        a, b = split(p, rec.get("treasury", rpc.TREASURY))
-        if a is None:
-            u += int(p["amount"])
-        else:
-            t, o = t + a, o + b
-    return {"first": first, "last": last, "payments": len(pays), "payers": len({p["payer"] for p in pays if p.get("payer")}),
-            "paid": sum(int(p["amount"]) for p in pays), "treasury": t, "other": o, "untraced": u,
-            "untraced_payments": sum(1 for p in pays if split(p)[0] is None)}
+    parts = allocate(pays, rec.get("treasury", rpc.TREASURY))
+    def tally(ps):   # noqa: E306
+        t = sum(parts[id(p)][0] for p in ps)
+        o = sum(parts[id(p)][1] for p in ps)
+        u = sum(parts[id(p)][2] for p in ps)
+        return {"payments": len(ps), "paid": sum(int(p["amount"]) for p in ps), "treasury": t, "other": o, "untraced": u}
+    out = tally(pays)
+    out.update({"first": first, "last": last, "payers": len({p["payer"] for p in pays if p.get("payer")}),
+                "untraced_payments": sum(1 for p in pays if parts[id(p)][2] > 0),
+                "by_wallet": {w: tally([p for p in pays if p["wallet"] == w]) for w in sorted({p["wallet"] for p in pays})},
+                "before_switch": tally([p for p in pays if p["ts_ms"] < SWITCH_MS]),
+                "from_switch": tally([p for p in pays if p["ts_ms"] >= SWITCH_MS])})
+    return out
 
 
 def counted_by_revenue(rv, first, last):
@@ -223,9 +258,10 @@ def logged_transfer(status, sender, receiver, token, amount):
 
 
 def sample(rec, k=3, seed=20261114):
-    """A seeded sample of payments paid wholly from the treasury, for re-reading from the chain."""
+    """A seeded sample of payments that arrived wholly through the treasury, for re-reading from the chain."""
     import random
-    pool = [p for p in rec["payments"] if p.get("in") and all(r["from"] == rec["treasury"] for r in p["in"])]
+    parts = allocate(rec["payments"], rec["treasury"])
+    pool = [p for p in rec["payments"] if p.get("in") and parts[id(p)][0] == int(p["amount"])]
     return random.Random(seed).sample(pool, min(k, len(pool)))
 
 
@@ -284,8 +320,13 @@ def main():
         n = lambda x: f"{float(x) / 1e24:,.0f} NEAR"   # noqa: E731
         print(f"{first} to {last}: {s['payments']} payments by {s['payers']} accounts, {n(s['paid'])}"
               + ("" if theirs is None else f" ({'equal to' if theirs == s['paid'] else 'NOT equal to'} the {n(theirs)} revenue.json counts from intents.near)"))
-        print(f"  paid out of the private chain's treasury: {n(s['treasury'])} ({float(s['treasury'] / s['paid']) * 100:.1f}%); "
-              f"from other accounts: {n(s['other'])}; untraced: {n(s['untraced'])} in {s['untraced_payments']} payments")
+        share = lambda t: f"{t['treasury'] / t['paid'] * 100:.1f}%" if t["paid"] else "none"   # noqa: E731
+        print(f"  arrived through the private chain's treasury: {n(s['treasury'])} ({share(s)}); from other accounts: {n(s['other'])}; "
+              f"not explained by the payer's inflows (paid from a balance it already held): {n(s['untraced'])}, in {s['untraced_payments']} payments")
+        print(f"  before 27 October: {share(s['before_switch'])} of {n(s['before_switch']['paid'])}; from 27 October: "
+              f"{share(s['from_switch'])} of {n(s['from_switch']['paid'])}")
+        for w, t in s["by_wallet"].items():
+            print(f"  {w}: {share(t)} of {n(t['paid'])}")
     return 0
 
 
