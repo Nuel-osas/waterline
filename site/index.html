@@ -43,7 +43,7 @@
   <div class="wrap">
     <p class="labels"><span class="label">NEAR Hackathon 2026</span><span class="label">Investment thesis</span><span class="label">Pinned <b data-pin="day">13 Nov 2026</b></span></p>
     <h1>NEAR Intents can be audited from outside. <span class="num">Its private chain cannot.</span></h1>
-    <p class="lede">Ask NEAR Intents what it has credited for a token. Ask the token's own contract what NEAR Intents holds. Two calls, any block, no key. We did it for <span data-claim="A1">214 tokens</span> worth <span data-claim="A2">$223.8M</span>, and none is short. Run over past blocks, the same audit shows the October exploit in the public books <span data-claim="A8">31 hours 40 minutes</span> before the first payout: ten dollars at first, <span data-claim="A9">$1.3M</span> by the end. It stops at one account, the private chain's treasury, which now holds <span data-claim="C4">61.0%</span> of everything, and through which 1Click's swaps now settle. Our rating: <span data-claim="RT">Hold</span>, small, to 2029.</p>
+    <p class="lede">Ask NEAR Intents what it has credited for a token. Ask the token's own contract what NEAR Intents holds. Two calls, any block, no key. We did it for <span data-claim="A1">214 tokens</span> worth <span data-claim="A2">$223.8M</span>, and none is short. Run over past blocks, the same audit shows the October exploit in the public books <span data-claim="A8">31 hours 40 minutes</span> before the first payout: ten dollars at first, <span data-claim="A9">$1.3M</span> by the end. It stops at one account, the private chain's treasury, which now holds <span data-claim="C4">61.0%</span> of everything, and through which 1Click's swaps now settle. Our rating: <span data-claim="RT">Hold</span>, small and staked, to 2029.</p>
     <dl class="stats">
       <div><dt>Audited, none short</dt><dd data-claim="A2">$223.8M</dd></div>
       <div><dt>Before the payout: first sign / above $10,000</dt><dd><span data-claim="A8" data-fmt="hm">31h 40m</span> <small>/ <span data-claim="A16" data-fmt="hm">1h 9m</span></small></dd></div>
@@ -235,8 +235,9 @@ intents.near.mt_batch_balance_of(account_id=TREASURY, ...)  -> private
 <section class="deep" id="thesis">
   <div class="wrap">
     <p class="labels"><span class="label">04</span><span class="label">The rating</span></p>
-    <h2>Rating: <span data-claim="RT">Hold</span>, small. Up to 1% of a liquid portfolio, to the end of 2029.</h2>
+    <h2>Rating: <span data-claim="RT">Hold</span>, small and staked. Up to 1% of a liquid portfolio, to the end of 2029.</h2>
     <p class="note">The rule is a judgment. Its inputs are read from the chain by this repository's code, except one disclosure, and so is the rating it gives today.</p>
+    <p class="note">Held staked, because all new supply is paid to stake: <span data-claim="ST2">5.6% a year</span> before the validator's fee at the pinned block. A staker's share of the supply changes by <span data-claim="ST3">+3.0% a year</span>, and the share of a holder who does not stake by <span data-claim="ST4">-2.4% a year</span>: to the end of 2029, <span data-claim="ST5">+9.8% against -7.4%</span>.</p>
     <div class="scroll"><table class="ledger plain rule">
       <thead><tr><th>Rating</th><th>When</th><th>Position</th></tr></thead>
       <tbody>
