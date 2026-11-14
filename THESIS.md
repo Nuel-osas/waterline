@@ -303,6 +303,16 @@ at the end of 2029, or 24% at 1.6%. Read from the chain, the latest 30 days agai
 This is what the 265x multiple in section 4 prices in: a revenue line that grows by a third to a half every year
 until 2031, or faster to get there by 2029.
 
+**The upside case, and how sure it is.** Since the buyback began on 23 February 2026, when the revenue started
+arriving every day, it has grown at about 107% a year counted in NEAR at each day's price, on a trend fitted to
+weekly totals: faster than the 84% a year that covers new supply by the end of 2029. The range is wide.
+Resampling the weeks in runs of four, the 90% range runs from 0% to 321%, and 59% of the resamples clear the 2029
+pace; 77% clear the 2031 pace of 46% a year. On the evidence so far, buybacks matching new supply by 2029 is close to
+a coin flip, and by 2031 more likely than not. That is the upside a holder buys with a small position, and the
+reason the rating is Hold and not Exit. Before February the revenue arrived in occasional lumps, with weeks of
+nothing between them, so the trend does not start earlier. The figures are DefiLlama's, which agree with the chain
+to 100.9% over the window this repository reads; `python3 -m pipeline.growth` repeats the fit, seeded.
+
 HSP-029 was approved by NEAR's House of Stake on 2 November 2026. As reported by The Block and Bitcoin.com, it
 still needs the House of Stake's Security Council to ratify it, then a 90-day grace period and a validator
 upgrade, after which it lowers the issuance cap from 2.5% to 1.6% over 24 months, taking daily issuance from
@@ -325,7 +335,8 @@ that funds the buyback, October's hole at its largest was 2.1 months of it, and 
 the audit is 6.2 years of it.
 
 **Why 1% and not none.** The evidence argues for holding little, and a reader could fairly take it to none. We
-do not, for three reasons we can point to. The part we could check held up. The growth a holder needs is large
+do not, for four reasons we can point to. The part we could check held up. The revenue that funds the buyback has
+grown at the pace that would matter, though on a short and uneven record. The growth a holder needs is large
 but stated: 46% a year a year in NEAR to cover new supply by 2031, or 33% a year if HSP-029 takes effect, against a float
 that grew 2.8x in four months. And the one thing that would let us hold more, a disclosure, is something NEAR can
 do by itself. We give a horizon and the growth it needs; we do not give a price target or an expected return,
@@ -414,6 +425,9 @@ the product and money moving beyond the audit at once.
   did not measure how many wallets qualified.
 - **HSP-029.** Its status is as reported by The Block and Bitcoin.com on 3 November 2026. We did not read the
   vote on chain.
+- **The growth trend is short.** 37 weeks of revenue, all since the buyback began, from a series DefiLlama
+  computes and we checked against the chain for two months only. The resampling keeps runs of weeks together but
+  cannot know about a change in fees or rewards that has not happened yet.
 - **The scenarios are arithmetic, not a forecast.** Revenue and supply compound at constant rates, the lower
   issuance is taken as fully in force at the horizon, and nothing is said about how likely any rate is.
 - **Quoted figures.** Volume and fees come from DefiLlama, and one NEAR price a day from CoinGecko through
