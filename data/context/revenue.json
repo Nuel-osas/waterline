@@ -1,0 +1,3044 @@
+{
+ "balances": {
+  "2026-02-18": {
+   "1csfundsadmin.sputnik-dao.near": "116317995850828574807956334452",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "924285595718898162638699999990"
+  },
+  "2026-02-19": {
+   "1csfundsadmin.sputnik-dao.near": "118265232949490563877299507349",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "924285595718898162638699999990"
+  },
+  "2026-02-20": {
+   "1csfundsadmin.sputnik-dao.near": "119426952119740546024627995972",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "924285595718898162638699999990"
+  },
+  "2026-02-21": {
+   "1csfundsadmin.sputnik-dao.near": "120406890586539925480278317155",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "924285595718898162638699999990"
+  },
+  "2026-02-22": {
+   "1csfundsadmin.sputnik-dao.near": "121642950361782638783049609758",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "924285595718898162638699999990"
+  },
+  "2026-02-23": {
+   "1csfundsadmin.sputnik-dao.near": "123021081267383734075702420499",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "924285595718898162638699999990"
+  },
+  "2026-02-24": {
+   "1csfundsadmin.sputnik-dao.near": "129428822238878563628384959032",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "924285595718898162638699999990"
+  },
+  "2026-02-25": {
+   "1csfundsadmin.sputnik-dao.near": "137754586919927368365969237981",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "924285595718898162638699999990"
+  },
+  "2026-02-26": {
+   "1csfundsadmin.sputnik-dao.near": "149721956795912715562228353606",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "924285595718898162638699999990"
+  },
+  "2026-02-27": {
+   "1csfundsadmin.sputnik-dao.near": "167940759951644324232545488811",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-02-28": {
+   "1csfundsadmin.sputnik-dao.near": "181918391059013898237545546537",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-01": {
+   "1csfundsadmin.sputnik-dao.near": "182977216694863811233574885375",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-02": {
+   "1csfundsadmin.sputnik-dao.near": "186189940314217531132220362407",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-03": {
+   "1csfundsadmin.sputnik-dao.near": "201376247912719957980189174594",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-04": {
+   "1csfundsadmin.sputnik-dao.near": "212313010338620632811692278466",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-05": {
+   "1csfundsadmin.sputnik-dao.near": "219168386453583606223657898730",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-06": {
+   "1csfundsadmin.sputnik-dao.near": "220737641653511550843248093439",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-07": {
+   "1csfundsadmin.sputnik-dao.near": "223632153495298590139074984046",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-08": {
+   "1csfundsadmin.sputnik-dao.near": "229918805627464232484566361469",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-09": {
+   "1csfundsadmin.sputnik-dao.near": "233395579545080867974375659739",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973483832458490892699999989"
+  },
+  "2026-03-10": {
+   "1csfundsadmin.sputnik-dao.near": "236858040120247544890844751725",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973490267712238644899999988"
+  },
+  "2026-03-11": {
+   "1csfundsadmin.sputnik-dao.near": "244702777239006278753998675556",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973490267712238644899999988"
+  },
+  "2026-03-12": {
+   "1csfundsadmin.sputnik-dao.near": "253324746167528858050371810881",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1040973490267712238644899999988"
+  },
+  "2026-03-13": {
+   "1csfundsadmin.sputnik-dao.near": "257940109341016260629451652025",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-14": {
+   "1csfundsadmin.sputnik-dao.near": "273457266011145828466160099963",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-15": {
+   "1csfundsadmin.sputnik-dao.near": "278435525620394334195844032117",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-16": {
+   "1csfundsadmin.sputnik-dao.near": "285036390621361752678755994758",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-17": {
+   "1csfundsadmin.sputnik-dao.near": "294721356080514917976619676380",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-18": {
+   "1csfundsadmin.sputnik-dao.near": "303014401914358468018192208586",
+   "buybacks.multisignature.near": "0",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-19": {
+   "1csfundsadmin.sputnik-dao.near": "311508244019943258569779645108",
+   "buybacks.multisignature.near": "14999553089370973800000000",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-20": {
+   "1csfundsadmin.sputnik-dao.near": "320274931817698374026105491783",
+   "buybacks.multisignature.near": "14999553089370973800000000",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-21": {
+   "1csfundsadmin.sputnik-dao.near": "326184488363143385282129304264",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-22": {
+   "1csfundsadmin.sputnik-dao.near": "331432683904866527961748290167",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-23": {
+   "1csfundsadmin.sputnik-dao.near": "336831354707266221728389848317",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-24": {
+   "1csfundsadmin.sputnik-dao.near": "348793925121338050549294746039",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-25": {
+   "1csfundsadmin.sputnik-dao.near": "353810048988457684839915419929",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-26": {
+   "1csfundsadmin.sputnik-dao.near": "359603609628900992048516338493",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1068789013362485043906399999987"
+  },
+  "2026-03-27": {
+   "1csfundsadmin.sputnik-dao.near": "365109949608926107259434307930",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1068789015127196212941899999986"
+  },
+  "2026-03-28": {
+   "1csfundsadmin.sputnik-dao.near": "375000025263720919739997038905",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-03-29": {
+   "1csfundsadmin.sputnik-dao.near": "382115021978313055808992887664",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-03-30": {
+   "1csfundsadmin.sputnik-dao.near": "385747987428815239277947316096",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-03-31": {
+   "1csfundsadmin.sputnik-dao.near": "392872951136608620418868723334",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-01": {
+   "1csfundsadmin.sputnik-dao.near": "404445898134892310025985374156",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-02": {
+   "1csfundsadmin.sputnik-dao.near": "413084292022791042411822939231",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-03": {
+   "1csfundsadmin.sputnik-dao.near": "422711675865471567121245228969",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-04": {
+   "1csfundsadmin.sputnik-dao.near": "428977286377129653849218295720",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-05": {
+   "1csfundsadmin.sputnik-dao.near": "431709964831678559095528616376",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-06": {
+   "1csfundsadmin.sputnik-dao.near": "435087181516381860571896099679",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-07": {
+   "1csfundsadmin.sputnik-dao.near": "439640922744995880539666504317",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-08": {
+   "1csfundsadmin.sputnik-dao.near": "447845219923574825264704212048",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-09": {
+   "1csfundsadmin.sputnik-dao.near": "456916492495120291844475014769",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-10": {
+   "1csfundsadmin.sputnik-dao.near": "464983923425426105798540424490",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-11": {
+   "1csfundsadmin.sputnik-dao.near": "473714631795253653111075984674",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-12": {
+   "1csfundsadmin.sputnik-dao.near": "475244829360069427409645466646",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-13": {
+   "1csfundsadmin.sputnik-dao.near": "480289518261645528432053311086",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-14": {
+   "1csfundsadmin.sputnik-dao.near": "492010390557424594068266232007",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-15": {
+   "1csfundsadmin.sputnik-dao.near": "499627037195364074315065131057",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-16": {
+   "1csfundsadmin.sputnik-dao.near": "506477844764430261432926436322",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-17": {
+   "1csfundsadmin.sputnik-dao.near": "509272849963710454951577913014",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-18": {
+   "1csfundsadmin.sputnik-dao.near": "515781733884745506074691693305",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-19": {
+   "1csfundsadmin.sputnik-dao.near": "519242928541511381798016710496",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-20": {
+   "1csfundsadmin.sputnik-dao.near": "527688802153274173898879673390",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-21": {
+   "1csfundsadmin.sputnik-dao.near": "533703701900332488930786466002",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-22": {
+   "1csfundsadmin.sputnik-dao.near": "536987679784865391835354743293",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-23": {
+   "1csfundsadmin.sputnik-dao.near": "491977717723307808263254743293",
+   "buybacks.multisignature.near": "39998442762078857400000000",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-24": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "2068516942612093998881184315",
+   "fefundsadmin.sputnik-dao.near": "1270362836891798142157799999985"
+  },
+  "2026-04-25": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "5066129658362232830227769182",
+   "fefundsadmin.sputnik-dao.near": "1271093787100247096185948851226"
+  },
+  "2026-04-26": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "7468163880663338272034157615",
+   "fefundsadmin.sputnik-dao.near": "1271887715548257124784645735845"
+  },
+  "2026-04-27": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "11801591002655882386766074241",
+   "fefundsadmin.sputnik-dao.near": "1271887715548257124784645735845"
+  },
+  "2026-04-28": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "17674674906870341975763036323",
+   "fefundsadmin.sputnik-dao.near": "1273794004769442027919210502579"
+  },
+  "2026-04-29": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "21618919208327203933933784069",
+   "fefundsadmin.sputnik-dao.near": "1274542722580660544385020037758"
+  },
+  "2026-04-30": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "27750602702865882349381349012",
+   "fefundsadmin.sputnik-dao.near": "1276760488480905200189513472815"
+  },
+  "2026-05-01": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "34648552722962393364235437809",
+   "fefundsadmin.sputnik-dao.near": "1278484000409175133462093690204"
+  },
+  "2026-05-02": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "44137372770068032853568719126",
+   "fefundsadmin.sputnik-dao.near": "1279281118285283445711006420250"
+  },
+  "2026-05-03": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "47374676598270160562533298091",
+   "fefundsadmin.sputnik-dao.near": "1280391139617232121056646122260"
+  },
+  "2026-05-04": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "53005618949751460618625113749",
+   "fefundsadmin.sputnik-dao.near": "1281322945597043042666667827613"
+  },
+  "2026-05-05": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "58677230420843997778772671344",
+   "fefundsadmin.sputnik-dao.near": "1283090600497712553196455036221"
+  },
+  "2026-05-06": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "72241663317270564759202547564",
+   "fefundsadmin.sputnik-dao.near": "1286667086602477239593159335320"
+  },
+  "2026-05-07": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "84862216556022471969841638124",
+   "fefundsadmin.sputnik-dao.near": "1289107964176697751353058401974"
+  },
+  "2026-05-08": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "90808837902057023682845855246",
+   "fefundsadmin.sputnik-dao.near": "1291359214002546809905857307111"
+  },
+  "2026-05-09": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "96714681989795895516030335158",
+   "fefundsadmin.sputnik-dao.near": "1294075639990066862476952377776"
+  },
+  "2026-05-10": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "99518154128822730191157081355",
+   "fefundsadmin.sputnik-dao.near": "1295572798315494885443567816774"
+  },
+  "2026-05-11": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "102725586634280706063859838511",
+   "fefundsadmin.sputnik-dao.near": "1297166817519915169915599500267"
+  },
+  "2026-05-12": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "109851557777671743175971048730",
+   "fefundsadmin.sputnik-dao.near": "1299318895650911134199625999069"
+  },
+  "2026-05-13": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "115658208463302836267430473431",
+   "fefundsadmin.sputnik-dao.near": "1302277043107557018339543415271"
+  },
+  "2026-05-14": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "119057043580473987167037409359",
+   "fefundsadmin.sputnik-dao.near": "1303125839916735668951200926096"
+  },
+  "2026-05-15": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "125494268903802345727363695042",
+   "fefundsadmin.sputnik-dao.near": "1305566381119930800575390390625"
+  },
+  "2026-05-16": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "134265449483065511271402843701",
+   "fefundsadmin.sputnik-dao.near": "1308323723850020088166624636475"
+  },
+  "2026-05-17": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "141605554055470183225704431571",
+   "fefundsadmin.sputnik-dao.near": "1310075749964985451303873871121"
+  },
+  "2026-05-18": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "146161051018918739508276152607",
+   "fefundsadmin.sputnik-dao.near": "1312664225424905353372092211690"
+  },
+  "2026-05-19": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "153422721980004020123020173908",
+   "fefundsadmin.sputnik-dao.near": "1315161783052226737222556904719"
+  },
+  "2026-05-20": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "159803255099254595649892891749",
+   "fefundsadmin.sputnik-dao.near": "1317465661006055887963957680818"
+  },
+  "2026-05-21": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "165852871013269278329637626051",
+   "fefundsadmin.sputnik-dao.near": "1319514986588495611488006307285"
+  },
+  "2026-05-22": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "172822795667546806119229270337",
+   "fefundsadmin.sputnik-dao.near": "1322447197445596625473844363422"
+  },
+  "2026-05-23": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "181408561437353888838838711344",
+   "fefundsadmin.sputnik-dao.near": "1327247500976973401484932895470"
+  },
+  "2026-05-24": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "195982758067131207493638589490",
+   "fefundsadmin.sputnik-dao.near": "1336521133294162088739623842742"
+  },
+  "2026-05-25": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "202405871683231890532294798610",
+   "fefundsadmin.sputnik-dao.near": "1339213498698455432789703760376"
+  },
+  "2026-05-26": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "211888998147727922903566154830",
+   "fefundsadmin.sputnik-dao.near": "1344818010626409692658926492379"
+  },
+  "2026-05-27": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "227701453445759311404553342118",
+   "fefundsadmin.sputnik-dao.near": "1355827442020697112122365516219"
+  },
+  "2026-05-28": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "235613117350644284063755888242",
+   "fefundsadmin.sputnik-dao.near": "1360471610610524886642488260383"
+  },
+  "2026-05-29": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "240788634937711530531736432065",
+   "fefundsadmin.sputnik-dao.near": "1361832688457713442478753939716"
+  },
+  "2026-05-30": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "244755392820156557962638073602",
+   "fefundsadmin.sputnik-dao.near": "1363695547749556749787387962997"
+  },
+  "2026-05-31": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "252962295086089939228177643123",
+   "fefundsadmin.sputnik-dao.near": "1369309689815140115534418203851"
+  },
+  "2026-06-01": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "262591094501517261075951542393",
+   "fefundsadmin.sputnik-dao.near": "1374378948650341862732970820692"
+  },
+  "2026-06-02": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "271284894945584792388450858784",
+   "fefundsadmin.sputnik-dao.near": "1378017065806709360131372242842"
+  },
+  "2026-06-03": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "279655841610513540560841055811",
+   "fefundsadmin.sputnik-dao.near": "1380869039726183837020207614490"
+  },
+  "2026-06-04": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "286832140879359114858761321382",
+   "fefundsadmin.sputnik-dao.near": "1382818573211997976407511590565"
+  },
+  "2026-06-05": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "301979079978018479921040834141",
+   "fefundsadmin.sputnik-dao.near": "1387843064448318070621697248940"
+  },
+  "2026-06-06": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "359301806817868018832419841485",
+   "fefundsadmin.sputnik-dao.near": "1403241269949358242265958236531"
+  },
+  "2026-06-07": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "365835541012616480110431551321",
+   "fefundsadmin.sputnik-dao.near": "1405223310739232846152343907416"
+  },
+  "2026-06-08": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "373850992381165933686044471333",
+   "fefundsadmin.sputnik-dao.near": "1407765370929009586123388916344"
+  },
+  "2026-06-09": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "380809343461535445212264581785",
+   "fefundsadmin.sputnik-dao.near": "1410895179325154663004513865484"
+  },
+  "2026-06-10": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "387053247168958947900431130548",
+   "fefundsadmin.sputnik-dao.near": "1413734235419458807259397425993"
+  },
+  "2026-06-11": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "394585486241435147149114613882",
+   "fefundsadmin.sputnik-dao.near": "1415508403237186315987675555519"
+  },
+  "2026-06-12": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "398763214234340332803326370909",
+   "fefundsadmin.sputnik-dao.near": "1416023230074052499822299944170"
+  },
+  "2026-06-13": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "407097624686438022578573426296",
+   "fefundsadmin.sputnik-dao.near": "1416516084859201683596193466785"
+  },
+  "2026-06-14": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "409312547781210917562906883006",
+   "fefundsadmin.sputnik-dao.near": "1417642609098490394996324769408"
+  },
+  "2026-06-15": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "413998744106664655727917233236",
+   "fefundsadmin.sputnik-dao.near": "1418887652418048613422049865559"
+  },
+  "2026-06-16": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "422840638310399292227569269847",
+   "fefundsadmin.sputnik-dao.near": "1423088979965749957021532468781"
+  },
+  "2026-06-17": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "428674711230963845126686259262",
+   "fefundsadmin.sputnik-dao.near": "1424605570167771226611507691116"
+  },
+  "2026-06-18": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "433503729160876972676915948361",
+   "fefundsadmin.sputnik-dao.near": "1426649724448151519577924672286"
+  },
+  "2026-06-19": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "437175956333765124174034030466",
+   "fefundsadmin.sputnik-dao.near": "1428164547325307331919343190132"
+  },
+  "2026-06-20": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "439778624643290989607508417705",
+   "fefundsadmin.sputnik-dao.near": "1428742746245697734618044133102"
+  },
+  "2026-06-21": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "443890303009423058957148583067",
+   "fefundsadmin.sputnik-dao.near": "1432250866511272353087797169602"
+  },
+  "2026-06-22": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "446823094259995224531347933587",
+   "fefundsadmin.sputnik-dao.near": "1432788029266835529817931397847"
+  },
+  "2026-06-23": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "451957894477770115025406343658",
+   "fefundsadmin.sputnik-dao.near": "1433893776432188139552664464234"
+  },
+  "2026-06-24": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "455670417929792263476232687620",
+   "fefundsadmin.sputnik-dao.near": "1434930443051212822833687553302"
+  },
+  "2026-06-25": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "461911764399273841745867818078",
+   "fefundsadmin.sputnik-dao.near": "1436675704188605983407935172354"
+  },
+  "2026-06-26": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "466740814314695808644946460928",
+   "fefundsadmin.sputnik-dao.near": "1437796778506087319916241389415"
+  },
+  "2026-06-27": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "470978997759747534395215608707",
+   "fefundsadmin.sputnik-dao.near": "1438994052523860751223881626096"
+  },
+  "2026-06-28": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "472654730072964654508800954971",
+   "fefundsadmin.sputnik-dao.near": "1439573536141050280600327601600"
+  },
+  "2026-06-29": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "476567549363911808441561633516",
+   "fefundsadmin.sputnik-dao.near": "1440882496264090849980750637200"
+  },
+  "2026-06-30": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "481915850550939534770751066057",
+   "fefundsadmin.sputnik-dao.near": "1441998488592217436883127756132"
+  },
+  "2026-07-01": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "486474579159677530419793891038",
+   "fefundsadmin.sputnik-dao.near": "1443174497429331012449317113553"
+  },
+  "2026-07-02": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "492661622986860201030697891910",
+   "fefundsadmin.sputnik-dao.near": "1444998825248069617098569796291"
+  },
+  "2026-07-03": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "498788150512364900572380121872",
+   "fefundsadmin.sputnik-dao.near": "1447296951232283973818449519610"
+  },
+  "2026-07-04": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "504063269748995910867467552727",
+   "fefundsadmin.sputnik-dao.near": "1450007309476525302792170702863"
+  },
+  "2026-07-05": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "506850294681717600650426462072",
+   "fefundsadmin.sputnik-dao.near": "1451104842255729034826336366221"
+  },
+  "2026-07-06": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "509981286331006598054134729736",
+   "fefundsadmin.sputnik-dao.near": "1453423237337489512917634576227"
+  },
+  "2026-07-07": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "516405663022372061385027524161",
+   "fefundsadmin.sputnik-dao.near": "1456101152151137434953871902242"
+  },
+  "2026-07-08": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "522667564990741174555372006412",
+   "fefundsadmin.sputnik-dao.near": "1458356536119217104696111857511"
+  },
+  "2026-07-09": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "530384233278700731903003687406",
+   "fefundsadmin.sputnik-dao.near": "1463427003143007036813094648030"
+  },
+  "2026-07-10": {
+   "1csfundsadmin.sputnik-dao.near": "510072904032798053678585595843",
+   "buybacks.multisignature.near": "537410988733207857545649677142",
+   "fefundsadmin.sputnik-dao.near": "1465148839590533158979683794652"
+  },
+  "2026-07-11": {
+   "1csfundsadmin.sputnik-dao.near": "510073138050100941717585595843",
+   "buybacks.multisignature.near": "531146344909250263379825604928",
+   "fefundsadmin.sputnik-dao.near": "1466846252323319199815094704311"
+  },
+  "2026-07-12": {
+   "1csfundsadmin.sputnik-dao.near": "510073138050100941717585595843",
+   "buybacks.multisignature.near": "534003365273552319552363388133",
+   "fefundsadmin.sputnik-dao.near": "1467907498433476940995523691654"
+  },
+  "2026-07-13": {
+   "1csfundsadmin.sputnik-dao.near": "510073138050100941717585595843",
+   "buybacks.multisignature.near": "537926854329595673579365118249",
+   "fefundsadmin.sputnik-dao.near": "1469583561744025520005802210604"
+  },
+  "2026-07-14": {
+   "1csfundsadmin.sputnik-dao.near": "510073138050100941717585595843",
+   "buybacks.multisignature.near": "543305450961893380325276850250",
+   "fefundsadmin.sputnik-dao.near": "1470936264086705137168351281463"
+  },
+  "2026-07-15": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "557719556086668312435698263035",
+   "fefundsadmin.sputnik-dao.near": "1473582355285884636989265028682"
+  },
+  "2026-07-16": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "564524780199366153465835772463",
+   "fefundsadmin.sputnik-dao.near": "1476212982970378945120629272941"
+  },
+  "2026-07-17": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "571822266454048493467309392400",
+   "fefundsadmin.sputnik-dao.near": "1479626256088358020170422138516"
+  },
+  "2026-07-18": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "578459031804059906758877854746",
+   "fefundsadmin.sputnik-dao.near": "1482127760393179590501987362151"
+  },
+  "2026-07-19": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "584381852778637196557798203874",
+   "fefundsadmin.sputnik-dao.near": "1485727281840169796147181295100"
+  },
+  "2026-07-20": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "588278430301918723889771330158",
+   "fefundsadmin.sputnik-dao.near": "1487480792047922599568089842441"
+  },
+  "2026-07-21": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "592976999462280655926263200953",
+   "fefundsadmin.sputnik-dao.near": "1489534484386214392848559036891"
+  },
+  "2026-07-22": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "600806332618656974132560717635",
+   "fefundsadmin.sputnik-dao.near": "1493377746831011127005606463341"
+  },
+  "2026-07-23": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "616161268458064098204977957560",
+   "fefundsadmin.sputnik-dao.near": "1501608401152829099388656567479"
+  },
+  "2026-07-24": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "622015743480653083198120576205",
+   "fefundsadmin.sputnik-dao.near": "1503342900395279410862898346917"
+  },
+  "2026-07-25": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "625857436621499113927561969910",
+   "fefundsadmin.sputnik-dao.near": "1504875700127015255097250739945"
+  },
+  "2026-07-26": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "628322692238888162977527403900",
+   "fefundsadmin.sputnik-dao.near": "1506225507501687483952883505858"
+  },
+  "2026-07-27": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "632438705006004157521682376186",
+   "fefundsadmin.sputnik-dao.near": "1508519790761865864687171969841"
+  },
+  "2026-07-28": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "638403456770511028690403610615",
+   "fefundsadmin.sputnik-dao.near": "1510976646353597426729775943187"
+  },
+  "2026-07-29": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "643125895941413207164411656776",
+   "fefundsadmin.sputnik-dao.near": "1513498315645385053250000537812"
+  },
+  "2026-07-30": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "649820090033353931130766084875",
+   "fefundsadmin.sputnik-dao.near": "1515632981455881450303936639575"
+  },
+  "2026-07-31": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "656834349515717780262646505656",
+   "fefundsadmin.sputnik-dao.near": "1519045867498119278036012424945"
+  },
+  "2026-08-01": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "662716128591042404411967740226",
+   "fefundsadmin.sputnik-dao.near": "1522523288298446003921484814944"
+  },
+  "2026-08-02": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "668110361984863707784314858975",
+   "fefundsadmin.sputnik-dao.near": "1525247393080832352144803441583"
+  },
+  "2026-08-03": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "670641594680110338164881345188",
+   "fefundsadmin.sputnik-dao.near": "1525837535318231425109718335199"
+  },
+  "2026-08-04": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "676054644510169891606309537393",
+   "fefundsadmin.sputnik-dao.near": "1527190535668493016946791379820"
+  },
+  "2026-08-05": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "681128919932995847024089024537",
+   "fefundsadmin.sputnik-dao.near": "1528977581188045598095451877666"
+  },
+  "2026-08-06": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "688154692522662299217592094093",
+   "fefundsadmin.sputnik-dao.near": "1531339507730931815604944092710"
+  },
+  "2026-08-07": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "693263020434987126095574965103",
+   "fefundsadmin.sputnik-dao.near": "1532700599987368056634825209711"
+  },
+  "2026-08-08": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "702074004898022612014872449428",
+   "fefundsadmin.sputnik-dao.near": "1537438609501503884678664103813"
+  },
+  "2026-08-09": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "707657257227680235948049302308",
+   "fefundsadmin.sputnik-dao.near": "1540390366100938762894500122384"
+  },
+  "2026-08-10": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "713642539575157102710975527177",
+   "fefundsadmin.sputnik-dao.near": "1544793874085717159572246969110"
+  },
+  "2026-08-11": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "719677617384743415012069984911",
+   "fefundsadmin.sputnik-dao.near": "1547019933877642394218704563236"
+  },
+  "2026-08-12": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "727779005738764275225796646381",
+   "fefundsadmin.sputnik-dao.near": "1550272812853792925894681994132"
+  },
+  "2026-08-13": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "734655224753789210201709628115",
+   "fefundsadmin.sputnik-dao.near": "1554357680440252990514693976954"
+  },
+  "2026-08-14": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "738795370466392349982573048083",
+   "fefundsadmin.sputnik-dao.near": "1555656991232205661929811693250"
+  },
+  "2026-08-15": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "745300287420094878024906187585",
+   "fefundsadmin.sputnik-dao.near": "1558850817787576233562834506297"
+  },
+  "2026-08-16": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "748489563562543629283975913966",
+   "fefundsadmin.sputnik-dao.near": "1560129383000893971351370408237"
+  },
+  "2026-08-17": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "751922824118285953573808526381",
+   "fefundsadmin.sputnik-dao.near": "1560750649261367300815516801694"
+  },
+  "2026-08-18": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "761874866554269935646532412968",
+   "fefundsadmin.sputnik-dao.near": "1566618712361198454819739825503"
+  },
+  "2026-08-19": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "767992586658697583406343338735",
+   "fefundsadmin.sputnik-dao.near": "1570168451238939240812869234597"
+  },
+  "2026-08-20": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "791402878641396242005982817206",
+   "fefundsadmin.sputnik-dao.near": "1581913374081480863793031229379"
+  },
+  "2026-08-21": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "806915646483122772322921806317",
+   "fefundsadmin.sputnik-dao.near": "1589016778934435699667605277719"
+  },
+  "2026-08-22": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "830593000406357618474077166526",
+   "fefundsadmin.sputnik-dao.near": "1601578231495241235239619814559"
+  },
+  "2026-08-23": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "846982716237192727079612964776",
+   "fefundsadmin.sputnik-dao.near": "1605286075140894206395772118762"
+  },
+  "2026-08-24": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "858247431221699682400472167004",
+   "fefundsadmin.sputnik-dao.near": "1610269316440681058391094897654"
+  },
+  "2026-08-25": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "872221732947733962885642232106",
+   "fefundsadmin.sputnik-dao.near": "1615298937042036844189988898100"
+  },
+  "2026-08-26": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "883412284315111536053220583344",
+   "fefundsadmin.sputnik-dao.near": "1618713356305420839603752825700"
+  },
+  "2026-08-27": {
+   "1csfundsadmin.sputnik-dao.near": "502798938526000132848385595843",
+   "buybacks.multisignature.near": "895076623250395370501210565206",
+   "fefundsadmin.sputnik-dao.near": "1626492761802771038130588157682"
+  },
+  "2026-08-28": {
+   "1csfundsadmin.sputnik-dao.near": "502799250326997281326985595843",
+   "buybacks.multisignature.near": "905880435390274152663324356234",
+   "fefundsadmin.sputnik-dao.near": "1628810876139211992796934439319"
+  },
+  "2026-08-29": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "915983300572056011474105607829",
+   "fefundsadmin.sputnik-dao.near": "1633078037040371712640595478525"
+  },
+  "2026-08-30": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "923543517561443709928739849906",
+   "fefundsadmin.sputnik-dao.near": "1639639937147068872229855618504"
+  },
+  "2026-08-31": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "932305760805537284024732378739",
+   "fefundsadmin.sputnik-dao.near": "1645858874932726468975024022465"
+  },
+  "2026-09-01": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "940841335266600981665846508370",
+   "fefundsadmin.sputnik-dao.near": "1649784400787470460115418280898"
+  },
+  "2026-09-02": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "949145716900840258513321381449",
+   "fefundsadmin.sputnik-dao.near": "1653677843123952123260600809731"
+  },
+  "2026-09-03": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "961643540546990206788246793724",
+   "fefundsadmin.sputnik-dao.near": "1657063865298031212843025888597"
+  },
+  "2026-09-04": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "987184396223297666054548571381",
+   "fefundsadmin.sputnik-dao.near": "1664735270535251199009631323085"
+  },
+  "2026-09-05": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "1021280727534038790258365024637",
+   "fefundsadmin.sputnik-dao.near": "1680909652787549129322616024541"
+  },
+  "2026-09-06": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "1031612177586484854759152535674",
+   "fefundsadmin.sputnik-dao.near": "1683801526513169585294823694055"
+  },
+  "2026-09-07": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "1052107809781277939405514983550",
+   "fefundsadmin.sputnik-dao.near": "1691586116813307958496303052670"
+  },
+  "2026-09-08": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "1059129010231144208000179181464",
+   "fefundsadmin.sputnik-dao.near": "1693870158289402013694729650087"
+  },
+  "2026-09-09": {
+   "1csfundsadmin.sputnik-dao.near": "502799250587267826548485595843",
+   "buybacks.multisignature.near": "1067621512202850231969847432322",
+   "fefundsadmin.sputnik-dao.near": "1696591609734444812102217792570"
+  },
+  "2026-09-10": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1582307487661396881840514779467",
+   "fefundsadmin.sputnik-dao.near": "1700537064485519029987469783438"
+  },
+  "2026-09-11": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1592169517442790186976916090910",
+   "fefundsadmin.sputnik-dao.near": "1705070297371593316141079744786"
+  },
+  "2026-09-12": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1604240272379129063596019263692",
+   "fefundsadmin.sputnik-dao.near": "1708783530038523279237798781033"
+  },
+  "2026-09-13": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1613457120540861337939025590785",
+   "fefundsadmin.sputnik-dao.near": "1711276430516181940081059410494"
+  },
+  "2026-09-14": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1623303537675678842346970052110",
+   "fefundsadmin.sputnik-dao.near": "1714846038374737229453719661324"
+  },
+  "2026-09-15": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1633124303879738475973517654743",
+   "fefundsadmin.sputnik-dao.near": "1719131525061113115384213179369"
+  },
+  "2026-09-16": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1644486761441740707214589255033",
+   "fefundsadmin.sputnik-dao.near": "1721828276993261221088621146203"
+  },
+  "2026-09-17": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1656196089575468249659654248669",
+   "fefundsadmin.sputnik-dao.near": "1725696273887543404361328128964"
+  },
+  "2026-09-18": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1679822869557945097836828265220",
+   "fefundsadmin.sputnik-dao.near": "1734605631033886256810594925515"
+  },
+  "2026-09-19": {
+   "1csfundsadmin.sputnik-dao.near": "7669830931317123185595842",
+   "buybacks.multisignature.near": "1705372747628076053846468376222",
+   "fefundsadmin.sputnik-dao.near": "1743004722779856070274312524755"
+  },
+  "2026-09-20": {
+   "1csfundsadmin.sputnik-dao.near": "270776835252430877653311023",
+   "buybacks.multisignature.near": "1716882388898630646816476441800",
+   "fefundsadmin.sputnik-dao.near": "1747915420492774513581102239945"
+  },
+  "2026-09-21": {
+   "1csfundsadmin.sputnik-dao.near": "270776835252430877653311023",
+   "buybacks.multisignature.near": "1724419274082063065580663110406",
+   "fefundsadmin.sputnik-dao.near": "1751878236140240722563923651521"
+  },
+  "2026-09-22": {
+   "1csfundsadmin.sputnik-dao.near": "270776835252430877653311023",
+   "buybacks.multisignature.near": "1742992598429748746718610202638",
+   "fefundsadmin.sputnik-dao.near": "1761656506829824773977686937425"
+  },
+  "2026-09-23": {
+   "1csfundsadmin.sputnik-dao.near": "270776835252430877653311023",
+   "buybacks.multisignature.near": "1759835082618218321972652727294",
+   "fefundsadmin.sputnik-dao.near": "1771064843944309493995788149585"
+  },
+  "2026-09-24": {
+   "1csfundsadmin.sputnik-dao.near": "270776835252430877653311023",
+   "buybacks.multisignature.near": "1776706782463801092212153984643",
+   "fefundsadmin.sputnik-dao.near": "1779065813165058691518635913619"
+  },
+  "2026-09-25": {
+   "1csfundsadmin.sputnik-dao.near": "270776835252430877653311023",
+   "buybacks.multisignature.near": "1788592820579574794768138629056",
+   "fefundsadmin.sputnik-dao.near": "1784558754235568802297357487918"
+  },
+  "2026-09-26": {
+   "1csfundsadmin.sputnik-dao.near": "270776835252430877653311023",
+   "buybacks.multisignature.near": "1801649717892703486340596051849",
+   "fefundsadmin.sputnik-dao.near": "1790413470618427178924326574773"
+  },
+  "2026-09-27": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1807047110197867296847022165363",
+   "fefundsadmin.sputnik-dao.near": "1793210889319004206722814575462"
+  },
+  "2026-09-28": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1812983431596377237617334264418",
+   "fefundsadmin.sputnik-dao.near": "1796085338844208052758948299078"
+  },
+  "2026-09-29": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1822893996735042818173349276924",
+   "fefundsadmin.sputnik-dao.near": "1799820644735474378785544373639"
+  },
+  "2026-09-30": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1833801617110658034792759664192",
+   "fefundsadmin.sputnik-dao.near": "1804065076354000283279520395271"
+  },
+  "2026-10-01": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1847719669647922717807307668926",
+   "fefundsadmin.sputnik-dao.near": "1809615333445561675995693046192"
+  },
+  "2026-10-02": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1857884155858091350069598244726",
+   "fefundsadmin.sputnik-dao.near": "1814301660423109809076732604264"
+  },
+  "2026-10-03": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1865758660764386889736470177094",
+   "fefundsadmin.sputnik-dao.near": "1818008649290410945706618778749"
+  },
+  "2026-10-04": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1869501250582179979963250009820",
+   "fefundsadmin.sputnik-dao.near": "1819616562263287683586098269812"
+  },
+  "2026-10-05": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1874472494082711018161309115020",
+   "fefundsadmin.sputnik-dao.near": "1844391799890963144803775639084"
+  },
+  "2026-10-06": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1882735683620816141920553749434",
+   "fefundsadmin.sputnik-dao.near": "1846188428960573780227733449016"
+  },
+  "2026-10-07": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1890080146890310813168797938226",
+   "fefundsadmin.sputnik-dao.near": "1851007290625289116170324020848"
+  },
+  "2026-10-08": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1897731372055982481913232831320",
+   "fefundsadmin.sputnik-dao.near": "1855244904525696874297496875498"
+  },
+  "2026-10-09": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1913969702769880819761568140034",
+   "fefundsadmin.sputnik-dao.near": "1865616777246606081464045277500"
+  },
+  "2026-10-10": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1930866986641103308021205415000",
+   "fefundsadmin.sputnik-dao.near": "1871955623926472170197328639665"
+  },
+  "2026-10-11": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1941541424418627092844313278718",
+   "fefundsadmin.sputnik-dao.near": "1876118685560973510023577210092"
+  },
+  "2026-10-12": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1951906222229100466534897480489",
+   "fefundsadmin.sputnik-dao.near": "1879582069180530579327654305424"
+  },
+  "2026-10-13": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1960118321314710641432027319389",
+   "fefundsadmin.sputnik-dao.near": "1883709062360753699530692817203"
+  },
+  "2026-10-14": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1967173550451354990927234851121",
+   "fefundsadmin.sputnik-dao.near": "1887875935913649874527973620843"
+  },
+  "2026-10-15": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1977862015166105671095141878631",
+   "fefundsadmin.sputnik-dao.near": "1894137836115881223100461733681"
+  },
+  "2026-10-16": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "1997792341793245664236913522137",
+   "fefundsadmin.sputnik-dao.near": "1905170627936402659770365392915"
+  },
+  "2026-10-17": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2003725108779099638889399247756",
+   "fefundsadmin.sputnik-dao.near": "1908368595323651555907119129976"
+  },
+  "2026-10-18": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2008453431590361180292424700134",
+   "fefundsadmin.sputnik-dao.near": "1910300817630168447464657518286"
+  },
+  "2026-10-19": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2014526467298357764650388041622",
+   "fefundsadmin.sputnik-dao.near": "1913463450661649657631982695779"
+  },
+  "2026-10-20": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2022180087915366303354191622511",
+   "fefundsadmin.sputnik-dao.near": "1916643242806074001541587346866"
+  },
+  "2026-10-21": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2033718030159469463819379165396",
+   "fefundsadmin.sputnik-dao.near": "1920982886911920394173684387446"
+  },
+  "2026-10-22": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2041715549172857273212182591001",
+   "fefundsadmin.sputnik-dao.near": "1925109656753433711878818548873"
+  },
+  "2026-10-23": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2049936975150822317002906855184",
+   "fefundsadmin.sputnik-dao.near": "1928945610849683844137418443294"
+  },
+  "2026-10-24": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2056444853410709654936574625493",
+   "fefundsadmin.sputnik-dao.near": "1930683809691253682990719978313"
+  },
+  "2026-10-25": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2063654814829638970316666604108",
+   "fefundsadmin.sputnik-dao.near": "1933985549894899088828244366750"
+  },
+  "2026-10-26": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2073656608909675179346814265880",
+   "fefundsadmin.sputnik-dao.near": "1937438668383016963362721593922"
+  },
+  "2026-10-27": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2086721896829787490168326202458",
+   "fefundsadmin.sputnik-dao.near": "1941978712068215412541098584261"
+  },
+  "2026-10-28": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2098423280960751802068265464084",
+   "fefundsadmin.sputnik-dao.near": "1946694130759502085119861351980"
+  },
+  "2026-10-29": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2108156428189658422097023634028",
+   "fefundsadmin.sputnik-dao.near": "1949087885807406974249683461069"
+  },
+  "2026-10-30": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2124102210760147153597279392054",
+   "fefundsadmin.sputnik-dao.near": "1956588039897329203979306771609"
+  },
+  "2026-10-31": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2137099537156296693450067891964",
+   "fefundsadmin.sputnik-dao.near": "1961221332139154602502426209831"
+  },
+  "2026-11-01": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2144976649835487232936209450114",
+   "fefundsadmin.sputnik-dao.near": "1963841863593495567290378733640"
+  },
+  "2026-11-02": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2150197476174271458279287285005",
+   "fefundsadmin.sputnik-dao.near": "1965356683093048747121045177375"
+  },
+  "2026-11-03": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2157345743517658059920121561883",
+   "fefundsadmin.sputnik-dao.near": "1966875240050776640842900410862"
+  },
+  "2026-11-04": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2164886363376982092232265751250",
+   "fefundsadmin.sputnik-dao.near": "1970547586311361945727528977186"
+  },
+  "2026-11-05": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2174118704866122309290617889544",
+   "fefundsadmin.sputnik-dao.near": "1973571037722207139771636538200"
+  },
+  "2026-11-06": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2186643490726675341163852461050",
+   "fefundsadmin.sputnik-dao.near": "1977538111182586267177301850650"
+  },
+  "2026-11-07": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2202267809503735848483139335761",
+   "fefundsadmin.sputnik-dao.near": "1985550223967981937987121889406"
+  },
+  "2026-11-08": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2210368537479003103284075869637",
+   "fefundsadmin.sputnik-dao.near": "1989046134668474936483028113938"
+  },
+  "2026-11-09": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2217648474133855010872617131474",
+   "fefundsadmin.sputnik-dao.near": "1990457638220464173846081842794"
+  },
+  "2026-11-10": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2229439344194882091281972700843",
+   "fefundsadmin.sputnik-dao.near": "1994812252877263375139754343196"
+  },
+  "2026-11-11": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2240388944599905427052030790641",
+   "fefundsadmin.sputnik-dao.near": "1999998519567024872942316655034"
+  },
+  "2026-11-12": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2249868714909366474265631069294",
+   "fefundsadmin.sputnik-dao.near": "2003856032207952557227494312113"
+  },
+  "2026-11-13": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2269999449005143110383044058274",
+   "fefundsadmin.sputnik-dao.near": "2011735445938999367728149514232"
+  },
+  "2026-11-14": {
+   "1csfundsadmin.sputnik-dao.near": "270875891412420848813311023",
+   "buybacks.multisignature.near": "2279854459857469662535533339472",
+   "fefundsadmin.sputnik-dao.near": "2015642727285725168059350761141"
+  }
+ },
+ "source": "https://transfers.main.fastnear.com/v0/transfers (FastNEAR transfers index, no key) for the transfers; view_account on an archival node for the balances",
+ "transfers": {
+  "2026-09-14": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "clingy.near": "3595000000000000000000000000",
+     "intents.near": "6251417134817504407944461325"
+    },
+    "native_in": "9846417134817504407944461325",
+    "native_out": "0",
+    "received": "9846417134817504407944461325",
+    "transfers_in": 13
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3569607858555289372660250830"
+    },
+    "native_in": "3569607858555289372660250830",
+    "native_out": "0",
+    "received": "3569607858555289372660250830",
+    "transfers_in": 7
+   }
+  },
+  "2026-09-15": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "9820766204059633626547602633"
+    },
+    "native_in": "9820766204059633626547602633",
+    "native_out": "0",
+    "received": "9820766204059633626547602633",
+    "transfers_in": 20
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4285486686375885930493518045"
+    },
+    "native_in": "4285486686375885930493518045",
+    "native_out": "0",
+    "received": "4285486686375885930493518045",
+    "transfers_in": 8
+   }
+  },
+  "2026-09-16": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "11362457562002231241071600290"
+    },
+    "native_in": "11362457562002231241071600290",
+    "native_out": "0",
+    "received": "11362457562002231241071600290",
+    "transfers_in": 22
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "2696751932148105704407966834"
+    },
+    "native_in": "2696751932148105704407966834",
+    "native_out": "0",
+    "received": "2696751932148105704407966834",
+    "transfers_in": 6
+   }
+  },
+  "2026-09-17": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "11709328133727542445064993636"
+    },
+    "native_in": "11709328133727542445064993636",
+    "native_out": "0",
+    "received": "11709328133727542445064993636",
+    "transfers_in": 22
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3867996894282183272706982761"
+    },
+    "native_in": "3867996894282183272706982761",
+    "native_out": "0",
+    "received": "3867996894282183272706982761",
+    "transfers_in": 9
+   }
+  },
+  "2026-09-18": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "23626779982476848177174016551"
+    },
+    "native_in": "23626779982476848177174016551",
+    "native_out": "0",
+    "received": "23626779982476848177174016551",
+    "transfers_in": 45
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "8909357146342852449266796551"
+    },
+    "native_in": "8909357146342852449266796551",
+    "native_out": "0",
+    "received": "8909357146342852449266796551",
+    "transfers_in": 18
+   }
+  },
+  "2026-09-19": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "25549878070130956009640111002"
+    },
+    "native_in": "25549878070130956009640111002",
+    "native_out": "0",
+    "received": "25549878070130956009640111002",
+    "transfers_in": 45
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "8399091745969813463717599240"
+    },
+    "native_in": "8399091745969813463717599240",
+    "native_out": "0",
+    "received": "8399091745969813463717599240",
+    "transfers_in": 22
+   }
+  },
+  "2026-09-20": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "263107004321113754467715181"
+    },
+    "native_in": "263107004321113754467715181",
+    "native_out": "0",
+    "received": "263107004321113754467715181",
+    "transfers_in": 1
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "11509641270554592970008065578"
+    },
+    "native_in": "11509641270554592970008065578",
+    "native_out": "0",
+    "received": "11509641270554592970008065578",
+    "transfers_in": 30
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4910697712918443306789715190"
+    },
+    "native_in": "4910697712918443306789715190",
+    "native_out": "0",
+    "received": "4910697712918443306789715190",
+    "transfers_in": 14
+   }
+  },
+  "2026-09-21": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7536885183432418764186668606"
+    },
+    "native_in": "7536885183432418764186668606",
+    "native_out": "0",
+    "received": "7536885183432418764186668606",
+    "transfers_in": 24
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3962815647466208982821411576"
+    },
+    "native_in": "3962815647466208982821411576",
+    "native_out": "0",
+    "received": "3962815647466208982821411576",
+    "transfers_in": 13
+   }
+  },
+  "2026-09-22": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "18573324347685681137947092232"
+    },
+    "native_in": "18573324347685681137947092232",
+    "native_out": "0",
+    "received": "18573324347685681137947092232",
+    "transfers_in": 53
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "9778270689584051413763285904"
+    },
+    "native_in": "9778270689584051413763285904",
+    "native_out": "0",
+    "received": "9778270689584051413763285904",
+    "transfers_in": 27
+   }
+  },
+  "2026-09-23": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "16842484188469575254042524656"
+    },
+    "native_in": "16842484188469575254042524656",
+    "native_out": "0",
+    "received": "16842484188469575254042524656",
+    "transfers_in": 51
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "9408337114484720018101212160"
+    },
+    "native_in": "9408337114484720018101212160",
+    "native_out": "0",
+    "received": "9408337114484720018101212160",
+    "transfers_in": 30
+   }
+  },
+  "2026-09-24": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "16871699845582770239501257349"
+    },
+    "native_in": "16871699845582770239501257349",
+    "native_out": "0",
+    "received": "16871699845582770239501257349",
+    "transfers_in": 52
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "8000969220749197522847764034"
+    },
+    "native_in": "8000969220749197522847764034",
+    "native_out": "0",
+    "received": "8000969220749197522847764034",
+    "transfers_in": 22
+   }
+  },
+  "2026-09-25": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "11886038115773702555984644413"
+    },
+    "native_in": "11886038115773702555984644413",
+    "native_out": "0",
+    "received": "11886038115773702555984644413",
+    "transfers_in": 40
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "5492941070510110778721574299"
+    },
+    "native_in": "5492941070510110778721574299",
+    "native_out": "0",
+    "received": "5492941070510110778721574299",
+    "transfers_in": 18
+   }
+  },
+  "2026-09-26": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "13054897313128691572457422793",
+     "nearlegion.tipbot.intear.near": "2000000000000000000000000"
+    },
+    "native_in": "13056897313128691572457422793",
+    "native_out": "0",
+    "received": "13056897313128691572457422793",
+    "transfers_in": 47
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "5854716382858376626969086855"
+    },
+    "native_in": "5854716382858376626969086855",
+    "native_out": "0",
+    "received": "5854716382858376626969086855",
+    "transfers_in": 21
+   }
+  },
+  "2026-09-27": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {
+     "7284730c055ee99285ebbf3d29c6d3e04c9904af57236f7794937cf693d98729": "99056159989971160000000"
+    },
+    "native_in": "99056159989971160000000",
+    "native_out": "0",
+    "received": "99056159989971160000000",
+    "transfers_in": 1
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "5397392305163810506426113514"
+    },
+    "native_in": "5397392305163810506426113514",
+    "native_out": "0",
+    "received": "5397392305163810506426113514",
+    "transfers_in": 23
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "2797418700577027798488000689"
+    },
+    "native_in": "2797418700577027798488000689",
+    "native_out": "0",
+    "received": "2797418700577027798488000689",
+    "transfers_in": 12
+   }
+  },
+  "2026-09-28": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "5936321398509940770312099055"
+    },
+    "native_in": "5936321398509940770312099055",
+    "native_out": "0",
+    "received": "5936321398509940770312099055",
+    "transfers_in": 25
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "2874449525203846036133723616"
+    },
+    "native_in": "2874449525203846036133723616",
+    "native_out": "0",
+    "received": "2874449525203846036133723616",
+    "transfers_in": 12
+   }
+  },
+  "2026-09-29": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "9910565138665580556015012506"
+    },
+    "native_in": "9910565138665580556015012506",
+    "native_out": "0",
+    "received": "9910565138665580556015012506",
+    "transfers_in": 35
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3735305891266326026596074561"
+    },
+    "native_in": "3735305891266326026596074561",
+    "native_out": "0",
+    "received": "3735305891266326026596074561",
+    "transfers_in": 16
+   }
+  },
+  "2026-09-30": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "10907620375615216619410387268"
+    },
+    "native_in": "10907620375615216619410387268",
+    "native_out": "0",
+    "received": "10907620375615216619410387268",
+    "transfers_in": 36
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4244431618525904493976021632"
+    },
+    "native_in": "4244431618525904493976021632",
+    "native_out": "0",
+    "received": "4244431618525904493976021632",
+    "transfers_in": 16
+   }
+  },
+  "2026-10-01": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "13918052537264683014548004734"
+    },
+    "native_in": "13918052537264683014548004734",
+    "native_out": "0",
+    "received": "13918052537264683014548004734",
+    "transfers_in": 39
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "5550257091561392716172650921"
+    },
+    "native_in": "5550257091561392716172650921",
+    "native_out": "0",
+    "received": "5550257091561392716172650921",
+    "transfers_in": 17
+   }
+  },
+  "2026-10-02": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "10164486210168632262290575800"
+    },
+    "native_in": "10164486210168632262290575800",
+    "native_out": "0",
+    "received": "10164486210168632262290575800",
+    "transfers_in": 30
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4686326977548133081039558072"
+    },
+    "native_in": "4686326977548133081039558072",
+    "native_out": "0",
+    "received": "4686326977548133081039558072",
+    "transfers_in": 16
+   }
+  },
+  "2026-10-03": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7874504906295539666871932368"
+    },
+    "native_in": "7874504906295539666871932368",
+    "native_out": "0",
+    "received": "7874504906295539666871932368",
+    "transfers_in": 29
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3706988867301136629886174485"
+    },
+    "native_in": "3706988867301136629886174485",
+    "native_out": "0",
+    "received": "3706988867301136629886174485",
+    "transfers_in": 14
+   }
+  },
+  "2026-10-04": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "3742589817793090226779832726"
+    },
+    "native_in": "3742589817793090226779832726",
+    "native_out": "0",
+    "received": "3742589817793090226779832726",
+    "transfers_in": 13
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "1607912972876737879479491063"
+    },
+    "native_in": "1607912972876737879479491063",
+    "native_out": "0",
+    "received": "1607912972876737879479491063",
+    "transfers_in": 6
+   }
+  },
+  "2026-10-05": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "4971243500531038198059105200"
+    },
+    "native_in": "4971243500531038198059105200",
+    "native_out": "0",
+    "received": "4971243500531038198059105200",
+    "transfers_in": 14
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "24775237627675461217677369272"
+    },
+    "native_in": "24775237627675461217677369272",
+    "native_out": "0",
+    "received": "24775237627675461217677369272",
+    "transfers_in": 13
+   }
+  },
+  "2026-10-06": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "8263189538105123759244634414"
+    },
+    "native_in": "8263189538105123759244634414",
+    "native_out": "0",
+    "received": "8263189538105123759244634414",
+    "transfers_in": 24
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "1796629069610635423957809932"
+    },
+    "native_in": "1796629069610635423957809932",
+    "native_out": "0",
+    "received": "1796629069610635423957809932",
+    "transfers_in": 8
+   }
+  },
+  "2026-10-07": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7344463269494671248244188792"
+    },
+    "native_in": "7344463269494671248244188792",
+    "native_out": "0",
+    "received": "7344463269494671248244188792",
+    "transfers_in": 29
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4818861664715335942590571832"
+    },
+    "native_in": "4818861664715335942590571832",
+    "native_out": "0",
+    "received": "4818861664715335942590571832",
+    "transfers_in": 17
+   }
+  },
+  "2026-10-08": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7651225165671668744434893094"
+    },
+    "native_in": "7651225165671668744434893094",
+    "native_out": "0",
+    "received": "7651225165671668744434893094",
+    "transfers_in": 30
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4237613900407758127172854650"
+    },
+    "native_in": "4237613900407758127172854650",
+    "native_out": "0",
+    "received": "4237613900407758127172854650",
+    "transfers_in": 15
+   }
+  },
+  "2026-10-09": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "16238330713898337848335308714"
+    },
+    "native_in": "16238330713898337848335308714",
+    "native_out": "0",
+    "received": "16238330713898337848335308714",
+    "transfers_in": 52
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "10371872720909207166548402002"
+    },
+    "native_in": "10371872720909207166548402002",
+    "native_out": "0",
+    "received": "10371872720909207166548402002",
+    "transfers_in": 34
+   }
+  },
+  "2026-10-10": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "16897283871222488259637274966"
+    },
+    "native_in": "16897283871222488259637274966",
+    "native_out": "0",
+    "received": "16897283871222488259637274966",
+    "transfers_in": 44
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "6338846679866088733283362165"
+    },
+    "native_in": "6338846679866088733283362165",
+    "native_out": "0",
+    "received": "6338846679866088733283362165",
+    "transfers_in": 19
+   }
+  },
+  "2026-10-11": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "10674437777523784823107863718"
+    },
+    "native_in": "10674437777523784823107863718",
+    "native_out": "0",
+    "received": "10674437777523784823107863718",
+    "transfers_in": 27
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4163061634501339826248570427"
+    },
+    "native_in": "4163061634501339826248570427",
+    "native_out": "0",
+    "received": "4163061634501339826248570427",
+    "transfers_in": 13
+   }
+  },
+  "2026-10-12": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "10364797810473373690584201771"
+    },
+    "native_in": "10364797810473373690584201771",
+    "native_out": "0",
+    "received": "10364797810473373690584201771",
+    "transfers_in": 30
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3463383619557069304077095332"
+    },
+    "native_in": "3463383619557069304077095332",
+    "native_out": "0",
+    "received": "3463383619557069304077095332",
+    "transfers_in": 11
+   }
+  },
+  "2026-10-13": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "8212099085610174897129838900"
+    },
+    "native_in": "8212099085610174897129838900",
+    "native_out": "0",
+    "received": "8212099085610174897129838900",
+    "transfers_in": 35
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4126993180223120203038511779"
+    },
+    "native_in": "4126993180223120203038511779",
+    "native_out": "0",
+    "received": "4126993180223120203038511779",
+    "transfers_in": 16
+   }
+  },
+  "2026-10-14": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7055229136644349495207531732"
+    },
+    "native_in": "7055229136644349495207531732",
+    "native_out": "0",
+    "received": "7055229136644349495207531732",
+    "transfers_in": 25
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4166873552896174997280803640"
+    },
+    "native_in": "4166873552896174997280803640",
+    "native_out": "0",
+    "received": "4166873552896174997280803640",
+    "transfers_in": 15
+   }
+  },
+  "2026-10-15": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "10688464714750680167907027510"
+    },
+    "native_in": "10688464714750680167907027510",
+    "native_out": "0",
+    "received": "10688464714750680167907027510",
+    "transfers_in": 35
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "6261900202231348572488112838"
+    },
+    "native_in": "6261900202231348572488112838",
+    "native_out": "0",
+    "received": "6261900202231348572488112838",
+    "transfers_in": 17
+   }
+  },
+  "2026-10-16": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "19930326627139993141771643506"
+    },
+    "native_in": "19930326627139993141771643506",
+    "native_out": "0",
+    "received": "19930326627139993141771643506",
+    "transfers_in": 24
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "11032791820521436669903659234"
+    },
+    "native_in": "11032791820521436669903659234",
+    "native_out": "0",
+    "received": "11032791820521436669903659234",
+    "transfers_in": 12
+   }
+  },
+  "2026-10-17": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "5932766985853974652485725619"
+    },
+    "native_in": "5932766985853974652485725619",
+    "native_out": "0",
+    "received": "5932766985853974652485725619",
+    "transfers_in": 24
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3197967387248896136753737061"
+    },
+    "native_in": "3197967387248896136753737061",
+    "native_out": "0",
+    "received": "3197967387248896136753737061",
+    "transfers_in": 12
+   }
+  },
+  "2026-10-18": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "4728322811261541403025452378"
+    },
+    "native_in": "4728322811261541403025452378",
+    "native_out": "0",
+    "received": "4728322811261541403025452378",
+    "transfers_in": 18
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "1932222306516891557538388310"
+    },
+    "native_in": "1932222306516891557538388310",
+    "native_out": "0",
+    "received": "1932222306516891557538388310",
+    "transfers_in": 6
+   }
+  },
+  "2026-10-19": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "6073035707996584357963341488"
+    },
+    "native_in": "6073035707996584357963341488",
+    "native_out": "0",
+    "received": "6073035707996584357963341488",
+    "transfers_in": 20
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3162633031481210167325177493"
+    },
+    "native_in": "3162633031481210167325177493",
+    "native_out": "0",
+    "received": "3162633031481210167325177493",
+    "transfers_in": 11
+   }
+  },
+  "2026-10-20": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7653620617008538703803580889"
+    },
+    "native_in": "7653620617008538703803580889",
+    "native_out": "0",
+    "received": "7653620617008538703803580889",
+    "transfers_in": 24
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3179792144424343909604651087"
+    },
+    "native_in": "3179792144424343909604651087",
+    "native_out": "0",
+    "received": "3179792144424343909604651087",
+    "transfers_in": 10
+   }
+  },
+  "2026-10-21": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "11537942244103160465187542885"
+    },
+    "native_in": "11537942244103160465187542885",
+    "native_out": "0",
+    "received": "11537942244103160465187542885",
+    "transfers_in": 28
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4339644105846392632097040580"
+    },
+    "native_in": "4339644105846392632097040580",
+    "native_out": "0",
+    "received": "4339644105846392632097040580",
+    "transfers_in": 12
+   }
+  },
+  "2026-10-22": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7997519013387809392803425605"
+    },
+    "native_in": "7997519013387809392803425605",
+    "native_out": "0",
+    "received": "7997519013387809392803425605",
+    "transfers_in": 30
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4126769841513317705134161427"
+    },
+    "native_in": "4126769841513317705134161427",
+    "native_out": "0",
+    "received": "4126769841513317705134161427",
+    "transfers_in": 15
+   }
+  },
+  "2026-10-23": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "8221425977965043790724264183"
+    },
+    "native_in": "8221425977965043790724264183",
+    "native_out": "0",
+    "received": "8221425977965043790724264183",
+    "transfers_in": 27
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3835954096250132258599894421"
+    },
+    "native_in": "3835954096250132258599894421",
+    "native_out": "0",
+    "received": "3835954096250132258599894421",
+    "transfers_in": 13
+   }
+  },
+  "2026-10-24": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "6507878259887337933667770309"
+    },
+    "native_in": "6507878259887337933667770309",
+    "native_out": "0",
+    "received": "6507878259887337933667770309",
+    "transfers_in": 23
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "1738198841569838853301535019"
+    },
+    "native_in": "1738198841569838853301535019",
+    "native_out": "0",
+    "received": "1738198841569838853301535019",
+    "transfers_in": 6
+   }
+  },
+  "2026-10-25": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7209961418929315380091978615"
+    },
+    "native_in": "7209961418929315380091978615",
+    "native_out": "0",
+    "received": "7209961418929315380091978615",
+    "transfers_in": 22
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3301740203645405837524388437"
+    },
+    "native_in": "3301740203645405837524388437",
+    "native_out": "0",
+    "received": "3301740203645405837524388437",
+    "transfers_in": 11
+   }
+  },
+  "2026-10-26": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "10001794080036209030147661772"
+    },
+    "native_in": "10001794080036209030147661772",
+    "native_out": "0",
+    "received": "10001794080036209030147661772",
+    "transfers_in": 30
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3453118488117874534477227172"
+    },
+    "native_in": "3453118488117874534477227172",
+    "native_out": "0",
+    "received": "3453118488117874534477227172",
+    "transfers_in": 12
+   }
+  },
+  "2026-10-27": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "13065287920112310821511936578"
+    },
+    "native_in": "13065287920112310821511936578",
+    "native_out": "0",
+    "received": "13065287920112310821511936578",
+    "transfers_in": 39
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4540043685198449178376990339"
+    },
+    "native_in": "4540043685198449178376990339",
+    "native_out": "0",
+    "received": "4540043685198449178376990339",
+    "transfers_in": 12
+   }
+  },
+  "2026-10-28": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "11701384130964311899939261626"
+    },
+    "native_in": "11701384130964311899939261626",
+    "native_out": "0",
+    "received": "11701384130964311899939261626",
+    "transfers_in": 33
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4715418691286672578762767719"
+    },
+    "native_in": "4715418691286672578762767719",
+    "native_out": "0",
+    "received": "4715418691286672578762767719",
+    "transfers_in": 14
+   }
+  },
+  "2026-10-29": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "9733147228906620028758169944"
+    },
+    "native_in": "9733147228906620028758169944",
+    "native_out": "0",
+    "received": "9733147228906620028758169944",
+    "transfers_in": 29
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "2393755047904889129822109089"
+    },
+    "native_in": "2393755047904889129822109089",
+    "native_out": "0",
+    "received": "2393755047904889129822109089",
+    "transfers_in": 8
+   }
+  },
+  "2026-10-30": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "15945782570488731500255758026"
+    },
+    "native_in": "15945782570488731500255758026",
+    "native_out": "0",
+    "received": "15945782570488731500255758026",
+    "transfers_in": 40
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "7500154089922229729623310540"
+    },
+    "native_in": "7500154089922229729623310540",
+    "native_out": "0",
+    "received": "7500154089922229729623310540",
+    "transfers_in": 22
+   }
+  },
+  "2026-10-31": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "12997326396149539852788499910"
+    },
+    "native_in": "12997326396149539852788499910",
+    "native_out": "0",
+    "received": "12997326396149539852788499910",
+    "transfers_in": 42
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4633292241825398523119438222"
+    },
+    "native_in": "4633292241825398523119438222",
+    "native_out": "0",
+    "received": "4633292241825398523119438222",
+    "transfers_in": 17
+   }
+  },
+  "2026-11-01": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7877112679190539486141558150"
+    },
+    "native_in": "7877112679190539486141558150",
+    "native_out": "0",
+    "received": "7877112679190539486141558150",
+    "transfers_in": 24
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "2620531454340964787952523809"
+    },
+    "native_in": "2620531454340964787952523809",
+    "native_out": "0",
+    "received": "2620531454340964787952523809",
+    "transfers_in": 9
+   }
+  },
+  "2026-11-02": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "5220826338784225343077834891"
+    },
+    "native_in": "5220826338784225343077834891",
+    "native_out": "0",
+    "received": "5220826338784225343077834891",
+    "transfers_in": 19
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "1514819499553179830666443735"
+    },
+    "native_in": "1514819499553179830666443735",
+    "native_out": "0",
+    "received": "1514819499553179830666443735",
+    "transfers_in": 6
+   }
+  },
+  "2026-11-03": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7148267343386601640834276878"
+    },
+    "native_in": "7148267343386601640834276878",
+    "native_out": "0",
+    "received": "7148267343386601640834276878",
+    "transfers_in": 21
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "1518556957727893721855233487"
+    },
+    "native_in": "1518556957727893721855233487",
+    "native_out": "0",
+    "received": "1518556957727893721855233487",
+    "transfers_in": 5
+   }
+  },
+  "2026-11-04": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7540619859324032312144189367"
+    },
+    "native_in": "7540619859324032312144189367",
+    "native_out": "0",
+    "received": "7540619859324032312144189367",
+    "transfers_in": 22
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3672346260585304884628566324"
+    },
+    "native_in": "3672346260585304884628566324",
+    "native_out": "0",
+    "received": "3672346260585304884628566324",
+    "transfers_in": 11
+   }
+  },
+  "2026-11-05": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "9232341489140217058352138294"
+    },
+    "native_in": "9232341489140217058352138294",
+    "native_out": "0",
+    "received": "9232341489140217058352138294",
+    "transfers_in": 24
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3023451410845194044107561014"
+    },
+    "native_in": "3023451410845194044107561014",
+    "native_out": "0",
+    "received": "3023451410845194044107561014",
+    "transfers_in": 11
+   }
+  },
+  "2026-11-06": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "12524785860553031873234571506"
+    },
+    "native_in": "12524785860553031873234571506",
+    "native_out": "0",
+    "received": "12524785860553031873234571506",
+    "transfers_in": 21
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3967073460379127405665312450"
+    },
+    "native_in": "3967073460379127405665312450",
+    "native_out": "0",
+    "received": "3967073460379127405665312450",
+    "transfers_in": 6
+   }
+  },
+  "2026-11-07": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "15624318777060507319286874711"
+    },
+    "native_in": "15624318777060507319286874711",
+    "native_out": "0",
+    "received": "15624318777060507319286874711",
+    "transfers_in": 28
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "8012112785395670809820038756"
+    },
+    "native_in": "8012112785395670809820038756",
+    "native_out": "0",
+    "received": "8012112785395670809820038756",
+    "transfers_in": 14
+   }
+  },
+  "2026-11-08": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "8100727975267254800936533876"
+    },
+    "native_in": "8100727975267254800936533876",
+    "native_out": "0",
+    "received": "8100727975267254800936533876",
+    "transfers_in": 23
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3495910700492998495906224532"
+    },
+    "native_in": "3495910700492998495906224532",
+    "native_out": "0",
+    "received": "3495910700492998495906224532",
+    "transfers_in": 11
+   }
+  },
+  "2026-11-09": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "7279936654851907588541261837"
+    },
+    "native_in": "7279936654851907588541261837",
+    "native_out": "0",
+    "received": "7279936654851907588541261837",
+    "transfers_in": 11
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "1411503551989237363053728856"
+    },
+    "native_in": "1411503551989237363053728856",
+    "native_out": "0",
+    "received": "1411503551989237363053728856",
+    "transfers_in": 3
+   }
+  },
+  "2026-11-10": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "11790870061027080409355569369"
+    },
+    "native_in": "11790870061027080409355569369",
+    "native_out": "0",
+    "received": "11790870061027080409355569369",
+    "transfers_in": 27
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "4354614656799201293672500402"
+    },
+    "native_in": "4354614656799201293672500402",
+    "native_out": "0",
+    "received": "4354614656799201293672500402",
+    "transfers_in": 9
+   }
+  },
+  "2026-11-11": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "52435fe912307fb3a088b8b8f3882781762fc1f0a404e8579c7fb1a964362c8d": "531038473000000000000000000",
+     "intents.near": "10418561932023335770058089798"
+    },
+    "native_in": "10949600405023335770058089798",
+    "native_out": "0",
+    "received": "10949600405023335770058089798",
+    "transfers_in": 25
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "5186266689761497802562311838"
+    },
+    "native_in": "5186266689761497802562311838",
+    "native_out": "0",
+    "received": "5186266689761497802562311838",
+    "transfers_in": 13
+   }
+  },
+  "2026-11-12": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "9479770309461047213600278653"
+    },
+    "native_in": "9479770309461047213600278653",
+    "native_out": "0",
+    "received": "9479770309461047213600278653",
+    "transfers_in": 22
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3857512640927684285177657079"
+    },
+    "native_in": "3857512640927684285177657079",
+    "native_out": "0",
+    "received": "3857512640927684285177657079",
+    "transfers_in": 10
+   }
+  },
+  "2026-11-13": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "intents.near": "20130734095776636117412988980"
+    },
+    "native_in": "20130734095776636117412988980",
+    "native_out": "0",
+    "received": "20130734095776636117412988980",
+    "transfers_in": 29
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "7879413731046810500655202119"
+    },
+    "native_in": "7879413731046810500655202119",
+    "native_out": "0",
+    "received": "7879413731046810500655202119",
+    "transfers_in": 15
+   }
+  },
+  "2026-11-14": {
+   "1csfundsadmin.sputnik-dao.near": {
+    "from": {},
+    "native_in": "0",
+    "native_out": "0",
+    "received": "0",
+    "transfers_in": 0
+   },
+   "buybacks.multisignature.near": {
+    "from": {
+     "ccb91e1db61e8d7e1d4ae3e043001140132959a86ee35a548b6563a46284a6ea": "453191324000000000000000000",
+     "intents.near": "9401819528326552152489281198"
+    },
+    "native_in": "9855010852326552152489281198",
+    "native_out": "0",
+    "received": "9855010852326552152489281198",
+    "transfers_in": 24
+   },
+   "fefundsadmin.sputnik-dao.near": {
+    "from": {
+     "intents.near": "3907281346725800331201246909"
+    },
+    "native_in": "3907281346725800331201246909",
+    "native_out": "0",
+    "received": "3907281346725800331201246909",
+    "transfers_in": 12
+   }
+  }
+ },
+ "wallets": [
+  "buybacks.multisignature.near",
+  "fefundsadmin.sputnik-dao.near",
+  "1csfundsadmin.sputnik-dao.near"
+ ]
+}
