@@ -130,6 +130,30 @@ def chain_balances(days):
     return out
 
 
+def exit_order(rows, lo, hi, mark, top=3):
+    """Split the transfers between two readings at block `mark`: totals in and out before it and from it on, and the
+    largest single transfers out with their block, time and receiver. Used to order the September exit against the
+    block where the hole in the public books opened."""
+    seen, sides = set(), {"before": [0, 0], "after": [0, 0]}
+    outs = []
+    for t in rows:
+        key = (t["receipt_id"], t["log_index"], t["transfer_index"], t["other_account_id"], t["amount"])
+        h = int(t["block_height"])
+        if not lo < h <= hi or key in seen:
+            continue
+        seen.add(key)
+        amount = int(t["amount"])
+        side = sides["before" if h < mark else "after"]
+        side[0 if amount > 0 else 1] += abs(amount)
+        if amount < 0:
+            outs.append((-amount, h, int(t["block_timestamp"]), t["other_account_id"] or "", t["receipt_id"]))
+    outs.sort(reverse=True)
+    return {"from_height": lo, "to_height": hi, "mark_height": mark,
+            "before": {"in": str(sides["before"][0]), "out": str(sides["before"][1])},
+            "after": {"in": str(sides["after"][0]), "out": str(sides["after"][1])},
+            "largest_out": [{"amount": str(a), "height": h, "timestamp": ts, "to": to, "receipt_id": rid} for a, h, ts, to, rid in outs[:top]]}
+
+
 def pull(first, last):
     os.makedirs(RAW, exist_ok=True)
     a, b = dt.date.fromisoformat(first), dt.date.fromisoformat(last)
@@ -148,6 +172,10 @@ def pull(first, last):
     out = {"source": INDEX + " (FastNEAR transfers index, no key). An indexer's list: used only where it adds up to the chain.",
            "account": rpc.TREASURY, "token": TOKEN, "floor": str(FLOOR),
            "days": summarise(rows, blocks, chain_balances(cal), days)}
+    ex = load(os.path.join(DATA, "context", "exploit.json"), None)
+    if ex and "2026-09-29" in blocks and "2026-09-30" in blocks:
+        hole = next(int(st["height"]) for st in ex["steps"] if int(st["credited"]) > int(st["held"]))
+        out["exit_order"] = exit_order(rows, blocks["2026-09-29"], blocks["2026-09-30"], hole)
     save(PATH, out)
     return out
 
@@ -155,7 +183,20 @@ def pull(first, last):
 def main():
     ap = argparse.ArgumentParser(description="Who moved NEAR in and out of the private chain's treasury.")
     ap.add_argument("--pull", nargs=2, metavar=("FIRST", "LAST"), help="refetch these days from the index and rebuild the file")
+    ap.add_argument("--exit-order", action="store_true", help="order the 29-30 September exit against the block where the hole opened, from the raw pages")
     args = ap.parse_args()
+    if args.exit_order:
+        rec = load(PATH, None)
+        blocks = {d: v["height"] for d, v in load(os.path.join(DATA, "blocks.json"), {}).items()}
+        rows = []
+        for day in ("2026-09-28", "2026-09-29", "2026-09-30"):
+            rows += load(os.path.join(RAW, day + ".json"), [])
+        ex = load(os.path.join(DATA, "context", "exploit.json"), None)
+        hole = next(int(st["height"]) for st in ex["steps"] if int(st["credited"]) > int(st["held"]))
+        rec["exit_order"] = exit_order(rows, blocks["2026-09-29"], blocks["2026-09-30"], hole)
+        save(PATH, rec)
+        print(json.dumps(rec["exit_order"], indent=1)[:1200])
+        return 0
     flows = pull(*args.pull) if args.pull else load(PATH, None)
     if not flows:
         raise SystemExit("data/context/flows.json does not exist yet: run with --pull FIRST LAST")

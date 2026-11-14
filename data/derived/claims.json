@@ -445,6 +445,97 @@
    "what": "The October hole at its largest as months of that revenue"
   },
   {
+   "grade": "chain",
+   "how": "pipeline/revenue.py; data/context/revenue.json",
+   "id": "U1",
+   "shown": "426,685 NEAR",
+   "what": "NEAR and wNEAR received by the three revenue wallets in the 30 days to the reading of 2026-11-13, counted from the chain: transfers listed by a public index, and every wallet's native NEAR in minus out equal, to the last unit, to the change in its balance read at each day's block"
+  },
+  {
+   "grade": "chain",
+   "how": "U1 over 30",
+   "id": "U2",
+   "shown": "14,223 NEAR a day",
+   "what": "The same, a day"
+  },
+  {
+   "grade": "chain",
+   "how": "U1 over 30 days of supply growth",
+   "id": "U4",
+   "shown": "16%",
+   "what": "Revenue reaching NEAR's wallets as a share of net new supply, both read from the chain, in the 30 days to the reading of 2026-11-13: U1 over the change in total supply between two block headers 30 days apart. The rating in THESIS.md section 5 uses it"
+  },
+  {
+   "grade": "chain",
+   "how": "as U4, one window earlier",
+   "id": "U5",
+   "shown": "20%",
+   "what": "The same coverage in the 30 days before, to the reading of 2026-10-14 (517,163 NEAR received)"
+  },
+  {
+   "grade": "chain",
+   "how": "U1 over the window before, minus one",
+   "id": "U6",
+   "shown": "-17%",
+   "what": "Change in the NEAR reaching the revenue wallets, the latest 30 days against the 30 before, read from the chain"
+  },
+  {
+   "grade": "chain",
+   "how": "pipeline/revenue.py against data/context/defillama.json",
+   "id": "U3",
+   "shown": "100.9%",
+   "what": "NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR at each day's price (409,897 NEAR against 406,427 NEAR): how far the quoted figure agrees with the chain"
+  },
+  {
+   "grade": "rule",
+   "how": "the rule, applied by pipeline/claims.py",
+   "id": "RT",
+   "shown": "Hold",
+   "what": "The rating the rule in THESIS.md section 5 gives on 2026-11-13: the public books are whole on the latest reading; coverage is 16% and 20% in the last two 30-day windows; NEAR has not published the private chain's totals"
+  },
+  {
+   "grade": "model",
+   "how": "(1 + issuance) times (1 / U4) to the power 1/years, minus 1",
+   "id": "Z1",
+   "shown": "84% a year",
+   "what": "How fast the revenue reaching NEAR's wallets, counted in NEAR, must grow for buybacks to match net new supply by the end of 2029, with issuance as it is (2.47% of supply a year)"
+  },
+  {
+   "grade": "model",
+   "how": "as Z1",
+   "id": "Z2",
+   "shown": "59% a year",
+   "what": "The same, if net new supply runs at 1.6% of supply by then, as HSP-029 would bring about"
+  },
+  {
+   "grade": "model",
+   "how": "as Z1",
+   "id": "Z3",
+   "shown": "46% a year",
+   "what": "The same by the end of 2031, issuance as it is"
+  },
+  {
+   "grade": "model",
+   "how": "as Z1",
+   "id": "Z4",
+   "shown": "33% a year",
+   "what": "The same by the end of 2031, at 1.6%"
+  },
+  {
+   "grade": "model",
+   "how": "as Z1",
+   "id": "Z5",
+   "shown": "15%",
+   "what": "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance does too"
+  },
+  {
+   "grade": "model",
+   "how": "as Z1",
+   "id": "Z6",
+   "shown": "24%",
+   "what": "Coverage at the end of 2029 if revenue in NEAR stays where it is and issuance falls to 1.6%"
+  },
+  {
    "grade": "reported",
    "how": "annualised X1 times M2",
    "id": "M3",
@@ -577,6 +668,13 @@
    "what": "How long before the first payout the hole first passed $1.0M"
   },
   {
+   "grade": "chain, one quoted time",
+   "how": "as A12",
+   "id": "A16",
+   "shown": "1 hour 9 minutes",
+   "what": "How long before the first payout the hole first passed $10,000"
+  },
+  {
    "grade": "chain",
    "how": "data/context/late_tokens.json added to both sides of C4",
    "id": "A14",
@@ -687,6 +785,62 @@
    "id": "N5",
    "shown": "38%",
    "what": "Part of the NEAR that left the treasury before the 2026-09-30 reading (5.6M NEAR gross, to 1,083 accounts) that went to the three largest receivers, each in a single transfer"
+  },
+  {
+   "grade": "model, on quoted volume and NearBlocks activity",
+   "how": "python3 -m pipeline.leadlag",
+   "id": "L1",
+   "shown": "r = -0.11, p = 0.96",
+   "what": "Weekly change in NEAR Intents' reported volume against the change in NEAR's transactions 2 weeks later, the strongest of leads of 1 to 8 weeks. p is the share of 10,000 circularly shifted series that do as well at their best lead (seed 20261114)"
+  },
+  {
+   "grade": "model, on quoted volume and NearBlocks activity",
+   "how": "python3 -m pipeline.leadlag",
+   "id": "L2",
+   "shown": "r = +0.09, p = 0.88",
+   "what": "Weekly change in NEAR Intents' reported volume against the change in NEAR's active accounts 1 week later, the strongest of leads of 1 to 8 weeks. p is the share of 10,000 circularly shifted series that do as well at their best lead (seed 20261114)"
+  },
+  {
+   "grade": "model, on quoted volume and NearBlocks activity",
+   "how": "python3 -m pipeline.leadlag",
+   "id": "L3",
+   "shown": "r = -0.12, p = 0.74",
+   "what": "Weekly change in NEAR Intents' reported volume against the change in NEAR's price 2 weeks later, the strongest of leads of 1 to 8 weeks. p is the share of 10,000 circularly shifted series that do as well at their best lead (seed 20261114)"
+  },
+  {
+   "grade": "model",
+   "how": "complete Monday-to-Sunday weeks both sources cover",
+   "id": "L4",
+   "shown": "98 weekly changes",
+   "what": "Weeks in the lead-lag test, from the week of 2024-12-16 to the week of 2026-11-02"
+  },
+  {
+   "grade": "chain, found through 1Click's public status records",
+   "how": "pipeline/oneclick.py; data/context/oneclick.json",
+   "id": "W5",
+   "shown": "9 of 9",
+   "what": "Completed or refunded 1Click swaps, found among 188 accounts that paid into the treasury on six days after 2026-10-27, whose own status record lists the NEAR transaction that moved their tokens into the treasury (swaps dated 2026-11-02 to 2026-11-11; 9 of those transfers read back from the chain as stated)"
+  },
+  {
+   "grade": "index, checked against the chain",
+   "how": "data/context/flows.json, exit_order",
+   "id": "N6",
+   "shown": "4.1M NEAR",
+   "what": "Net NEAR that left the treasury between the reading of 2026-09-29 and block 217799506, where the hole in the public books opened. From that block to the next reading the treasury gained 0.2M NEAR"
+  },
+  {
+   "grade": "index, checked against the chain",
+   "how": "as N6",
+   "id": "N7",
+   "shown": "2.1M NEAR",
+   "what": "The three largest transfers out of the treasury that day, all between 06:06 and 06:09 UTC on 29 September"
+  },
+  {
+   "grade": "index, checked against the chain",
+   "how": "block times",
+   "id": "N8",
+   "shown": "10 hours",
+   "what": "How long before the hole opened the last of those three transfers left"
   },
   {
    "grade": "model",

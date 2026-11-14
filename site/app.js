@@ -94,7 +94,8 @@
       if (part === "then" && (m = /\(([^)]+) then\)/.exec(c.what))) s = m[1];
       if (part === "unpriced" && (m = /\((\d+) of them/.exec(c.what))) s = m[1];
       if (n.getAttribute("data-fmt") === "date") s = dayLong(s);
-      if (n.getAttribute("data-fmt") === "hm" && (m = /^(\d+) hours (\d+) minutes$/.exec(s))) s = m[1] + "h " + m[2] + "m";
+      if (n.getAttribute("data-fmt") === "hm" && (m = /^(\d+) hours? (\d+) minutes?$/.exec(s))) s = m[1] + "h " + m[2] + "m";
+      if (n.getAttribute("data-fmt") === "lead") s = s.split(" ")[0];
       n.textContent = s;
       n.title = c.id + ": " + c.what;
     });
@@ -569,15 +570,23 @@
   // ---------- readings ----------
   function num(id) { return parseFloat(K[id].shown.replace(/[^0-9.\-]/g, "")); }
   function meters() {
+    var rule = document.getElementById("rule-meters");
+    if (rule && K.U4) {
+      rule.textContent = "";
+      drawMeters(rule, [{ id: "R4", name: "Coverage, read from the chain: the rule's measured input", now: K.U4.shown, v: num("U4"), max: 40, from: 10, to: 25, tick: 25, tickLabel: "25%",
+        rule: ["Hold between 10% and 25%. ", "Add at 25% or more", ", exit below 10%, each in two 30-day windows in a row. The window before was " + (K.U5 ? K.U5.shown : "n/a") + "."] }]);
+    }
     var box = document.getElementById("meters");
     box.textContent = "";
-    [
+    drawMeters(box, [
       { id: "R1", name: "Private float", now: K.C1.shown, v: num("C1"), max: 250, from: 200, to: 250, tick: 200, tickLabel: "$200M", rule: ["Growing at ", "$200M or more", ". Not growing below the pinned day's level."] },
       { id: "R2", name: "Ten best days as a share of the float", now: K.C17.shown, v: num("C17"), max: 100, from: 0, to: 45, tick: 45, tickLabel: "45%", rule: ["Broadening ", "below 45%", ": new money arrives on many days. Not if it is still at the pinned day's level."] },
       { id: "R3", name: "Private share, the 20 tracked tokens", now: K.C23 ? K.C23.shown : "n/a", v: K.C23 ? num("C23") : 0, max: 100, from: 50, to: 100, tick: 50, tickLabel: "50%", rule: ["Growing at ", "50% or more", ". Below 40% the money is moving back to the public side, where it can be audited."] },
-      { id: "R4", name: "Revenue reaching NEAR's wallets, as a share of new supply", now: K.V4.shown, v: num("V4"), max: 60, from: 25, to: 60, tick: 25, tickLabel: "25%", rule: ["Improving at ", "25% or more", ". Worse below 10%. Counted NEAR against NEAR. Uses a quoted revenue figure, so it is scored by hand."] },
       { id: "R5", name: "Float without NEAR's own token", now: K.P4.shown, v: num("P4"), max: 180, from: 130, to: 180, tick: 130, tickLabel: "$130M", rule: ["Growing at ", "$130M or more", ". Not growing below the pinned day's level."] }
-    ].forEach(function (r) {
+    ]);
+  }
+  function drawMeters(box, list) {
+    list.forEach(function (r) {
       var mEl = html("div", "meter"), head = html("div", "head"), name = html("div", "name"), tag = html("small", null, r.id);
       name.appendChild(tag); name.appendChild(document.createTextNode(r.name));
       head.appendChild(name); head.appendChild(html("div", "now", r.now));
@@ -621,7 +630,11 @@
   function charts() { chartAudit(); chartExploit(); chartWaterline(); chartStack(); chartReward(); chartLumps(); chartSwitch(); }
   var runBtn = document.getElementById("audit-run");
   if (runBtn) runBtn.addEventListener("click", auditNow);
-  fillClaims(); barsTokens(); meters(); forward(); links(); charts();
+  function markRating() {
+    var r = K.RT && K.RT.shown;
+    document.querySelectorAll("tr[data-rating]").forEach(function (tr) { tr.classList.toggle("now", tr.getAttribute("data-rating") === r); });
+  }
+  fillClaims(); markRating(); barsTokens(); meters(); forward(); links(); charts();
   var timer;
   addEventListener("resize", function () { clearTimeout(timer); timer = setTimeout(charts, 150); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(charts);

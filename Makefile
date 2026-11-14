@@ -31,6 +31,7 @@ context:
 pull:
 	$(PY) -m pipeline.pull --held
 	$(PY) -m pipeline.audit --pull
+	$(PY) -m pipeline.revenue --balances
 
 ## Open the dashboard at http://localhost:8080
 serve:

@@ -123,7 +123,24 @@ def tracked():
     print("tracked:", TRACKED_COUNT, "tokens")
 
 
-PARTS = {"tokens": tokens, "quoted": quoted, "supply": supply, "custody": custody, "tracked": tracked}
+
+def activity():
+    """Daily network activity from NearBlocks' public charts (no key): transactions, active accounts and NEAR's price.
+    Used only by the lead-lag test in pipeline/leadlag.py, which the track's example prompt asks for."""
+    got = get("https://api.nearblocks.io/v1/charts")
+    rows = got.get("charts", got) if isinstance(got, dict) else got
+    days = {}
+    for r in rows:
+        day = r["date"][:10]
+        days[day] = {"txns": int(r["txns"]), "active_accounts": int(r["active_accounts"]), "near_price": str(r["near_price"])}
+    save(os.path.join(DATA, "context", "activity.json"), {
+        "source": "https://api.nearblocks.io/v1/charts (NearBlocks, public, no key)", "fetched_at": now(),
+        "days": dict(sorted(days.items()))})
+    print(f"activity: {len(days)} days, {min(days)} to {max(days)}")
+
+
+PARTS = {"tokens": tokens, "quoted": quoted, "supply": supply, "custody": custody, "tracked": tracked, "activity": activity}
+
 
 if __name__ == "__main__":
     for name in (sys.argv[1:] or ["tokens", "quoted", "supply", "custody"]):
