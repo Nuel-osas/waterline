@@ -857,6 +857,34 @@
    "what": "Part of the NEAR that left the treasury before the 2026-09-30 reading (5.6M NEAR gross, to 1,083 accounts) that went to the three largest receivers, each in a single transfer"
   },
   {
+   "grade": "chain",
+   "how": "python3 -m pipeline.audit --sample 200; data/context/random_audit.json",
+   "id": "J1",
+   "shown": "200 random blocks",
+   "what": "Blocks drawn at random (seed 20261114) between the first reading and the pinned one and audited for the 20 tracked tokens: 1 fell inside the 451,623 blocks the October hole was open and 1 of those showed it; 431 token checks returned nothing and count as unknown, each one a token that the daily reading before that block also lacks, because it was not yet on the books"
+  },
+  {
+   "grade": "chain",
+   "how": "count",
+   "id": "J2",
+   "shown": "0 of 199",
+   "what": "Random blocks outside the October hole on which any tracked token was short: how often the sign test would cry wolf"
+  },
+  {
+   "grade": "chain",
+   "how": "count",
+   "id": "J3",
+   "shown": "0 of 199",
+   "what": "Random blocks outside the October hole on which a tracked token held less over its credit than on every earlier daily reading"
+  },
+  {
+   "grade": "model",
+   "how": "3 over J2's denominator",
+   "id": "J4",
+   "shown": "1.5%",
+   "what": "With no false alarm in the sample, the highest false-alarm rate per block that the sample does not rule out, at about 95% confidence: three over the number of blocks (the rule of three)"
+  },
+  {
    "grade": "model, on quoted volume and NearBlocks activity",
    "how": "python3 -m pipeline.leadlag",
    "id": "L1",

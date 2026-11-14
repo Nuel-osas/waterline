@@ -238,3 +238,7 @@ h3 { font: 560 clamp(20px, 2vw, 28px)/1.15 var(--sans); letter-spacing: -.025em;
 @media (max-width: 760px) { .ledger.plain td:last-child { white-space: normal; } }
 .meters.one { grid-template-columns: minmax(0, 1fr); max-width: 640px; margin-top: clamp(24px, 3vw, 40px); }
 .cards .big-note { margin: -12px 0 18px; font: 500 12px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--fog-3); }
+.live .watch { flex-basis: 100%; display: flex; align-items: center; gap: 10px; font: 500 13px/1.4 var(--mono); color: var(--fog-2); cursor: pointer; }
+.live .watch input { width: 18px; height: 18px; accent-color: var(--accent); }
+.watch-status { flex-basis: 100%; font: 500 13px/1.5 var(--mono); color: var(--fog-3); }
+.watch-status.alarm { color: #FFB23E; }

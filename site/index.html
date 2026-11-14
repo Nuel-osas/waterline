@@ -67,6 +67,8 @@
       <div class="live-head">
         <button type="button" id="audit-run">Audit the latest block</button>
         <p id="audit-status">Runs in your browser against a public NEAR node: about 25 requests, a few seconds. Nothing is sent anywhere else.</p>
+        <label class="watch"><input type="checkbox" id="audit-watch"> Keep watching: audit the latest block again every minute while this page is open</label>
+        <p class="watch-status" id="audit-watch-status" hidden></p>
       </div>
       <div id="audit-result" hidden>
         <p class="verdict" id="audit-verdict"></p>
@@ -91,6 +93,7 @@ intents.near.mt_batch_supply(token_ids=[the 20 tracked tokens])   -> credited, d
 &lt;token&gt;.ft_balance_of(account_id="intents.near")              -> held, data/held/&lt;day&gt;.json
 # a reading is short when credited is above held for any token
 # drawn from data/derived/series.json: audit.days[]</pre></details>
+      <p class="note">Does it cry wolf? At <span data-claim="J1">200 random blocks</span>, the test found a hole on <span data-claim="J2">0 of 199</span> outside October's and a new low on <span data-claim="J3">0 of 199</span>; the one block that fell inside October's hole showed it. That bounds the false-alarm rate per block below about <span data-claim="J4">1.5%</span>, a ceiling and not an estimate.</p>
     </article>
 
     <article class="finding">

@@ -139,7 +139,11 @@ hole they wait for. Generated from the replay in `data/context/exploit.json`; th
 
 A reader once a day, as this project is, would have seen a hole of $30 at the reading of 30 September, the
 sign test firing almost a day before the first payout. Whether a test like that also fires when nothing is
-wrong is the other half of an alarm; section 7 says how far that has been measured.
+wrong is the other half of an alarm. We audited 200 random blocks between the first reading and the pinned one,
+so between the daily readings as well as on them. Outside the October hole the sign test fired on 0 of 199 and
+the new-low test on 0 of 199. One block fell inside the 451,623 blocks the hole was open, and it showed the hole.
+No false alarm in that many draws puts the rate per block below about 1.5%, at 95% confidence: a ceiling, not an
+estimate. Section 7 says what that does not cover.
 
 **The swaps now settle through the account the audit cannot see into.** NEAR's changelog says 1Click swaps settle
 on the private chain from 27 October and that a swap's `nearTxHashes` then lists the shield and the unshield.
@@ -388,7 +392,11 @@ the product and money moving beyond the audit at once.
   the sum of all credits and does not rebuild it from every account.
 - **Whether the alarm cries wolf.** Whether a hole of any size, or a new low, also appears at times when nothing
   is wrong is measured by auditing blocks drawn at random between the first reading and the pinned one
-  (`python3 -m pipeline.audit --sample 200`). The result was not in when this was written, and will be stated here when it is.
+  (`python3 -m pipeline.audit --sample 200`, seeded): outside the October hole, 0 of 199 short and 0 of 199 with
+  a new low. Zero in that many draws bounds the false-alarm rate per block at about 1.5%; it does not show the
+  rate is zero, and a reader who checks every block would need a far larger sample to promise a quiet alarm.
+  Checks that returned nothing were all tokens not yet on the books at that block, the same tokens the daily
+  readings lack then.
 - **A standing surplus and a small hole.** Whether credited is above held would miss a hole smaller than the
   surplus a token already carries, as USDC on NEAR does. The second test, a new low of held minus credited,
   covers that case on the stored readings, and `make audit` and the dashboard's button compare a live reading

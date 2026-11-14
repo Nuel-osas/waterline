@@ -34,7 +34,8 @@ an idle holder's by -2.4% a year.
    are: 214 tokens, $223.8M, none short.
 2. The one time they were not, it showed: the October hole was in the books from ten dollars 31 hours 40 minutes before the
    first payout, and above $10,000 1 hour 9 minutes before it. A replay run in November, not live detection; the start time
-   is also CertiK's.
+   is also CertiK's. At 200 random blocks the test fired on none outside the hole (0 of 199) and caught the one
+   block that fell inside it. The dashboard can keep watching the latest block, once a minute.
 3. The swaps now settle through the one account the audit cannot see into: for each of the 9 1Click swaps we
    found (8 completed, 1 refunded), the swap's own record lists the transaction that moved its tokens into it.
    They show the route, not what share of swaps take it. That account holds 61.0% of everything NEAR Intents
