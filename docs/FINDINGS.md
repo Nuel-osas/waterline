@@ -100,6 +100,13 @@ rows are results of dated tests on readings taken after the tests were written.
 | U3 | **100.9%** | NEAR the chain shows reaching the wallets over the 30 days of X3, as a share of DefiLlama's revenue for those days turned into NEAR at each day's price (409,897 NEAR against 406,427 NEAR): how far the quoted figure agrees with the chain |
 | M2 | **6.2x** | How many times revenue would have to grow for buybacks to match net new supply |
 | H1 | **4.0x** | How many times revenue would have to grow if net new supply ran at the 1.6% a year that HSP-029 would bring about |
+| F1 | **4,282,006 NEAR** | NEAR held by the three revenue wallets together at the reading of 2026-11-13, read from the chain |
+| F2 | **1,040,604 NEAR** | The same at the first reading, 2026-02-18 |
+| F3 | **2 of 268 days** | Days on which the three wallets together held less than at the reading before, 2026-02-18 to 2026-11-13: 2026-04-23 (45,010 NEAR), 2026-07-11 (4,567 NEAR) |
+| F4 | **0 NEAR** | NEAR the three wallets sent out from 2026-09-14 to 2026-11-13, the days whose transfers this repository reads |
+| F5 | **2 of 4** | Keys of buybacks.multisignature.near that must confirm a transfer, of those that can; it has 0 full-access keys and has made 4 requests in all |
+| F6 | **2 of 5** | Approvers of fefundsadmin.sputnik-dao.near who must vote for a transfer, of those who can |
+| F7 | **2 of 4** | Approvers of 1csfundsadmin.sputnik-dao.near who must vote for a transfer, of those who can |
 | RT | **Hold** | The rating the rule in THESIS.md section 5 gives on 2026-11-13: the public books are whole on the latest reading; coverage is 16% and 20% in the last two 30-day windows; NEAR has not published the private chain's totals |
 | Z1 | **84% a year** | How fast the revenue reaching NEAR's wallets, counted in NEAR, must grow for buybacks to match net new supply by the end of 2029, with issuance as it is (2.47% of supply a year) |
 | Z2 | **59% a year** | The same, if net new supply runs at 1.6% of supply by then, as HSP-029 would bring about |
