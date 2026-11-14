@@ -1,7 +1,10 @@
 """Where the revenue that funds NEAR's buyback comes from, one step back inside intents.near.
 
   python3 -m pipeline.revenue_source            # the stored result: the share paid out of the private chain's treasury
-  python3 -m pipeline.revenue_source --pull     # trace every payment again from FastNEAR's public indexes (no key)
+  python3 -m pipeline.revenue_source --pull     # trace every payment of the latest 30 days again (no key; over an hour)
+
+It covers the 30 days to the pinned reading, the window the rating's coverage uses. The index refuses about
+half of its calls at one a second, so tracing a second window would take hours more; it is not traced.
 
 Every payment of NEAR or wNEAR from intents.near into the three revenue wallets is a withdrawal signed by an account
 on intents.near's own ledger: a native_withdraw or ft_withdraw intent. For each payment this reads the transaction
@@ -260,19 +263,19 @@ def pull(first_utc, last_utc, workers=1):
 
 def main():
     ap = argparse.ArgumentParser(description="Where the revenue that funds NEAR's buyback comes from, one step back.")
-    ap.add_argument("--pull", action="store_true", help="trace every payment of the last two 30-day windows again (network)")
+    ap.add_argument("--pull", action="store_true", help="trace every payment of the latest 30-day window again (network)")
     args = ap.parse_args()
     blocks = load(os.path.join(DATA, "blocks.json"), {})
     pin = load(os.path.join(DATA, "pin.json"), {})["pin_day"]
     shift = lambda n: (dt.date.fromisoformat(pin) + dt.timedelta(days=n)).isoformat()   # noqa: E731
     if args.pull:
-        pull(shift(-60), shift(-1))
+        pull(shift(-30), shift(-1))
     rec = load(OUT, None)
     if not rec:
         print("no stored trace: run with --pull")
         return 1
     rv = load(os.path.join(DATA, "context", "revenue.json"), None)
-    for first, last in ((shift(-59), shift(-30)), (shift(-29), pin)):
+    for first, last in ((shift(-29), pin),):
         s = summarise(rec, blocks, first, last)
         if s is None:
             print(f"{first} to {last}: not covered by the stored trace")

@@ -353,7 +353,7 @@ def check_revenue_stored():
 
 def check_revenue_source_stored():
     """The trace of who paid the revenue wallets: complete, and its payments add up to the transfers from intents.near
-    that data/context/revenue.json counts, in both 30-day windows."""
+    that data/context/revenue.json counts, over the latest 30-day window, the one it covers."""
     from . import revenue_source as rs
     rec = load(rs.OUT, None)
     if not rec:
@@ -366,7 +366,7 @@ def check_revenue_source_stored():
     pin = load(os.path.join(DATA, "pin.json"), {})["pin_day"]
     shift = lambda n: (dt.date.fromisoformat(pin) + dt.timedelta(days=n)).isoformat()   # noqa: E731
     bad = 0
-    for first, last in ((shift(-59), shift(-30)), (shift(-29), pin)):
+    for first, last in ((shift(-29), pin),):
         sm = rs.summarise(rec, blocks, first, last)
         theirs = rs.counted_by_revenue(rv, first, last) if rv else None
         if sm is None or theirs != sm["paid"]:

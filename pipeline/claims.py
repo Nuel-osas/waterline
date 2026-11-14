@@ -329,18 +329,17 @@ def write_claims(write=True):
                 if rsrc and rsrc.get("complete"):
                     from .revenue_source import counted_by_revenue, summarise as src_summary
                     blk = load(os.path.join(DATA, "blocks.json"), {})
-                    sb, sa = src_summary(rsrc, blk, *win_b), src_summary(rsrc, blk, *win_a)
-                    if sb and sa:
-                        adds = all(s["paid"] == counted_by_revenue(rv, s["first"], s["last"]) for s in (sb, sa))
+                    sb = src_summary(rsrc, blk, *win_b)
+                    if sb:
+                        adds = sb["paid"] == counted_by_revenue(rv, sb["first"], sb["last"])
                         add("U7", pct(sb["treasury"] / rb["received"], 0),
                             f"Share of U1 paid out of the private chain's treasury: each payment into the three wallets from intents.near is a withdrawal "
                             f"signed by an account on its ledger, and counts as paid from the treasury in the proportion of that account's wNEAR that "
                             f"came from the treasury in the ten minutes (or, failing that, six hours) before it paid. {sb['payments']:,} payments by "
-                            f"{sb['payers']:,} accounts; {pct(sb['untraced'] / rb['received'], 1)} of U1 untraced; the payments "
-                            + ("add up exactly to" if adds else "do NOT add up to") + " the transfers from intents.near that U1 counts",
+                            f"{sb['payers']:,} accounts, each looked up; {pct(sb['untraced'] / rb['received'], 1)} of U1 untraced; the payments "
+                            + ("add up exactly to" if adds else "do NOT add up to") + " the transfers from intents.near that U1 counts. "
+                            "The 30 days before are not traced",
                             "pipeline/revenue_source.py; data/context/revenue_source.json", grade="index, sampled against the chain")
-                        add("U8", pct(sa["treasury"] / ra["received"], 0), f"The same in the 30 days before, to the reading of {shift(pin, -30)} "
-                            f"({sa['payments']:,} payments by {sa['payers']:,} accounts)", "as U7, one window earlier", grade="index, sampled against the chain")
                         add("U9", pct((sb["treasury"] + sb["other"] + sb["untraced"]) / rb["received"], 0),
                             "Share of U1 that came from intents.near at all, by any payer; the rest was sent to the wallets from outside it",
                             "payments from intents.near over U1", grade="index")
