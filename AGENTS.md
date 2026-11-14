@@ -39,7 +39,9 @@ default and takes three to fifteen minutes, depending on how hard the node is ra
 | --- | --- |
 | `THESIS.md` | The argument, the readings that would change it, the limits |
 | `PREREG.md`, `PREREG-AUDIT.md` | Forward tests written before their readings exist, for the float and for the audit; `make score` prints each as PASS, FAIL, UNKNOWN or PENDING |
-| `README.md` | Problem, findings table (generated from the data), how to run |
+| `README.md` | The claim, the rating, the dated results (written by the scoring code), how to run |
+| `docs/FINDINGS.md` | Every number the text quotes, one row each, written by `pipeline/claims.py` and compared by `make check` |
+| `docs/ERRATA.md` | Every correction since the first version |
 | `data/derived/claims.json` | Every number the text quotes, with how it is computed |
 | `data/constants.json` | The only other numbers allowed in the prose: thresholds and facts quoted from others |
 | `data/blocks.json`, `data/float/`, `data/held/`, `data/credited/` | Raw readings: one block per day; the treasury's balances, what `intents.near` holds, what it has credited |
