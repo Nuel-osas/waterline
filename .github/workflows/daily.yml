@@ -8,8 +8,8 @@ name: dashboard
 on:
   push:
     branches: [main]
-  # GitHub runs schedules on a best-effort basis and can drop one under load: the first night's 00:20 run never
-  # started, and neither did 02:47 after this list was added. See the README. Four times a day, off the hour, so one missed run costs hours and not a day. A run that finds no new
+  # GitHub runs schedules on a best-effort basis and they run late here: on the first night nothing started at
+  # 00:20 or 02:47 UTC, and the first scheduled run began at 06:25 UTC. See the README. Four times a day, off the hour, so one missed run costs hours and not a day. A run that finds no new
   # day reads a few block headers and republishes the same page.
   schedule:
     - cron: "20 0 * * *"
