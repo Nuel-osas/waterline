@@ -262,8 +262,11 @@ Every correction made since the first version is listed in [`docs/ERRATA.md`](do
 
 ## Another project by the same author
 
-The author is also entering one other, independent project in this hackathon: CopyLaunch, in the Memecoins and
-DeFi tracks. The two share no code and no data. (Rule Q-015 asks each project's README to name the other.)
+The author also entered one other, independent project in this hackathon:
+[Saltline](https://github.com/Nuel-osas/saltline), an extraction shooter whose economy runs on a NEAR testnet
+contract, in the Games and NFTs tracks. Its README names Waterline in turn. The two share no code and no data.
+(Rule Q-015 asks each project's README to name the other.) Until pull request 34, made on 15 November after the
+deadline, this section named CopyLaunch, which was not entered; see [`docs/ERRATA.md`](docs/ERRATA.md).
 
 ## Licence
 
