@@ -56,3 +56,6 @@ place; nothing is removed silently.
   They are now on the rating's basis, the chain's 30 days of revenue at the pinned NEAR price: 7.7 years, 13% and
   2.6 months (pull request 33).
 
+- The README's "Another project by the same author" named CopyLaunch, in the Memecoins and DeFi tracks. CopyLaunch
+  was not entered. The other project entered is [Saltline](https://github.com/Nuel-osas/saltline) (Games and NFTs),
+  whose README names Waterline. Corrected on 15 November, after the deadline, in pull request 34; nothing else changed.
